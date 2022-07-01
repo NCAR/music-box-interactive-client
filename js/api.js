@@ -75,11 +75,12 @@ function load_example(example_number=1) {
   }
   $(document).ready(function(){
     console.log("window location: "+window.location.href)
-    if (window.location.href.includes("ncar.github.io")) {
+    if (window.location.href.includes("127.0.0.1")) {
       // check for github pages, modify links for every page accordingly
       for(var i = 0, l=document.links.length; i<l; i++) {
         // music-box-interactive-static/ required on github pages
-        document.links[i].href = 'music-box-interactive-static/'+document.links[i].href
+        var finalPart = document.links[i].href.replace(window.location.origin, "") // last part of url without domain
+        document.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
       }
     }
   });
