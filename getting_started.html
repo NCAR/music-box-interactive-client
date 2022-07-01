@@ -1,0 +1,278 @@
+
+<!doctype html>
+<html lang="en" style="height: 100%;">
+  <head>
+    <title>MusicBox v1.1.1</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- MusicBox style sheet -->
+    <link rel="stylesheet" href="style/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+    <!-- Iconic -->
+    <link href="open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+
+    <!-- jQuery, Popper.js, and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <!-- MathJax -->
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- MusicBox common JS -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+
+  </head>
+
+  <body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/home.html">MusicBox</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-ncar-menu sidebar collapse" style>
+          <div class="position-sticky pt-3">
+            <div id="main-nav" class="nav flex-column pt-2">
+              <small class="nav-section">SETUP</small>
+              <a class="nav-link active" aria-current="page" href="/getting_started.html">
+                <span class="oi oi-signpost oi-prefix"></span>Start Here
+              </a>
+              <a class="nav-link" aria-current="" href="/mechanism.html">
+                <span class="oi oi-random oi-prefix"></span>Mechanism
+              </a>
+              <a class="nav-link" aria-current="" href="/conditions.html">
+                <span class="oi oi-dashboard oi-prefix"></span>Conditions</a>
+              <div class="pt-1 pb-3 mx-0 my-2" style="border-top: 1px solid gray; border-bottom: 1px solid gray">
+                <small class="nav-section">RUN</small>
+                <div style="text-align:center">
+                  <button id="run-model" style="margin:auto" class="btn btn-primary btn-ncar-active">Run Model</button>
+                </div>
+              </div>
+              <div id="post-run-links">
+              </div>
+            </div>
+          </div>
+          <div class="mt-auto mb-4" style="position: absolute; bottom: 0; width: 100%;">
+            <img id="logo" class="img-fluid p-2" src="img/ncarucar-seal-final-gray.png">
+          </div>
+        </nav>
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-0" id="main">
+          <main role="main">
+            <section class="jumbotron text-center">
+              <div class="container">
+                <h1 class="jumbotron-heading">Getting Started</h1>
+                <p class="lead text-muted">
+                  To get started with MusicBox, you can try out one of our example configurations, start a new mechanism from scratch, or load a configuration file you saved from a previous run. For a collection of pre-made stratospheric and tropospheric configurations, visit <a target="_blank" href="https://github.com/NCAR/musicbox_curriculum_exercises">this respository</a> 
+                </p>
+                <p>
+                  <button  data-toggle="collapse" id="exampleToggle" data-target="#box1" class="btn btn-primary btn-ncar-active my-2">Select example</button>
+                  <a href="javascript:load_example(0);" class="btn btn-primary btn-ncar-active my-2">Start from scratch</a>
+                  <a id="loadToggle" href="#" class="btn btn-primary btn-ncar-active my-2">Load configuration file</a>
+                </p>
+                <div class="row">
+                  <div class="col">
+                    <div class="collapse card card-body example-panel m-2">
+                      <div>
+                        <h3>Chapman Cycle</h3>
+                      </div>
+                      <div>
+                        Chemistry of the ozone layer.
+                      </div>
+                      <a href="javascript:load_example(1);" class="btn btn-secondary">Select</a>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="collapse card card-body example-panel m-2">
+                      <div>
+                        <h3>Flow-Tube Wall Loss</h3>
+                      </div>
+                      <div>
+                        A simple characterization of wall loss of a-Pinene oxidation products in a flow-tube reactor.
+                      </div>
+                      <a href="javascript:load_example(2);" class="btn btn-secondary">Select</a>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="collapse card card-body example-panel m-2">
+                      <div>
+                        <h3>Full Gas-Phase Mechanism</h3>
+                      </div>
+                      <div>
+                        A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.
+                      </div>
+                      <a href="javascript:load_example(3);" class="btn btn-secondary">Select</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="collapse card card-body load-panel m-2">
+                      <div>
+                        <h3>Select configuration Zip file</h3>
+                      </div>
+                      <!-- <form  enctype="multipart/form-data" method="POST" action="/conditions/config_json">
+                        {% csrf_token %}
+                        {{ configFileForm }}
+                        <button type="submit" class="btn btn-primary m-2">Upload</button>
+                      </form> -->
+                    </div>
+                </div>
+              </div>
+            </section>
+            <div style="height:150px;">
+            </div>
+            <section id="how-to-use">
+              <div class="container">
+                <div class="p-3 text-center">
+                  <h1 class="pb-2 display-6">How to use MusicBox</h1>
+                  <p class="lead">
+                  <strong class="about-heading">Step 1.</strong> To start using MusicBox, select one of the starting options above. Each of these starting options is described in more detail below.
+                  </p>
+                </div>
+                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal">Start from scratch</h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                          This option allows you to build a simulation from the ground up. There are no species, no reactions, and only minimal conditions. You will need to add at least one reaction before you run a simulation.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal">Select example</h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                          Examples are fully functional MusicBox configurations. You can select an example and immediately run the simulation. Examples are useful for learning how to set up a MusicBox simulation.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal">Load configuration</h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                        If you have previously saved a MusicBox configuration from the <a href="/conditions/review.html">review</a> section, you can reload it with this starting option. MusicBox configuration files have a .zip extension and contain the mechanism and conditions for a simulation. Once loaded, you can modify the configuration, re-save it, and/or run the simulation.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-3 text-center">
+                  <p class="lead">
+                  <strong class="about-heading">Step 2.</strong> Navigate to the <a href="/mechanism/species.html">Chemical species</a> page in the Mechanism section to add or modify the set of chemical species in the system. At minimum, there will be a single species named 'M' that represents any chemical species, and can be used for third-body reactions. Any number of species can be added to the set by clicking the 'Add' button above the list of species. Clicking on a species in the list will allow you to edit its properties. Some reactions will require specific species properties to be specified, so be sure to set them here.
+                  </p>
+                  <p class="lead">
+                  <strong class="about-heading">Step 3.</strong> Navigate to the <a href="/mechanism/reactions.html">Reactions</a> page in the Mechanism section to add or modify the set of reactions in the system. Any chemical species set in Step 2 will be available to participate in a reaction. In addition to chemical reactions, emissions and loss of chemical species can be included in the set of reactions. Add a reaction by clicking the 'Add' button above the list of reactions, or modify an existing reaction by clicking on it in the list of reactions. At least one reaction must be present to run a simulation.
+                  </p>
+                  <p class="lead">
+                  Several types of reactions include a <code>MUSICA name</code> property. This is a unique name that you choose to identify this reaction in other parts of MusicBox. For example, setting the <code>MUSICA name</code> property of a photolysis reaction, allows you to set the photolysis rate constant in the <a href="/conditions/initial">initial</a> or <a href="/conditions/evolving">evolving</a> conditions pages.
+                  </p>
+                  <p class="lead">
+                  <strong class="about-heading">Step 4.</strong> Navgiate to the <a href="/conditions.html">Conditions</a> section to set model options and physical/chemical conditions for the simulation, and download the MusicBox configuration for future use. Each page of the conditions section is described below.
+                  </p>
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 mb-3 text-center">
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal"><a href="conditions/options.html">General</a></h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                        General model options: total simulation time, time step, output options, etc.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal"><a href="conditions/initial.html">Initial</a></h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                        Starting conditions for chemical species concentrations, environmental conditions, and reaction rates/rate constants for reactions with a <code>MUSICA name</code>. These conditions will remain at the values you set here until they are modified by the chemical solver (species concentrations) or updated from the <a href="conditions/evolving">evolving conditions</a> you specify. You can enter the conditions directly, or load them from a text file following the instructions on the <a href="conditions/initial">initial conditions</a> page.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal"><a href="conditions/evolving.html">Evolving</a></h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                        This section allows you to specify species concentrations, environmental conditions, and reaction rates/rate constants for reactions with a <code>MUSICA name</code> that vary during the simulation. For example, these could include diurnal profiles for photolysis rate constants, or emissions rates that vary during the course of the simulation. Evolving conditions can be set from text or NetCDF files following the instructions on the <a href="conditions/evolving">evolving conditions</a> page.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card mb-4 shadow-sm">
+                      <div class="card-header">
+                        <h4 class="my-0 fw-normal"><a href="conditions/review.html">Review</a></h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                        The final step of the MusicBox configuration. This page allows you to review the raw MusicBox configuration data and download the configuration for future use.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-3 text-center">
+                  <p class="lead">
+                  <strong class="about-heading">Step 4.</strong> Click the green 'Run Model' button to run the model with the mechanism and conditions you set in the previous steps. Once the model run is finished, you will see options to plot the results and download the model output for off-line analysis. If you see an error message, you may have to modify your configuration and try again.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </main>
+          <script src="/js/getting_started.js"></script>
+          <footer class="pb-0 mb-0 pt-3 border-top">
+            <div class="row justify-content-around">
+              <div class="col-md offset-md-1">
+                <a class="footer-link" href="/home.html#behind-the-music"><h5>About</h5></a>
+                <ul class="list-unstyled text-small">
+                  <a class="footer-link" href="/home.html#collaborators"><li>Collaborators</li></a>
+                  <a class="footer-link" href="/home.html#sponsors"><li>Sponsors</li></a>
+                  <a class="footer-link" href="/home.html#contact"><li>Contact us</li></a>
+
+                </ul>
+              </div>
+              <div class="col-md">
+                <a class="footer-link" href="/getting_started.html#how-to-use"><h5>How to use</h5></a>
+              </div>
+              <div class="col-md">
+                <a class="footer-link" href="/home.html#report-a-bug"><h5>Report a bug</h5></a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
+
