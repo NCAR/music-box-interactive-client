@@ -75,7 +75,7 @@ function load_example(example_number=1) {
   }
   $(document).ready(function(){
     console.log("window location: "+window.location.href)
-    if (window.location.href.includes("127.0.0.1")) {
+    if (window.location.href.includes("ncar.github.io")) {
       // check for github pages, modify links for every page accordingly
       for(var i = 0, l=document.links.length; i<l; i++) {
         // music-box-interactive-static/ required on github pages
