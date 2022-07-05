@@ -11,14 +11,20 @@ getting_started.html - select an example simulation to load, upload a file, star
 mechanism.html - add/view species to simulation
 
 mechanism/
+
   |_ species.html - add/view species to simulation
+  
   |_ reactions.html - add/view reactions to simulation
+  
   
 conditions.html - add/view options of simulation
 
 conditions/
+
   |_ options.html - add/view options of simulation
+  
   |_ inital.html - add/view inital conditions of simulation
+  
   |_ evolving.html - add/view evolving conditions of simulation
 
 # Important notes
