@@ -2,7 +2,7 @@
 This is a repo strictly used for static html/js/css files to be used with music-box-interactive. The main functionality of music-box-interactive is not yet setup on these files (unless you host the https://github.com/NCAR/music-box-interactive server on your own computer). A public NCAR-maintained backend server will be up in the coming months.
 
 # File structure (of completed files)
-run-server.sh - used to host website on local machine. Simply do ./run-server.sh on a macOS computer and a HTTP server will be hosted on your device on port 80
+run-server.sh - used to host website on local machine
 
 index.html & home.html - the landing page of music-box-interactive
 
