@@ -3,12 +3,16 @@ This is a repo strictly used for static html/js/css files to be used with music-
 
 # File structure (of completed files)
 run-server.sh - used to host website on local machine. Simply do ./run-server.sh on a macOS computer and a HTTP server will be hosted on your device on port 80
+
 index.html & home.html - the landing page of music-box-interactive
+
 getting_started.html - select an example simulation to load, upload a file, start from scratch
+
 mechanism.html - add/view species to simulation
 mechanism/
   |_ species.html - add/view species to simulation
   |_ reactions.html - add/view reactions to simulation
+  
 conditions.html - add/view options of simulation
 conditions/
   |_ options.html - add/view options of simulation
