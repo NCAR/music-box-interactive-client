@@ -79,8 +79,11 @@ function load_example(example_number=1) {
       // check for github pages, modify links for every page accordingly
       for(var i = 0, l=document.links.length; i<l; i++) {
         // music-box-interactive-static/ required on github pages
-        var finalPart = document.links[i].href.replace(window.location.origin, "") // last part of url without domain
-        document.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
+        if(document.links[i].href.includes('javascript') == false) { //dont mess with any javascript based href
+          var finalPart = document.links[i].href.replace(window.location.origin, "") // last part of url without domain
+          document.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
+        }
+        
       }
     }
   });

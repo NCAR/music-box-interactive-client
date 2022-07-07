@@ -1,69 +1,5 @@
 $(document).ready(function(){
 
-  /*********************
-   * Utility functions *
-   *********************/
-
-  // replaces spaces with dashes in a json key
-  function format_json_key(key) {
-    return key.replace('-', '--').replace(' ', '-');
-  }
-
-  // sets a nested object property value
-  function set_property_value(reaction, key, value) {
-    key = key.split('.');
-    var obj = reaction;
-    while(key.length) {
-      obj = reaction[key.shift()];
-    }
-    obj = value;
-  }
-
-  // returns a label for a reaction type
-  function reaction_type_label(reaction_type) {
-    if (reaction_type == "ARRHENIUS") {
-      return "Arrhenius";
-    } else if (reaction_type == "EMISSION") {
-      return "Emission";
-    } else if (reaction_type == "FIRST_ORDER_LOSS") {
-      return "First-order loss";
-    } else if (reaction_type == "PHOTOLYSIS") {
-      return "Photolysis";
-    } else if (reaction_type == "TERNARY_CHEMICAL_ACTIVATION") {
-      return "Ternary chemical activation";
-    } else if (reaction_type == "TROE") {
-      return "Troe";
-    } else {
-      return "Unknown reaction type";
-    }
-  }
-  
-  // sends a request to remove a reaction
-  function remove_reaction(reaction_index) {
-    if (typeof reaction_index === typeof undefined || reaction_index === false ) return;
-    var apiRequestURL = globalBaseAPIUrl + "/api/remove-reaction/";
-    $.ajax({
-      url: apiRequestURL,
-      xhrFields: {
-        withCredentials: true
-     },
-     crossDomain: true,
-      type: 'get',
-      data: { 'index': reaction_index },
-      success: function(response){
-        location.reload();
-      }
-    });
-  }
-
-  // clears the reaction detail window
-  function clear_reaction_detail() {
-    $('.reaction-detail').empty();
-    $('.reaction-detail').removeAttr('reaction-index');
-  }
-
-
-
   /**********************
    * Listener functions *
    **********************/
@@ -179,11 +115,50 @@ $(document).ready(function(){
     $(this).closest('.array-element').remove();
   });
 
-  // shows an editable reaction detail window
-  $('.reaction-detail-link').on('click', function() {
-    $(".reaction-detail").empty();
-    var apiRequestURL = globalBaseAPIUrl + "/api/reactions-detail/";
-    
+  
+});
+ /*********************
+   * Utility functions *
+   *********************/
+
+  // replaces spaces with dashes in a json key
+  function format_json_key(key) {
+    return key.replace('-', '--').replace(' ', '-');
+  }
+
+  // sets a nested object property value
+  function set_property_value(reaction, key, value) {
+    key = key.split('.');
+    var obj = reaction;
+    while(key.length) {
+      obj = reaction[key.shift()];
+    }
+    obj = value;
+  }
+
+  // returns a label for a reaction type
+  function reaction_type_label(reaction_type) {
+    if (reaction_type == "ARRHENIUS") {
+      return "Arrhenius";
+    } else if (reaction_type == "EMISSION") {
+      return "Emission";
+    } else if (reaction_type == "FIRST_ORDER_LOSS") {
+      return "First-order loss";
+    } else if (reaction_type == "PHOTOLYSIS") {
+      return "Photolysis";
+    } else if (reaction_type == "TERNARY_CHEMICAL_ACTIVATION") {
+      return "Ternary chemical activation";
+    } else if (reaction_type == "TROE") {
+      return "Troe";
+    } else {
+      return "Unknown reaction type";
+    }
+  }
+  
+  // sends a request to remove a reaction
+  function remove_reaction(reaction_index) {
+    if (typeof reaction_index === typeof undefined || reaction_index === false ) return;
+    var apiRequestURL = globalBaseAPIUrl + "/api/remove-reaction/";
     $.ajax({
       url: apiRequestURL,
       xhrFields: {
@@ -191,15 +166,18 @@ $(document).ready(function(){
      },
      crossDomain: true,
       type: 'get',
-      dataType: 'json',
-      data: { 'index': $(this).attr('reaction-index') },
-      success: function(response) {
-        load_reaction_type(response);
+      data: { 'index': reaction_index },
+      success: function(response){
+        location.reload();
       }
     });
-  });
+  }
 
-
+  // clears the reaction detail window
+  function clear_reaction_detail() {
+    $('.reaction-detail').empty();
+    $('.reaction-detail').removeAttr('reaction-index');
+  }
   /*****************************
    * HTML generating functions *
    *****************************/
@@ -622,4 +600,4 @@ $(document).ready(function(){
     if (typeof str_val === typeof undefined || str_val === false || str_val === '') return null;
     return str_val;
   }
-});
+

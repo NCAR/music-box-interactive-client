@@ -246,20 +246,9 @@
         </select>
                           </div>
                       
-                      
-                      
-                    
-                      
-                      
                           <div class="col-4">
-                            <input type="text" name="temperature.init" value="206.6374207" savebutton="initialsSave" class="form-control" id="temperature.init" required>
+                            <input type="text" name="temperature.init" value="" savebutton="initialsSave" class="form-control" id="temperature.init" required>
                           </div>
-                      
-                      
-                    
-                      
-                      
-                      
                           <div class="col-3">
                             <select name="temperature.units" savebutton="initialsSave" class="form-control condition-select-convert" id="id_temperature.units">
           <option value="K" selected>K</option>
@@ -282,20 +271,9 @@
         </select>
                           </div>
                       
-                      
-                      
-                    
-                      
-                      
                           <div class="col-4">
-                            <input type="text" name="pressure.init" value="6152.049805" savebutton="initialsSave" class="form-control" id="pressure.init" required>
+                            <input type="text" name="pressure.init" value="" savebutton="initialsSave" class="form-control" id="pressure.init" required>
                           </div>
-                      
-                      
-                    
-                      
-                      
-                      
                           <div class="col-3">
                             <select name="pressure.units" savebutton="initialsSave" class="form-control condition-select-convert" id="id_pressure.units">
           <option value="Pa" selected>Pa</option>
@@ -313,7 +291,27 @@
         </select>
                           </div>
                         </div>
-                      
+                      <script>
+
+var apiRequestURL = globalBaseAPIUrl + "/api/initial-conditions-setup/";
+    $.ajax({
+      url: apiRequestURL,
+      type: 'get',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
+      dataType: 'json',
+      data: {},
+      success: function(initial_concentrations) {
+        console.log("manually got initial_concentrations:", initial_concentrations);
+        document.getElementById('temperature.init').value = initial_concentrations["values"]["temperature"];
+        document.getElementById('pressure.init').value = initial_concentrations["values"]["pressure"];
+        document.getElementById('id_temperature.units').value = initial_concentrations["units"]["temperature"];
+        document.getElementById('id_pressure.units').value = initial_concentrations["units"]["pressure"];
+      }
+    });
+                      </script>
                     
                       </div>
                       <div class="container text-center mt-3">

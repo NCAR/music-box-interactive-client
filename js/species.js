@@ -37,34 +37,7 @@ $(document).ready(function(){
       </div>`);
   });
 
-  // return html for a property input box
-  function property_input_html(property_name, data_type, property_value) {
-    return `
-      <div class="input-group mb-3" property="`+property_name+`" data-type="`+data_type+`">
-        <div class="input-group-prepend">
-          <span class="input-group-text">`+property_name+`</span>
-        </div>
-        <input type="text" class="form-control" placeholder="Property value" value="`+property_value+`">
-        <div class="input-group-append">
-          <button type="button" class="btn btn-primary remove-property" property="`+property_name+`" style="border: 1px solid transparent;">
-            <span class="oi oi-x" toggle="tooltip" aria-hidden="true" title="remove '+property+_name+'"></span>
-          </button>
-        </div>
-      </div>
-    `
-  }
-
-  // return html for a fixed property box
-  function property_fixed_html(property_name, data_type, property_value) {
-    return `
-      <div class="input-group mb-3" property="`+property_name+`" data-type="`+data_type+`">
-        <div class="input-group-prepend">
-          <span class="input-group-text">`+property_name+`</span>
-        </div>
-        <input type="text" class="form-control" placeholder="Property value" disabled value="`+property_value+`">
-      </div>
-    `
-  }
+  
 
   // remove a property from the species
   $('.species-detail').on('click', '.btn.remove-property', function(){
@@ -129,6 +102,35 @@ $(document).ready(function(){
     });
   });
 
+});
+// return html for a property input box
+function property_input_html(property_name, data_type, property_value) {
+  return `
+    <div class="input-group mb-3" property="`+property_name+`" data-type="`+data_type+`">
+      <div class="input-group-prepend">
+        <span class="input-group-text">`+property_name+`</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Property value" value="`+property_value+`">
+      <div class="input-group-append">
+        <button type="button" class="btn btn-primary remove-property" property="`+property_name+`" style="border: 1px solid transparent;">
+          <span class="oi oi-x" toggle="tooltip" aria-hidden="true" title="remove '+property+_name+'"></span>
+        </button>
+      </div>
+    </div>
+  `
+}
+
+// return html for a fixed property box
+function property_fixed_html(property_name, data_type, property_value) {
+  return `
+    <div class="input-group mb-3" property="`+property_name+`" data-type="`+data_type+`">
+      <div class="input-group-prepend">
+        <span class="input-group-text">`+property_name+`</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Property value" disabled value="`+property_value+`">
+    </div>
+  `
+}
   // returns html for species detail window
   function species_detail_html(species_name) {
     return `
@@ -161,6 +163,7 @@ $(document).ready(function(){
           </div>`
   }
 
+  
   // returns html for a non-editable detail window
   function species_fixed_detail_html(species_name) {
     return `
@@ -178,46 +181,44 @@ $(document).ready(function(){
           </div>`
   }
 
-  // show editable chemical species detail
-  $(".species-detail-link").on('click', function(){
-    var apiRequestURL = globalBaseAPIUrl + "/api/species-detail/";
-    var speciesName =  $(this).attr('species');
-    console.log("fetching details for species:"+speciesName);
-    $.ajax({
-      url: apiRequestURL,
-      type: 'get',
-      dataType: 'json',
-      xhrFields: {
-        withCredentials: true
-     },
-     crossDomain: true,
-      data: { 'name': $(this).attr('species') },
-      success: function(response){
-        if (response["name"] == 'M') {
-          $('.species-detail').html(species_fixed_detail_html(response.name));
-          for (var key of Object.keys(response).sort()) {
-            if (key == "name" || key == "type") continue;
-            if (typeof response[key] == "string") {
-              $('.species-detail .properties').append(property_fixed_html(key, "string", response[key]));
-            } else {
-              $('.species-detail .properties').append(property_fixed_html(key, "number", response[key]));
-            }
+// show editable chemical species detail
+function loadSpeciesDataFor(species) {
+  var apiRequestURL = globalBaseAPIUrl + "/api/species-detail/";
+  console.log("fetching details for species: "+species);
+  $.ajax({
+    url: apiRequestURL,
+    type: 'get',
+    dataType: 'json',
+    xhrFields: {
+      withCredentials: true
+   },
+   crossDomain: true,
+    data: { 'name': species },
+    success: function(response){
+      if (response["name"] == 'M') {
+        $('.species-detail').html(species_fixed_detail_html(response.name));
+        for (var key of Object.keys(response).sort()) {
+          if (key == "name" || key == "type") continue;
+          if (typeof response[key] == "string") {
+            $('.species-detail .properties').append(property_fixed_html(key, "string", response[key]));
+          } else {
+            $('.species-detail .properties').append(property_fixed_html(key, "number", response[key]));
           }
-        } else {
-          $('.species-detail').html(species_detail_html(response.name));
-          for (var key of Object.keys(response).sort()) {
-            if (key == "name" || key == "type") continue;
-            $('.new-property .dropdown-item[property="'+key+'"]').hide();
-            if (typeof response[key] == "string") {
-              $('.species-detail .properties').append(property_input_html(key, "string", response[key]));
-            } else {
-              $('.species-detail .properties').append(property_input_html(key, "number", response[key]));
-            }
-          }
-          var url = 
-          $('#species-network-plot').html('<iframe style="width: 100%;height: 100%;" title="Network plot" src="'+globalBaseAPIUrl+'/api/plot-species/?name=' + speciesName + '"></iframe>')
         }
+      } else {
+        $('.species-detail').html(species_detail_html(response.name));
+        for (var key of Object.keys(response).sort()) {
+          if (key == "name" || key == "type") continue;
+          $('.new-property .dropdown-item[property="'+key+'"]').hide();
+          if (typeof response[key] == "string") {
+            $('.species-detail .properties').append(property_input_html(key, "string", response[key]));
+          } else {
+            $('.species-detail .properties').append(property_input_html(key, "number", response[key]));
+          }
+        }
+        var url = 
+        $('#species-network-plot').html('<iframe style="width: 100%;height: 100%;" title="Network plot" src="'+globalBaseAPIUrl+'/api/plot-species/?name=' + species + '"></iframe>')
       }
-    });
+    }
   });
-});
+}

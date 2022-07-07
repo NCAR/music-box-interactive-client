@@ -17,7 +17,7 @@ $(document).ready(function(){
   //     }
   //   });
   // });
-  var apiRequestURL = globalBaseAPIUrl + "/api/get-model-options/";
+  var apiRequestURL = globalBaseAPIUrl + "/api/model-options/";
   var requestType = "get";
   $.ajax({
       url:apiRequestURL,
@@ -30,6 +30,20 @@ $(document).ready(function(){
       },
       success: function(response){
         console.log("got response from options GET: ", response);
+        var chem_step_units = response['chem_step.units']
+        var chemistry_time_step = response['chemistry_time_step']
+        var grid = response['grid']
+        var output_step_units = response['output_step.units']
+        var output_time_step = response['output_time_step']
+        var simulation_length = response['simulation_length']
+        var simulation_length_units = response['simulation_length.units']
+        document.getElementById('id_chemistry_time_step').value = chemistry_time_step;
+        document.getElementById('id_chem_step.units').value = chem_step_units;
+        document.getElementById('id_grid').value = grid;
+        document.getElementById('id_output_step.units').value = output_step_units;
+        document.getElementById('id_output_time_step').value = output_time_step;
+        document.getElementById('id_simulation_length').value = simulation_length
+        document.getElementById('id_simulation_length.units').value = simulation_length_units;
       }
     });
   // fills logging toggle switch correctly

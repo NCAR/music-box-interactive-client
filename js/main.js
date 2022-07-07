@@ -18,10 +18,8 @@ function reloadSlider(firstVal, secondVal, minVal, maxVal) {
       max: parseFloat(maxVal).toExponential(3) * Math.pow(10,100),
       step: stepVal * Math.pow(10,100),
       values: [ parseFloat(firstVal).toExponential(3) *Math.pow(10,100), parseFloat(secondVal).toExponential(3) * Math.pow(10,100) ],
-      // values: [ parseFloat(document.getElementById("flow-start-range2").value), parseFloat(document.getElementById("flow-end-range2").value) ],
       slide: function( event, ui ) {
           // update values when slider changed
-        // $( "#filterRange" ).val( "" + parseFloat(ui.values[ 0 ]).toExponential(3) + " to " + parseFloat(ui.values[ 1 ]).toExponential(3) + "" );
         document.getElementById("flow-start-range2").value = (ui.values[ 0 ] / Math.pow(10,100)).toExponential(3);
         document.getElementById("flow-end-range2").value = (ui.values[ 1 ] / Math.pow(10,100)).toExponential(3);
       },

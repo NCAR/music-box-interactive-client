@@ -122,6 +122,25 @@
             `
             reactionsList.innerHTML += newElementString;
         }
+        // shows an editable reaction detail window
+  $('.reaction-detail-link').on('click', function() {
+    $(".reaction-detail").empty();
+    var apiRequestURL = globalBaseAPIUrl + "/api/reactions-detail/";
+    
+    $.ajax({
+      url: apiRequestURL,
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
+      type: 'get',
+      dataType: 'json',
+      data: { 'index': $(this).attr('reaction-index') },
+      success: function(response) {
+        load_reaction_type(response);
+      }
+    });
+  });
         }
       });
                             </script>

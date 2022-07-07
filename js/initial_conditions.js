@@ -18,9 +18,14 @@ $(document).ready(function(){
   // loads the list of initial conditions files
   load_initial_conditions_files();
   function load_initial_conditions_files() {
+    var apiRequestURL = globalBaseAPIUrl + "/api/initial-conditions-files/";
     $.ajax({
-      url: 'initial-conditions-files',
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
       dataType: 'json',
       data: {},
       success: function(files) {
@@ -86,18 +91,30 @@ $(document).ready(function(){
   // loads the initial species concentrations
   load_initial_concentrations();
   function load_initial_concentrations() {
+    var apiRequestURL = globalBaseAPIUrl + "/api/initial-species-concentrations/";
     $.ajax({
-      url: 'initial-species-concentrations',
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
       dataType: 'json',
       data: {},
       success: function(initial_concentrations) {
+        console.log('initial_concentrations response:', initial_concentrations);
+        var apiRequestURL2 = globalBaseAPIUrl + "/api/conditions-species-list/";
         $.ajax({
-          url: '/mechanism/conditions-species-list',
+          url: apiRequestURL2,
           type: 'get',
           dataType: 'json',
+          xhrFields: {
+            withCredentials: true
+         },
+         crossDomain: true,
           data: {},
           success: function(result) {
+            console.log('conditions_species_list response:', result);
             $("#initial-concentration-container").empty();
             $("#initial-concentration-container").append(`
               <div class="row">
@@ -119,10 +136,15 @@ $(document).ready(function(){
 
   // adds a row to the initial concentration list
   $(".initial-concentration-add").on('click', function(){
+    var apiRequestURL2 = globalBaseAPIUrl + "/api/conditions-species-list/";
     $.ajax({
-      url: '/mechanism/conditions-species-list',
+      url: apiRequestURL2,
       type: 'get',
       dataType: 'json',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
       data: {},
       success: function(result) {
         $("#initial-concentration-container").append(initial_concentration_row_html(result["species"]));
@@ -181,9 +203,14 @@ $(document).ready(function(){
           "units" : $(this).find(".units-dropdown").val()
         };
     });
+    var apiRequestURL = globalBaseAPIUrl + "/api/initial-species-concentrations/"; //'initial-species-concentrations-save'
     $.ajax({
-      url:'initial-species-concentrations-save',
+      url:apiRequestURL,
       type: 'post',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
       headers: {'X-CSRFToken': csrftoken},
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
@@ -213,18 +240,31 @@ $(document).ready(function(){
   // loads the initial reaction rates and rate constants
   load_initial_rates();
   function load_initial_rates() {
+    var apiRequestURL = globalBaseAPIUrl + "/api/initial-reaction-rates/";
+   
     $.ajax({
-      url: 'initial-reaction-rates',
+      url: apiRequestURL,
       type: 'get',
       dataType: 'json',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
       data: {},
       success: function(initial_rates) {
+        console.log("initial_rates response:", initial_rates);
+        var apiRequestURL2 = globalBaseAPIUrl + "/api/reaction-musica-names-list/";
         $.ajax({
-          url: '/mechanism/reaction-musica-names-list',
+          url: apiRequestURL2,
           type: 'get',
           dataType: 'json',
+          xhrFields: {
+            withCredentials: true
+          },
+          crossDomain: true,
           data: {},
           success: function(result) {
+            console.log("reaction_musica_names_list response:", result);
             $('#initial-rates-container').empty();
             $('#initial-rates-container').append(`
               <div class="row">
@@ -246,9 +286,15 @@ $(document).ready(function(){
 
   // adds a row to the initial reaction rates/rate constants list
   $('.initial-rate-add').on('click', function() {
+    var apiRequestURL = globalBaseAPIUrl + "/api/reaction-musica-names-list/"; //'/mechanism/reaction-musica-names-list'
     $.ajax({
-      url: '/mechanism/reaction-musica-names-list',
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
+      data: {},
       dataType: 'json',
       data: {},
       success: function(result) {
@@ -309,9 +355,14 @@ $(document).ready(function(){
           'units': $(this).find('.units-dropdown').val()
         };
     });
+    var apiRequestURL = globalBaseAPIUrl + "/api/initial-reaction-rates/";
     $.ajax({
-      url: 'initial-reaction-rates-save',
+      url: apiRequestURL,
       type: 'post',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       headers: {'X-CSRFToken': csrftoken},
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
@@ -364,10 +415,14 @@ $(document).ready(function(){
     var initId = selectId.replace(".units", "\\.init");
     var initId = initId.replace('id_', '')
     var initValue = $("#" + initId).val();
-
+    var apiRequestURL = globalBaseAPIUrl + "/api/convert-values/"; //"/conditions/convert"
     $.ajax({
-      url: "/conditions/convert",
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       data: {
         "value": initValue,
         "new unit": newUnit,
@@ -408,9 +463,14 @@ $(document).ready(function(){
   $(document).on('change', ".unit-select", function() {
     var initialUnit = $("#initialValueUnit").val();
     var finalUnit = $("#finalValueUnit").val();
+    var apiRequestURL = globalBaseAPIUrl + "/api/unit-conversion-arguments/"; //"/conditions/unit-conversion-arguments"
     $.ajax({
-      url: "/conditions/unit-conversion-arguments",
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       data: {
         "initialUnit": initialUnit,
         'finalUnit': finalUnit
@@ -424,9 +484,14 @@ $(document).ready(function(){
   //get unit options
   $(document).on('change', "#selectUnitType", function() {
     var unitType = $(this).val();
+    var apiRequestURL = globalBaseAPIUrl + "/api/unit-options/"; //"/conditions/unit-options"
     $.ajax({
-      url: "/conditions/unit-options",
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       data: {
         "unitType": unitType
       },
@@ -451,10 +516,14 @@ $(document).ready(function(){
       argData.push(argDict);
     });
 
-
+    var apiRequestURL = globalBaseAPIUrl + "/api/conversion-calculator/"; //"conditions/conversion-calculator"
     $.ajax({
-      url: "/conditions/conversion-calculator",
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       data: {
         "initialUnit": initialUnit,
         "initialValue": initialValue,

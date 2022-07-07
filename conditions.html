@@ -86,7 +86,8 @@
                     <div class="card-header">
                       <h4 class="my-0 fw-normal">Model options</h4>
                     </div>
-                    <form class="body body-card" method="post" action="/conditions/options.html">
+                    <!-- <form class="body body-card" method="post" action="/api/model-options/"> -->
+                      <form class="body body-card">
                       <div class="bg-ncar-body p-3">
                         <input type="hidden" name="csrfmiddlewaretoken" value="O1wwBP5PZfmFFh4oJ2RxvqZXGWFVgELzQfwd5oHgKXWeHBqKgMLNGfIqjLel7saC">
                         
@@ -165,6 +166,49 @@
                         
                         <div class="container text-center mt-3">
                           <button id="optionsSave" class="btn btn-primary" type="submit">Save</button>
+                          <script>
+                            var optionsSave = document.getElementById("optionsSave");
+                            optionsSave.addEventListener("click", function(event) {
+                              var apiRequestURL = globalBaseAPIUrl + "/api/model-options/";
+  var requestType = "post";
+  var reaction_data = {
+        "chem_step.units": document.getElementById("id_chem_step.units").value,
+        "output_step.units": document.getElementById("id_output_step.units").value,
+        "simulation_length.units": document.getElementById("id_simulation_length.units").value,
+        "grid": document.getElementById("id_grid").value,
+        "chemistry_time_step": document.getElementById("id_chemistry_time_step").value,
+        "output_time_step": document.getElementById("id_output_time_step").value,
+        "simulation_length": document.getElementById("id_simulation_length").value
+      };
+  $.ajax({
+      url:apiRequestURL,
+      type: requestType,
+      xhrFields: {
+    withCredentials: true
+ },
+ crossDomain: true,
+ dataType: 'json',
+          data: JSON.stringify(reaction_data),
+      success: function(response){
+        console.log("got response from options POST: ", response);
+        var chem_step_units = response['chem_step.units']
+        var chemistry_time_step = response['chemistry_time_step']
+        var grid = response['grid']
+        var output_step_units = response['output_step.units']
+        var output_time_step = response['output_time_step']
+        var simulation_length = response['simulation_length']
+        var simulation_length_units = response['simulation_length.units']
+        document.getElementById('id_chemistry_time_step').value = chemistry_time_step;
+        document.getElementById('id_chem_step.units').value = chem_step_units;
+        document.getElementById('id_grid').value = grid;
+        document.getElementById('id_output_step.units').value = output_step_units;
+        document.getElementById('id_output_time_step').value = output_time_step;
+        document.getElementById('id_simulation_length').value = simulation_length
+        document.getElementById('id_simulation_length.units').value = simulation_length_units;
+      }
+    });
+                            });
+                          </script>
                           <button class="btn btn-secondary" type="reset">Cancel</button>
                         </div>
                       </div>
@@ -180,7 +224,7 @@
                 </label>
               </div>
             </div>
-            <script src="/js/options.js"></script>
+            <script src="js/options.js"></script>
             
                       <footer class="pb-0 mb-0 pt-3 border-top">
                         <div class="row justify-content-around">
