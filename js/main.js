@@ -54,6 +54,10 @@ function reloadGraph() {
     $.ajax({
       url:'get_flow',
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       data: {
         "includedSpecies": stringed,
         "blockedSpecies": blockedSpecies.toString(),
@@ -103,14 +107,20 @@ $(document).ready(function(){
 
   // runs the model
   $("#run-model").on('click', function(){
+    var apiRequestURL = globalBaseAPIUrl + "/api/run/";
     $("#post-run-links").html('<div class="mx-2"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>')
     $.ajax({
-      url: "/model/run",
+      url:apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       success: function(response){
         if (response["model_running"]){
+          var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
-            url: "/model/check",
+            url: apiRequestURL2,
             type: 'get',
             success: function(response){
               if (response["status"] == 'done') {
@@ -134,10 +144,15 @@ $(document).ready(function(){
     });
   });
 
-  // checks if model has been run or if config changed
+  // checks if model has been run or if config changed (model/check-load)
+  var apiRequestURL = globalBaseAPIUrl + "/api/check-load/";
   $.ajax({
-    url: "/model/check-load",
+    url: apiRequestURL,
     type: 'get',
+    xhrFields: {
+      withCredentials: true
+    },
+    crossDomain: true,
     success: function(response){
       if (response["status"] == 'done') {
           display_post_run_menu_options();
