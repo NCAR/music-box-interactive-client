@@ -121,6 +121,10 @@ $(document).ready(function(){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
+            xhrFields: {
+              withCredentials: true
+            },
+            crossDomain: true,
             type: 'get',
             success: function(response){
               if (response["status"] == 'done') {
