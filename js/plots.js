@@ -12,56 +12,94 @@ function refreshTableNames() {
   }
 }
 $(document).ready(function(){
-
-  // default plot sub-page
-  var linkId = $('.propfam:first-child').attr('id');
-  $('.propfam:first-child').attr('class','propfam btn btn-primary btn-ncar-active');
-  if (typeof linkId !== typeof undefined && linkId !== '') {
-    $.ajax({
-      url: 'plots/get_contents',
-      type: 'get',
-      data: {"type": linkId},
-      success: function(response){
-        $("#plotbar").html(response);
-        refreshTableNames();
+  var basicDetails = globalBaseAPIUrl+'/api/plots/get_basic_details/'
+  $.ajax({
+    url: basicDetails,
+    xhrFields: {
+      withCredentials: true
+    },
+    crossDomain: true,
+    type: 'get',
+    success: function(response){
+      console.log("* got response for basic details: " + response['plots_list']);
+      if (response['plots_list'].includes('CONC')) {
+        document.getElementById('up-top-menu').innerHTML += '<a class="propfam btn btn-secondary" id="species">Chemical species</a>';
       }
-    });
-  }
+      if (response['plots_list'].includes('RATE')) {
+        document.getElementById('up-top-menu').innerHTML += '<a class="propfam btn btn-secondary" id="rates">Reaction rates</a>';
+      }
+      if (response['plots_list'].includes('ENV')) {
+        document.getElementById('up-top-menu').innerHTML += '<a class="propfam btn btn-secondary" id="env">Environmental conditions</a>';
+      }
+      // default plot sub-page
+      var linkId = $('.propfam:first-child').attr('id');
+      $('.propfam:first-child').attr('class','propfam btn btn-primary btn-ncar-active');
+      if (typeof linkId !== typeof undefined && linkId !== '') {
+        var apiRequestURL = globalBaseAPIUrl+'/api/plots/get_contents/'
+        $.ajax({
+          url: apiRequestURL,
+          xhrFields: {
+            withCredentials: true
+          },
+          crossDomain: true,
+          type: 'get',
+          data: {"type": linkId},
+          success: function(response){
+            $("#plotbar").html(response);
+            refreshTableNames();
+          }
+        });
+      }
 
-  // plot species and plot rates buttons
-  $(".propfam").on('click', function(){
-    var linkId = $(this).attr('id');
-    $('#plot').html("")
-    $(".propfam").attr('class', 'propfam btn btn-secondary');
-    $('#'+linkId).attr('class','propfam btn btn-primary btn-ncar-active');
-    if (linkId == "custom"){
-      $.ajax({
-        url: 'plots/custom',
-        type: 'get',
-        success: function(response){
+      // plot species and plot rates buttons
+      $(".propfam").on('click', function(){
+        var linkId = $(this).attr('id');
+        $('#plot').html("")
+        $(".propfam").attr('class', 'propfam btn btn-secondary');
+        $('#'+linkId).attr('class','propfam btn btn-primary btn-ncar-active');
+        if (linkId == "custom"){
+          // FIGURE THIS OUT
+
+          // $.ajax({
+          //   url: 'plots/custom',
+          //   type: 'get',
+          //   success: function(response){
+          //   }
+          // });
+        } else {
+          var apiRequestURL = globalBaseAPIUrl+'/api/plots/get_contents/'
+          $.ajax({
+            url: apiRequestURL,
+            xhrFields: {
+              withCredentials: true
+            },
+            crossDomain: true,
+            type: 'get',
+            data: {"type": linkId},
+            success: function(response){
+              $("#plotbar").html(response);
+              refreshTableNames();
+            }
+          });
         }
       });
-    } else {
-      $.ajax({
-        url: 'plots/get_contents',
-        type: 'get',
-        data: {"type": linkId},
-        success: function(response){
-          $("#plotbar").html(response);
-          refreshTableNames();
-        }
-      });
+      refreshTableNames();
     }
   });
-  refreshTableNames();
+  
   //plot property buttons
   $(".prop").on('click', function(){
     var linkId = $(this).attr('id');
     $("#plotnav").children().attr('class', 'none');
     $('#'+linkId).attr('class','selection');
     $("#plotbar").html("");
-    $.ajax({
-      url: 'plots/get',
+    var apiRequestURL = globalBaseAPIUrl+'/api/plots/get/'
+      $.ajax({
+        url: apiRequestURL,
+        xhrFields: {
+          withCredentials: true
+        },
+        crossDomain: true,
       type: 'get',
       data: {"type": linkId},
       success: function(response){
@@ -98,8 +136,22 @@ $(document).ready(function(){
     } else {
       var plotUnit = 'n/a'
     }
-
-    $('#plot').prepend('<img id="'+linkId.replace(">", "")+ 'plot"src="plots/get?type=' + prop + '&unit=' + plotUnit + '">'); // replace '>' with '' to get rid of invalid id
+    var plotsURL = globalBaseAPIUrl+'/api/plots/get/'
+    $('#plot').prepend('<img id="'+linkId.replace(">", "")+ 'plot"src="">'); // replace '>' with '' to get rid of invalid id
+    console.log("* fetching from: " + plotsURL + "?type=" + prop + "&unit=" + plotUnit);
+    $.ajax({
+      url: plotsURL,
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
+      type: 'get',
+      data: {"type": prop, "unit": plotUnit},
+      success: function(response){
+        console.log("* got img from server");
+        $("#" + linkId.replace(">", "") +'plot').attr('src', 'data:image/png;base64,' + response);
+      }
+    });
     refreshTableNames();
     }
   });
@@ -116,7 +168,22 @@ $(document).ready(function(){
     });
     $('#plot').empty();
     $.each(plotsNameList, function(i, name){
-      $('#plot').append('<img id="'+ name + 'plot"src="plots/get?type=CONC.' + name + '&unit=' + unitName + '">');
+      console.log("* updating plot for " + name);
+      // $('#plot').append('<img id="'+ name + 'plot"src="plots/get?type=CONC.' + name + '&unit=' + unitName + '">');
+      var plotsURL = globalBaseAPIUrl+'/api/plots/get/'
+      $.ajax({
+        url: plotsURL,
+        xhrFields: {
+          withCredentials: true
+        },
+        crossDomain: true,
+        type: 'get',
+        data: {"type": 'CONC.' + name, "unit": unitName},
+        success: function(response){
+          console.log("* got img from server");
+          $('#plot').append('<img id="'+ name + 'plot"src="data:image/png;base64,'+ response +'">');
+        }
+      });
     });
   });
 
