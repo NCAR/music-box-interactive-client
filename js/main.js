@@ -51,8 +51,9 @@ function reloadGraph() {
     let stringed = includedSpecies.toString();
     console.log("stringed: " + stringed);
     console.log("asking for new plot graph")
+    var plotsURL = globalBaseAPIUrl+'/api/plots/get_flow/'
     $.ajax({
-      url:'get_flow',
+      url:plotsURL,
       type: 'get',
       xhrFields: {
         withCredentials: true
@@ -72,8 +73,11 @@ function reloadGraph() {
         "isPhysicsEnabled": $("#physics").is(":checked"),
       },
       success: function(response){
-        $("#flow-diagram-container").html('<img src="../static/img/plot_diagram_legend.png" style="margin-left:40px;margin-top:40px;width:200px; position: absolute;border: 2px solid rgb(189,189,189);"> <iframe style="width: 100%;height: 100%;" id="graph-frame" title="Network plot" src="show_flow"></iframe>');
-        
+        $("#flow-diagram-container").html('<img src="img/plot_diagram_legend.png" style="margin-left:40px;margin-top:40px;width:200px; position: absolute;border: 2px solid rgb(189,189,189);"> <iframe style="width: 100%;height: 100%;" id="graph-frame" title="Network plot"></iframe>');
+        var doc = document.getElementById('graph-frame').contentWindow.document;
+        doc.open();
+        doc.write(response);
+        doc.close();
       }
     });
 }
@@ -97,12 +101,36 @@ $(document).ready(function(){
 
   // add links for plotting and downloading configuration/results
   function display_post_run_menu_options() {
-    $('#post-run-links').html(`
+    if (location.href.includes("plots")) {
+      $('#post-run-links').html(`
       <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/visualize'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      <a class='nav-link active' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
       `);
+    } else if (location.href.includes("flow")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link active' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else if (location.href.includes("download")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link active' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    }
+    
   }
 
   // runs the model
@@ -127,6 +155,7 @@ $(document).ready(function(){
             crossDomain: true,
             type: 'get',
             success: function(response){
+              console.log("* got response from check:",response)
               if (response["status"] == 'done') {
                 $("#post-run-links").html('')
                 display_post_run_menu_options();
@@ -158,7 +187,9 @@ $(document).ready(function(){
     },
     crossDomain: true,
     success: function(response){
+      console.log("* got response from check-load:",response)
       if (response["status"] == 'done') {
+        console.log("* grabbing options")
           display_post_run_menu_options();
         if (window.location.href.indexOf("visualize") > -1) {
           $('#plot-results-link').addClass('active');
@@ -177,20 +208,7 @@ $(document).ready(function(){
     $('#runMB').attr('emphasis', 'false')
   });
   var sheet = window.document.styleSheets[0];
-  $(".flow-species-item").on('click', function(){
-    
-    var id = $(this).attr('id');
-    if ($("#" + id).hasClass('active')) {
-      $("#" + id).removeClass('active')
-      document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace("☑ ", "☐ ");
-    } else {
-      $("#" + id).addClass('active')
-      document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace("☐ ", "☑ ");
-    }
-
-    reloadGraph();
-
-  });
+  
 
   // sync range sliders and inputs
   $("#flow-start-range").on('change', function(){
@@ -248,7 +266,25 @@ $(document).ready(function(){
   $("#flow-scale-select").on('change', function(){
     reloadGraph();
   });
+  console.log("* has accepted cookies:", getCookie("hasAcceptedCookies"))
+  if (getCookie("hasAcceptedCookies") == null || getCookie("hasAcceptedCookies") == "") {
+    console.log("* showing cookie banner")
+    var cookiebanner = `<div id="lawmsg" class="alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="setHasSeenCookieBanner()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    UCAR uses cookies to make our website function; however, UCAR cookies do not collect personal information about you. When using our website, you may encounter embedded content, such as YouTube videos and other social media links, that use their own cookies. To learn more about third-party cookies on this website, and to set your cookie preferences, click https://www.ucar.edu/cookie-other-tracking-technologies-notice.
+</div>`
+    document.body.innerHTML += cookiebanner;
+  }
+  
+
 });
+
+function setHasSeenCookieBanner() {
+  setCookie("hasAcceptedCookies", "true", 1024);
+  document.getElementById('lawmsg').style.display = "none";
+}
 function handleShowBlockElementChange() {
   if(document.getElementById('show-elements').classList.contains("selected-menu-it")) {
     //show blocked elements
@@ -266,4 +302,26 @@ function handleShowBlockElementChange() {
     document.getElementById("blocked-elements-list").style.display = "none";
     document.getElementById("flow-species-menu-list").style.display = "flex";
   }
+}
+function setCookie(name,value,days) {
+  var expires = "";
+  if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+function eraseCookie(name) {   
+  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

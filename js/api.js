@@ -1,4 +1,9 @@
 var globalBaseAPIUrl = "http://127.0.0.1:8000";
+
+// "name of server": address of server
+var ServersList = {
+    "Default": "http://127.0.0.1:8000"
+}
 // var githubPagesBase = "music-box-interactive-static/" // set to "" if on custom domain, otherwise we gotta do this for github pages
 function get_mechanisms() {
     var apiRequestURL = globalBaseAPIUrl + "/api/mechanisms/";
