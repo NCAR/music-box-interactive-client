@@ -117,24 +117,46 @@
                 </div>
                 <div class="row">
                   <div class="collapse card card-body load-panel m-2">
-                    <div class="card card-body load-panel m-2 collapse show" style="">
+                    <div class="card card-body load-panel m-2 collapse show">
                       <div>
                         <h3>Select configuration Zip file</h3>
                       </div>
-                      <form enctype="multipart/form-data" method="POST" action="/api/config_json">
-                        <input type="hidden" name="csrfmiddlewaretoken" value="cTNDc07o6mwxehXn8bvxzgK643NBcKsQe7NkGzJPR466gBjJFVpNK5tzHSm13yRT">
-                        
+                      <!-- <form enctype="multipart/form-data" method="POST" action="/api/config_json"> -->
+                        <form enctype="multipart/form-data">
               <label for="id_file">File:</label>
               
                 
                 <input type="file" name="file" savebutton="jsonConfigSave" class="form-control" required="" id="id_file">
                 
-                
-                  
-                
-              
-            
-                        <button type="submit" class="btn btn-primary m-2">Upload</button>
+                        <button type="submit" class="btn btn-primary m-2" id="upload-button">Upload</button>
+                        <script>
+                          //upload file when button is clicked
+                          $('#upload-button').click(function(e){
+                            e.preventDefault();
+                            console.log("* uploading file")
+                            var formData = new FormData();
+                            formData.append('file', $('#id_file')[0].files[0]);
+                            var apiRequestURL = globalBaseAPIUrl + "/api/config_json/";
+                            $.ajax({
+                                  url : apiRequestURL,
+                                  type : 'POST',
+                                  xhrFields: {
+                                    withCredentials: true
+                                  },
+                                  crossDomain: true,
+                                  data : formData,
+                                  processData: false,  // tell jQuery not to process the data
+                                  contentType: false,  // tell jQuery not to set contentType
+                                  success : function(data) {
+                                    console.log("* uploaded file")
+                                      console.log(data);
+                                      window.location = "mechanism.html"
+                                  }
+                            });
+                            window.location = "mechanism.html"
+                          });
+                          
+                        </script>
                       </form>
                     </div>
                       <!-- <form  enctype="multipart/form-data" method="POST" action="/conditions/config_json">

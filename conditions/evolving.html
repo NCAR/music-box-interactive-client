@@ -87,7 +87,7 @@ Load files containing model conditions that change during the simulation. These 
         <div class="card-header">
           <h4 class="my-0">Upload File</h4>
         </div>
-        <form class="body body-card" method="POST" action="evolving-file" enctype="multipart/form-data">
+        <form class="body body-card" enctype="multipart/form-data">
           <div class="bg-ncar-body p-3">
             <div class="container-fluid">
               <div class="row">
@@ -100,12 +100,34 @@ Load files containing model conditions that change during the simulation. These 
       <input type="file" name="file" savebutton="evolvFileSave" class="form-control" required id="id_file">
       
       
-        
-      
     </td>
   </tr>
                   <div class="container text-center my-3">
                     <button id="evolvFileSave" class="btn btn-primary m-2" type="submit">Upload</button>
+                    <script>
+                      // evolvFileSave clicked, upload file
+                      $("#evolvFileSave").click(function(e) {
+                        e.preventDefault();
+                        var formData = new FormData();
+                        formData.append('file', $('#id_file')[0].files[0]);
+                        var apiRequestURL = globalBaseAPIUrl + "/api/evolv_file/";
+                        $.ajax({
+                          url: apiRequestURL,
+                          type: "POST",
+                          data: formData,
+                          xhrFields: {
+                            withCredentials: true
+                          },
+                          crossDomain: true,
+                          processData: false,
+                          contentType: false,
+                          success: function(data) {
+                            // reload page
+                            location.reload();
+                          }
+                        });
+                      });
+                    </script>
                   </div>
                 </div>
                 <div class="col-6">
