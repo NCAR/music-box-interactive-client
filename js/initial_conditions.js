@@ -66,8 +66,9 @@ $(document).ready(function(){
   $('#initial-conditions-files-container').on('click', '.btn-remove-row', function() {
     const csrftoken = $('[name=csrfmiddlewaretoken]').val();
     request = { "file name" : $(this).parent().parent().find(".file-name").val() };
+    var apiRequestURL = globalBaseAPIUrl + "/api/remove_initial_conditions_file/";
     $.ajax({
-      url:'initial-conditions-file-remove',
+      url: apiRequestURL,
       type: 'post',
       headers: {'X-CSRFToken': csrftoken},
       contentType: 'application/json; charset=utf-8',
@@ -252,7 +253,7 @@ $(document).ready(function(){
      crossDomain: true,
       data: {},
       success: function(initial_rates) {
-        console.log("initial_rates response:", initial_rates);
+        console.log("initial_reaction_rates response:", initial_rates);
         var apiRequestURL2 = globalBaseAPIUrl + "/api/reaction-musica-names-list/";
         $.ajax({
           url: apiRequestURL2,
@@ -355,6 +356,8 @@ $(document).ready(function(){
           'units': $(this).find('.units-dropdown').val()
         };
     });
+    console.log("initial_rates:", initial_rates);
+    console.log('posting to:', globalBaseAPIUrl + "/api/initial-reaction-rates/");
     var apiRequestURL = globalBaseAPIUrl + "/api/initial-reaction-rates/";
     $.ajax({
       url: apiRequestURL,
@@ -368,6 +371,7 @@ $(document).ready(function(){
       dataType: 'json',
       data: JSON.stringify(initial_rates),
       success: function(response) {
+        console.log("got response: ", response);
         location.reload();
       },
       error: function(response) {

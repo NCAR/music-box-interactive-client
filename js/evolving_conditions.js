@@ -19,9 +19,14 @@ $(document).ready(function(){
 
   // clears evolving conditions files button
   $("#clearEvolvFiles").on('click', function(){
+    var apiRequestURL = globalBaseAPIUrl + "/api/clear_evolution_files/";
     $.ajax({
-      url: "/conditions/clear-evolv-files",
+      url: apiRequestURL,
       type: 'get',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
       success: function(response){
         location.reload();
       }
