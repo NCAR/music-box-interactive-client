@@ -286,12 +286,13 @@ $(document).ready(function(){
 function updateLinks() {
   console.log("window location: "+window.location.href)
     if (window.location.href.includes("ncar.github.io")) {
+      var subMenu = document.getElementById('post-run-links');
       // check for github pages, modify links for every page accordingly
-      for(var i = 0, l=document.links.length; i<l; i++) {
+      for(var i = 0, l=subMenu.links.length; i<l; i++) {
         // music-box-interactive-static/ required on github pages
-        if(document.links[i].href.includes('javascript') == false) { //dont mess with any javascript based href
-          var finalPart = document.links[i].href.replace(window.location.origin, "") // last part of url without domain
-          document.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
+        if(subMenu.links[i].href.includes('javascript') == false) { //dont mess with any javascript based href
+          var finalPart = subMenu.links[i].href.replace(window.location.origin, "") // last part of url without domain
+          subMenu.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
         }
         
       }
