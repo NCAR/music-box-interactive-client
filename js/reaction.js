@@ -4,11 +4,7 @@ $(document).ready(function(){
    * Listener functions *
    **********************/
 
-  // removes a reaction from the mechanism
-  $(".reaction-remove").on('click', function(){
-    remove_reaction(parseInt($(this).attr('reaction-index'), 10));
-  });
-
+  
   // adds a new reaction to the mechanism
   $(".reaction-new").on('click', function(){
     var reaction_data = { };

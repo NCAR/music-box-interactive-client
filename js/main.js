@@ -2,8 +2,8 @@ var currentlyLoadingGraph = false
 var currentMinValOfGraph = 0
 var currentMaxValOfGraph = 1
 var shouldShowArrowWidth = true // if true, show arrow width slider (mostly used for debug)
-
-function reloadSlider(firstVal, secondVal, minVal, maxVal) {
+var global_session_id = "";
+function reloadSlider(firstVal, secondVal, minVal, maxVal, stepVal = 200) {
   var stepVal = (parseFloat(maxVal) - parseFloat(minVal)) / 60;
   console.log("step value: " + stepVal);
   console.log("received values: "+firstVal+" "+parseFloat(secondVal).toExponential(3));
@@ -11,6 +11,9 @@ function reloadSlider(firstVal, secondVal, minVal, maxVal) {
   $( "#range-slider2", window.parent.document ).slider("destroy");
   currentMinValOfGraph = parseFloat(minVal);
   currentMaxValOfGraph = parseFloat(maxVal);
+  // change time slider to have proper step value
+  console.log("fetched step val: " + stepVal);
+  // $( "#range-slider", window.parent.document ).slider("option", "step", stepVal);
   $( function() {
     $( "#range-slider2",window.parent.document ).slider({
       range: true,
@@ -29,6 +32,41 @@ function reloadSlider(firstVal, secondVal, minVal, maxVal) {
           }
     });
   } );
+}
+// adds each element to blockedElementsList
+function blockAllSpecies() {
+  console.log('block all species');
+  $.each($("#blocked-elements-list").children(), function(i, value){
+    var id = $(value).attr('id');
+    if ($(value).hasClass('active') == false) {
+      $("#" + id).addClass('active')
+      document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace("☐ ", "☑ ");
+    }
+  });
+  reloadGraph();
+}
+// removes each element from blockedElementsList
+function unblockAllSpecies() {
+  console.log('unbock all species');
+  $.each($("#blocked-elements-list").children(), function(i, value){
+    var id = $(value).attr('id');
+    if ($(value).hasClass('active')) {
+      $("#" + id).removeClass('active')
+      document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace("☑ ", "☐ ");
+    }
+  });
+  reloadGraph();
+}
+function handleBlockUnblock() {
+  if (document.getElementById("select_all_blocked").innerHTML.indexOf("☑") !== -1) {
+    // unblock all
+    unblockAllSpecies();
+    document.getElementById("select_all_blocked").innerHTML = "☐ Select all";
+  } else {
+    // block all
+    blockAllSpecies();
+    document.getElementById("select_all_blocked").innerHTML = "☑ Select all";
+  }
 }
 // helper function to reload graph (called when something other than elements changed)
 function reloadGraph() {
@@ -203,6 +241,15 @@ $(document).ready(function(){
           $('#download-link').attr('aria-current', 'page');
         }
       }
+      global_session_id = response["session_id"];
+      console.log("* session_id:",global_session_id)
+      if (response["session_id"] !== undefined && location.href.includes("download")){
+        var downloadConfigURL = globalBaseAPIUrl + "/api/download_config/";
+          var sess_id = response["session_id"];
+          
+          console.log("changing download link to:", downloadConfigURL+"?sess_id="+sess_id)
+          $("#download_config").attr("href", downloadConfigURL+"?sess_id="+sess_id);
+      }
     }
   });
 
@@ -290,7 +337,7 @@ function updateLinks() {
       // check for github pages, modify links for every page accordingly
       for(var i = 0, l=subMenu.links.length; i<l; i++) {
         // music-box-interactive-static/ required on github pages
-        if(subMenu.links[i].href.includes('javascript') == false) { //dont mess with any javascript based href
+        if(subMenu.links[i].href.includes('javascript') == false && subMenu.links[i].href.includes('#')) { //dont mess with any javascript based href
           var finalPart = subMenu.links[i].href.replace(window.location.origin, "") // last part of url without domain
           subMenu.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
         }
@@ -310,6 +357,7 @@ function handleShowBlockElementChange() {
     
     document.getElementById("flow-species-menu-list").style.display = "none";
     document.getElementById("blocked-elements-list").style.display = "flex";
+    // document.getElementById("select_all_blocked").style.display = "block";
     
   } else {
     // show "show elements"
@@ -318,6 +366,7 @@ function handleShowBlockElementChange() {
 
     document.getElementById("blocked-elements-list").style.display = "none";
     document.getElementById("flow-species-menu-list").style.display = "flex";
+    document.getElementById("select_all_blocked").style.display = "none";
   }
 }
 function setCookie(name,value,days) {

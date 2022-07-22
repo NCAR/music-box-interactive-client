@@ -1,21 +1,6 @@
 $(document).ready(function(){
 
-  // remove a chemical species from the mechanism
-  $(".species-remove").on('click', function(){
-    var apiRequestURL = globalBaseAPIUrl + "/api/remove-species/";
-    $.ajax({
-      url: apiRequestURL,
-      type: 'get',
-      xhrFields: {
-        withCredentials: true
-     },
-     crossDomain: true,
-      data: { 'name': $(this).attr('species') },
-      success: function(response){
-        location.reload();
-      }
-    });
-  });
+  
 
   // look for changes to species name
   $('.species-detail').on('change', '.species-name', function(){
