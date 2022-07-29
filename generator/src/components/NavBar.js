@@ -9,7 +9,7 @@ export default function NavBar() {
               <small className="nav-section">SETUP</small>
               <a className="nav-link {% if '/getting_started' in request.path %}active{% endif %}" aria-current="{% if '/getting_started' in request.path %}page{% endif %}" href="/getting_started">
                 <span className="oi oi-signpost oi-prefix"></span>
-                Start Here
+                  Start Here
               </a>
               <a className="nav-link {% if '/mechanism' in request.path %}active{% endif %}" aria-current="{% if '/mechanism' in request.path %}page{% endif %}" href="/mechanism">
                 <span className="oi oi-random oi-prefix"></span>

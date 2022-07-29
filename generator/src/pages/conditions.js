@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <Layout>
         <div>
-            Conditions (Placeholder)
+            Conditions
         </div>
     </Layout>
   )
