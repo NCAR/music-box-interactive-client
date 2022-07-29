@@ -1,4 +1,5 @@
 import React from "react";
+import logo from "../assets/ncarucar-seal-final-gray.png"
 
 export default function NavBar() {
     return (
@@ -25,7 +26,7 @@ export default function NavBar() {
             </div>
           </div>
           <div className="mt-auto mb-4" style={{position: 'absolute', bottom: 0, width: '100%'}}>
-            {/* <img id="logo" className="img-fluid p-2" src="{% static 'img/ncarucar-seal-final-gray.png' %}"> */}
+            <img id="logo" className="img-fluid p-2" alt="" src={logo} />
           </div>
         </nav>
     )

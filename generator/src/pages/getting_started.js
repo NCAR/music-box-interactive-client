@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <Layout>
         <div>
-            Getting Started
+            Getting Started (Place holder)
         </div>
     </Layout>
   )
