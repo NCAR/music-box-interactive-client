@@ -8,13 +8,17 @@ export default function NavBar() {
             <div id="main-nav" className="nav flex-column pt-2">
               <small className="nav-section">SETUP</small>
               <a className="nav-link {% if '/getting_started' in request.path %}active{% endif %}" aria-current="{% if '/getting_started' in request.path %}page{% endif %}" href="/getting_started">
-                <span className="oi oi-signpost oi-prefix"></span>Start Here
+                <span className="oi oi-signpost oi-prefix"></span>
+                Start Here
               </a>
               <a className="nav-link {% if '/mechanism' in request.path %}active{% endif %}" aria-current="{% if '/mechanism' in request.path %}page{% endif %}" href="/mechanism">
-                <span className="oi oi-random oi-prefix"></span>Mechanism
+                <span className="oi oi-random oi-prefix"></span>
+                Mechanism
               </a>
               <a className="nav-link {% if '/conditions' in request.path %}active{% endif %}" aria-current="{% if '/conditions' in request.path %}page{% endif %}" href="/conditions">
-                <span className="oi oi-dashboard oi-prefix"></span>Conditions</a>
+                <span className="oi oi-dashboard oi-prefix"></span>
+                Conditions
+              </a>
               <div className="pt-1 pb-3 mx-0 my-2" style={{borderTop: '1px solid gray', borderBottom: '1px solid gray'}}>
                 <small className="nav-section">RUN</small>
                 <div style={{textAlign:'center'}}>
