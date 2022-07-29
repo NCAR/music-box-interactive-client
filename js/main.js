@@ -130,7 +130,8 @@ $(document).ready(function(){
       <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
       `);
     }
-    
+    console.log("* updating links")
+    updateLinks();
   }
 
   // runs the model
@@ -158,7 +159,9 @@ $(document).ready(function(){
               console.log("* got response from check:",response)
               if (response["status"] == 'done') {
                 $("#post-run-links").html('')
+                console.log("* updating options")
                 display_post_run_menu_options();
+                
               } else if (response["status"] == 'error'){
                   alert("ERROR " + response["e_code"] + "   " + response["e_message"]);
                   if (response["e_type"] == 'species'){
@@ -280,7 +283,21 @@ $(document).ready(function(){
   
 
 });
-
+function updateLinks() {
+  console.log("window location: "+window.location.href)
+    if (window.location.href.includes("ncar.github.io")) {
+      var subMenu = document.getElementById('post-run-links');
+      // check for github pages, modify links for every page accordingly
+      for(var i = 0, l=subMenu.links.length; i<l; i++) {
+        // music-box-interactive-static/ required on github pages
+        if(subMenu.links[i].href.includes('javascript') == false) { //dont mess with any javascript based href
+          var finalPart = subMenu.links[i].href.replace(window.location.origin, "") // last part of url without domain
+          subMenu.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
+        }
+        
+      }
+    }
+}
 function setHasSeenCookieBanner() {
   setCookie("hasAcceptedCookies", "true", 1024);
   document.getElementById('lawmsg').style.display = "none";
