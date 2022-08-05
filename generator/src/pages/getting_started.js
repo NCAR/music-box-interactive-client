@@ -1,12 +1,18 @@
 import React from "react"
 import Layout from "../components/Layout"
+import EmptySpace from "../components/EmptySpace"
+import QuickStart from "../components/getting_started_specific/QuickStart"
+import UsageInfo from "../components/getting_started_specific/UsageInfo"
 
-export default function Home() {
+
+export default function GettingStarted() {
   return (
     <Layout>
-        <div>
-            Getting Started
-        </div>
+        <main role="main">
+            <QuickStart />
+            <EmptySpace height={150} />
+            <UsageInfo />
+        </main>
     </Layout>
   )
 }
