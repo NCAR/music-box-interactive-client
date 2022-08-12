@@ -149,7 +149,10 @@ function property_fixed_html(property_name, data_type, property_value) {
                   <a class="dropdown-item" href="#" property="description" data-type="string" default-value="">description</a>
                   <a class="dropdown-item" href="#" property="absolute convergence tolerance [mol mol-1]" data-type="number" default-value="1e-12">absolute convergence tolerance</a>
                   <a class="dropdown-item" href="#" property="molecular weight [kg mol-1]" data-type="number" default-value="0">molecular weight</a>
-                  <a class="dropdown-item" href="#" property="tracer type" data-type="string" default-value="CONSTANT">fixed concentration</a>
+                  <a class="dropdown-item" href="#" property="fixed concentration" data-type="string" default-value="CONSTANT">fixed concentration</a>
+                  <a class="dropdown-item" href="#" property="density" data-type="number" default-value="">density</a>
+                  <a class="dropdown-item" href="#" property="kappa" data-type="number" default-value="">kappa</a>
+
                 </div>
               </div>
               <p>

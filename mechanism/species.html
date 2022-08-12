@@ -35,7 +35,7 @@
 
   <body>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/home.html">MusicBox</a>
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="home.html">MusicBox</a>
       <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -47,13 +47,13 @@
           <div class="position-sticky pt-3">
             <div id="main-nav" class="nav flex-column pt-2">
               <small class="nav-section">SETUP</small>
-              <a class="nav-link" aria-current="page" href="/getting_started.html">
+              <a class="nav-link" aria-current="page" href="getting_started.html">
                 <span class="oi oi-signpost oi-prefix"></span>Start Here
               </a>
-              <a class="nav-link active" aria-current="" href="/mechanism.html">
+              <a class="nav-link active" aria-current="" href="mechanism.html">
                 <span class="oi oi-random oi-prefix"></span>Mechanism
               </a>
-              <a class="nav-link" aria-current="" href="/conditions.html">
+              <a class="nav-link" aria-current="" href="conditions.html">
                 <span class="oi oi-dashboard oi-prefix"></span>Conditions</a>
               <div class="pt-1 pb-3 mx-0 my-2" style="border-top: 1px solid gray; border-bottom: 1px solid gray">
                 <small class="nav-section">RUN</small>
@@ -71,15 +71,21 @@
         </nav>
         <div class="col-md-9 ms-sm-auto col-lg-10 px-0" id="main">
           <main role="main">
+            <div class="container text-left">
+              <div class="navbox pt-2">
+                <a class="btn btn-secondary" href="mechanism/gasmechanism.html">Gas</a>
+                <a class="btn btn-primary btn-ncar-active" href="mechanism/aerosolmechanism.html">Aerosol</a>
+              </div>
+            </div>
 
             <div class="container text-center">
                 <div class="navbox pt-2">
-                  <a class="btn btn-primary btn-ncar-active" href="/mechanism/species.html">Chemical Species</a>
-                  <a class="btn btn-secondary" href="/mechanism/reactions.html">Reactions</a>
+                  <a class="btn btn-primary btn-ncar-active" href="species.html">Chemical Species</a>
+                  <a class="btn btn-secondary" href="reactions.html">Reactions</a>
                 </div>
               </div>
               <p class="lead-muted p-2">
-              Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim. The chemical species you add here will be available to participate in <a href="/mechanism/reactions">reactions</a> and can be include in the <a href="/conditions">model conditions</a>.
+              Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim. The chemical species you add here will be available to participate in <a href="mechanism/reactions">reactions</a> and can be include in the <a href="conditions">model conditions</a>.
               </p>
               <div id="species_content" class="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
                 <div class="row flex-grow-1 overflow-hidden">

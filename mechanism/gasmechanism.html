@@ -1,13 +1,9 @@
-<!-- {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
-{% csrf_token %} -->
 
 <!doctype html>
 <html lang="en" style="height: 100%;">
   <head>
     <title>MusicBox v1.1.1</title>
-    <link rel="shortcut icon" type="image/png" href="../img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -15,11 +11,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     <!-- MusicBox style sheet -->
-    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="style/style.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
     <!-- Iconic -->
-    <link href="../open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <link href="open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
 
     <!-- jQuery, Popper.js, and Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -30,9 +26,9 @@
     <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <!-- MusicBox common JS -->
-    <script src="../js/main.js"></script>
-    <script src="../js/api.js"></script>
-
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/species.js"></script>
     <!-- make sure api will work -->
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
   </head>
@@ -70,7 +66,7 @@
             </div>
           </div>
           <div class="mt-auto mb-4" style="position: absolute; bottom: 0; width: 100%;">
-            <img id="logo" class="img-fluid p-2" src="../img/ncarucar-seal-final-gray.png">
+            <img id="logo" class="img-fluid p-2" src="img/ncarucar-seal-final-gray.png">
           </div>
         </nav>
         <div class="col-md-9 ms-sm-auto col-lg-10 px-0" id="main">
@@ -81,29 +77,29 @@
                 <a class="btn btn-secondary" href="mechanism/aerosolmechanism.html">Aerosol</a>
               </div>
             </div>
-            
+
             <div class="container text-center">
-              <div class="navbox pt-2">
-                <a class="btn btn-secondary" href="species.html">Chemical Species</a>
-                <a class="btn btn-primary btn-ncar-active" href="reactions.html">Reactions</a>
+                <div class="navbox pt-2">
+                  <a class="btn btn-primary btn-ncar-active" href="mechanism/species.html">Chemical Species</a>
+                  <a class="btn btn-secondary" href="mechanism/reactions.html">Reactions</a>
+                </div>
               </div>
-            </div>
-            <p class="lead-muted p-2">
-            Select a reaction from the list to view/edit its properties, or add a new reaction to the mechansim. The chemical species available to participate in reactions can be modified <a href="/mechanism/species.html">here</a>.
-            </p>
-            <div id="reaction_content" class="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
-              <div class="row flex-grow-1 overflow-hidden">
-                <div class="col-md-4 col-lg-4 mh-100 overflow-auto">
-                  <div class="row flex-shrink-0">
-                    <div class="col">
-                      <nav class="bg-ncar-menu-secondary p-2">
-                        <button class="btn btn-primary reaction-new mb-2">
-                          Add reaction
-                        </button>
-                        <ul class="list-group reaction-list" id="reaction-list">
-                          <script>
-                            var apiRequestURL = globalBaseAPIUrl + "/api/reactions/";
-                            var requestType = "get";
+              <p class="lead-muted p-2">
+              Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim. The chemical species you add here will be available to participate in <a href="mechanism/reactions">reactions</a> and can be include in the <a href="conditions">model conditions</a>.
+              </p>
+              <div id="species_content" class="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
+                <div class="row flex-grow-1 overflow-hidden">
+                  <div class="col-md-4 col-lg-4 mh-100 overflow-auto">
+                    <div class="row flex-shrink-0">
+                      <div class="col">
+                        <nav class="bg-ncar-menu-secondary p-2">
+                          <button class="btn btn-primary species-new mb-2">
+                            Add species
+                          </button>
+                          <ul class="list-group species-list" id="species_list">
+                            <script>
+var apiRequestURL = globalBaseAPIUrl + "/api/species/";
+    var requestType = "get";
     $.ajax({
         url:apiRequestURL,
         type: requestType,
@@ -114,58 +110,84 @@
         data: {
         },
         success: function(response){
-          console.log("got response from reactions GET: ", response);
-          var reactionsList = document.getElementById('reaction-list');
-        for (var i = 0; i < response.length; i++) {
-          var newElementString = `
-          <li class="list-group-item list-group-item-action d-flex justify-content-between">
-                              <a href="#" class="reaction-detail-link" reaction-index="`+i+`">`+response[i]+`
-                              </a>
-                              <a href="#" class="navlink reaction-remove m-0 p-0" reaction-index="`+i+`">
-                                <span class="oi oi-x" toggle="tooltip" aria-hidden="true" title="remove reaction"></span>
-                              </a>
-                            </li>
+          console.log("got response from mechanisms GET: ", response);
+        //   console.log(response["species"]);
+        var species_list_0 = response["species_list_0"];
+        var species_list_1 = response["species_list_1"];
+        var speciesList = document.getElementById('species_list')
+        for (var i = 0; i < species_list_0.length; i++) {
+          var species0 = species_list_0[i];
+            var species1 = species_list_1[i];
+            var newElementString = `
+            <li class="list-group-item list-group-item-action d-flex justify-content-between detailitem">
+                <a href="#" class="species-detail-link" species="`+species0+`">
+                    `+species1+`
+                </a>
+                
             `
-            reactionsList.innerHTML += newElementString;
+            if (species0 != 'M') {
+                newElementString += `
+                <a href="#" class="navlink species-remove m-0 p-0" species="`+species0+`">
+                                  <span class="oi oi-x" toggle="tooltip" aria-hidden="true" title="remove `+species0+`"></span>
+                                </a>
+            `
+            }
+            newElementString += "</li>"
+            speciesList.innerHTML += newElementString;
         }
-        // shows an editable reaction detail window
-  $('.reaction-detail-link').on('click', function() {
-    $(".reaction-detail").empty();
-    var apiRequestURL = globalBaseAPIUrl + "/api/reactions-detail/";
+  //       $(".detailitem").on('click', function() {
+  //   var child = $(this).children().first().attr('species');
+  //   console.log("* detected detail item click");
+  //   console.log("* clicking child:",child);
+  //   loadSpeciesDataFor(child)
+  //   // $(this).first().click();
+  // });
+  $(".species-detail-link").on('click', function(){
     
-    $.ajax({
-      url: apiRequestURL,
-      xhrFields: {
-        withCredentials: true
-     },
-     crossDomain: true,
-      type: 'get',
-      dataType: 'json',
-      data: { 'index': $(this).attr('reaction-index') },
-      success: function(response) {
-        load_reaction_type(response);
-      }
-    });
+    var speciesName =  $(this).attr('species');
+    loadSpeciesDataFor(speciesName)
   });
-        }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            console.log('failed....');
+            console.log(xhr);
+            console.log(ajaxOptions);
+            console.log(thrownError);
+           }
       });
                             </script>
-                        </ul>
-                      </nav>
+                            <!-- {% for species in species_menu_names %}
+                              <li class="list-group-item list-group-item-action d-flex justify-content-between">
+                                <a href="#" class="species-detail-link" species="{{species.0}}">
+                                  {{ species.1 }}
+                                </a>
+                                {% if species.0 != 'M' %}
+                                <a href="#" class="navlink species-remove m-0 p-0" species="{{species.0}}">
+                                  <span class="oi oi-x" toggle="tooltip" aria-hidden="true" title="remove {{species.0}}"></span>
+                                </a>
+                                {% endif %}
+                              </li>
+                            {% endfor %} -->
+                          </ul>
+                        </nav>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col mh-100 overflow-auto">
-                  <div class="row flex-shrink-0">
-                    <div class="col reaction-detail">
+                  <div class="col mh-100 overflow-auto">
+                    <div class="row flex-shrink-0">
+                      <div id="species-detail-containter" class="col species-detail">
+                      </div>
+                    </div>
+                    <div class="embed-responsive-1by1 w-100 h-100" id="species-network-plot">
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <script src="../js/reaction.js"></script>
+             
+
+
           </main>
-          <script src="../js/getting_started.js"></script>
+          <script src="js/getting_started.js"></script>
           <footer class="pb-0 mb-0 pt-3 border-top">
             <div class="row justify-content-around">
               <div class="col-md offset-md-1">
@@ -188,6 +210,12 @@
         </div>
       </div>
     </div>
+    <style>
+      /* .detailitem:hover {
+        cursor: pointer;
+      } */
+    </style>
   </body>
 
 </html>
+
