@@ -1,60 +1,38 @@
 import React from "react";
+import InfoCard from "./InfoCard"
 
 export default function UsageInfo() {
+    const options_methods = ["Start from scratch", "Select example", "Load configuration"]
+    const description_scratch = "This option allows you to build a simulation from the ground up."
+                + " There are no species, no reactions, and only minimal conditions."
+                + " You will need to add at least one reaction before you run a simulation."
+    const description_example = "Examples are fully functional MusicBox configurations. "
+                + " You can select an example and immediately run the simulation."
+                + " Examples are useful for learning how to set up a MusicBox simulation."
+    const description_config = "If you have previously saved a MusicBox configuration from the "+'<a href="/conditions/review.html">review</a>'
+                + " section, you can reload it with this starting option. MusicBox configuration files have a .zip extension and contain the mechanism and conditions for a simulation. "
+                + " Once loaded, you can modify the configuration, re-save it, and/or run the simulation."
+    const descriptions_methods = [description_scratch, description_example, description_config]
+
+    const methodInfoCards = options_methods.map((elem, index) => {
+      return <InfoCard option={elem} description={descriptions_methods[index]} />
+    })
+
     return (
         <section id="how-to-use">
             <div className="container">
-                <div className="p-3 text-center">
-                    <h1 className="pb-2 display-6">How to use MusicBox</h1>
+                <div className="p-3">
+                    <h1 className="pb-2 display-6 text-center">How to use MusicBox</h1>
                     <p className="lead">
                         <strong className="about-heading">Step 1.</strong> To start using MusicBox, select one of the starting options above. Each of these starting options is described in more detail below.
                     </p>
                 </div>
 
-                <div className="row row-cols-1 row-cols-md-3 mb-3 text-center">
-                    <div className="col">
-                        <div className="card mb-4 shadow-sm">
-                            <div className="card-header">
-                                <h4 className="my-0 fw-normal">Start from scratch</h4>
-                            </div>
-                            <div className="card-body">
-                                <p>
-                                    This option allows you to build a simulation from the ground up. There are no species, no reactions, and only minimal conditions. You will need to add at least one reaction before you run a simulation.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="col">
-                        <div className="card mb-4 shadow-sm">
-                            <div className="card-header">
-                                <h4 className="my-0 fw-normal">Select example</h4>
-                            </div>
-                            <div className="card-body">
-                                <p>
-                                    Examples are fully functional MusicBox configurations. You can select an example and immediately run the simulation. Examples are useful for learning how to set up a MusicBox simulation.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                <div className="col">
-                    <div className="card mb-4 shadow-sm">
-                        <div className="card-header">
-                            <h4 className="my-0 fw-normal">Load configuration</h4>
-                        </div>
-                        <div className="card-body">
-                            <p>
-                                If you have previously saved a MusicBox configuration from the <a href="/conditions/review.html">review</a> section, you can reload it with this starting option. MusicBox configuration files have a .zip extension and contain the mechanism and conditions for a simulation. Once loaded, you can modify the configuration, re-save it, and/or run the simulation.
-                            </p>
-                        </div>
-                    </div>
+                <div className="row row-cols-1 row-cols-md-3 mb-3">
+                  {methodInfoCards}
                 </div>
-            </div>
 
-            
-                <div className="p-3 text-center">
+                <div className="p-3">
                   <p className="lead">
                   <strong className="about-heading">Step 2.</strong> Navigate to the <a href="/mechanism/species.html">Chemical species</a> page in the Mechanism section to add or modify the set of chemical species in the system. At minimum, there will be a single species named 'M' that represents any chemical species, and can be used for third-body reactions. Any number of species can be added to the set by clicking the 'Add' button above the list of species. Clicking on a species in the list will allow you to edit its properties. Some reactions will require specific species properties to be specified, so be sure to set them here.
                   </p>
@@ -68,6 +46,7 @@ export default function UsageInfo() {
                   <strong className="about-heading">Step 4.</strong> Navgiate to the <a href="/conditions.html">Conditions</a> section to set model options and physical/chemical conditions for the simulation, and download the MusicBox configuration for future use. Each page of the conditions section is described below.
                   </p>
                 </div>
+
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 mb-3 text-center">
                   <div className="col">
                     <div className="card mb-4 shadow-sm">
@@ -81,6 +60,7 @@ export default function UsageInfo() {
                       </div>
                     </div>
                   </div>
+
                   <div className="col">
                     <div className="card mb-4 shadow-sm">
                       <div className="card-header">
@@ -93,6 +73,7 @@ export default function UsageInfo() {
                       </div>
                     </div>
                   </div>
+
                   <div className="col">
                     <div className="card mb-4 shadow-sm">
                       <div className="card-header">
@@ -118,12 +99,13 @@ export default function UsageInfo() {
                     </div>
                   </div>
                 </div>
-                <div className="p-3 text-center">
+                <div className="p-3">
                   <p className="lead">
-                  <strong className="about-heading">Step 4.</strong> Click the green 'Run Model' button to run the model with the mechanism and conditions you set in the previous steps. Once the model run is finished, you will see options to plot the results and download the model output for off-line analysis. If you see an error message, you may have to modify your configuration and try again.
+                  <strong className="about-heading">Step 5.</strong> Click the green 'Run Model' button to run the model with the mechanism and conditions you set in the previous steps. Once the model run is finished, you will see options to plot the results and download the model output for off-line analysis. If you see an error message, you may have to modify your configuration and try again.
                   </p>
                 </div>
               </div>
             </section>
     )
 }
+
