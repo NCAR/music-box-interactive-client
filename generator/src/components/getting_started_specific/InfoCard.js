@@ -7,7 +7,7 @@ export default function InfoCard(props) {
         <div className="col">
             <div className="card mb-4 shadow-sm">
                 <div className="card-header text-center">
-                    <h4 className="my-0 fw-normal">{props.option}</h4>
+                    <h4 className="my-0 fw-normal" dangerouslySetInnerHTML={{__html: props.option}}></h4>
                 </div>
                 <div className="card-body">
                     <p dangerouslySetInnerHTML={{__html: props.description}}>
