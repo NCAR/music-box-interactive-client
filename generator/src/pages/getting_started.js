@@ -4,7 +4,6 @@ import EmptySpace from "../components/EmptySpace"
 import QuickStart from "../components/getting_started_specific/QuickStart"
 import UsageInfo from "../components/getting_started_specific/UsageInfo"
 
-
 export default function GettingStarted() {
   return (
     <Layout>
