@@ -16,14 +16,12 @@
   "dependencies": {
     "bootstrap": "^5.2.0",
     "gatsby": "^4.18.2",
-    "jquery": "^3.6.0",
     "open-iconic": "^1.1.1",
     "react": "^18.1.0",
     "react-aria": "^3.18.0",
-    "react-bootstrap": "^2.4.0",
+    "react-bootstrap": "^2.5.0",
     "react-document-meta": "^3.0.0-beta.2",
-    "react-dom": "^18.1.0",
-    "react-router-dom": "^6.3.0"
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "prettier": "^2.7.1"
