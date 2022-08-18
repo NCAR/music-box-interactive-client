@@ -9,7 +9,7 @@ export default function GettingStarted() {
     <Layout>
         <main role="main">
             <QuickStart />
-            <EmptySpace height={150} />
+            <EmptySpace height={0} />
             <UsageInfo />
         </main>
     </Layout>
