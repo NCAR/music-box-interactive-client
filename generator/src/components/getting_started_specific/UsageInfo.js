@@ -1,6 +1,4 @@
 import React from "react";
-import InfoCard from "./InfoCard"
-import Step from "./Step"
 
 export default function UsageInfo() {
     const options_methods = ["Start from scratch", "Select example", "Load configuration"]
@@ -20,7 +18,7 @@ export default function UsageInfo() {
     const descriptions_methods = [description_scratch, description_example, description_config]
 
     const methodInfoCards = options_methods.map((elem, index) => {
-      return <InfoCard option={elem} description={descriptions_methods[index]} />
+      return <InfoCard option={elem} description={descriptions_methods[index]} key={index}/>
     })
 
     const options_conditions = ['<a href="conditions/options.html">General</a>','<a href="conditions/initial.html">Initial</a>', '<a href="conditions/evolving.html">Evolving</a>', '<a href="conditions/review.html">Review</a>']
@@ -49,7 +47,7 @@ export default function UsageInfo() {
     const descriptions_conditions = [description_general, description_initial, description_evolving, description_review]
 
     const conditionsInfoCards = options_conditions.map((elem, index) => {
-      return <InfoCard option={elem} description={descriptions_conditions[index]} />
+      return <InfoCard option={elem} description={descriptions_conditions[index]} key={index}/>
     })
 
     const description_step1 = 'To start using MusicBox, select one of the starting options above.'
@@ -92,7 +90,7 @@ export default function UsageInfo() {
     const generate_steps = (start, end) => {
       var steps = []
       for (;start <= end; start++) {
-        steps.push(<Step count={start} description={descriptions_steps[start - 1]}/>)
+        steps.push(<Step count={start} description={descriptions_steps[start - 1]} key={start}/>)
       }
       return steps
     }
@@ -119,3 +117,31 @@ export default function UsageInfo() {
     )
 }
 
+function Step(props) {
+  return (
+      <div className="p-3">
+          <p className="lead">
+              <strong className="about-heading">Step {props.count}. </strong>
+              <span dangerouslySetInnerHTML={{__html: props.description}}></span>
+          </p>
+      </div>
+  )
+}
+
+function InfoCard(props) {
+  console.log(props.option)
+
+  return (
+      <div className="col">
+          <div className="card mb-4 shadow-sm">
+              <div className="card-header text-center">
+                  <h4 className="my-0 fw-normal" dangerouslySetInnerHTML={{__html: props.option}}></h4>
+              </div>
+              <div className="card-body">
+                  <p dangerouslySetInnerHTML={{__html: props.description}}>
+                  </p>
+              </div>
+          </div>
+      </div>
+  )
+}

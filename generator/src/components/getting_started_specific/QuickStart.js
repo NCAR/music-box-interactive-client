@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { navigate } from 'gatsby';
-import MethodButton from "./MethodButton";
 import Examples from "./Examples"
 import LoadFile from "./LoadFile"
 import utils from "../../utils"
@@ -36,10 +35,19 @@ export default function QuickStart() {
                     <MethodButton clickHandler={() => setMethodWrapper(utils.methods.USE_TEMPLATE)}>Select example</MethodButton>
                     <MethodButton clickHandler={() => setMethodWrapper(utils.methods.START_FROM_SCRATCH)}>Start from scratch</MethodButton>
                     <MethodButton clickHandler={() => setMethodWrapper(utils.methods.UPLOAD_CONFIG)}>Upload configuration file</MethodButton>
-                    {method === utils.methods.USE_TEMPLATE ? <Examples /> : null}
-                    {method === utils.methods.UPLOAD_CONFIG ? <LoadFile /> : null}
                 </p>
+                {method === utils.methods.USE_TEMPLATE ? <Examples /> : null}
+                {method === utils.methods.UPLOAD_CONFIG ? <LoadFile /> : null}
             </div>
         </section>
     )
 }
+
+function MethodButton(props) {
+    return (
+        <button className="btn btn-primary btn-lg btn-ncar-active my-2 mx-3" onClick={props.clickHandler}>
+            {props.children}
+        </button>
+    )
+}
+
