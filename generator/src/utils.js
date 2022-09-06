@@ -1,13 +1,16 @@
 const utils = {
     methods: {
-        NONE_SELECTED: 0,
-        USE_TEMPLATE: 1,
-        START_FROM_SCRATCH: 2,
-        UPLOAD_CONFIG: 3
+        NONE_SELECTED: 'NONE_SELECTED',
+        USE_TEMPLATE: 'USE_TEMPLATE',
+        START_FROM_SCRATCH: 'START_FROM_SCRATCH',
+        UPLOAD_CONFIG: 'UPLOAD_CONFIG'
     },
-    types: {
-        AEROSOL: 0,
-        GAS: 1
+    reaction_types: {
+        AEROSOL: 'AEROSOL',
+        GAS: 'GAS'
+    },
+    action_types: {
+        CHANGE_REACTION_TYPE: 'CHANGE_REACTION_TYPE'
     }
 }
 

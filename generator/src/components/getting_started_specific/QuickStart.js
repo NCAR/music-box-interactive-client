@@ -19,7 +19,6 @@ export default function QuickStart() {
         if (method === utils.methods.START_FROM_SCRATCH) {
             navigate('/mechanism')
         }
-        console.log(method)
     }, [method])
 
     return (

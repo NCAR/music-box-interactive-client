@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "gatsby"
 
 export default function UsageInfo() {
     const options_methods = ["Start from scratch", "Select example", "Load configuration"]
@@ -28,9 +29,9 @@ export default function UsageInfo() {
     const description_initial = 'Starting conditions for chemical species concentrations, environmental conditions, and reaction rates/rate constants for reactions with a'
                               + ' <code>MUSICA name</code>.'
                               + ' These conditions will remain at the values you set here until they are modified by the chemical solver (species concentrations) or updated from the'
-                              + ' <a href="conditions/evolving">evolving conditions</a>' 
+                              + ' <Link href="conditions/evolving">evolving conditions</Link>' 
                               + ' you specify. You can enter the conditions directly, or load them from a text file following the instructions on the' 
-                              + ' <a href="conditions/initial">initial conditions</a>'
+                              + ' <Link href="conditions/initial">initial conditions</Link>'
                               + ' page.'
 
     const description_evolving = 'Several types of reactions include a <code>MUSICA name</code> property.'
@@ -38,7 +39,7 @@ export default function UsageInfo() {
                               + ' For example, setting the'
                               + ' <code>MUSICA name</code>'
                               + ' property of a photolysis reaction, allows you to set the photolysis rate constant in the'
-                              + ' <a href="/conditions/initial">initial</a> or <a href="/conditions/evolving">evolving</a>'
+                              + ' <Link href="/conditions/initial">initial</a> or <a href="/conditions/evolving">evolving</Link>'
                               + ' conditions pages.'
 
     const description_review = 'The final step of the MusicBox configuration.'
@@ -54,7 +55,7 @@ export default function UsageInfo() {
                             + ' Each of these starting options is described in more detail below.'
     
     const description_step2 = 'Navigate to the'
-                            + ' <a href="/mechanism/species.html">Chemical species</a>'
+                            + ' <Link href="/mechanism/species.html">Chemical species</Link>'
                             + ' page in the Mechanism section to add or modify the set of chemical species in the system.'
                             + " At minimum, there will be a single species named 'M' that represents any chemical species, and can be used for third-body reactions."
                             + " Any number of species can be added to the set by clicking the 'Add' button above the list of species."
@@ -62,7 +63,7 @@ export default function UsageInfo() {
                             + ' Some reactions will require specific species properties to be specified, so be sure to set them here.'
     
     const description_step3 = 'Navigate to the'
-                            + ' <a href="/mechanism/reactions.html">Reactions</a>'
+                            + ' <Link href="/mechanism/reactions.html">Reactions</Link>'
                             + ' page in the Mechanism section to add or modify the set of reactions in the system.'
                             + ' Any chemical species set in Step 2 will be available to participate in a reaction.'
                             + ' In addition to chemical reactions, emissions and loss of chemical species can be included in the set of reactions.'
@@ -72,11 +73,11 @@ export default function UsageInfo() {
                             + 'Several types of reactions include a <code>MUSICA name</code> property.'
                             +' This is a unique name that you choose to identify this reaction in other parts of MusicBox.'
                             + ' For example, setting the <code>MUSICA name</code> property of a photolysis reaction, allows you to set the photolysis rate constant in the'
-                            + ' <a href="/conditions/initial">initial</a> or <a href="/conditions/evolving">evolving</a>'
+                            + ' <Link href="/conditions/initial">initial</Link> or <Link href="/conditions/evolving">evolving</Link>'
                             + ' conditions pages.'
     
     const description_step4 = 'Navgiate to the' 
-                            + ' <a href="/conditions.html">Conditions</a>' 
+                            + ' <Link href="/conditions.html">Conditions</Link>' 
                             + ' section to set model options and physical/chemical conditions for the simulation, and download the MusicBox configuration for future use.'
                             + ' Each page of the conditions section is described below.'
     
@@ -129,8 +130,6 @@ function Step(props) {
 }
 
 function InfoCard(props) {
-  console.log(props.option)
-
   return (
       <div className="col">
           <div className="card mb-4 shadow-sm">

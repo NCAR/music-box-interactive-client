@@ -1,9 +1,13 @@
 import React from "react"
+import { connect } from 'react-redux'
 import Layout from "../components/Layout"
 import SaveButton from "../components/SaveButton"
 import CancelButton from "../components/CancelButton"
 
-export default function Conditions() {
+function Conditions(props) {
+
+  console.log(props)
+
   return (
     <Layout>
         <div id="main">
@@ -43,7 +47,7 @@ function BasicConfiguration() {
     const generateConfigEntries = () => {
       const res = []
       for (let i = 0; i < paramEntry.length;i++) {
-        res.push(<ConfigEntry label={paramEntry[i].label} requirement={paramEntry[i].requirement} unit={paramEntry[i].unit}/>)
+        res.push(<ConfigEntry label={paramEntry[i].label} requirement={paramEntry[i].requirement} unit={paramEntry[i].unit} key={i}/>)
       }
       return res
     }
@@ -89,7 +93,7 @@ function ConfigEntry(props) {
       <label> {props.label} {props.requirement} </label>
       <div className="input-group">
         <div>
-          <input type="text" name="chemistry_time_step" value="" savebutton="optionsSave" className="form-control" required="" id="id_chemistry_time_step" />
+          <input type="text" name="chemistry_time_step" savebutton="optionsSave" className="form-control" required="" id="id_chemistry_time_step" />
         </div>  
         <div>
           <select name="chem_step.units" savebutton="optionsSave" className="form-control options-dropdown" unit="degrees" id="id_chem_step.units">
@@ -100,3 +104,16 @@ function ConfigEntry(props) {
     </div>
   )
 }
+
+const mapStateToProps = ({ reactionType }) => {
+  return {
+    reactionType: reactionType
+  }
+}
+
+// TODO
+const mapDispatchToProps = (dispatch) => {
+
+}
+
+export default connect(mapStateToProps)(Conditions)

@@ -1,13 +1,13 @@
-import React, {useState} from "react"
-import Layout from "../components/Layout"
-import utils from"../utils"
+import React, {useState} from "react";
+import { connect } from 'react-redux';
+import Layout from "../components/Layout";
+import utils from"../utils";
+import { changeReactionType } from '../actions'
 
-export default function Mechanism() {
-  
-  // TODO: replace useState with Redux
+function Mechanism(props) {
   const SPECIES = 0
   const REACTIONS = 1
-  const [type, setType] = useState(utils.types.GAS)
+  const type = props.state.reactionType;
   const [param, setParam] = useState(SPECIES)
 
   const typeSelected = "btn btn-primary btn-lg rounded-0"
@@ -16,9 +16,15 @@ export default function Mechanism() {
   const paramNotSelected = "btn btn-secondary rounded-0"
   
   const aerosolClickHandler = () => {
-    setType(utils.types.AEROSOL)
+    props.changeReactionType(utils.reaction_types.AEROSOL)
     setParam(SPECIES)
   }
+
+  const gasClickhandler = () => {
+    props.changeReactionType(utils.reaction_types.GAS)
+  }
+  
+  console.log(props)
 
   return (
     <Layout>
@@ -26,8 +32,8 @@ export default function Mechanism() {
           <br />
           <div className="container text-left mx-5">
             <div className="pt-3">
-              <button className={type === utils.types.GAS ?  typeSelected : typeNotSelected} onClick={() => setType(utils.types.GAS)}>Gas</button>
-              <button className={type === utils.types.AEROSOL ? typeSelected : typeNotSelected} onClick={aerosolClickHandler}>Aerosol</button>
+              <button className={type === utils.reaction_types.GAS ?  typeSelected : typeNotSelected} onClick={ gasClickhandler }>Gas</button>
+              <button className={type === utils.reaction_types.AEROSOL ? typeSelected : typeNotSelected} onClick={ aerosolClickHandler }>Aerosol</button>
             </div>
           </div>
           
@@ -36,7 +42,7 @@ export default function Mechanism() {
               <button className={param === SPECIES ?  paramSelected : paramNotSelected} onClick={() => setParam(SPECIES)}>
                 Chemical Species
               </button>
-              {type === utils.types.GAS ? <button className={param === REACTIONS ? paramSelected : paramNotSelected} onClick={() => setParam(REACTIONS)}>Reactions</button> : null}
+              {type === utils.reaction_types.GAS ? <button className={param === REACTIONS ? paramSelected : paramNotSelected} onClick={() => setParam(REACTIONS)}>Reactions</button> : null}
             </div>
           </div>
 
@@ -105,3 +111,17 @@ function Species() {
     </div>
   )
 }
+
+const mapStateToProps = (state) => {
+  return {
+    state: state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeReactionType: (type) => dispatch(changeReactionType(type))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Mechanism)
