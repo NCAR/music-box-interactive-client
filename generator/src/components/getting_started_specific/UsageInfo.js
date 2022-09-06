@@ -12,7 +12,7 @@ export default function UsageInfo() {
                 + " You can select an example and immediately run the simulation."
                 + " Examples are useful for learning how to set up a MusicBox simulation."
 
-    const description_config = "If you have previously saved a MusicBox configuration from the "+'<a href="/conditions/review.html">review</a>'
+    const description_config = "If you have previously saved a MusicBox configuration from the "+'<Link to="/conditions/review.html">review</Link>'
                 + " section, you can reload it with this starting option. MusicBox configuration files have a .zip extension and contain the mechanism and conditions for a simulation. "
                 + " Once loaded, you can modify the configuration, re-save it, and/or run the simulation."
     
@@ -22,16 +22,16 @@ export default function UsageInfo() {
       return <InfoCard option={elem} description={descriptions_methods[index]} key={index}/>
     })
 
-    const options_conditions = ['<a href="conditions/options.html">General</a>','<a href="conditions/initial.html">Initial</a>', '<a href="conditions/evolving.html">Evolving</a>', '<a href="conditions/review.html">Review</a>']
+    const options_conditions = ['<Link to="conditions/options.html">General</Link>','<Link to="conditions/initial.html">Initial</Link>', '<Link to="conditions/evolving.html">Evolving</Link>', '<Link to="conditions/review.html">Review</Link>']
     
     const description_general = 'General model options: total simulation time, time step, output options, etc.'
 
     const description_initial = 'Starting conditions for chemical species concentrations, environmental conditions, and reaction rates/rate constants for reactions with a'
                               + ' <code>MUSICA name</code>.'
                               + ' These conditions will remain at the values you set here until they are modified by the chemical solver (species concentrations) or updated from the'
-                              + ' <Link href="conditions/evolving">evolving conditions</Link>' 
+                              + ' <Link to="conditions/evolving">evolving conditions</Link>' 
                               + ' you specify. You can enter the conditions directly, or load them from a text file following the instructions on the' 
-                              + ' <Link href="conditions/initial">initial conditions</Link>'
+                              + ' <Link to="conditions/initial">initial conditions</Link>'
                               + ' page.'
 
     const description_evolving = 'Several types of reactions include a <code>MUSICA name</code> property.'
@@ -39,7 +39,7 @@ export default function UsageInfo() {
                               + ' For example, setting the'
                               + ' <code>MUSICA name</code>'
                               + ' property of a photolysis reaction, allows you to set the photolysis rate constant in the'
-                              + ' <Link href="/conditions/initial">initial</a> or <a href="/conditions/evolving">evolving</Link>'
+                              + ' <Link to="/conditions/initial">initial</Link> or <Link to="/conditions/evolving">evolving</Link>'
                               + ' conditions pages.'
 
     const description_review = 'The final step of the MusicBox configuration.'
@@ -55,7 +55,7 @@ export default function UsageInfo() {
                             + ' Each of these starting options is described in more detail below.'
     
     const description_step2 = 'Navigate to the'
-                            + ' <Link href="/mechanism/species.html">Chemical species</Link>'
+                            + ' <Link to="/mechanism/species.html">Chemical species</Link>'
                             + ' page in the Mechanism section to add or modify the set of chemical species in the system.'
                             + " At minimum, there will be a single species named 'M' that represents any chemical species, and can be used for third-body reactions."
                             + " Any number of species can be added to the set by clicking the 'Add' button above the list of species."
@@ -63,7 +63,7 @@ export default function UsageInfo() {
                             + ' Some reactions will require specific species properties to be specified, so be sure to set them here.'
     
     const description_step3 = 'Navigate to the'
-                            + ' <Link href="/mechanism/reactions.html">Reactions</Link>'
+                            + ' <Link to="/mechanism/reactions.html">Reactions</Link>'
                             + ' page in the Mechanism section to add or modify the set of reactions in the system.'
                             + ' Any chemical species set in Step 2 will be available to participate in a reaction.'
                             + ' In addition to chemical reactions, emissions and loss of chemical species can be included in the set of reactions.'
@@ -73,11 +73,11 @@ export default function UsageInfo() {
                             + 'Several types of reactions include a <code>MUSICA name</code> property.'
                             +' This is a unique name that you choose to identify this reaction in other parts of MusicBox.'
                             + ' For example, setting the <code>MUSICA name</code> property of a photolysis reaction, allows you to set the photolysis rate constant in the'
-                            + ' <Link href="/conditions/initial">initial</Link> or <Link href="/conditions/evolving">evolving</Link>'
+                            + ' <Link to="/conditions/initial">initial</Link> or <Link to="/conditions/evolving">evolving</Link>'
                             + ' conditions pages.'
     
     const description_step4 = 'Navgiate to the' 
-                            + ' <Link href="/conditions.html">Conditions</Link>' 
+                            + ' <Link to="/conditions.html">Conditions</Link>' 
                             + ' section to set model options and physical/chemical conditions for the simulation, and download the MusicBox configuration for future use.'
                             + ' Each page of the conditions section is described below.'
     

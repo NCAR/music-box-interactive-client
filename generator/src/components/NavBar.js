@@ -22,6 +22,13 @@ export default function NavBar() {
                 <span className="oi oi-dashboard oi-prefix"></span>
                 Conditions
               </Link>
+
+              {/* Comment out lines below after testing */}
+              <Link className="nav-link {% if '/test' in request.path %}active{% endif %}" aria-current="{% if '/test' in request.path %}page{% endif %}" to="/test" activeStyle={activeColor}>
+                Test Components Here
+              </Link>
+              {/* Comment out lines above after testing */}
+
               <div className="pt-1 pb-3 mx-0 my-2" style={{borderTop: '1px solid gray', borderBottom: '1px solid gray'}}>
                 <small className="nav-section">RUN</small>
                 <div style={{textAlign:'center'}}>

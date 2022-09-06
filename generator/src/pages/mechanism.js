@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { connect } from 'react-redux';
+import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import utils from"../utils";
 import { changeReactionType } from '../actions'
@@ -47,7 +48,7 @@ function Mechanism(props) {
           </div>
 
           {
-            param === SPECIES ? <p className="lead-muted p-2">Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim. The chemical species you add here will be available to participate in <a href="mechanism/reactions">reactions</a> and can be include in the <a href="conditions">model conditions</a>.</p> : null
+            param === SPECIES ? <p className="lead-muted p-2">Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim. The chemical species you add here will be available to participate in <Link to="mechanism/reactions">reactions</Link> and can be include in the <Link to="conditions">model conditions</Link>.</p> : null
           }
           
           {param === SPECIES ? <SpeciesList /> : <ReactionsList />}
