@@ -138,39 +138,7 @@ $(document).ready(function(){
   });
 
   // add links for plotting and downloading configuration/results
-  function display_post_run_menu_options() {
-    if (location.href.includes("plots")) {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link active' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    } else if (location.href.includes("flow")) {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link active' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    } else if (location.href.includes("download")) {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link active' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    } else {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    }
-    console.log("* updating links")
-    updateLinks();
-  }
+
 
   // runs the model
   $("#run-model").on('click', function(){
@@ -184,7 +152,7 @@ $(document).ready(function(){
       },
       crossDomain: true,
       success: function(response){
-        if (response["model_running"]){
+        if (response["model_running"] || response["status"] == 'done'){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
@@ -206,6 +174,9 @@ $(document).ready(function(){
                     $("#" + response['spec_ID']).css("border", "3px solid red")
                     $("#" + response['spec_ID']).css("border-radius", "4px")
                   }
+              } else if (response["status"] == 'running') {
+                // run check_load after 2 seconds
+                setTimeout(check_load, 2000);
               } else {
                 alert('unknown error')
               }
@@ -218,40 +189,7 @@ $(document).ready(function(){
     });
   });
 
-  // checks if model has been run or if config changed (model/check-load)
-  var apiRequestURL = globalBaseAPIUrl + "/api/check-load/";
-  $.ajax({
-    url: apiRequestURL,
-    type: 'get',
-    xhrFields: {
-      withCredentials: true
-    },
-    crossDomain: true,
-    success: function(response){
-      console.log("* got response from check-load:",response)
-      if (response["status"] == 'done') {
-        console.log("* grabbing options")
-          display_post_run_menu_options();
-        if (window.location.href.indexOf("visualize") > -1) {
-          $('#plot-results-link').addClass('active');
-          $('#plot-results-link').attr('aria-current', 'page');
-        }
-        if (window.location.href.indexOf("download") > -1) {
-          $('#download-link').addClass('active');
-          $('#download-link').attr('aria-current', 'page');
-        }
-      }
-      global_session_id = response["session_id"];
-      console.log("* session_id:",global_session_id)
-      if (response["session_id"] !== undefined && location.href.includes("download")){
-        var downloadConfigURL = globalBaseAPIUrl + "/api/download_config/";
-          var sess_id = response["session_id"];
-          
-          console.log("changing download link to:", downloadConfigURL+"?sess_id="+sess_id)
-          $("#download_config").attr("href", downloadConfigURL+"?sess_id="+sess_id);
-      }
-    }
-  });
+  check_load();
 
   // changes run button after click
   $("#runMB").on('click', function(){
@@ -330,6 +268,45 @@ $(document).ready(function(){
   
 
 });
+function check_load() {
+   // checks if model has been run or if config changed (model/check-load)
+   var apiRequestURL = globalBaseAPIUrl + "/api/check-load/";
+   $.ajax({
+     url: apiRequestURL,
+     type: 'get',
+     xhrFields: {
+       withCredentials: true
+     },
+     crossDomain: true,
+     success: function(response){
+       console.log("* got response from check-load:",response)
+       if (response["status"] == 'done') {
+         console.log("* grabbing options")
+           display_post_run_menu_options();
+         if (window.location.href.indexOf("visualize") > -1) {
+           $('#plot-results-link').addClass('active');
+           $('#plot-results-link').attr('aria-current', 'page');
+         }
+         if (window.location.href.indexOf("download") > -1) {
+           $('#download-link').addClass('active');
+           $('#download-link').attr('aria-current', 'page');
+         }
+       } else if (response["status"] == 'running') {
+         $("#post-run-links").html('<div class="mx-2"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>')
+          setTimeout(check_load, 3000); // check again in 3 seconds
+       }
+       global_session_id = response["session_id"];
+       console.log("* session_id:",global_session_id)
+       if (response["session_id"] !== undefined && location.href.includes("download")){
+         var downloadConfigURL = globalBaseAPIUrl + "/api/download_config/";
+           var sess_id = response["session_id"];
+           
+           console.log("changing download link to:", downloadConfigURL+"?sess_id="+sess_id)
+           $("#download_config").attr("href", downloadConfigURL+"?sess_id="+sess_id);
+       }
+     }
+   });
+}
 function updateLinks() {
   console.log("window location: "+window.location.href)
     if (window.location.href.includes("ncar.github.io")) {
@@ -344,7 +321,40 @@ function updateLinks() {
         
       }
     }
-}
+  }
+  function display_post_run_menu_options() {
+    if (location.href.includes("plots")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link active' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else if (location.href.includes("flow")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link active' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else if (location.href.includes("download")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link active' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    }
+    console.log("* updating links")
+    updateLinks();
+  }
 function setHasSeenCookieBanner() {
   setCookie("hasAcceptedCookies", "true", 1024);
   document.getElementById('lawmsg').style.display = "none";
