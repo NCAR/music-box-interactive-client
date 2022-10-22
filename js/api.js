@@ -1,4 +1,4 @@
-var globalBaseAPIUrl = "http://musicbox.acom.ucar.edu:8000";
+var globalBaseAPIUrl = "https://musicbox.acom.ucar.edu:8000";
 
 // "name of server": address of server
 var ServersList = {
