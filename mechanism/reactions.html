@@ -141,6 +141,11 @@
       }
     });
   });
+  // removes a reaction from the mechanism
+  $(".reaction-remove").on('click', function(){
+    remove_reaction(parseInt($(this).attr('reaction-index'), 10));
+  });
+
         }
       });
                             </script>

@@ -129,17 +129,26 @@ var apiRequestURL = globalBaseAPIUrl + "/api/species/";
             newElementString += "</li>"
             speciesList.innerHTML += newElementString;
         }
-  //       $(".detailitem").on('click', function() {
-  //   var child = $(this).children().first().attr('species');
-  //   console.log("* detected detail item click");
-  //   console.log("* clicking child:",child);
-  //   loadSpeciesDataFor(child)
-  //   // $(this).first().click();
-  // });
   $(".species-detail-link").on('click', function(){
-    
+    console.log("clicked species detail link");
     var speciesName =  $(this).attr('species');
     loadSpeciesDataFor(speciesName)
+  });
+  // remove a chemical species from the mechanism
+  $(".species-remove").on('click', function(){
+    var apiRequestURL = globalBaseAPIUrl + "/api/remove-species/";
+    $.ajax({
+      url: apiRequestURL,
+      type: 'get',
+      xhrFields: {
+        withCredentials: true
+     },
+     crossDomain: true,
+      data: { 'name': $(this).attr('species') },
+      success: function(response){
+        location.reload();
+      }
+    });
   });
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -149,6 +158,7 @@ var apiRequestURL = globalBaseAPIUrl + "/api/species/";
             console.log(thrownError);
            }
       });
+
                             </script>
                             <!-- {% for species in species_menu_names %}
                               <li class="list-group-item list-group-item-action d-flex justify-content-between">

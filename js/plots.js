@@ -136,22 +136,9 @@ $(document).ready(function(){
     } else {
       var plotUnit = 'n/a'
     }
-    var plotsURL = globalBaseAPIUrl+'/api/plots/get/'
-    $('#plot').prepend('<img id="'+linkId.replace(">", "")+ 'plot"src="">'); // replace '>' with '' to get rid of invalid id
-    console.log("* fetching from: " + plotsURL + "?type=" + prop + "&unit=" + plotUnit);
-    $.ajax({
-      url: plotsURL,
-      xhrFields: {
-        withCredentials: true
-      },
-      crossDomain: true,
-      type: 'get',
-      data: {"type": prop, "unit": plotUnit},
-      success: function(response){
-        console.log("* got img from server");
-        $("#" + linkId.replace(">", "") +'plot').attr('src', 'data:image/png;base64,' + response);
-      }
-    });
+    var plotsURL = globalBaseAPIUrl+'/api/plots/get/?sess_id='+global_session_id
+    console.log('* fetching from: ' + plotsURL+'&type=' + prop + '&unit=' + plotUnit);
+    $('#plot').prepend('<img id="'+linkId.replace(">", "")+ 'plot" src="'+plotsURL+'&type=' + prop + '&unit=' + plotUnit + '">'); // replace '>' with '' to get rid of invalid id
     refreshTableNames();
     }
   });
@@ -170,20 +157,9 @@ $(document).ready(function(){
     $.each(plotsNameList, function(i, name){
       console.log("* updating plot for " + name);
       // $('#plot').append('<img id="'+ name + 'plot"src="plots/get?type=CONC.' + name + '&unit=' + unitName + '">');
-      var plotsURL = globalBaseAPIUrl+'/api/plots/get/'
-      $.ajax({
-        url: plotsURL,
-        xhrFields: {
-          withCredentials: true
-        },
-        crossDomain: true,
-        type: 'get',
-        data: {"type": 'CONC.' + name, "unit": unitName},
-        success: function(response){
-          console.log("* got img from server");
-          $('#plot').append('<img id="'+ name + 'plot"src="data:image/png;base64,'+ response +'">');
-        }
-      });
+      var plotsURL = globalBaseAPIUrl+'/api/plots/get/?'+global_session_id
+      console.log('* fetching from: ' + plotsURL+'&type=' + prop + '&unit=' + plotUnit);
+      $('#plot').prepend('<img id="'+linkId.replace(">", "")+ 'plot" src="'+plotsURL+'&type=' + prop + '&unit=' + plotUnit + '">'); // replace '>' with '' to get rid of invalid id
     });
   });
 
