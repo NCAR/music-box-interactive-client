@@ -174,9 +174,9 @@ $(document).ready(function(){
                     $("#" + response['spec_ID']).css("border", "3px solid red")
                     $("#" + response['spec_ID']).css("border-radius", "4px")
                   }
-              } else if (response["status"] == 'running') {
-                // run check_load after 2 seconds
-                setTimeout(check_load, 2000);
+              } else if (response["status"] == 'running' || response["status"] == 'queued') {
+                // run check_load after 3 seconds
+                setTimeout(check_load, 3000);
               } else {
                 alert('unknown error')
               }
@@ -291,7 +291,7 @@ function check_load() {
            $('#download-link').addClass('active');
            $('#download-link').attr('aria-current', 'page');
          }
-       } else if (response["status"] == 'running') {
+       } else if (response["status"] == 'running' || response["status"] == 'queued') {
          $("#post-run-links").html('<div class="mx-2"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>')
           setTimeout(check_load, 3000); // check again in 3 seconds
        }
