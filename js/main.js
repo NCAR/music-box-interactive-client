@@ -304,6 +304,12 @@ function check_load() {
            console.log("changing download link to:", downloadConfigURL+"?sess_id="+sess_id)
            $("#download_config").attr("href", downloadConfigURL+"?sess_id="+sess_id);
        }
+      //  check if session cookie exists, if not, set it manually
+       
+        if (getCookie("sessionid") == null || getCookie("sessionid") == "") {
+          console.log("* setting session cookie: ", global_session_id)
+          document.cookie = "sessionid="+global_session_id;
+        }
      }
    });
 }
