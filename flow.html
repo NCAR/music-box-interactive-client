@@ -136,8 +136,8 @@
                     </form>
                 </ul>
                 <ul style="padding-left:0; background-color: white;height: 60px; box-sizing: border-box;padding: 0.5rem; background-color: #D9D9D6; font-size:1vm;">
-                    <div id="show-elements" class="menu-it selected-menu-it" style="float:left;">Add Elements</div> 
-                    <div id="block-elements" class="menu-it">Block Elements</div>
+                    <div id="show-elements" class="menu-it selected-menu-it" style="float:left;">Add Species</div> 
+                    <div id="block-elements" class="menu-it">Block Species</div>
                 </ul>
                 <script>
                     document.getElementById("show-elements").addEventListener("click", handleShowBlockElementChange);
@@ -146,6 +146,7 @@
                     <ul id="flow-species-menu-list" class="list-group bg-ncar-menu-secondary p-2" style="width:100%; margin-top: -20px;">
                         
                     </ul>
+                    <a id="select_all_blocked" class="blocked-list-group-item flow-species-item" href="#" style="display: none;">☐ Select All</a>
                     <ul id="blocked-elements-list" class="list-group bg-ncar-menu-secondary p-2" style="width:100%; margin-top: -20px; display:none;">
                         
                     </ul>
@@ -263,11 +264,14 @@ footer {
                 $('#blocked-elements-list').append(li_blocked_html)
             }
          simulation_length = response['simulation_length']
+         stepVal = response['stepVal']
+         console.log("received step val: " + stepVal)
          $( function() {
            $( "#range-slider" ).slider({
              range: true,
              min: 1,
              max: simulation_length*60,
+             step: stepVal,
              values: [ 1, simulation_length*60 ],
              slide: function( event, ui ) {
                  // update values when slider changed

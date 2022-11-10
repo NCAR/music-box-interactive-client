@@ -76,27 +76,6 @@
         <a class="btn btn-secondary m-2" href='#' id="download_config">Download Configuration File</a>
         <a class="btn btn-secondary m-2" href='#' id="download_results">Download Results</a>
         <script>
-          // add click events for download config file + download results
-          $('#download_config').click(function() {
-            var downloadConfigURL = globalBaseAPIUrl + "/api/download_config/";
-            $.ajax({
-      url:downloadConfigURL,
-      type: 'get',
-      xhrFields: {
-        withCredentials: true
-      },
-      crossDomain: true,
-      success: function (blob, status, xhr) {
-      // check for a filename
-      console.log("* downloaded config");
-      var binaryData = [];
-      binaryData.push(blob);
-      var objectURL = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
-      console.log("* objectURL: " + objectURL);
-      location.href = objectURL;
-    }
-    });
-          });
           $('#download_results').click(function() {
             var downloadConfigURL = globalBaseAPIUrl + "/api/download_results/";
             $.ajax({

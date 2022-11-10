@@ -2,8 +2,8 @@ var currentlyLoadingGraph = false
 var currentMinValOfGraph = 0
 var currentMaxValOfGraph = 1
 var shouldShowArrowWidth = true // if true, show arrow width slider (mostly used for debug)
-
-function reloadSlider(firstVal, secondVal, minVal, maxVal) {
+var global_session_id = "";
+function reloadSlider(firstVal, secondVal, minVal, maxVal, stepVal = 200) {
   var stepVal = (parseFloat(maxVal) - parseFloat(minVal)) / 60;
   console.log("step value: " + stepVal);
   console.log("received values: "+firstVal+" "+parseFloat(secondVal).toExponential(3));
@@ -11,6 +11,9 @@ function reloadSlider(firstVal, secondVal, minVal, maxVal) {
   $( "#range-slider2", window.parent.document ).slider("destroy");
   currentMinValOfGraph = parseFloat(minVal);
   currentMaxValOfGraph = parseFloat(maxVal);
+  // change time slider to have proper step value
+  console.log("fetched step val: " + stepVal);
+  // $( "#range-slider", window.parent.document ).slider("option", "step", stepVal);
   $( function() {
     $( "#range-slider2",window.parent.document ).slider({
       range: true,
@@ -29,6 +32,41 @@ function reloadSlider(firstVal, secondVal, minVal, maxVal) {
           }
     });
   } );
+}
+// adds each element to blockedElementsList
+function blockAllSpecies() {
+  console.log('block all species');
+  $.each($("#blocked-elements-list").children(), function(i, value){
+    var id = $(value).attr('id');
+    if ($(value).hasClass('active') == false) {
+      $("#" + id).addClass('active')
+      document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace("☐ ", "☑ ");
+    }
+  });
+  reloadGraph();
+}
+// removes each element from blockedElementsList
+function unblockAllSpecies() {
+  console.log('unbock all species');
+  $.each($("#blocked-elements-list").children(), function(i, value){
+    var id = $(value).attr('id');
+    if ($(value).hasClass('active')) {
+      $("#" + id).removeClass('active')
+      document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace("☑ ", "☐ ");
+    }
+  });
+  reloadGraph();
+}
+function handleBlockUnblock() {
+  if (document.getElementById("select_all_blocked").innerHTML.indexOf("☑") !== -1) {
+    // unblock all
+    unblockAllSpecies();
+    document.getElementById("select_all_blocked").innerHTML = "☐ Select all";
+  } else {
+    // block all
+    blockAllSpecies();
+    document.getElementById("select_all_blocked").innerHTML = "☑ Select all";
+  }
 }
 // helper function to reload graph (called when something other than elements changed)
 function reloadGraph() {
@@ -55,6 +93,8 @@ function reloadGraph() {
     $.ajax({
       url:plotsURL,
       type: 'get',
+      dataType: 'jsonp',
+      headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
       xhrFields: {
         withCredentials: true
       },
@@ -100,38 +140,7 @@ $(document).ready(function(){
   });
 
   // add links for plotting and downloading configuration/results
-  function display_post_run_menu_options() {
-    if (location.href.includes("plots")) {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link active' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    } else if (location.href.includes("flow")) {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link active' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    } else if (location.href.includes("download")) {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link active' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    } else {
-      $('#post-run-links').html(`
-      <small class='nav-section'>ANALYSIS</small>
-      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
-      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
-      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
-      `);
-    }
-    
-  }
+
 
   // runs the model
   $("#run-model").on('click', function(){
@@ -140,15 +149,19 @@ $(document).ready(function(){
     $.ajax({
       url:apiRequestURL,
       type: 'get',
+      dataType: 'jsonp',
+      headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
       xhrFields: {
         withCredentials: true
       },
       crossDomain: true,
       success: function(response){
-        if (response["model_running"]){
+        if (response["model_running"] || response["status"] == 'done'){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
+            dataType: 'jsonp',
+            headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
             xhrFields: {
               withCredentials: true
             },
@@ -158,13 +171,18 @@ $(document).ready(function(){
               console.log("* got response from check:",response)
               if (response["status"] == 'done') {
                 $("#post-run-links").html('')
+                console.log("* updating options")
                 display_post_run_menu_options();
+                
               } else if (response["status"] == 'error'){
                   alert("ERROR " + response["e_code"] + "   " + response["e_message"]);
                   if (response["e_type"] == 'species'){
                     $("#" + response['spec_ID']).css("border", "3px solid red")
                     $("#" + response['spec_ID']).css("border-radius", "4px")
                   }
+              } else if (response["status"] == 'running' || response["status"] == 'queued') {
+                // run check_load after 3 seconds
+                setTimeout(check_load, 3000);
               } else {
                 alert('unknown error')
               }
@@ -177,31 +195,7 @@ $(document).ready(function(){
     });
   });
 
-  // checks if model has been run or if config changed (model/check-load)
-  var apiRequestURL = globalBaseAPIUrl + "/api/check-load/";
-  $.ajax({
-    url: apiRequestURL,
-    type: 'get',
-    xhrFields: {
-      withCredentials: true
-    },
-    crossDomain: true,
-    success: function(response){
-      console.log("* got response from check-load:",response)
-      if (response["status"] == 'done') {
-        console.log("* grabbing options")
-          display_post_run_menu_options();
-        if (window.location.href.indexOf("visualize") > -1) {
-          $('#plot-results-link').addClass('active');
-          $('#plot-results-link').attr('aria-current', 'page');
-        }
-        if (window.location.href.indexOf("download") > -1) {
-          $('#download-link').addClass('active');
-          $('#download-link').attr('aria-current', 'page');
-        }
-      }
-    }
-  });
+  check_load();
 
   // changes run button after click
   $("#runMB").on('click', function(){
@@ -280,7 +274,95 @@ $(document).ready(function(){
   
 
 });
-
+function check_load() {
+   // checks if model has been run or if config changed (model/check-load)
+   var apiRequestURL = globalBaseAPIUrl + "/api/check-load/";
+   $.ajax({
+     url: apiRequestURL,
+     type: 'get',
+     dataType: 'jsonp',
+     headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+     xhrFields: {
+       withCredentials: true
+     },
+     crossDomain: true,
+     success: function(response){
+       console.log("* got response from check-load:",response)
+       if (response["status"] == 'done') {
+         console.log("* grabbing options")
+           display_post_run_menu_options();
+         if (window.location.href.indexOf("visualize") > -1) {
+           $('#plot-results-link').addClass('active');
+           $('#plot-results-link').attr('aria-current', 'page');
+         }
+         if (window.location.href.indexOf("download") > -1) {
+           $('#download-link').addClass('active');
+           $('#download-link').attr('aria-current', 'page');
+         }
+       } else if (response["status"] == 'running' || response["status"] == 'queued') {
+         $("#post-run-links").html('<div class="mx-2"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>')
+          setTimeout(check_load, 3000); // check again in 3 seconds
+       }
+       global_session_id = response["session_id"];
+       console.log("* session_id:",global_session_id)
+       if (response["session_id"] !== undefined && location.href.includes("download")){
+         var downloadConfigURL = globalBaseAPIUrl + "/api/download_config/";
+           var sess_id = response["session_id"];
+           
+           console.log("changing download link to:", downloadConfigURL+"?sess_id="+sess_id)
+           $("#download_config").attr("href", downloadConfigURL+"?sess_id="+sess_id);
+       }
+     }
+   });
+}
+function updateLinks() {
+  console.log("window location: "+window.location.href)
+    if (window.location.href.includes("ncar.github.io")) {
+      var subMenu = document.getElementById('post-run-links');
+      // check for github pages, modify links for every page accordingly
+      for(var i = 0, l=subMenu.links.length; i<l; i++) {
+        // music-box-interactive-static/ required on github pages
+        if(subMenu.links[i].href.includes('javascript') == false && subMenu.links[i].href.includes('#')) { //dont mess with any javascript based href
+          var finalPart = subMenu.links[i].href.replace(window.location.origin, "") // last part of url without domain
+          subMenu.links[i].href = window.location.origin + '/music-box-interactive-static' + finalPart
+        }
+        
+      }
+    }
+  }
+  function display_post_run_menu_options() {
+    if (location.href.includes("plots")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link active' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else if (location.href.includes("flow")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link active' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else if (location.href.includes("download")) {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link active' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    } else {
+      $('#post-run-links').html(`
+      <small class='nav-section'>ANALYSIS</small>
+      <a class='nav-link' id='plot-results-link' href='/plots.html'><span class='oi oi-graph oi-prefix'></span>Plot Results</a>
+      <a class='nav-link' id='flow-diagram-link' href='/flow.html'><span class='oi oi-fork oi-prefix'></span>Flow Diagram</a>
+      <a class='nav-link' id='download-link' href='/download.html'><span class='oi oi-data-transfer-download oi-prefix'></span>Download</a>
+      `);
+    }
+    console.log("* updating links")
+    updateLinks();
+  }
 function setHasSeenCookieBanner() {
   setCookie("hasAcceptedCookies", "true", 1024);
   document.getElementById('lawmsg').style.display = "none";
@@ -293,6 +375,7 @@ function handleShowBlockElementChange() {
     
     document.getElementById("flow-species-menu-list").style.display = "none";
     document.getElementById("blocked-elements-list").style.display = "flex";
+    // document.getElementById("select_all_blocked").style.display = "block";
     
   } else {
     // show "show elements"
@@ -301,6 +384,7 @@ function handleShowBlockElementChange() {
 
     document.getElementById("blocked-elements-list").style.display = "none";
     document.getElementById("flow-species-menu-list").style.display = "flex";
+    document.getElementById("select_all_blocked").style.display = "none";
   }
 }
 function setCookie(name,value,days) {
