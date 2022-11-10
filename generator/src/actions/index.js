@@ -19,16 +19,13 @@ export const changeReactionType = (reactionType) => {
 //     kappa:
 // }
 
-//gas
+// gas
 // {
 //     description:
 //     absolute_convergence_tolerance:
 //     molecular_weight:
 //     fixed_concentration:
 // }
-
-
-
 
 // TODO: add ADD_NEW_SPECIES to util.action_types
 export const addNewSpecies = (speciesConfig) => {
@@ -45,7 +42,6 @@ export const changeExistingSpecies = (speciesConfig) => {
     }
 }
 
-
 // TODO: define conditionsConfig
 // {
 //     latitude:
@@ -57,7 +53,6 @@ export const changeExistingSpecies = (speciesConfig) => {
 //         model_config:
 //     }
 // }
-
 
 // PartMC model_config
 // {
@@ -92,14 +87,10 @@ export const changeExistingSpecies = (speciesConfig) => {
 //     }
 // }
 
-
-
 export const changeConditions = (conditionsConfig) => {
     return {
         type: utils.action_types.CHANGE_CONDITIONS,
         payload: conditionsConfig
     }
 }
-
-
 
