@@ -48,10 +48,10 @@
               <a class="nav-link " aria-current="" href="/getting_started.html">
                 <span class="oi oi-signpost oi-prefix"></span>Start Here
               </a>
-              <a class="nav-link " aria-current="" href="/mechanism.html">
+              <a class="nav-link " aria-current="" href="mechanism.html">
                 <span class="oi oi-random oi-prefix"></span>Mechanism
               </a>
-              <a class="nav-link active" aria-current="page" href="/conditions.html">
+              <a class="nav-link active" aria-current="page" href="conditions.html">
                 <span class="oi oi-dashboard oi-prefix"></span>Conditions</a>
               <div class="pt-1 pb-3 mx-0 my-2" style="border-top: 1px solid gray; border-bottom: 1px solid gray">
                 <small class="nav-section">RUN</small>
@@ -138,7 +138,7 @@ Load files containing model conditions that change during the simulation. These 
                       <p class="card-text">Evolving conditions input files can be comma-separated text files or NetCDF files.</p>
                       <p class="card-text">In text files, the variable names should appear on the first line, followed by a single line of data for each time the variable(s) should be updated during the simulation. The first variable should be <code>time</code> and the values of time should be in seconds. (Alternate time units can be used by changing the column name to <code>time.min</code>, <code>time.hr</code>, or <code>time.day</code>.) The remaining variable names should be structured as follows:</p>
                       <p class="card-text text-center"><code>PREFIX.Property Name</code></p>
-                      <p class="card-text">The <code>PREFIX</code> indicates what type of property is being set. The property types corresponding to each recognized prefix are described below. The <code>Property Name</code> is the name of the property in the <a href="/mechanism.html">mechanism</a>. Variable names that are not recognized by MusicBox will be ignored.</p>
+                      <p class="card-text">The <code>PREFIX</code> indicates what type of property is being set. The property types corresponding to each recognized prefix are described below. The <code>Property Name</code> is the name of the property in the <a href="mechanism.html">mechanism</a>. Variable names that are not recognized by MusicBox will be ignored.</p>
                       <p class="card-text">NetCDF files should have a dimension of <code>time</code> and variables whose only dimension is <code>time</code> and whose name follows the pattern described above.</p>
                       <p class="card-text">
                         An example initial conditions file can be downloaded <a href="/conditions/examplefile.html?type=evolving">here</a>.
