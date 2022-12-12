@@ -1,8 +1,8 @@
-var globalBaseAPIUrl = "https://musicbox.acom.ucar.edu:8000";
+var globalBaseAPIUrl = "https://musicbox.acom.ucar.edu/musicbox";
 
 // "name of server": address of server
 var ServersList = {
-    "Default": "http://127.0.0.1:8000"
+    "Default": "https://musicbox.acom.ucar.edu/musicbox"
 }
 // var githubPagesBase = "music-box-interactive-static/" // set to "" if on custom domain, otherwise we gotta do this for github pages
 function get_mechanisms() {
