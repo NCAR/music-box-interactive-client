@@ -16,6 +16,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@storybook/addon-outline": "^6.5.16",
     "bootstrap": "^5.2.0",
     "gatsby": "^4.18.2",
     "open-iconic": "^1.1.1",
@@ -37,7 +38,8 @@
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.3.0",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "story-description-loader": "^1.0.0"
   },
   "repository": {
     "type": "git",
