@@ -4,6 +4,11 @@ import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import utils from"../utils";
 import { changeReactionType } from '../actions'
+import MyForm from "../components/forms/basicForm";
+import BoxLayout from "../components/forms/boxLayout";
+import GenericForm from "../components/forms/genericForm";
+import SaveButton from "../components/SaveButton"
+import CancelButton from "../components/CancelButton"
 
 function Mechanism(props) {
   const SPECIES = 0
@@ -52,10 +57,27 @@ function Mechanism(props) {
           }
           
           {param === SPECIES ? <SpeciesList /> : <ReactionsList />}
-
         </main>
     </Layout>
   )
+}
+
+function Form1() {
+  const fields = [
+    { name: 'description', label: 'Description', type: 'text' },
+    { name: 'tolerance', label: 'Absolute Convergence Tolerance', type: 'number' },
+    { name: 'molecularWeight', label: 'Molecular Weight', type: 'number' },
+    { name: 'fixedConcentration', label: 'Fixed Concentration', type: 'number' },
+    { name: 'density', label: 'Density', type: 'number' },
+    { name: 'kappa', label: 'Kappa', type: 'number' },
+  ];
+
+  return (
+    <div>
+      <h1></h1>
+      <GenericForm fields={fields} />
+    </div>
+  );
 }
 
 function SpeciesList() {
@@ -69,16 +91,52 @@ function SpeciesList() {
                 <button className="btn btn-primary species-new mb-2">
                   Add species
                 </button>
+                <div className="input-group">
+                  <select name="grid" savebutton="optionsSave" className="form-control" id="id_grid">
+                    <option value="box">PartMC</option>
+                  </select>
+                </div>
                 <ul className="list-group species-list" id="species_list">
                   {null}
                 </ul>
-              </nav>
+              </nav>    
+            </div> 
+            <div className="col">
+            <div className="card mb-4 model-options-card shadow-sm">
+              <div className="card-header">
+                <h4 className="my-0 fw-normal">PartMC</h4>
+              </div>
+
+              <div className="bg-ncar-body p-3">
+                <Form1/>
+                <div className="container text-center mt-3">
+                  <SaveButton />
+                  <CancelButton />
+                </div>
+              </div>
             </div>
-          </div>
+          </div>  
+          </div>   
         </div>
       </div>
     </div>
   )
+}
+
+function Form2() {
+  const fields = [
+    { name: 'description', label: 'Description', type: 'text' },
+    { name: 'tolerance', label: 'Absolute Convergence Tolerance', type: 'number' },
+    { name: 'molecularWeight', label: 'Molecular Weight', type: 'number' },
+    { name: 'fixedConcentration', label: 'Fixed Concentration', type: 'number' },
+  ];
+
+  return (
+    <div>
+      <h1>PartMC</h1>
+      <GenericForm fields={fields} />
+    </div>
+  );
 }
 
 // TODO: modify this according to mechanism/reaction; className not correct
@@ -97,11 +155,12 @@ function ReactionsList() {
                   {null}
                 </ul>
               </nav>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
     </div>
+    
   )
 }
 
