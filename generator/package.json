@@ -11,9 +11,12 @@
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@storybook/addon-outline": "^6.5.16",
     "bootstrap": "^5.2.0",
     "gatsby": "^4.18.2",
     "open-iconic": "^1.1.1",
@@ -25,7 +28,18 @@
     "react-redux": "^8.0.2"
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "@babel/core": "^7.20.12",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
+    "babel-loader": "^8.3.0",
+    "prettier": "^2.7.1",
+    "story-description-loader": "^1.0.0"
   },
   "repository": {
     "type": "git",
