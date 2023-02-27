@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import Layout from "../components/Layout"
 import SaveButton from "../components/SaveButton"
 import CancelButton from "../components/CancelButton"
+import ComplexForm from "../components/forms/ComplexForm";
+
 
 function Conditions(props) {
 
@@ -14,10 +16,44 @@ function Conditions(props) {
           <p className="lead-muted p-2">
               Set general conditions for your simulation here, including how long a time you would like to simulate and how often output data are written. The chemistry time step determines the time step of the ODE solver. We recommend an output time step of 1/100 of the simulation time and a chemistry time step equal to the output time step as a first start.
           </p>
+          <div className="row flex-grow-1 overflow-hidden">
+        </div>
+          <div className="col">
           <BasicConfiguration />
+          </div>
+          <div className="col">
+            <div className="card mb-4 model-options-card shadow-sm">
+              <div className="card-header">
+                <h4 className="my-0 fw-normal">PartMC</h4>
+              </div>
+
+              <div className="bg-ncar-body p-3">
+                <MyForm/>
+                <div className="container text-center mt-3">
+                  <SaveButton />
+                  <CancelButton />
+                </div>
+              </div>
+            </div>
+          </div>  
         </div>  
     </Layout>
   )
+}
+
+function MyForm() {
+  return (
+    <ComplexForm
+      fileLabel="Choose file to upload"
+      numParticlesLabel="Total number of particles"
+      fractalTreatmentLabel="Fractal treatment"
+      heightProfileFileLabel="Height profile file"
+      lossFunctionLabel="Loss function specification"
+      doCoagulationLabel="Do coagulation"
+      coagulationKernelOptionsLabel="Coagulation kernel options"
+      doNucleationLabel="Do nucleation"
+    />
+  );
 }
 
 function BasicConfiguration() {

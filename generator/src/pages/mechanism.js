@@ -4,8 +4,6 @@ import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import utils from"../utils";
 import { changeReactionType } from '../actions'
-import MyForm from "../components/forms/basicForm";
-import BoxLayout from "../components/forms/boxLayout";
 import GenericForm from "../components/forms/genericForm";
 import SaveButton from "../components/SaveButton"
 import CancelButton from "../components/CancelButton"
@@ -80,6 +78,22 @@ function Form1() {
   );
 }
 
+function Form2() {
+  const fields = [
+    { name: 'description', label: 'Description', type: 'text' },
+    { name: 'tolerance', label: 'Absolute Convergence Tolerance', type: 'number' },
+    { name: 'molecularWeight', label: 'Molecular Weight', type: 'number' },
+    { name: 'fixedConcentration', label: 'Fixed Concentration', type: 'number' },
+  ];
+
+  return (
+    <div>
+      <h1>PartMC</h1>
+      <GenericForm fields={fields} />
+    </div>
+  );
+}
+
 function SpeciesList() {
   return (
     <div id="species_content" className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
@@ -123,22 +137,6 @@ function SpeciesList() {
   )
 }
 
-function Form2() {
-  const fields = [
-    { name: 'description', label: 'Description', type: 'text' },
-    { name: 'tolerance', label: 'Absolute Convergence Tolerance', type: 'number' },
-    { name: 'molecularWeight', label: 'Molecular Weight', type: 'number' },
-    { name: 'fixedConcentration', label: 'Fixed Concentration', type: 'number' },
-  ];
-
-  return (
-    <div>
-      <h1>PartMC</h1>
-      <GenericForm fields={fields} />
-    </div>
-  );
-}
-
 // TODO: modify this according to mechanism/reaction; className not correct
 function ReactionsList() {
   return (
@@ -151,6 +149,11 @@ function ReactionsList() {
                 <button className="btn btn-primary species-new mb-2">
                   Add reactions
                 </button>
+                <div className="input-group">
+                  <select name="grid" savebutton="optionsSave" className="form-control" id="id_grid">
+                    <option value="box">PartMC</option>
+                  </select>
+                </div>
                 <ul className="list-group species-list" id="species_list">
                   {null}
                 </ul>
