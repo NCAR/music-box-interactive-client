@@ -94,7 +94,7 @@ function reloadGraph() {
       url:plotsURL,
       type: 'get',
       dataType: 'jsonp',
-      headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+      headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
       xhrFields: {
         withCredentials: true
       },
@@ -150,7 +150,7 @@ $(document).ready(function(){
       url:apiRequestURL,
       type: 'get',
       dataType: 'jsonp',
-      headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+      headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
       xhrFields: {
         withCredentials: true
       },
@@ -161,7 +161,7 @@ $(document).ready(function(){
           $.ajax({
             url: apiRequestURL2,
             dataType: 'jsonp',
-            headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+            headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
             xhrFields: {
               withCredentials: true
             },
@@ -281,7 +281,7 @@ function check_load() {
      url: apiRequestURL,
      type: 'get',
      dataType: 'jsonp',
-     headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+     headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
      xhrFields: {
        withCredentials: true
      },
