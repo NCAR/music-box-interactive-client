@@ -196,8 +196,6 @@ $(document).ready(function(){
     });
   });
 
-  check_load();
-
   // changes run button after click
   $("#runMB").on('click', function(){
     $('#runMB').attr('emphasis', 'false')
