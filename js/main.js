@@ -299,9 +299,9 @@ function check_load() {
            $('#download-link').addClass('active');
            $('#download-link').attr('aria-current', 'page');
          }
-      } else if (response["status"] == 'running' ||
-                 response["status"] == 'queued'  ||
-                 response["status"] == 'not_started') {
+       } else if (response["status"] == 'running' ||
+                  response["status"] == 'queued'  ||
+                  response["status"] == 'not_started') {
          $("#post-run-links").html('<div class="mx-2"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>')
           setTimeout(check_load, 3000); // check again in 3 seconds
        }
