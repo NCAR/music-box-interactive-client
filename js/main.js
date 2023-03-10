@@ -297,6 +297,8 @@ function check_load() {
            $('#download-link').addClass('active');
            $('#download-link').attr('aria-current', 'page');
          }
+       } else if (response["status"] == 'not_started') {
+         $("#post-run-links").html('');
        } else if (response["status"] == 'running' ||
                   response["status"] == 'queued'  ||
                   response["status"] == 'not_started') {
