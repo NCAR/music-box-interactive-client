@@ -148,6 +148,7 @@ $(document).ready(function(){
     $.ajax({
       url:apiRequestURL,
       type: 'get',
+      data: {'session_key': global_session_id},
       headers: {  'Access-Control-Allow-Origin': window.location.origin },
       xhrFields: {
         withCredentials: true
@@ -161,6 +162,7 @@ $(document).ready(function(){
           $.ajax({
             url: apiRequestURL2,
             headers: {  'Access-Control-Allow-Origin': window.location.origin },
+            data: {'session_key': global_session_id},
             xhrFields: {
               withCredentials: true
             },
@@ -279,6 +281,7 @@ function check_load() {
    $.ajax({
      url: apiRequestURL,
      type: 'get',
+     data: {'session_key': global_session_id},
      headers: {  'Access-Control-Allow-Origin': window.location.origin },
      xhrFields: {
        withCredentials: true
