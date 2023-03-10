@@ -93,7 +93,6 @@ function reloadGraph() {
     $.ajax({
       url:plotsURL,
       type: 'get',
-      dataType: 'jsonp',
       headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
       xhrFields: {
         withCredentials: true
@@ -149,7 +148,6 @@ $(document).ready(function(){
     $.ajax({
       url:apiRequestURL,
       type: 'get',
-      dataType: 'jsonp',
       headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
       xhrFields: {
         withCredentials: true
@@ -160,7 +158,6 @@ $(document).ready(function(){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
-            dataType: 'jsonp',
             headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
             xhrFields: {
               withCredentials: true
@@ -280,7 +277,6 @@ function check_load() {
    $.ajax({
      url: apiRequestURL,
      type: 'get',
-     dataType: 'jsonp',
      headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
      xhrFields: {
        withCredentials: true
