@@ -154,6 +154,8 @@ $(document).ready(function(){
       },
       crossDomain: true,
       success: function(response){
+       global_session_id = response["session_id"];
+       console.log("* session_id:",global_session_id)
         if (response["model_running"] || response["status"] == 'done'){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
