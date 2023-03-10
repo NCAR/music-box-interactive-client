@@ -177,11 +177,13 @@ $(document).ready(function(){
                     $("#" + response['spec_ID']).css("border", "3px solid red")
                     $("#" + response['spec_ID']).css("border-radius", "4px")
                   }
-              } else if (response["status"] == 'running' || response["status"] == 'queued') {
+              } else if (response["status"] == 'running' ||
+                         response["status"] == 'queued'  ||
+                         response["status"] == 'not_started') {
                 // run check_load after 3 seconds
                 setTimeout(check_load, 3000);
               } else {
-                alert('unknown error')
+                alert('unknown error checking model status: '+response["status"])
               }
             }
           });
