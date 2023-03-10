@@ -93,7 +93,7 @@ function reloadGraph() {
     $.ajax({
       url:plotsURL,
       type: 'get',
-      headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
+      headers: {  'Access-Control-Allow-Origin': window.location.origin },
       xhrFields: {
         withCredentials: true
       },
@@ -148,7 +148,7 @@ $(document).ready(function(){
     $.ajax({
       url:apiRequestURL,
       type: 'get',
-      headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
+      headers: {  'Access-Control-Allow-Origin': window.location.origin },
       xhrFields: {
         withCredentials: true
       },
@@ -158,7 +158,7 @@ $(document).ready(function(){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
-            headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
+            headers: {  'Access-Control-Allow-Origin': window.location.origin },
             xhrFields: {
               withCredentials: true
             },
@@ -277,7 +277,7 @@ function check_load() {
    $.ajax({
      url: apiRequestURL,
      type: 'get',
-     headers: {  'Access-Control-Allow-Origin': globalBaseAPIUrl },
+     headers: {  'Access-Control-Allow-Origin': window.location.origin },
      xhrFields: {
        withCredentials: true
      },
