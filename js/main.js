@@ -148,21 +148,17 @@ $(document).ready(function(){
     $.ajax({
       url:apiRequestURL,
       type: 'get',
-      data: {'session_key': global_session_id},
       headers: {  'Access-Control-Allow-Origin': window.location.origin },
       xhrFields: {
         withCredentials: true
       },
       crossDomain: true,
       success: function(response){
-       global_session_id = response["session_id"];
-       console.log("* session_id:",global_session_id)
         if (response["model_running"] || response["status"] == 'done'){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
             headers: {  'Access-Control-Allow-Origin': window.location.origin },
-            data: {'session_key': global_session_id},
             xhrFields: {
               withCredentials: true
             },
@@ -174,7 +170,6 @@ $(document).ready(function(){
                 $("#post-run-links").html('')
                 console.log("* updating options")
                 display_post_run_menu_options();
-                
               } else if (response["status"] == 'error'){
                   alert("ERROR " + response["e_code"] + "   " + response["e_message"]);
                   if (response["e_type"] == 'species'){
