@@ -3,7 +3,6 @@ var currentMinValOfGraph = 0
 var currentMaxValOfGraph = 1
 var shouldShowArrowWidth = true // if true, show arrow width slider (mostly used for debug)
 var global_session_id = "";
-var model_run_complete = false;
 function reloadSlider(firstVal, secondVal, minVal, maxVal, stepVal = 200) {
   var stepVal = (parseFloat(maxVal) - parseFloat(minVal)) / 60;
   console.log("step value: " + stepVal);
@@ -124,9 +123,6 @@ function reloadGraph() {
 
 $(document).ready(function(){
 
-  // enable plotting options if model has been run
-  if (model_run_complete) display_post_run_menu_options();
-
   // disables enter button, unless a button or link has focus
   $('body').on('keypress', ':not(button, a)', function(event) {
     if (event.keyCode == '13') {
@@ -173,7 +169,6 @@ $(document).ready(function(){
               if (response["status"] == 'done') {
                 $("#post-run-links").html('')
                 console.log("* updating options")
-                model_run_complete = true
                 display_post_run_menu_options();
               } else if (response["status"] == 'error'){
                   alert("ERROR " + response["e_code"] + "   " + response["e_message"]);
@@ -197,6 +192,8 @@ $(document).ready(function(){
       }
     });
   });
+
+  check_load();
 
   // changes run button after click
   $("#runMB").on('click', function(){
@@ -291,7 +288,6 @@ function check_load() {
        console.log("* got response from check-load:",response)
        if (response["status"] == 'done') {
            console.log("* grabbing options")
-           model_run_complete = true;
            display_post_run_menu_options();
          if (window.location.href.indexOf("visualize") > -1) {
            $('#plot-results-link').addClass('active');
