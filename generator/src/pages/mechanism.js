@@ -4,9 +4,10 @@ import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import utils from"../utils";
 import { changeReactionType } from '../actions'
-import GenericForm from "../components/forms/genericForm";
+import GenericForm from "../components/forms/GenericForm";
 import SaveButton from "../components/SaveButton"
 import CancelButton from "../components/CancelButton"
+import ReactionBox from "../components/mechanism_specific/ReactionBox"
 
 function Mechanism(props) {
   const SPECIES = 0
@@ -96,10 +97,9 @@ function Form2() {
 
 function SpeciesList() {
   return (
-    <div id="species_content" className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
+    <div id="species_content" className="container-fluid d-flex flex-column vh-100 overflow-hidden">
       <div className="row flex-grow-1 overflow-hidden">
-        <div className="col-md-4 col-lg-4 mh-100 overflow-auto">
-          <div className="row flex-shrink-0">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2">
             <div className="col">
               <nav className="bg-ncar-menu-secondary p-2">
                 <button className="btn btn-primary species-new mb-2">
@@ -107,31 +107,30 @@ function SpeciesList() {
                 </button>
                 <div className="input-group">
                   <select name="grid" savebutton="optionsSave" className="form-control" id="id_grid">
-                    <option value="box">PartMC</option>
+                    <option value="box">M</option>
                   </select>
                 </div>
                 <ul className="list-group species-list" id="species_list">
                   {null}
                 </ul>
-              </nav>    
+              </nav>
             </div> 
             <div className="col">
-            <div className="card mb-4 model-options-card shadow-sm">
-              <div className="card-header">
-                <h4 className="my-0 fw-normal">PartMC</h4>
-              </div>
+              <div className="card mb-4 model-options-card shadow-sm">
+                <div className="card-header">
+                  <h4 className="my-0 fw-normal">M</h4>
+                </div>
 
-              <div className="bg-ncar-body p-3">
-                <Form1/>
-                <div className="container text-center mt-3">
-                  <SaveButton />
-                  <CancelButton />
+                <div className="bg-ncar-body p-3">
+                  <Form1/>
+                  <div className="container text-center mt-3">
+                    <SaveButton />
+                    <CancelButton />
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>  
-          </div>   
-        </div>
+            </div>  
+          </div>
       </div>
     </div>
   )
@@ -140,12 +139,11 @@ function SpeciesList() {
 // TODO: modify this according to mechanism/reaction; className not correct
 function ReactionsList() {
   return (
-    <div id="species_content" className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
-      <div className="row flex-grow-1 overflow-hidden">
-        <div className="col-md-4 col-lg-4 mh-100 overflow-auto">
-          <div className="row flex-shrink-0">
+    <div id="species_content" className="container-fluid d-flex flex-column vh-100 overflow-hidden">
+      <div className="row flex-grow-1 overflow-hidden mt-5">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2">
             <div className="col">
-              <nav className="bg-ncar-menu-secondary p-2">
+              <nav className="bg-ncar-menu-secondary p-2 mb-5">
                 <button className="btn btn-primary species-new mb-2">
                   Add reactions
                 </button>
@@ -158,9 +156,41 @@ function ReactionsList() {
                   {null}
                 </ul>
               </nav>
+              <nav className="bg-ncar-menu-secondary p-2">
+                <button className="btn btn-primary species-new mb-2">
+                  PartMC
+                </button>
+                <div className="input-group">
+                  <select name="grid" savebutton="optionsSave" className="form-control" id="id_grid">
+                    <option value="box">Arrhenius</option>
+                    <option value="box">Emission</option>
+                    <option value="box">First-order loss</option>
+                    <option value="box">Photolysis</option>
+                    <option value="box">Ternary chemical activation</option>
+                    <option value="box">Troe</option>
+                  </select>
+                </div>
+                <ul className="list-group species-list" id="species_list">
+                  {null}
+                </ul>
+              </nav>
             </div> 
-          </div>
-        </div>
+            <div>
+            <div className="card mb-4 model-options-card shadow-sm">
+                <div className="card-header">
+                  <h4 className="my-0 fw-normal">PartMC</h4>
+                </div>
+
+                <div className="bg-ncar-body p-3">
+                <ReactionBox />
+                  <div className="container text-center mt-3">
+                    <SaveButton />
+                    <CancelButton />
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
       </div>
     </div>
     

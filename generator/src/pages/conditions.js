@@ -16,26 +16,31 @@ function Conditions(props) {
           <p className="lead-muted p-2">
               Set general conditions for your simulation here, including how long a time you would like to simulate and how often output data are written. The chemistry time step determines the time step of the ODE solver. We recommend an output time step of 1/100 of the simulation time and a chemistry time step equal to the output time step as a first start.
           </p>
-          <div className="row flex-grow-1 overflow-hidden">
-        </div>
-          <div className="col">
-          <BasicConfiguration />
-          </div>
-          <div className="col">
-            <div className="card mb-4 model-options-card shadow-sm">
-              <div className="card-header">
-                <h4 className="my-0 fw-normal">PartMC</h4>
-              </div>
-
-              <div className="bg-ncar-body p-3">
-                <MyForm/>
-                <div className="container text-center mt-3">
-                  <SaveButton />
-                  <CancelButton />
+          <div className="container-fluid d-flex flex-column vh-100 overflow-hidden">
+            <div className="row flex-grow-1 overflow-hidden mt-5">
+              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2">
+                <div className="col">
+                <BasicConfiguration />
                 </div>
+                <div className="col">
+                  <div className="card mb-4 model-options-card shadow-sm">
+                    <div className="card-header">
+                      <h4 className="my-0 fw-normal">PartMC</h4>
+                    </div>
+
+                    <div className="bg-ncar-body p-3">
+                      <MyForm/>
+                      <div className="container text-center mt-3">
+                        <SaveButton />
+                        <CancelButton />
+                      </div>
+                    </div>
+                  </div>
+                </div>  
               </div>
             </div>
-          </div>  
+        </div>
+
         </div>  
     </Layout>
   )
@@ -92,8 +97,6 @@ function BasicConfiguration() {
 
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-4">
             <div className="card mb-4 model-options-card shadow-sm">
               <div className="card-header">
                 <h4 className="my-0 fw-normal">Basic Configuration</h4>
@@ -117,8 +120,6 @@ function BasicConfiguration() {
 
               </div>
             </div>
-          </div>
-        </div>
       </div>
     )
 }

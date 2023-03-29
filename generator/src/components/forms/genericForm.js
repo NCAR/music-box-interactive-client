@@ -17,7 +17,7 @@ function GenericForm({ fields }) {
     <form onSubmit={handleSubmit}>
       {fields.map((field) => (
         <div key={field.name}>
-          <label htmlFor={field.name}>{field.label}</label>
+          <label htmlFor={field.name} style={{paddingRight: '1rem', paddingBottom: '1rem'}}>{field.label}</label>
           <input
             type={field.type}
             id={field.name}
@@ -26,10 +26,11 @@ function GenericForm({ fields }) {
             onChange={handleChange}
           />
         </div>
-      ))}
+      ))} 
       {/* <button type="submit">Submit</button> */}
     </form>
   );
 }
 
 export default GenericForm;
+

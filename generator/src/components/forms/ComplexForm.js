@@ -26,11 +26,11 @@ function ComplexForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="file">Choose file to upload:</label>
+        <label htmlFor="file" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Choose file to upload:</label>
         <input type="file" id="file" onChange={handleFileUpload} />
       </div>
       <div>
-        <label htmlFor="num-particles">Total number of particles:</label>
+        <label htmlFor="num-particles" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Total number of particles:</label>
         <input
           type="number"
           id="num-particles"
@@ -39,7 +39,7 @@ function ComplexForm() {
         />
       </div>
       <div>
-        <label htmlFor="fractal-treatment">Fractal treatment:</label>
+        <label htmlFor="fractal-treatment" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Fractal treatment:</label>
         <select
           id="fractal-treatment"
           value={fractalTreatment}
@@ -50,11 +50,11 @@ function ComplexForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="height-profile-file">Height profile file:</label>
+        <label htmlFor="height-profile-file" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Height profile file:</label>
         <input type="file" id="height-profile-file" onChange={handleHeightProfileUpload} />
       </div>
       <div>
-        <label htmlFor="loss-function">Loss function specification:</label>
+        <label htmlFor="loss-function" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Loss function specification:</label>
         <input
           type="text"
           id="loss-function"
@@ -63,7 +63,7 @@ function ComplexForm() {
         />
       </div>
       <div>
-        <label htmlFor="do-coagulation">Do coagulation:</label>
+        <label htmlFor="do-coagulation" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Do coagulation:</label>
         <select
           id="do-coagulation"
           value={doCoagulation}
@@ -74,7 +74,7 @@ function ComplexForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="coagulation-kernel-options">Coagulation kernel options:</label>
+        <label htmlFor="coagulation-kernel-options" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Coagulation kernel options:</label>
         <select
           id="coagulation-kernel-options"
           value={coagulationKernelOptions}
@@ -88,7 +88,7 @@ function ComplexForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="do-nucleation">Do nucleation:</label>
+        <label htmlFor="do-nucleation" style={{paddingRight: '1rem', paddingBottom: '1rem'}}>Do nucleation:</label>
         <select
             id="do-nucleation"
             value={doNucleation}
