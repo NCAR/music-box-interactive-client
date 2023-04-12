@@ -93,8 +93,7 @@ function reloadGraph() {
     $.ajax({
       url:plotsURL,
       type: 'get',
-      dataType: 'jsonp',
-      headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+      headers: {  'Access-Control-Allow-Origin': window.location.origin },
       xhrFields: {
         withCredentials: true
       },
@@ -149,8 +148,7 @@ $(document).ready(function(){
     $.ajax({
       url:apiRequestURL,
       type: 'get',
-      dataType: 'jsonp',
-      headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+      headers: {  'Access-Control-Allow-Origin': window.location.origin },
       xhrFields: {
         withCredentials: true
       },
@@ -160,8 +158,7 @@ $(document).ready(function(){
           var apiRequestURL2 = globalBaseAPIUrl + "/api/check/";
           $.ajax({
             url: apiRequestURL2,
-            dataType: 'jsonp',
-            headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+            headers: {  'Access-Control-Allow-Origin': window.location.origin },
             xhrFields: {
               withCredentials: true
             },
@@ -173,18 +170,19 @@ $(document).ready(function(){
                 $("#post-run-links").html('')
                 console.log("* updating options")
                 display_post_run_menu_options();
-                
               } else if (response["status"] == 'error'){
                   alert("ERROR " + response["e_code"] + "   " + response["e_message"]);
                   if (response["e_type"] == 'species'){
                     $("#" + response['spec_ID']).css("border", "3px solid red")
                     $("#" + response['spec_ID']).css("border-radius", "4px")
                   }
-              } else if (response["status"] == 'running' || response["status"] == 'queued') {
+              } else if (response["status"] == 'running' ||
+                         response["status"] == 'queued'  ||
+                         response["status"] == 'not_started') {
                 // run check_load after 3 seconds
                 setTimeout(check_load, 3000);
               } else {
-                alert('unknown error')
+                alert('unknown error checking model status: '+response["status"])
               }
             }
           });
@@ -280,8 +278,8 @@ function check_load() {
    $.ajax({
      url: apiRequestURL,
      type: 'get',
-     dataType: 'jsonp',
-     headers: {  'Access-Control-Allow-Origin': 'https://musicbox.acom.ucar.edu' },
+     data: {'session_key': global_session_id},
+     headers: {  'Access-Control-Allow-Origin': window.location.origin },
      xhrFields: {
        withCredentials: true
      },
@@ -289,7 +287,7 @@ function check_load() {
      success: function(response){
        console.log("* got response from check-load:",response)
        if (response["status"] == 'done') {
-         console.log("* grabbing options")
+           console.log("* grabbing options")
            display_post_run_menu_options();
          if (window.location.href.indexOf("visualize") > -1) {
            $('#plot-results-link').addClass('active');
@@ -299,7 +297,11 @@ function check_load() {
            $('#download-link').addClass('active');
            $('#download-link').attr('aria-current', 'page');
          }
-       } else if (response["status"] == 'running' || response["status"] == 'queued') {
+       } else if (response["status"] == 'not_started') {
+         $("#post-run-links").html('');
+       } else if (response["status"] == 'running' ||
+                  response["status"] == 'queued'  ||
+                  response["status"] == 'not_started') {
          $("#post-run-links").html('<div class="mx-2"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>')
           setTimeout(check_load, 3000); // check again in 3 seconds
        }
