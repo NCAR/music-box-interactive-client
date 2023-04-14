@@ -25,8 +25,6 @@ function Mechanism(props) {
   const gasClickhandler = () => {
     props.changeReactionType(utils.reaction_types.GAS)
   }
-  
-  console.log(props)
 
   return (
     <Layout>

@@ -11,7 +11,6 @@ function AddGasSpecies(props) {
     };
 
     const handleAddGasSpecies = () => {
-        console.log("Adding species: ", state);
         props.addGasSpecies(state);
         setState({ name: "" });
     };
@@ -19,7 +18,7 @@ function AddGasSpecies(props) {
     return (
         <div>
             <input
-                type="text" class="form-control mb-2"
+                type="text" className="form-control mb-2"
                 onChange={e => updateInput({ name: e.target.value })}
                 value={state.name}
             />

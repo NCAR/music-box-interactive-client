@@ -1,25 +1,27 @@
 import { combineReducers } from 'redux';
 import utils from '../utils';
 
-const reactionTypeReducer = (reactionType = utils.reaction_types.GAS, action) => {
-    if (action.type === utils.action_types.CHANGE_REACTION_TYPE) {
-        console.log(action.payload)
-        return action.payload;
+const initialState = {
+    gasSpecies: []
+};
+
+const gasSpeciesReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case utils.action_types.ADD_GAS_SPECIES: {
+            const species = action.payload.content.input;
+            return {
+                ...state,
+                gasSpecies: [
+                    ...state.gasSpecies,
+                    species
+                ]
+            };
+        }
+        default:
+            return state;
     }
-    return reactionType;
 }
-
-const speciesConfigReducer = (speciesConfigs, action) => {
-    if (action.type === utils.action_types.ADD_NEW_SPECIES) {
-        speciesConfigs = [...speciesConfigs, action.payload]
-    } else if (action.type === utils.action_types.CHANGE_EXISTING_SPECIES) {
-        // TODO
-    }
-
-    return speciesConfigs
-}
-
 
 export default combineReducers({
-    reactionType: reactionTypeReducer
+    gasSpecies: gasSpeciesReducer
 })
