@@ -4,23 +4,23 @@ import { addGasSpecies } from "../actions";
 
 function AddGasSpecies(props) {
 
-    const [state, setState] = useState({ name: "" });
+    const [state, setState] = useState("");
 
     const updateInput = input => {
-        setState({ input });
+        setState(input);
     };
 
     const handleAddGasSpecies = () => {
-        props.addGasSpecies(state);
-        setState({ name: "" });
+        props.addGasSpecies({ name: state });
+        setState("");
     };
 
     return (
         <div>
             <input
                 type="text" className="form-control mb-2"
-                onChange={e => updateInput({ name: e.target.value })}
-                value={state.name}
+                onChange={e => updateInput(e.target.value)}
+                value={state}
             />
             <button className="btn btn-primary mb-2 add-gas-species" onClick={handleAddGasSpecies}>
                 Add Species

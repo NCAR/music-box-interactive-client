@@ -8,7 +8,7 @@ const initialState = {
 const gasSpeciesReducer = (state = initialState, action) => {
     switch (action.type) {
         case utils.action_types.ADD_GAS_SPECIES: {
-            const species = action.payload.content.input;
+            const species = action.payload.content;
             return {
                 ...state,
                 gasSpecies: [
