@@ -5,7 +5,7 @@ import GasSpeciesList from "./GasSpeciesList.js";
 
 function GasSpeciesTab(props) {
 
-  const [detailSpecies, setDetailSpecies] = useState({ foo: { name: "foo" }, bar: { name: "bar" } });
+  const [detailSpecies, setDetailSpecies] = useState({ });
 
   return (
     <div id="species-content" className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
@@ -22,7 +22,7 @@ function GasSpeciesTab(props) {
           <div className="row flex-shrink-0">
             <div className="col species-detail">
               {Object.keys(detailSpecies).map(key => {
-                 return <GasSpeciesDetail species={detailSpecies[key]} />;
+                 return <GasSpeciesDetail species={detailSpecies[key]} key={key} />;
                })}
             </div>
           </div>
