@@ -22,7 +22,10 @@ function GasSpeciesTab(props) {
           <div className="row flex-shrink-0">
             <div className="col species-detail">
               {Object.keys(detailSpecies).map(key => {
-                 return <GasSpeciesDetail species={detailSpecies[key]} key={key} />;
+                 return <GasSpeciesDetail species={detailSpecies[key]}
+                                          key={key}
+                                          detailSpecies={detailSpecies}
+                                          setDetailSpecies={setDetailSpecies}/>;
                })}
             </div>
           </div>

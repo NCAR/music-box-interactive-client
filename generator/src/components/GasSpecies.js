@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 const GasSpecies = ({ species, detailSpecies, setDetailSpecies }) => {
   const handleClick = (e) => {
     e.preventDefault();
-    console.log('Clicked on species', species);
     setDetailSpecies({ ...detailSpecies, [species.name]: species });
   }
 
