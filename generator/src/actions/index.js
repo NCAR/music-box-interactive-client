@@ -7,6 +7,13 @@ export const addGasSpecies = (content) => {
     }
 }
 
+export const removeGasSpecies = (content) => {
+    return {
+        type: utils.action_types.REMOVE_GAS_SPECIES,
+        payload: { content }
+    }
+}
+
 export const changeReactionType = (reactionType) => {
     return {
         type: utils.action_types.CHANGE_REACTION_TYPE,

@@ -17,6 +17,18 @@ const gasSpeciesReducer = (state = initialState, action) => {
                 ]
             };
         }
+        case utils.action_types.REMOVE_GAS_SPECIES: {
+            const speciesName = action.payload.content;
+            const newGasSpecies = state.gasSpecies.filter(species => {
+                return species.name != speciesName;
+            });
+            return {
+                ...state,
+                gasSpecies: [
+                  ...newGasSpecies
+                ]
+            };
+        }
         default:
             return state;
     }

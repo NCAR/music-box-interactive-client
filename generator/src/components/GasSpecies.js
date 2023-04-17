@@ -1,21 +1,34 @@
 import React from "react";
 import { connect } from "react-redux";
+import { removeGasSpecies } from "../actions";
 
-const GasSpecies = ({ species, detailSpecies, setDetailSpecies }) => {
-  const handleClick = (e) => {
+const GasSpecies = (props) => {
+  const handleDetailClick = (e) => {
     e.preventDefault();
-    setDetailSpecies({ ...detailSpecies, [species.name]: species });
+    props.setDetailSpecies({ ...props.detailSpecies, [props.species.name]: props.species });
   }
+
+  const handleDeleteClick = (e) => {
+    e.preventDefault();
+    props.removeGasSpecies(props.species.name);
+  }
+
 
   return (
     <li className="list-group-item list-group-item-action d-flex justify-content-between detailitem">
-      <span>
-        <a href="#" onClick={handleClick}>
-          {species.name}
-        </a>
-      </span>
+      <a href="#" className="species-detail-link-item" onClick={handleDetailClick}>
+        {props.species.name}
+      </a>
+      <a href="#" className="navlink species-remove m-0 p-0">
+        <span className="oi oi-x"
+              toggle="tooltip"
+              aria-hidden="true"
+              title={`remove ${props.species.name}`}
+              onClick={handleDeleteClick}>
+        </span>
+      </a>
     </li>
   );
 };
 
-export default connect()(GasSpecies);
+export default connect(null, { removeGasSpecies })(GasSpecies);
