@@ -1,5 +1,12 @@
 import utils from '../utils';
 
+export const addGasSpecies = (content) => {
+    return {
+        type: utils.action_types.ADD_GAS_SPECIES,
+        payload: { content }
+    }
+}
+
 export const changeReactionType = (reactionType) => {
     return {
         type: utils.action_types.CHANGE_REACTION_TYPE,
