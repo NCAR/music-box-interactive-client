@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getGasSpecies } from "../selectors";
+import PropertyList from "./PropertyList";
 
 const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
   const handleClick = (e) => {
@@ -16,8 +17,7 @@ const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
         <h4 className="my-0 fw-normal">{species.name}</h4>
       </div>
       <form className="body card-body">
-        <div className="form-group properties">
-        </div>
+        <PropertyList speciesName={species.name} />
         <div className="container text-center mt-3">
           <button type="button"
                   className="btn btn-secondary btn-cancel"
