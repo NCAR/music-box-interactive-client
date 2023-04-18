@@ -8,7 +8,7 @@ import Sponsors from "../components/home_specific/Sponsors"
 import Developers from "../components/home_specific/Developers"
 import Contact from "../components/home_specific/Contact"
 import gapImg from "../assets/image_ammann.jpg"
-import wrapApp from "../store/WrapWithProvider";
+import wrapApp from "../redux/store/WrapWithProvider";
 
 export default function Home() {
   const gapStyle = {

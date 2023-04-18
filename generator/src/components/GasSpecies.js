@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { removeGasSpecies } from "../actions";
+import { removeGasSpecies } from "../redux/actions";
 
 const GasSpecies = (props) => {
   const handleDetailClick = (e) => {

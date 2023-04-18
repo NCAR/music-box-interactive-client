@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import GasSpeciesTab from "../components/GasSpeciesTab.js";
-import { changeReactionType } from '../actions'
+import { changeReactionType } from '../redux/actions'
 
 function Mechanism(props) {
   const SPECIES = 0

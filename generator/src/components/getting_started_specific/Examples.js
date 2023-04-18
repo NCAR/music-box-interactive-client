@@ -1,5 +1,5 @@
 import React from 'react'
-import utils from '../../utils';
+import utils from '../../redux/utils';
 
 const examples = [
     {
@@ -27,7 +27,7 @@ export default function Examples() {
               <h3>{example.title}</h3>
             </div>
             <div>{example.description}</div>
-            <span className="btn btn-secondary">Select</span>
+            <button className="btn btn-secondary">Select</button>
           </div>
         </div>
       );

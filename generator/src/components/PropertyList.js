@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import AddProperty from "./AddProperty";
 import Property from "./Property";
-import { getProperty } from "../selectors";
+import { getProperty } from "../redux/selectors";
 
 function PropertyList(props) {
   return (

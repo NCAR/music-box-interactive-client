@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { navigate } from 'gatsby';
 import Examples from "./Examples"
 import LoadFile from "./LoadFile"
-import utils from "../../utils"
+import utils from "../../redux/utils"
 
 export default function QuickStart() {
     const [method, setMethod] = useState(utils.methods.NONE_SELECTED)

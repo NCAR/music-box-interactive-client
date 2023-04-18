@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getGasSpecies } from "../selectors";
+import { getGasSpecies } from "../redux/selectors";
 import PropertyList from "./PropertyList";
 
 const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {

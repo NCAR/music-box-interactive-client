@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import AddGasSpecies from "./AddGasSpecies";
 import GasSpecies from "./GasSpecies";
-import { getGasSpecies } from "../selectors";
+import { getGasSpecies } from "../redux/selectors";
 
 function GasSpeciesList(props) {
 
