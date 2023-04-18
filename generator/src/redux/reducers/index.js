@@ -5,16 +5,21 @@ const initialState = {
     gasSpecies: []
 };
 
+const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+
 const gasSpeciesReducer = (state = initialState, action) => {
     switch (action.type) {
         case utils.action_types.ADD_GAS_SPECIES: {
             const species = action.payload.content;
-            return {
+            const otherSpecies = state.gasSpecies.filter(other => {
+                return other.name !== species.name;
+            });
+            return species.name === "" ? state : {
                 ...state,
                 gasSpecies: [
-                    ...state.gasSpecies,
+                    ...otherSpecies,
                     species
-                ]
+                ].sort( compareName )
             };
         }
         case utils.action_types.REMOVE_GAS_SPECIES: {
