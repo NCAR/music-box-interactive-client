@@ -65,13 +65,6 @@ function BasicConfiguration() {
                 <input type="hidden" />
                 {configEntries}
 
-                <label> Select Model </label>
-                <div className="input-group">
-                  <select name="grid" savebutton="optionsSave" className="form-control" id="id_grid">
-                    <option value="box">PartMC</option>
-                  </select>
-                </div>
-
                 <div className="container text-center mt-3">
                   <SaveButton />
                   <CancelButton />
@@ -107,11 +100,6 @@ const mapStateToProps = ({ reactionType }) => {
   return {
     reactionType: reactionType
   }
-}
-
-// TODO
-const mapDispatchToProps = (dispatch) => {
-
 }
 
 export default connect(mapStateToProps)(Conditions)

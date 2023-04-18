@@ -84,6 +84,7 @@ const gasSpeciesReducer = (state = initialState, action) => {
 const loadConfigReducer = (state = initialState, action) => {
     switch(action.type){
         case utils.action_types.LOAD_CONFIG: {
+            return state;
         }
         default:
             return state;
