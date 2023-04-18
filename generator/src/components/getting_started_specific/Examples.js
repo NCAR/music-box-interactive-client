@@ -27,7 +27,7 @@ export default function Examples() {
               <h3>{example.title}</h3>
             </div>
             <div>{example.description}</div>
-            <button className="btn btn-secondary">Select</button>
+            <button className="btn btn-secondary" onClick={() => {}}>Select</button>
           </div>
         </div>
       );
