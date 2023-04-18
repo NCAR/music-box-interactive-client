@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import Dropdown from "react-bootstrap/Dropdown";
 import { addProperty } from "../actions";
 
 function AddProperty(props) {
@@ -10,46 +11,41 @@ function AddProperty(props) {
   };
 
   return (
-    <div className="dropdown">
-      <button className="btn btn-primary dropdown-toggle"
-         type="button"
-         id="new-property-dropdown"
-         data-toggle="dropdown"
-         aria-haspopup="true"
-         aria-expanded="false">
+    <Dropdown>
+      <Dropdown.Toggle variant="success" className="btn btn-primary">
         Add property
-      </button>
-      <div className="dropdown-menu" aria-labelledby="new-property-dropdown">
-        <a className="dropdown-item"
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item
            href="#"
            onClick={() => handleAddProperty({ name: "description",
                                               "data-type": "string",
                                               value: "" })}>
           description
-        </a>
-        <a className="dropdown-item"
+        </Dropdown.Item>
+        <Dropdown.Item
            href="#"
            onClick={() => handleAddProperty({ name: "absolute convergence tolerance [mol mol-1]",
                                               "data-type": "number",
                                               value: 1e-12 })}>
           absolute convergence tolerance
-        </a>
-        <a className="dropdown-item"
+        </Dropdown.Item>
+        <Dropdown.Item
            href="#"
            onClick={() => handleAddProperty({ name: "molecular weight [kg mol-1]",
                                               "data-type": "number",
                                               value: 0 })}>
           molecular weight
-        </a>
-        <a className="dropdown-item"
+        </Dropdown.Item>
+        <Dropdown.Item
            href="#"
            onClick={() => handleAddProperty({ name: "fixed concentration",
                                               "data-type": "string",
                                               value: "CONSTANT" })}>
           fixed concentration
-        </a>
-      </div>
-    </div>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 
