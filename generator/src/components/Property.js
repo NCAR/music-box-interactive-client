@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 const Property = (props) => {
+  console.log(props);
   return (
     <div className="input-group mb-3" property={props.name} data-type={props.data_type}>
       <div className="input-group-prepend">
@@ -10,7 +11,6 @@ const Property = (props) => {
       <input type="text"
              className="form-control"
              placeholder="Property value"
-             disabled
              value={props.value}>
       </input>
     </div>

@@ -16,19 +16,27 @@ const GasSpecies = (props) => {
 
   return (
     <li className="list-group-item list-group-item-action d-flex justify-content-between detailitem">
-      <span className="species-detail-link-item" onClick={handleDetailClick} onKeyDown={handleDeleteClick}>
-        {props.species.name}
-      </span>
-      <span className="navlink species-remove m-0 p-0">
-        <span className="oi oi-x"
-              toggle="tooltip"
-              aria-hidden="true"
-              title={`remove ${props.species.name}`}
-              onClick={handleDeleteClick}
-              onKeyDown={handleDeleteClick}
-              >
+      <button type='button'
+              className="btn-clear"
+              onClick={handleDetailClick}
+              onKeyDown={handleDetailClick}>
+        <span className="species-detail-link-item">
+          {props.species.name}
         </span>
-      </span>
+      </button>
+      <button type='button'
+              className="btn-clear"
+              onClick={handleDeleteClick}
+              onKeyDown={handleDeleteClick}>
+        <span className="navlink species-remove m-0 p-0">
+          <span className="oi oi-x"
+                toggle="tooltip"
+                aria-hidden="true"
+                title={`remove ${props.species.name}`}
+                >
+          </span>
+        </span>
+      </button>
     </li>
   );
 };
