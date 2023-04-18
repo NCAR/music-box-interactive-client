@@ -10,6 +10,8 @@ const GasSpecies = (props) => {
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
+    const { [props.species.name]: _, ...detailSpecies } = props.detailSpecies;
+    props.setDetailSpecies({ ...detailSpecies });
     props.removeGasSpecies(props.species.name);
   }
 
