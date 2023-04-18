@@ -1,5 +1,7 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import utils from '../../redux/utils';
+import { getExample } from '../../redux/actions/examples';
 
 const examples = [
     {
@@ -20,6 +22,8 @@ const examples = [
 ]
 
 export default function Examples() {
+    const dispatch = useDispatch();
+
     const renderExample = (example, index) => (
         <div className="col" key={index}>
           <div className="card card-body example-panel m-2">
@@ -27,7 +31,12 @@ export default function Examples() {
               <h3>{example.title}</h3>
             </div>
             <div>{example.description}</div>
-            <button className="btn btn-secondary" onClick={() => {}}>Select</button>
+            <button 
+                className="btn btn-secondary" 
+                onClick={ () => { dispatch(getExample(example.type)) } } 
+            >
+                    Select
+            </button>
           </div>
         </div>
       );
