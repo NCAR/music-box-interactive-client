@@ -82,10 +82,12 @@ const gasSpeciesReducer = (state = initialState, action) => {
     }
 }
 
-const loadConfigReducer = (state = initialState, action) => {
+const loadExampleReducer = (state = initialState, action) => {
     switch(action.type){
-        case utils.action_types.LOAD_CONFIG: {
-            return state;
+        case utils.action_types.EXAMPLE_FETCHED: {
+            return {
+                gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []}))
+            };
         }
         default:
             return state;
@@ -94,5 +96,5 @@ const loadConfigReducer = (state = initialState, action) => {
 
 export default combineReducers({
     gasSpecies: gasSpeciesReducer,
-    loadConfig: loadConfigReducer
+    loadExample: loadExampleReducer
 })
