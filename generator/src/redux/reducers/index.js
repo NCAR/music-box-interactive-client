@@ -8,6 +8,7 @@ const initialState = {
 const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 
 const gasSpeciesReducer = (state = initialState, action) => {
+    console.log(`Gas Species Reducder Recevied ${action.type}`)
     switch (action.type) {
         case utils.action_types.ADD_GAS_SPECIES: {
             const species = action.payload.content;
@@ -82,12 +83,18 @@ const gasSpeciesReducer = (state = initialState, action) => {
                 ]
             };
         }
+        // case utils.action_types.EXAMPLE_FETCHED: {
+        //     return {
+        //         gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []}))
+        //     };
+        // }
         default:
             return state;
     }
 }
 
 const loadExampleReducer = (state = initialState, action) => {
+    console.log(`Load Reducer Recevied ${action.type}`)
     switch(action.type){
         case utils.action_types.EXAMPLE_FETCHED: {
             return {

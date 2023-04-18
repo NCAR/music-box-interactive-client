@@ -22,7 +22,7 @@ const utils = {
     },
     examples: {
         CHAPMAN: 'CHAPMAN',
-        FLOWTUBE: 'FLOWTUBE',
+        FLOW_TUBE: 'FLOW_TUBE',
         FULL_GAS_PHASE: 'FULL_GAS_PHASE'
     }
 }
