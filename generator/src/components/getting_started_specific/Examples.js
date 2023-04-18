@@ -12,7 +12,7 @@ const examples = [
     {
         title: "Flow-Tube Wall Loss",
         description: "A simple characterization of wall loss of a-Pinene oxidation products in a flow-tube reactor.",
-        type: utils.examples.FLOWTUBE
+        type: utils.examples.FLOW_TUBE
     },
     {
         title: "Full Gas-Phase Mechanism",
