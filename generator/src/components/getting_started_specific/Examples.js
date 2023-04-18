@@ -1,20 +1,23 @@
 import React from 'react'
+import utils from '../../utils';
 
 const examples = [
     {
         title: "Chapman Cycle",
-        description: "Chemistry of the ozone layer."
+        description: "Chemistry of the ozone layer.",
+        type: utils.examples.CHAPMAN
     },
     {
         title: "Flow-Tube Wall Loss",
-        description: "A simple characterization of wall loss of a-Pinene oxidation products in a flow-tube reactor."
+        description: "A simple characterization of wall loss of a-Pinene oxidation products in a flow-tube reactor.",
+        type: utils.examples.FLOWTUBE
     },
     {
         title: "Full Gas-Phase Mechanism",
-        description: "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system."
+        description: "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.",
+        type: utils.examples.FULL_GAS_PHASE
     }
 ]
-
 
 export default function Examples() {
     const renderExample = (example, index) => (

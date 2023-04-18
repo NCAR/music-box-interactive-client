@@ -18,6 +18,11 @@ const utils = {
         CHANGE_EXISTING_SPECIES: 'CHANGE_EXISTING_SPECIES',
         CHANGE_CONDITIONS: 'CHANGE_CONDITIONS',
         LOAD_CONFIG: 'LOAD_CONFIG',
+    },
+    examples: {
+        CHAPMAN: 'CHAPMAN',
+        FLOWTUBE: 'FLOWTUBE',
+        FULL_GAS_PHASE: 'FULL GAS PHASE'
     }
 }
 
