@@ -1,5 +1,5 @@
-import { createStore as reduxCreateStore } from "redux"
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import combinedReducer from "../reducers"
 
-const createStore = () => reduxCreateStore(combinedReducer)
-export default createStore
+export const store = createStore(combinedReducer, applyMiddleware(thunk))
