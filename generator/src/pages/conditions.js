@@ -6,8 +6,6 @@ import CancelButton from "../components/CancelButton"
 
 function Conditions(props) {
 
-  console.log(props)
-
   return (
     <Layout>
         <div id="main">

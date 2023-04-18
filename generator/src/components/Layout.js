@@ -10,7 +10,7 @@ export default function Layout({ children }) {
 
     var contentClasses = ["content", "col-md-9 ms-sm-auto col-lg-10 px-0"]
     var contentClassName = contentClasses.join(' ')
-    
+
     const meta = {
         title: "MusicBox",
         meta: {

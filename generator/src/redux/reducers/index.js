@@ -37,8 +37,6 @@ const gasSpeciesReducer = (state = initialState, action) => {
             const otherSpecies = state.gasSpecies.filter(species => {
                 return species.name !== property.speciesName;
             });
-            console.log("species", species);
-            console.log("otherSpecies", otherSpecies);
             return {
                 ...state,
                 gasSpecies: [
