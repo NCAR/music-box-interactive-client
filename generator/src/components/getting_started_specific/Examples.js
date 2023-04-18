@@ -33,7 +33,9 @@ export default function Examples() {
             <div>{example.description}</div>
             <button 
                 className="btn btn-secondary" 
-                onClick={ () => { dispatch(getExample(example.type)) } } 
+                onClick={ () => { 
+                    dispatch(getExample(example.type)) 
+                } } 
             >
                     Select
             </button>
