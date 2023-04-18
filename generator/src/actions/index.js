@@ -14,6 +14,20 @@ export const removeGasSpecies = (content) => {
     }
 }
 
+export const addProperty = (content) => {
+    return {
+        type: utils.action_types.ADD_PROPERTY,
+        payload: { content }
+    }
+}
+
+export const removeProperty = (content) => {
+    return {
+        type: utils.action_types.REMOVE_PROPERTY,
+        payload: { content }
+    }
+}
+
 export const changeReactionType = (reactionType) => {
     return {
         type: utils.action_types.CHANGE_REACTION_TYPE,

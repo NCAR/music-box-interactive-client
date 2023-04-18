@@ -11,7 +11,7 @@ function AddGasSpecies(props) {
     };
 
     const handleAddGasSpecies = () => {
-        props.addGasSpecies({ name: state });
+        props.addGasSpecies({ name: state, properties: [ ] });
         setState("");
     };
 
