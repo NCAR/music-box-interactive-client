@@ -122,3 +122,9 @@ export const changeConditions = (conditionsConfig) => {
     }
 }
 
+export const loadConfig = ( config ) => {
+    return {
+        type: utils.action_types.LOAD_CONFIG,
+        payload: { content: config }
+    }
+}

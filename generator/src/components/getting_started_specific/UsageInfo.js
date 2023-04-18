@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "gatsby"
 
 export default function UsageInfo() {
     const options_methods = ["Start from scratch", "Select example", "Load configuration"]
