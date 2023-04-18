@@ -4,7 +4,6 @@ import { fetchExample } from '../controllers/api'
 export const getExample = (example) => async (dispatch) => {
   try {
     const data = await fetchExample(example);
-    console.log(data)
     dispatch({ type: utils.action_types.EXAMPLE_FETCHED, payload: data });
   } catch (error) {
     console.error(`Error getting example: ${error.message}`);

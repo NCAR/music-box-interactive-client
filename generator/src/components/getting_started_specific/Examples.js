@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import utils from '../../redux/utils';
 import { getExample } from '../../redux/actions/examples';
+import { navigate } from 'gatsby';
 
 const examples = [
     {
@@ -24,6 +25,11 @@ const examples = [
 export default function Examples() {
     const dispatch = useDispatch();
 
+    const handleClick = (example) => {
+        dispatch(getExample(example.type));
+        navigate('/mechanism')
+    }
+
     const renderExample = (example, index) => (
         <div className="col" key={index}>
           <div className="card card-body example-panel m-2">
@@ -33,9 +39,7 @@ export default function Examples() {
             <div>{example.description}</div>
             <button 
                 className="btn btn-secondary" 
-                onClick={ () => { 
-                    dispatch(getExample(example.type)) 
-                } } 
+                onClick={() => {handleClick(example)}}
             >
                     Select
             </button>
