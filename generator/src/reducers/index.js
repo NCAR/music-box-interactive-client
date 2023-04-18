@@ -20,7 +20,7 @@ const gasSpeciesReducer = (state = initialState, action) => {
         case utils.action_types.REMOVE_GAS_SPECIES: {
             const speciesName = action.payload.content;
             const newGasSpecies = state.gasSpecies.filter(species => {
-                return species.name != speciesName;
+                return species.name !== speciesName;
             });
             return {
                 ...state,
@@ -34,6 +34,16 @@ const gasSpeciesReducer = (state = initialState, action) => {
     }
 }
 
+const loadConfigReducer = (state = initialState, action) => {
+    switch(action.type){
+        case utils.action_types.LOAD_CONFIG: {
+        }
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    gasSpecies: gasSpeciesReducer
+    gasSpecies: gasSpeciesReducer,
+    loadConfig: loadConfigReducer
 })

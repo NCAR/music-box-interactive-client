@@ -16,17 +16,17 @@ const GasSpecies = (props) => {
 
   return (
     <li className="list-group-item list-group-item-action d-flex justify-content-between detailitem">
-      <a href="#" className="species-detail-link-item" onClick={handleDetailClick}>
+      <span className="species-detail-link-item" onClick={handleDetailClick}>
         {props.species.name}
-      </a>
-      <a href="#" className="navlink species-remove m-0 p-0">
+      </span>
+      <span className="navlink species-remove m-0 p-0">
         <span className="oi oi-x"
               toggle="tooltip"
               aria-hidden="true"
               title={`remove ${props.species.name}`}
               onClick={handleDeleteClick}>
         </span>
-      </a>
+      </span>
     </li>
   );
 };
