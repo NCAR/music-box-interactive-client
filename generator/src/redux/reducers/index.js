@@ -30,12 +30,16 @@ const gasSpeciesReducer = (state = initialState, action) => {
             };
         }
         case utils.action_types.ADD_PROPERTY: {
-            const property = action.payload.content;
+            const property = action.payload.content.property;
+            const speciesName = action.payload.content.speciesName;
             const species = state.gasSpecies.filter(species => {
-                return species.name === property.speciesName;
+                return species.name === speciesName;
             });
             const otherSpecies = state.gasSpecies.filter(species => {
-                return species.name !== property.speciesName;
+                return species.name !== speciesName;
+            });
+            const otherProperties = species[0].properties.filter(prop => {
+                return prop.name !== property.name;
             });
             return {
                 ...state,
@@ -44,11 +48,8 @@ const gasSpeciesReducer = (state = initialState, action) => {
                   {
                       ...species[0],
                       properties: [
-                          ...species[0].properties,
-                          {
-                              name: property.name,
-                              value: property.value
-                          }
+                          ...otherProperties,
+                          property
                       ]
                   }
                 ]

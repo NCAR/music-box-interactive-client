@@ -6,7 +6,7 @@ import { addProperty } from "../redux/actions";
 function AddProperty(props) {
 
   const handleAddProperty = (property) => {
-    props.addProperty({ ...property, speciesName: props.speciesName });
+    props.addProperty({ property: property, speciesName: props.speciesName });
   };
 
   return (
