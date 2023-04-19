@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getGasSpecies } from "../redux/selectors";
+import { getMechanism } from "../redux/selectors";
 import PropertyList from "./PropertyList";
 
 const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
@@ -29,8 +29,8 @@ const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
 }
 
 const mapStateToProps = state => {
-    const species = getGasSpecies(state);
-    return species;
+    const mechanism = getMechanism(state);
+    return mechanism;
 };
 
 export default connect(mapStateToProps)(GasSpeciesDetail);

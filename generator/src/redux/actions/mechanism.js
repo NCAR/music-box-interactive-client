@@ -28,23 +28,16 @@ export const removeProperty = (content) => {
     }
 }
 
-export const changeReactionType = (reactionType) => {
+export const addReaction = (content) => {
     return {
-        type: utils.action_types.CHANGE_REACTION_TYPE,
-        payload: reactionType
+        type: utils.action_types.ADD_REACTION,
+        payload: { content }
     }
 }
 
-export const changeExistingSpecies = (speciesConfig) => {
+export const removeReaction = (content) => {
     return {
-        type: utils.action_types.CHANGE_EXISTING_SPECIES,
-        payload: speciesConfig
-    }
-}
-
-export const addNewSpecies = (speciesConfig) => {
-    return {
-        type: utils.action_types.ADD_NEW_SPECIES,
-        payload: speciesConfig
+        type: utils.action_types.REMOVE_REACTION,
+        payload: { content }
     }
 }

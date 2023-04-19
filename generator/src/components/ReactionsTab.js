@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import ReactionsList from "./ReactionsList";
 
 function ReactionsTab(props) {
 
@@ -11,7 +12,8 @@ function ReactionsTab(props) {
         <div className="col-md-4 col-lg-4 mh-100 overflow-auto">
           <div className="row flex-shrink-0">
             <div className="col">
-              Species List
+              <ReactionsList detailReactions={detailReactions}
+                             setDetailReactions={setDetailReactions}/>
             </div>
           </div>
         </div>
