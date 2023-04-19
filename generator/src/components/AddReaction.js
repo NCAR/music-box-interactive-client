@@ -19,7 +19,7 @@ function AddReaction(props) {
         {Object.entries(reactionTypes).map(([key, value]) => {
           return (
             <Dropdown.Item href="#" key={key} onClick={() => handleAddReaction(value)}>
-              {value.__meta.label}
+              {value.typeLabel}
             </Dropdown.Item>
           );
         })}
