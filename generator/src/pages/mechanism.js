@@ -16,7 +16,7 @@ function Mechanism(props) {
     <Layout>
       <main role="main">
         <div className="container text-center">
-          <div className="pt-3">
+          <div className="navbox pt-2">
             <button className={param === SPECIES ?  paramSelected : paramNotSelected} onClick={() => setParam(SPECIES)}>
               Gas Species
             </button>
