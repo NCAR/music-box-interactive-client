@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import utils from '../utils';
 
 const initialState = {
-    gasSpecies: []
+    gasSpecies: [],
+    reactions: []
 };
 
 const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
@@ -84,7 +85,8 @@ const gasSpeciesReducer = (state = initialState, action) => {
         }
         case utils.action_types.EXAMPLE_FETCHED: {
             return {
-                gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []}))
+                gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []})),
+                reactions: action.payload['reactions']
             };
         }
         default:
