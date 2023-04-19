@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "gatsby"
 
 export default function UsageInfo() {
     const options_methods = ["Start from scratch", "Select example", "Load configuration"]
@@ -12,7 +11,8 @@ export default function UsageInfo() {
                 + " You can select an example and immediately run the simulation."
                 + " Examples are useful for learning how to set up a MusicBox simulation."
 
-    const description_config = "If you have previously saved a MusicBox configuration from the "+'<Link to="/conditions/review.html">review</Link>'
+    const description_config = "If you have previously saved a MusicBox configuration from the "
+                + '<Link to="/conditions/review.html">review</Link>'
                 + " section, you can reload it with this starting option. MusicBox configuration files have a .zip extension and contain the mechanism and conditions for a simulation. "
                 + " Once loaded, you can modify the configuration, re-save it, and/or run the simulation."
     

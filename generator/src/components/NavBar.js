@@ -10,25 +10,18 @@ export default function NavBar() {
           <div className="position-sticky pt-3">
             <div id="main-nav" className="nav flex-column pt-2">
               <small className="nav-section">SETUP</small>
-              <Link className="nav-link {% if '/getting_started' in request.path %}active{% endif %}" aria-current="{% if '/getting_started' in request.path %}page{% endif %}" to="/getting_started" activeStyle={activeColor}>
+              <Link className="nav-link" to="/getting_started" activeStyle={activeColor}>
                 <span className="oi oi-signpost oi-prefix"></span>
                   Start Here
               </Link>
-              <Link className="nav-link {% if '/mechanism' in request.path %}active{% endif %}" aria-current="{% if '/mechanism' in request.path %}page{% endif %}" to="/mechanism" activeStyle={activeColor}>
+              <Link className="nav-link" to="/mechanism" activeStyle={activeColor}>
                 <span className="oi oi-random oi-prefix"></span>
                 Mechanism
               </Link>
-              <Link className="nav-link {% if '/conditions' in request.path %}active{% endif %}" aria-current="{% if '/conditions' in request.path %}page{% endif %}" to="/conditions" activeStyle={activeColor}>
+              <Link className="nav-link" to="/conditions" activeStyle={activeColor}>
                 <span className="oi oi-dashboard oi-prefix"></span>
                 Conditions
               </Link>
-
-              {/* Comment out lines below after testing */}
-              <Link className="nav-link {% if '/test' in request.path %}active{% endif %}" aria-current="{% if '/test' in request.path %}page{% endif %}" to="/test" activeStyle={activeColor}>
-                Test Components Here
-              </Link>
-              {/* Comment out lines above after testing */}
-
               <div className="pt-1 pb-3 mx-0 my-2" style={{borderTop: '1px solid gray', borderBottom: '1px solid gray'}}>
                 <small className="nav-section">RUN</small>
                 <div style={{textAlign:'center'}}>

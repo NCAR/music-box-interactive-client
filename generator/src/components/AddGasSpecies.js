@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { addGasSpecies } from "../actions";
+import { addGasSpecies } from "../redux/actions";
 
 function AddGasSpecies(props) {
 
@@ -11,7 +11,7 @@ function AddGasSpecies(props) {
     };
 
     const handleAddGasSpecies = () => {
-        props.addGasSpecies({ name: state });
+        props.addGasSpecies({ name: state, properties: [ ] });
         setState("");
     };
 

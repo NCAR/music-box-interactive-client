@@ -1,53 +1,55 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import utils from '../../redux/utils';
+import { getExample } from '../../redux/actions/examples';
+import { navigate } from 'gatsby';
+
+const examples = [
+    {
+        title: "Chapman Cycle",
+        description: "Chemistry of the ozone layer.",
+        type: utils.examples.CHAPMAN
+    },
+    {
+        title: "Flow-Tube Wall Loss",
+        description: "A simple characterization of wall loss of a-Pinene oxidation products in a flow-tube reactor.",
+        type: utils.examples.FLOW_TUBE
+    },
+    {
+        title: "Full Gas-Phase Mechanism",
+        description: "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.",
+        type: utils.examples.FULL_GAS_PHASE
+    }
+]
 
 export default function Examples() {
-    const titles = [
-        "Chapman Cycle",
-        "Flow-Tube Wall Loss",
-        "Full Gas-Phase Mechanism"
-    ]
-    const descriptions = [
-        "Chemistry of the ozone layer.",
-        "A simple characterization of wall loss of a-Pinene oxidation products in a flow-tube reactor.",
-        "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system."
-    ]
-    const generateExamples = () => {
-        const res = []
-        for (let i = 0; i < titles.length; i++) {
-            res.push(<Example title={titles[i]} description={descriptions[i]} key={i}/>)
-        }
-        return res
+    const dispatch = useDispatch();
+
+    const handleClick = (example) => {
+        dispatch(getExample(example.type));
+        navigate('/mechanism')
     }
 
-    const examples = generateExamples()
-    console.log(examples)
-
-    return (
-        <div className="row">
-            {examples}
+    const renderExample = (example, index) => (
+        <div className="col" key={index}>
+          <div className="card card-body example-panel m-2">
+            <div>
+              <h3>{example.title}</h3>
+            </div>
+            <div>{example.description}</div>
+            <button 
+                className="btn btn-secondary" 
+                onClick={() => {handleClick(example)}}
+            >
+                    Select
+            </button>
+          </div>
         </div>
-    )
-}
-
-function Example(props) {
-    return (
-    <div className="col">
-         <div className="card card-body example-panel m-2">
-             <div>
-                 <h3>{props.title}</h3>
-             </div>
-             <div>
-                 {props.description}
-             </div>
-             <SelectButton />
-         </div>
-    </div>
-  )
-}
-
-// TODO: update centralized states accordingly
-function SelectButton(props) {
-    return (
-        <a className="btn btn-secondary">Select</a>
-    )
+      );
+    
+      return (
+        <div className="row">
+            {examples.map(renderExample)}
+        </div>
+      )
 }

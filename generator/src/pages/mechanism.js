@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import { connect } from 'react-redux';
 import { Link } from "gatsby";
 import Layout from "../components/Layout";
-import GasSpeciesList from "../components/GasSpeciesList.js";
-import { changeReactionType } from '../actions'
+import GasSpeciesTab from "../components/GasSpeciesTab.js";
+import { changeReactionType } from '../redux/actions'
 
 function Mechanism(props) {
   const SPECIES = 0
@@ -28,8 +28,8 @@ function Mechanism(props) {
           {
             param === SPECIES ? <p className="lead-muted p-2">Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim. The chemical species you add here will be available to participate in <Link to="mechanism/reactions">reactions</Link> and can be include in the <Link to="conditions">model conditions</Link>.</p> : null
           }
-          {param === SPECIES ? <GasSpeciesList /> : <ReactionsList />}
-
+          {param === SPECIES ? <GasSpeciesTab /> : null}
+          {param === REACTIONS ? <ReactionsList /> : null}
         </main>
     </Layout>
   )

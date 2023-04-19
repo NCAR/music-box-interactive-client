@@ -8,7 +8,7 @@ import Sponsors from "../components/home_specific/Sponsors"
 import Developers from "../components/home_specific/Developers"
 import Contact from "../components/home_specific/Contact"
 import gapImg from "../assets/image_ammann.jpg"
-import wrapApp from "../store/WrapWithProvider";
+import wrapApp from "../redux/store/WrapWithProvider";
 
 export default function Home() {
   const gapStyle = {
@@ -22,12 +22,12 @@ export default function Home() {
         <About />
         <EmptySpace height={150}/>
         <BehindTheMusic />
-        <div class="about-section hero-img" style={gapStyle}></div>
+        <div className="about-section hero-img" style={gapStyle}></div>
         <Collaborators />
         <Sponsors />
         <Developers />
         <Contact />
-        <div class="pt-4 px-2">
+        <div className="pt-4 px-2">
           <p><small>
             Background images: Copyright University Corporation for Atmospheric Research (UCAR). By Carlye Calvin and Caspar Ammann, licensed under a Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License, via OpenSky.
           </small></p>
