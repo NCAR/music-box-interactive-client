@@ -32,7 +32,7 @@ const mechanismReducer = (state = initialState, action) => {
                 ...state,
                 gasSpecies: [
                   ...newGasSpecies
-                ]
+                ].sort( compareName )
             };
         }
         case utils.action_types.ADD_PROPERTY: {
@@ -58,7 +58,7 @@ const mechanismReducer = (state = initialState, action) => {
                           property
                       ]
                   }
-                ]
+                ].sort( compareName )
             };
         }
         case utils.action_types.REMOVE_PROPERTY: {
@@ -80,7 +80,7 @@ const mechanismReducer = (state = initialState, action) => {
                         ...species,
                         properties: properties
                     }
-                ]
+                ].sort( compareName )
             };
         }
         case utils.action_types.ADD_REACTION: {
