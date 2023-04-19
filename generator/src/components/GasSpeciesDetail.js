@@ -6,7 +6,7 @@ import PropertyList from "./PropertyList";
 const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
   const handleClick = (e) => {
     e.preventDefault();
-    var newDetailSpecies = { ...detailSpecies };
+    let newDetailSpecies = { ...detailSpecies };
     delete newDetailSpecies[species.name];
     setDetailSpecies(newDetailSpecies);
   }
