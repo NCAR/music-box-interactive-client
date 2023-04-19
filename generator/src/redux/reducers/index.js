@@ -116,7 +116,8 @@ const mechanismReducer = (state = initialState, action) => {
         }
         case utils.action_types.EXAMPLE_FETCHED: {
             return {
-                gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []}))
+                gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []})),
+                reactions: action.payload['reactions']
             };
         }
         default:
