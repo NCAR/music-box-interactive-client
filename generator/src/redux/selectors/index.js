@@ -1,5 +1,7 @@
 export const getMechanism = store => store.mechanism;
 
+export const getMechanismAsObject = store => ({mechanism: store.mechanism});
+
 export const getProperty = (store, speciesName) => {
     const species = getMechanism(store).gasSpecies.filter(species => {
         return species.name === speciesName;

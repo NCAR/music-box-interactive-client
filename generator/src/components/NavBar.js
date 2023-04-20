@@ -1,9 +1,17 @@
 import React from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png"
 import { Link } from "gatsby"
+import { useDispatch, connect } from 'react-redux';
+import { doRun } from '../redux/actions';
+import { getMechanismAsObject } from "../redux/selectors";
 
-export default function NavBar() {
+function NavBar(props) {
     const activeColor = {color: "#000080"}
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+      dispatch(doRun(props.mechanism));
+    }
 
     return (
         <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-ncar-menu sidebar collapse">
@@ -25,7 +33,7 @@ export default function NavBar() {
               <div className="pt-1 pb-3 mx-0 my-2" style={{borderTop: '1px solid gray', borderBottom: '1px solid gray'}}>
                 <small className="nav-section">RUN</small>
                 <div style={{textAlign:'center'}}>
-                  <button id="run-model" style={{margin: 'auto'}} className="btn btn-primary btn-ncar-active">Run Model</button>
+                  <button id="run-model" style={{margin: 'auto'}} className="btn btn-primary btn-ncar-active" onClick={handleClick}>Run Model</button>
                 </div>
               </div>
               <div id="post-run-links">
@@ -38,3 +46,10 @@ export default function NavBar() {
         </nav>
     )
 }
+
+const mapStateToProps = state => {
+    const mechanism = getMechanismAsObject(state);
+    return mechanism;
+};
+
+export default connect(mapStateToProps)(NavBar);
