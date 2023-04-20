@@ -2,6 +2,11 @@ export const getMechanism = store => store.mechanism;
 
 export const getMechanismAsObject = store => ({mechanism: store.mechanism});
 
+export const getSpeciesNames = store => {
+    console.log("species", store.mechanism.gasSpecies);
+    return store.mechanism.gasSpecies.map(species => species.name);
+};
+
 export const getProperty = (store, speciesName) => {
     const species = getMechanism(store).gasSpecies.filter(species => {
         return species.name === speciesName;
@@ -14,4 +19,11 @@ export const getReaction = (store, reactionId) => {
         return reaction.id === reactionId;
     });
     return reaction[0];
+};
+
+export const getReactants = (store, reactionId) => {
+    const reaction = getMechanism(store).reactions.filter(reaction => {
+        return reaction.id === reactionId;
+    });
+    return reaction[0].data.reactants;
 };

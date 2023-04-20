@@ -48,3 +48,10 @@ export const removeReaction = (content) => {
         payload: { content }
     }
 }
+
+export const addReactant = (content) => {
+    return {
+        type: utils.action_types.ADD_REACTANT,
+        payload: { content }
+    }
+}

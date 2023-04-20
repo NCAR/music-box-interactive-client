@@ -1,13 +1,32 @@
 const stringifyReaction = (reactants, products) => {
-  let str = reactants.length > 0 ? reactants.map(species => {
-      return "qty" in species ? species.qty.toString() + species.name + " "
-                              : species.name + " ";
-    }) + " =>" : "<none> =>";
-  str += products.length > 0 ? products.map(species => {
-      return "yield" in species ? " " + species.yield.toString() + species.name
-                                : " " + species.name;
-    }) : " <none>";
-  return str.length > 20 ? str.slice(0, 16) + "..."  : str;
+  const validReactants = reactants.filter(species => {
+      return species.name !== undefined;
+  });
+  const validProducts = products.filter(species => {
+      return species.name !== undefined;
+  });
+  let str = "";
+  if (validReactants.length > 0) {
+      validReactants.forEach(species => {
+        str += "qty" in species  && species.qty > 1 ?
+                 species.qty.toString() + species.name + " + "
+                 : species.name + " + ";
+      });
+      str = str.slice(0, -2) + " => ";
+  } else {
+      str = "<none> => ";
+  }
+  if (validProducts.length > 0) {
+      validProducts.forEach(species => {
+          str += "yield" in species  && species.yield !== 1.0 ?
+                   species.yield.toString() + species.name + " + "
+                   : species.name + " + ";
+      });
+      str = str.slice(0, -3);
+  } else {
+      str += " <none>";
+  }
+  return str.length > 50 ? str.slice(0, 16) + "..."  : str;
 }
 
 const reactionTypes = {
@@ -38,6 +57,11 @@ const reactionTypes = {
                 type: "PRODUCT_LIST",
                 key: "products",
                 label: "products",
+            },
+            {
+                type: "EQUATION",
+                value: "k = Ae^{(\\frac{-E_a}{k_bT})}(\\frac{T}{D})^B(1.0+E*P)",
+                description: "k<sub>B</sub>: Boltzmann constant (J K<sup>-1</sup>); T: temperature (K); P: pressure (Pa)"
             },
             {
                 type: "FLOAT",

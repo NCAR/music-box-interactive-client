@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import MathJax from "react-mathjax";
 import { updateReactionData } from "../redux/actions";
+import ReactantList from "./ReactantList";
 
 const ReactionProperty = (props) => {
   const handleUpdateReactionPropertyFloat = (e) => {
@@ -11,6 +13,21 @@ const ReactionProperty = (props) => {
                                }
     });
   };
+
+  const description = (
+    <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.text}</small></p>` }} />
+  );
+
+  const equation = (
+    <>
+      <MathJax.Provider>
+        <MathJax.Node formula={props.schema.value} />
+      </MathJax.Provider>
+      {props.schema.description && props.schema.description.length ?
+          <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.description}</small></p>` }} />
+        : null}
+    </>
+  );
 
   const floatInput = (
     <div className="input-group mb-3">
@@ -35,8 +52,14 @@ const ReactionProperty = (props) => {
 
   const getProperty = () => {
     switch(props.schema.type) {
+      case "DESCRIPTION":
+        return description;
+      case "EQUATION":
+        return equation;
       case "FLOAT":
         return floatInput;
+      case "REACTANT_LIST":
+        return <ReactantList reactionId={props.reactionId} />
       default:
         return (<div>{props.schema.type}</div>);
     };
