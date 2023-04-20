@@ -35,9 +35,44 @@ export const addReaction = (content) => {
     }
 }
 
+export const updateReactionData = (content) => {
+    return {
+        type: utils.action_types.UPDATE_REACTION_DATA,
+        payload: { content }
+    }
+}
+
 export const removeReaction = (content) => {
     return {
         type: utils.action_types.REMOVE_REACTION,
+        payload: { content }
+    }
+}
+
+export const addReactant = (content) => {
+    return {
+        type: utils.action_types.ADD_REACTANT,
+        payload: { content }
+    }
+}
+
+export const removeReactant = (content) => {
+    return {
+        type: utils.action_types.REMOVE_REACTANT,
+        payload: { content }
+    }
+}
+
+export const addProduct = (content) => {
+    return {
+        type: utils.action_types.ADD_PRODUCT,
+        payload: { content }
+    }
+}
+
+export const removeProduct = (content) => {
+    return {
+        type: utils.action_types.REMOVE_PRODUCT,
         payload: { content }
     }
 }

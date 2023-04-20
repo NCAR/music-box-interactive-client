@@ -103,6 +103,26 @@ const mechanismReducer = (state = initialState, action) => {
                 ].sort( compareId )
             };
         }
+        case utils.action_types.UPDATE_REACTION_DATA: {
+          const id = action.payload.content.id;
+          const data = action.payload.content.data;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === id;
+          })[0];
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== id;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data
+                  }
+              ].sort( compareId )
+          };
+        }
         case utils.action_types.REMOVE_REACTION: {
           const id = action.payload.content;
           const otherReactions = state.reactions.filter(reaction => {
@@ -113,6 +133,132 @@ const mechanismReducer = (state = initialState, action) => {
               reactions: [
                   ...otherReactions
               ].sort( compareId )
+          };
+        }
+        case utils.action_types.ADD_REACTANT: {
+          const reactionId = action.payload.content.reactionId;
+          const reactant = action.payload.content.reactant;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const reactantId = "id" in reactant ? reactant.id :
+                             updatedReaction.data.reactants.length > 0 ?
+                             Math.max(...updatedReaction.data.reactants.map(r => r.id))+1 : 0;
+          const otherReactants = updatedReaction.data.reactants.filter(other => {
+              return other.id !== reactantId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          reactants: [
+                              ...otherReactants,
+                              {
+                                  ...reactant,
+                                  id: reactantId
+                              }
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.REMOVE_REACTANT: {
+          const reactionId = action.payload.content.reactionId;
+          const reactantId = action.payload.content.reactantId;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const otherReactants = updatedReaction.data.reactants.filter(other => {
+              return other.id !== reactantId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          reactants: [
+                              ...otherReactants
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.ADD_PRODUCT: {
+          const reactionId = action.payload.content.reactionId;
+          const product = action.payload.content.product;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const productId = "id" in product ? product.id :
+                             updatedReaction.data.products.length > 0 ?
+                             Math.max(...updatedReaction.data.products.map(r => r.id))+1 : 0;
+          const otherReactants = updatedReaction.data.products.filter(other => {
+              return other.id !== productId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          products: [
+                              ...otherReactants,
+                              {
+                                  ...product,
+                                  id: productId
+                              }
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.REMOVE_PRODUCT: {
+          const reactionId = action.payload.content.reactionId;
+          const productId = action.payload.content.productId;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const otherReactants = updatedReaction.data.products.filter(other => {
+              return other.id !== productId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          products: [
+                              ...otherReactants
+                          ]
+                      }
+                  }
+              ]
           };
         }
         case utils.action_types.EXAMPLE_FETCHED: {
