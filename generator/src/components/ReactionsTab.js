@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "gatsby";
+import ReactionDetail from "./ReactionDetail";
 import ReactionsList from "./ReactionsList";
 
 function ReactionsTab(props) {
@@ -23,7 +24,12 @@ function ReactionsTab(props) {
           <div className="col mh-100 overflow-auto">
             <div className="row flex-shrink-0">
               <div className="col reaction-detail">
-                Reaction details
+                {Object.keys(detailReactions).map(key => {
+                  return <ReactionDetail reaction={detailReactions[key]}
+                                         key={key}
+                                         detailReactions={detailReactions}
+                                         setDetailReactions={setDetailReactions}/>;
+                })}
               </div>
             </div>
           </div>

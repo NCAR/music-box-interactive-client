@@ -7,6 +7,7 @@ const initialState = {
 };
 
 const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+const compareId = (a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
 
 const mechanismReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -99,7 +100,7 @@ const mechanismReducer = (state = initialState, action) => {
                         ...reaction,
                         id: id
                     }
-                ]
+                ].sort( compareId )
             };
         }
         case utils.action_types.REMOVE_REACTION: {
@@ -111,7 +112,7 @@ const mechanismReducer = (state = initialState, action) => {
               ...state,
               reactions: [
                   ...otherReactions
-              ]
+              ].sort( compareId )
           };
         }
         case utils.action_types.EXAMPLE_FETCHED: {
