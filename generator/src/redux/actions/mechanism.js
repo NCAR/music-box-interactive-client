@@ -62,3 +62,17 @@ export const removeReactant = (content) => {
         payload: { content }
     }
 }
+
+export const addProduct = (content) => {
+    return {
+        type: utils.action_types.ADD_PRODUCT,
+        payload: { content }
+    }
+}
+
+export const removeProduct = (content) => {
+    return {
+        type: utils.action_types.REMOVE_PRODUCT,
+        payload: { content }
+    }
+}

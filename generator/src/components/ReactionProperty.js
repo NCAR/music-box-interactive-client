@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import MathJax from "react-mathjax";
 import { updateReactionData } from "../redux/actions";
 import ReactantList from "./ReactantList";
+import ProductList from "./ProductList";
 
 const ReactionProperty = (props) => {
   const handleUpdateReactionPropertyFloat = (e) => {
@@ -58,6 +59,8 @@ const ReactionProperty = (props) => {
         return equation;
       case "FLOAT":
         return floatInput;
+      case "PRODUCT_LIST":
+        return <ProductList reactionId={props.reactionId} />
       case "REACTANT_LIST":
         return <ReactantList reactionId={props.reactionId} />
       default:

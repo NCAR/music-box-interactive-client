@@ -12,9 +12,9 @@ const stringifyReaction = (reactants, products) => {
                  species.qty.toString() + species.name + " + "
                  : species.name + " + ";
       });
-      str = str.slice(0, -2) + " => ";
+      str = str.slice(0, -2) + " -> ";
   } else {
-      str = "<none> => ";
+      str = "<none> -> ";
   }
   if (validProducts.length > 0) {
       validProducts.forEach(species => {

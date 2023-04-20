@@ -26,3 +26,10 @@ export const getReactants = (store, reactionId) => {
     });
     return reaction[0].data.reactants;
 };
+
+export const getProducts = (store, reactionId) => {
+    const reaction = getMechanism(store).reactions.filter(reaction => {
+        return reaction.id === reactionId;
+    });
+    return reaction[0].data.products;
+};

@@ -198,6 +198,69 @@ const mechanismReducer = (state = initialState, action) => {
               ]
           };
         }
+        case utils.action_types.ADD_PRODUCT: {
+          const reactionId = action.payload.content.reactionId;
+          const product = action.payload.content.product;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const productId = "id" in product ? product.id :
+                             updatedReaction.data.products.length > 0 ?
+                             Math.max(...updatedReaction.data.products.map(r => r.id))+1 : 0;
+          const otherReactants = updatedReaction.data.products.filter(other => {
+              return other.id !== productId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          products: [
+                              ...otherReactants,
+                              {
+                                  ...product,
+                                  id: productId
+                              }
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.REMOVE_PRODUCT: {
+          const reactionId = action.payload.content.reactionId;
+          const productId = action.payload.content.productId;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const otherReactants = updatedReaction.data.products.filter(other => {
+              return other.id !== productId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          products: [
+                              ...otherReactants
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
         case utils.action_types.EXAMPLE_FETCHED: {
             return {
                 gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []})),
