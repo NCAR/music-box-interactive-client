@@ -1,5 +1,6 @@
 import utils from '../utils'
 import { checkRunStatus } from '../../controllers/api'
+import { RunStatus } from '../../controllers/models'
 
 
 const pollingMiddleware = ({ dispatch, getState }) => next => action => {
@@ -9,15 +10,16 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
 
     const poll = async () => {
       try {
-        console.log('polling...');
         // Make a new web request to check the status of the original request
         const response = await checkRunStatus();
-        console.log(response);
-        const status = response.status;
+        const status = RunStatus[response.data.status];
+        console.log(`model status: ${status}`);
 
         // If the request is complete, dispatch a new action to signal completion
-        if (status === 'complete') {
+        if (status === RunStatus.DONE) {
           dispatch({ type: utils.action_types.RUN_COMPLETE, payload: { }});
+        } else if(status === RunStatus.ERROR) {
+          throw response.data;
         } else {
           // Otherwise, keep polling
           setTimeout(poll, 1000); // Poll every second

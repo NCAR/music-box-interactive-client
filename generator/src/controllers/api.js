@@ -25,7 +25,7 @@ async function run(config) {
 async function checkRunStatus() {
   try {
     const response = await axios.get(`${process.env.GATSBY_API_URL}/api/run-status`);
-    return response.data;
+    return response;
   } catch (error) {
     console.error(`Error calling run: ${error.message}`);
     throw error;
