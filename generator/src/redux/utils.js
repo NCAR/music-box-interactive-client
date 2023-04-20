@@ -13,7 +13,8 @@ const utils = {
         ADD_REACTION: "ADD_REACTION",
         REMOVE_REACTION: "REMOVE_REACTION",
         LOAD_CONFIG: 'LOAD_CONFIG',
-        EXAMPLE_FETCHED: 'EXAMPLE_FETCHED'
+        EXAMPLE_FETCHED: 'EXAMPLE_FETCHED',
+        RUN_STARTED: 'RUN_STARTED'
     },
     examples: {
         CHAPMAN: 'CHAPMAN',

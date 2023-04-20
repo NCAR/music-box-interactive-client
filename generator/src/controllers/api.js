@@ -15,7 +15,7 @@ async function fetchExample(example) {
 
 async function run(config) {
   try {
-    const response = await axios.get(`${process.env.GATSBY_API_URL}/api/load-example`, { params: params });
+    await axios.post(`${process.env.GATSBY_API_URL}/api/run`, { ...config });
   } catch (error) {
     console.error(`Error calling run: ${error.message}`);
     throw error;
@@ -23,5 +23,6 @@ async function run(config) {
 }
 
 module.exports = { 
-  fetchExample 
+  fetchExample,
+  run
 };
