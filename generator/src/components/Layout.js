@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import NavBar from "./NavBar"
-import Footer from "./Footer"
+import React from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png"
-import { Container, Navbar, Nav, Button } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css"
 import DocumentMeta from "react-document-meta"
 import { useDispatch, connect } from 'react-redux';
