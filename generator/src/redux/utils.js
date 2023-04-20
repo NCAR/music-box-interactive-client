@@ -14,7 +14,8 @@ const utils = {
         REMOVE_REACTION: "REMOVE_REACTION",
         LOAD_CONFIG: 'LOAD_CONFIG',
         EXAMPLE_FETCHED: 'EXAMPLE_FETCHED',
-        RUN_STARTED: 'RUN_STARTED'
+        START_POLLING: 'START_POLLING',
+        RUN_COMPLETE: 'RUN_COMPLETE',
     },
     examples: {
         CHAPMAN: 'CHAPMAN',
