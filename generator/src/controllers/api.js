@@ -13,6 +13,16 @@ async function fetchExample(example) {
   }
 }
 
+async function run(config) {
+  try {
+    await axios.post(`${process.env.GATSBY_API_URL}/api/run`, { ...config });
+  } catch (error) {
+    console.error(`Error calling run: ${error.message}`);
+    throw error;
+  }
+}
+
 module.exports = { 
-  fetchExample 
+  fetchExample,
+  run
 };

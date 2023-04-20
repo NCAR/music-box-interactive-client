@@ -1,5 +1,5 @@
 import utils from '../utils';
-import { fetchExample } from '../controllers/api'
+import { fetchExample } from '../../controllers/api'
 
 export const getExample = (example) => async (dispatch) => {
   try {
