@@ -103,6 +103,26 @@ const mechanismReducer = (state = initialState, action) => {
                 ].sort( compareId )
             };
         }
+        case utils.action_types.UPDATE_REACTION_DATA: {
+          const id = action.payload.content.id;
+          const data = action.payload.content.data;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === id;
+          })[0];
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== id;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data
+                  }
+              ].sort( compareId )
+          };
+        }
         case utils.action_types.REMOVE_REACTION: {
           const id = action.payload.content;
           const otherReactions = state.reactions.filter(reaction => {

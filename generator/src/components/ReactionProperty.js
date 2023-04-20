@@ -1,24 +1,48 @@
 import React from "react";
 import { connect } from "react-redux";
+import { updateReactionData } from "../redux/actions";
 
 const ReactionProperty = (props) => {
-  const handleUpdateReactionProperty = (e) => {
-    console.log("updating reaction property", props.key, e.target.value);
+  const handleUpdateReactionPropertyFloat = (e) => {
+    props.updateReactionData({ id: props.reactionId,
+                               data: {
+                                 ...props.data,
+                                 [props.schema.key]: parseFloat(e.target.value)
+                               }
+    });
   };
 
-  return (
+  const floatInput = (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
-        <span className="input-group-text">{props.label}</span>
+        <span className="input-group-text">{props.schema.label}</span>
       </div>
       <input type="text"
              className="form-control"
              placeholder="Property value"
-             value={props.value}
-             onChange={handleUpdateReactionProperty}>
+             defaultValue={props.data[props.schema.key]}
+             onBlur={handleUpdateReactionPropertyFloat}>
       </input>
+      {props.schema.units && props.schema.units.length ?
+        <div className="input-group-append">
+          <span className="input-group-text">
+            <div dangerouslySetInnerHTML={{ __html: props.schema.units }} />
+          </span>
+        </div>
+        : null}
     </div>
   );
+
+  const getProperty = () => {
+    switch(props.schema.type) {
+      case "FLOAT":
+        return floatInput;
+      default:
+        return (<div>{props.schema.type}</div>);
+    };
+  };
+
+  return getProperty();
 };
 
-export default connect()(ReactionProperty);
+export default connect(null, { updateReactionData })(ReactionProperty);

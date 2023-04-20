@@ -6,7 +6,7 @@ const stringifyReaction = (reactants, products) => {
   str += products.length > 0 ? products.map(species => {
       return "yield" in species ? " " + species.yield.toString() + species.name
                                 : " " + species.name;
-  }) : " <none>";
+    }) : " <none>";
   return str.length > 20 ? str.slice(0, 16) + "..."  : str;
 }
 
@@ -23,7 +23,53 @@ const reactionTypes = {
             products: []
         },
         typeLabel: "Arrhenius",
-        shortName() { return stringifyReaction( this.data.reactants, this.data.products ); }
+        shortName() { return stringifyReaction( this.data.reactants, this.data.products ); },
+        elements: [
+            {
+                type: "REACTANT_LIST",
+                key: "reactants",
+                label: "reactants"
+            },
+            {
+                type: "DESCRIPTION",
+                text: "Use the 'qty' property when a species appears more than once as a reactant"
+            },
+            {
+                type: "PRODUCT_LIST",
+                key: "products",
+                label: "products",
+            },
+            {
+                type: "FLOAT",
+                key: "A",
+                label: "A",
+                units: "(# cm<sup>-3</sup>)<sup>-(n-1)</sup> s<sup>-1</sup>"
+            },
+            {
+                type: "FLOAT",
+                key: "Ea",
+                label: "Ea",
+                units: "J"
+            },
+            {
+                type: "FLOAT",
+                key: "B",
+                label: "B",
+                units: "unitless"
+            },
+            {
+                type: "FLOAT",
+                key: "D",
+                label: "D",
+                units: "K"
+            },
+            {
+                type: "FLOAT",
+                key: "E",
+                label: "E",
+                units: "Pa<sup>-1</sup>"
+            }
+        ]
     },
     emission: {
         data: {

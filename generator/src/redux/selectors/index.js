@@ -6,3 +6,10 @@ export const getProperty = (store, speciesName) => {
     });
     return { properties: species.length > 0 ? species[0].properties : [] };
 };
+
+export const getReaction = (store, reactionId) => {
+    const reaction = getMechanism(store).reactions.filter(reaction => {
+        return reaction.id === reactionId;
+    });
+    return reaction[0];
+};

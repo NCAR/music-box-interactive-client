@@ -25,7 +25,7 @@ function ReactionsTab(props) {
             <div className="row flex-shrink-0">
               <div className="col reaction-detail">
                 {Object.keys(detailReactions).map(key => {
-                  return <ReactionDetail reaction={detailReactions[key]}
+                  return <ReactionDetail reactionId={detailReactions[key].id}
                                          key={key}
                                          detailReactions={detailReactions}
                                          setDetailReactions={setDetailReactions}/>;

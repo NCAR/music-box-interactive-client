@@ -35,6 +35,13 @@ export const addReaction = (content) => {
     }
 }
 
+export const updateReactionData = (content) => {
+    return {
+        type: utils.action_types.UPDATE_REACTION_DATA,
+        payload: { content }
+    }
+}
+
 export const removeReaction = (content) => {
     return {
         type: utils.action_types.REMOVE_REACTION,
