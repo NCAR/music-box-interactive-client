@@ -3,7 +3,6 @@ export const getMechanism = store => store.mechanism;
 export const getMechanismAsObject = store => ({mechanism: store.mechanism});
 
 export const getSpeciesNames = store => {
-    console.log("species", store.mechanism.gasSpecies);
     return store.mechanism.gasSpecies.map(species => species.name);
 };
 

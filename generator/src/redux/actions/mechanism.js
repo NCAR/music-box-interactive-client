@@ -55,3 +55,10 @@ export const addReactant = (content) => {
         payload: { content }
     }
 }
+
+export const removeReactant = (content) => {
+    return {
+        type: utils.action_types.REMOVE_REACTANT,
+        payload: { content }
+    }
+}

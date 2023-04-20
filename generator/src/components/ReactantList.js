@@ -18,7 +18,7 @@ const ReactantList = props => {
               props.reactants.map((reactant, index) => {
                 return (
                   <div key={`reactant-${reactant.name}`}
-                       className={`row array-element array-element-${index}`}
+                       className={`row flex-nowrap array-element array-element-${index}`}
                        array-element-index={index}>
                     <Reactant reactionId={props.reactionId}
                               reactant={reactant}/>
@@ -36,7 +36,6 @@ const ReactantList = props => {
 const mapStateToProps = (state, ownProps) => {
   const { reactionId } = ownProps;
   const reactants = getReactants(state, reactionId);
-  console.log("got reactants", { reactants });
   return { reactants };
 };
 
