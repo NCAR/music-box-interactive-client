@@ -57,7 +57,7 @@ const Product = (props) => {
             </div>
             <input type="text"
                    className="form-control"
-                    defaultValue={product.yield}
+                   defaultValue={product.yield}
                    onBlur={handleChangeYield}>
             </input>
           </div>
@@ -65,7 +65,9 @@ const Product = (props) => {
       </div>
       <div className="col-2 d-flex justify-content-between">
         <div></div>
-        <RemoveProduct reactionId={props.reactionId} productId={props.product.id} />
+        <RemoveProduct reactionId={props.reactionId}
+                       schema={props.schema}
+                       productId={props.product.id} />
         <div></div>
       </div>
     </>
