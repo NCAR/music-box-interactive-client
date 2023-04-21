@@ -1,4 +1,4 @@
-export const RunStatus = Object.freeze({
+const RunStatus = Object.freeze({
   RUNNING: 'RUNNING',
   WAITING: 'WAITING',
   NOT_FOUND: 'NOT_FOUND',
@@ -7,13 +7,18 @@ export const RunStatus = Object.freeze({
   UNKNOWN: 'UNKNOWN',
 });
 
-export function translate_from_camp_config(config) {
-  return {
-    gasSpecies: config['species'].map((species) => ({ name: species, properties: [] })),
-    reactions: config['reactions']
-  }
-}
+const ReactionTypes = Object.freeze({
+  ARRHENIUS: 'ARRHENIUS',
+  PHOTOLYSIS: 'PHOTOLYSIS',
+  EMISSION: 'EMISSION',
+  FIRST_ORDER_LOSS: 'FIRST_ORDER_LOSS',
+  TERNARY_CHEMICAL_ACTIVATION: 'TERNARY_CHEMICAL_ACTIVATION',
+  TROE: 'TROE',
+  WENNBERG_NO_RO2: 'WENNBERG_NO_RO2',
+  WENNBERG_TUNNELING: 'WENNBERG_TUNNELING'
+})
 
-export function translate_to_camp_config(config) {
-  return config
+module.exports = {
+  ReactionTypes,
+  RunStatus
 }

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import utils from '../utils';
-import { translate_from_camp_config } from '../../controllers/models'
+import { translate_from_camp_config } from '../../controllers/transformers'
 
 const initialState = {
     gasSpecies: [],
