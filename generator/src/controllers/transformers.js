@@ -51,6 +51,7 @@ function translate_from_camp_config(config) {
         }
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
+        console.log(reaction)
         return {
           ...reactionTypes.firstOrderLoss,
           id: id++,

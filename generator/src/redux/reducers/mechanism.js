@@ -1,0 +1,272 @@
+import utils from '../utils';
+import { translate_from_camp_config } from '../../controllers/transformers'
+
+const initialState = {
+    gasSpecies: [],
+    reactions: []
+};
+
+const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+const compareId = (a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+
+export const mechanismReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case utils.action_types.ADD_GAS_SPECIES: {
+            const species = action.payload.content;
+            const otherSpecies = state.gasSpecies.filter(other => {
+                return other.name !== species.name;
+            });
+            return species.name === "" ? state : {
+                ...state,
+                gasSpecies: [
+                    ...otherSpecies,
+                    species
+                ].sort( compareName )
+            };
+        }
+        case utils.action_types.REMOVE_GAS_SPECIES: {
+            const speciesName = action.payload.content;
+            const newGasSpecies = state.gasSpecies.filter(species => {
+                return species.name !== speciesName;
+            });
+            return {
+                ...state,
+                gasSpecies: [
+                  ...newGasSpecies
+                ].sort( compareName )
+            };
+        }
+        case utils.action_types.ADD_PROPERTY: {
+            const property = action.payload.content.property;
+            const speciesName = action.payload.content.speciesName;
+            const species = state.gasSpecies.filter(species => {
+                return species.name === speciesName;
+            });
+            const otherSpecies = state.gasSpecies.filter(species => {
+                return species.name !== speciesName;
+            });
+            const otherProperties = species[0].properties.filter(prop => {
+                return prop.name !== property.name;
+            });
+            return {
+                ...state,
+                gasSpecies: [
+                  ...otherSpecies,
+                  {
+                      ...species[0],
+                      properties: [
+                          ...otherProperties,
+                          property
+                      ]
+                  }
+                ].sort( compareName )
+            };
+        }
+        case utils.action_types.REMOVE_PROPERTY: {
+            const removeProperty = action.payload.content;
+            const species = state.gasSpecies.filter(species => {
+                return species.name === removeProperty.speciesName;
+            });
+            const properties = species.properties.filter(property => {
+                return property.name !== removeProperty.name
+            });
+            const otherSpecies = state.gasSpecies.filter(species => {
+                return species.name !== removeProperty.speciesName;
+            });
+            return {
+                ...state,
+                gasSpecies: [
+                    ...otherSpecies,
+                    {
+                        ...species,
+                        properties: properties
+                    }
+                ].sort( compareName )
+            };
+        }
+        case utils.action_types.ADD_REACTION: {
+            const reaction = action.payload.content;
+            const id = "id" in reaction ? reaction.id :
+                         state.reactions.length > 0 ?
+                         Math.max(...state.reactions.map(r => r.id))+1 : 0;
+            const otherReactions = state.reactions.filter(reaction => {
+                return reaction.id !== id;
+            });
+            return {
+                ...state,
+                reactions: [
+                    ...otherReactions,
+                    {
+                        ...reaction,
+                        id: id
+                    }
+                ].sort( compareId )
+            };
+        }
+        case utils.action_types.UPDATE_REACTION_DATA: {
+          const id = action.payload.content.id;
+          const data = action.payload.content.data;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === id;
+          })[0];
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== id;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data
+                  }
+              ].sort( compareId )
+          };
+        }
+        case utils.action_types.REMOVE_REACTION: {
+          const id = action.payload.content;
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== id;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions
+              ].sort( compareId )
+          };
+        }
+        case utils.action_types.ADD_REACTANT: {
+          const reactionId = action.payload.content.reactionId;
+          const reactant = action.payload.content.reactant;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const reactantId = "id" in reactant ? reactant.id :
+                             updatedReaction.data.reactants.length > 0 ?
+                             Math.max(...updatedReaction.data.reactants.map(r => r.id))+1 : 0;
+          const otherReactants = updatedReaction.data.reactants.filter(other => {
+              return other.id !== reactantId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          reactants: [
+                              ...otherReactants,
+                              {
+                                  ...reactant,
+                                  id: reactantId
+                              }
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.REMOVE_REACTANT: {
+          const reactionId = action.payload.content.reactionId;
+          const reactantId = action.payload.content.reactantId;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const otherReactants = updatedReaction.data.reactants.filter(other => {
+              return other.id !== reactantId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          reactants: [
+                              ...otherReactants
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.ADD_PRODUCT: {
+          const reactionId = action.payload.content.reactionId;
+          const schema = action.payload.content.schema;
+          const product = action.payload.content.product;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const productId = "id" in product ? product.id :
+                             updatedReaction.data[schema.key].length > 0 ?
+                             Math.max(...updatedReaction.data[schema.key].map(r => r.id))+1 : 0;
+          const otherReactants = updatedReaction.data[schema.key].filter(other => {
+              return other.id !== productId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          [schema.key]: [
+                              ...otherReactants,
+                              {
+                                  ...product,
+                                  id: productId
+                              }
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.REMOVE_PRODUCT: {
+          const reactionId = action.payload.content.reactionId;
+          const schema = action.payload.content.schema;
+          const productId = action.payload.content.productId;
+          const updatedReaction = state.reactions.filter(reaction => {
+              return reaction.id === reactionId;
+          })[0];
+          const otherReactants = updatedReaction.data[schema.key].filter(other => {
+              return other.id !== productId;
+          });
+          const otherReactions = state.reactions.filter(reaction => {
+              return reaction.id !== reactionId;
+          });
+          return {
+              ...state,
+              reactions: [
+                  ...otherReactions,
+                  {
+                      ...updatedReaction,
+                      data: {
+                          ...updatedReaction.data,
+                          [schema.key]: [
+                              ...otherReactants
+                          ]
+                      }
+                  }
+              ]
+          };
+        }
+        case utils.action_types.EXAMPLE_FETCHED: {
+            return translate_from_camp_config(action.payload);
+        }
+        default:
+            return state;
+    }
+}
