@@ -1,8 +1,8 @@
 import utils from '../utils';
 
-export const changeConditions = (conditionsConfig) => {
+export const updateBasicConfiguration = (content) => {
     return {
-        type: utils.action_types.CHANGE_CONDITIONS,
-        payload: conditionsConfig
+        type: utils.action_types.UPDATE_BASIC_CONFIGURATION,
+        payload: { content }
     }
 }
