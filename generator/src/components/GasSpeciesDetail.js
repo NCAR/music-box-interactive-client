@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getGasSpecies } from "../redux/selectors";
 import PropertyList from "./PropertyList";
 
 const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
@@ -12,7 +11,7 @@ const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
   }
 
   return (
-    <div className="card mb-4 species-card shadow-sm" species={species.name}>
+    <div className="card mb-4 species-card shadow-sm">
       <div className="card-header">
         <h4 className="my-0 fw-normal">{species.name}</h4>
       </div>
@@ -28,9 +27,4 @@ const GasSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
   );
 }
 
-const mapStateToProps = state => {
-    const species = getGasSpecies(state);
-    return species;
-};
-
-export default connect(mapStateToProps)(GasSpeciesDetail);
+export default connect()(GasSpeciesDetail);

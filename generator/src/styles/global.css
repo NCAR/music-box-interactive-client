@@ -137,6 +137,7 @@
   .navbar-brand {
       color: white;
       font-size: 28px;
+      margin-left: 0px;
   }
   
   .nav-section {
