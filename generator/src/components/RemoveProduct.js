@@ -5,7 +5,11 @@ import { removeProduct } from "../redux/actions";
 const RemoveProduct = (props) => {
 
     const handleRemoveProduct = () => {
-        props.removeProduct({ reactionId: props.reactionId, productId: props.productId });
+        props.removeProduct({
+          reactionId: props.reactionId,
+          schema: props.schema,
+          productId: props.productId
+        });
     };
 
     return (

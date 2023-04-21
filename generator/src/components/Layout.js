@@ -30,12 +30,13 @@ function Layout(props) {
     return (
         <DocumentMeta {...meta}>
             <div className={styles.dashboard}>
-                <Navbar className="shadow" bg="dark" variant="dark">
-                    <Navbar.Brand href="/home">MusicBox</Navbar.Brand>
+                <Navbar className="shadow p-0 sticky-top flex-md-nowrap" bg="dark" variant="dark">
+                    <Navbar.Brand className="navbar-brand col-md-3 col-lg-2 me-0 px-3"
+                                  href="/home">MusicBox</Navbar.Brand>
                 </Navbar>
                 <div className={styles.content}>
                     <div className={styles.menu}>
-                        <Nav className="flex-column">
+                        <Nav className="flex-column pt-3">
                             <small className="nav-section">SETUP</small>
                             <Link className="nav-link" to="/getting_started" activeStyle={activeColor}>
                                 <span className="oi oi-signpost oi-prefix"></span>

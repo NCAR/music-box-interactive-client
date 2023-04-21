@@ -200,14 +200,15 @@ const mechanismReducer = (state = initialState, action) => {
         }
         case utils.action_types.ADD_PRODUCT: {
           const reactionId = action.payload.content.reactionId;
+          const schema = action.payload.content.schema;
           const product = action.payload.content.product;
           const updatedReaction = state.reactions.filter(reaction => {
               return reaction.id === reactionId;
           })[0];
           const productId = "id" in product ? product.id :
-                             updatedReaction.data.products.length > 0 ?
-                             Math.max(...updatedReaction.data.products.map(r => r.id))+1 : 0;
-          const otherReactants = updatedReaction.data.products.filter(other => {
+                             updatedReaction.data[schema.key].length > 0 ?
+                             Math.max(...updatedReaction.data[schema.key].map(r => r.id))+1 : 0;
+          const otherReactants = updatedReaction.data[schema.key].filter(other => {
               return other.id !== productId;
           });
           const otherReactions = state.reactions.filter(reaction => {
@@ -221,7 +222,7 @@ const mechanismReducer = (state = initialState, action) => {
                       ...updatedReaction,
                       data: {
                           ...updatedReaction.data,
-                          products: [
+                          [schema.key]: [
                               ...otherReactants,
                               {
                                   ...product,
@@ -235,11 +236,12 @@ const mechanismReducer = (state = initialState, action) => {
         }
         case utils.action_types.REMOVE_PRODUCT: {
           const reactionId = action.payload.content.reactionId;
+          const schema = action.payload.content.schema;
           const productId = action.payload.content.productId;
           const updatedReaction = state.reactions.filter(reaction => {
               return reaction.id === reactionId;
           })[0];
-          const otherReactants = updatedReaction.data.products.filter(other => {
+          const otherReactants = updatedReaction.data[schema.key].filter(other => {
               return other.id !== productId;
           });
           const otherReactions = state.reactions.filter(reaction => {
@@ -253,7 +255,7 @@ const mechanismReducer = (state = initialState, action) => {
                       ...updatedReaction,
                       data: {
                           ...updatedReaction.data,
-                          products: [
+                          [schema.key]: [
                               ...otherReactants
                           ]
                       }

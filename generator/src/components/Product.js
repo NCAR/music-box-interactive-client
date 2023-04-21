@@ -7,10 +7,12 @@ import RemoveProduct from "./RemoveProduct";
 
 const Product = (props) => {
   const product = props.product;
+  const schema = props.schema;
 
   const handleChangeSpecies = (e) => {
     props.addProduct({
       reactionId: props.reactionId,
+      schema: schema,
       product: {
         ...product,
         name: e.target.innerHTML
@@ -21,6 +23,7 @@ const Product = (props) => {
   const handleChangeYield = (e) => {
     props.addProduct({
       reactionId: props.reactionId,
+      schema: schema,
       product: {
         ...product,
         yield: parseFloat(e.target.value)

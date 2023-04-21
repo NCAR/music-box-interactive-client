@@ -5,7 +5,11 @@ import { addProduct } from "../redux/actions";
 const AddProduct = (props) => {
 
   const handleAddProduct = (product) => {
-    props.addProduct({ reactionId: props.reactionId, product: product });
+    props.addProduct({
+      reactionId: props.reactionId,
+      schema: props.schema,
+      product: product
+    });
   };
 
   return (

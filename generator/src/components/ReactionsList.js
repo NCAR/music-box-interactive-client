@@ -8,7 +8,8 @@ function ReactionsList(props) {
 
   return (
     <nav className="bg-ncar-menu-secondary p-2">
-      <AddReaction />
+      <AddReaction detailReactions={props.detailReactions}
+                   setDetailReactions={props.setDetailReactions} />
       <ul className="list-group reactions-list">
         {props.reactions && props.reactions.length
           ? props.reactions.map((reaction, index) => {

@@ -9,8 +9,9 @@ const ProductList = props => {
     <div className="container-fluid property-products mb-3">
       <div className="card shadow-sm">
         <div className="card-header d-flex justify-content-between">
-          <h3 className="my-0 fw-normal">products</h3>
-          <AddProduct reactionId={props.reactionId} />
+          <h3 className="my-0 fw-normal">{props.schema.label}</h3>
+          <AddProduct reactionId={props.reactionId}
+                      schema={props.schema} />
         </div>
         <div className="card-body">
           <div className="form-group array-elements array-elements-products container-fluid">
@@ -21,7 +22,8 @@ const ProductList = props => {
                        className={`row flex-nowrap array-element array-element-${index}`}
                        array-element-index={index}>
                     <Product reactionId={props.reactionId}
-                              product={product}/>
+                             product={product}
+                             schema={props.schema} />
                   </div>
                 );
               })
@@ -34,8 +36,8 @@ const ProductList = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const { reactionId } = ownProps;
-  const products = getProducts(state, reactionId);
+  const { reactionId, schema } = ownProps;
+  const products = getProducts(state, reactionId, schema);
   return { products };
 };
 
