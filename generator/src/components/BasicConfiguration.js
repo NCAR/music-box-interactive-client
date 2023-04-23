@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { basicConfigSchema } from "../redux/reducers/conditionsSchema";
+import { basicConfigSchema } from "../redux/schemas";
 import { getConditions } from "../redux/selectors";
 import BasicConfigProperty from "./BasicConfigProperty";
 

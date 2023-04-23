@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import { addReaction } from "../redux/actions";
-import reactionTypes from "../redux/reducers/reaction_types";
+import { reactionTypes } from "../redux/schemas";
 
 function AddReaction(props) {
 

@@ -29,7 +29,7 @@ const stringifyReaction = (reactants, products) => {
   return str.length > 50 ? str.slice(0, 16) + "..."  : str;
 }
 
-const reactionTypes = {
+export const reactionTypes = {
     arrhenius: {
         data: {
             type: "ARRHENIUS",
@@ -555,5 +555,3 @@ const reactionTypes = {
         ]
     }
 }
-
-export default reactionTypes;
