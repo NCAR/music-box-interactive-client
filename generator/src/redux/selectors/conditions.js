@@ -1,1 +1,1 @@
-export const getBasicConfiguration = store => store.conditions.basicConfiguration;
+export const getConditions = (store, schema) => store.conditions[schema.classKey]

@@ -1,5 +1,7 @@
 import React from "react"
 import { connect } from 'react-redux';
+import { initialConditionsSchema } from "../redux/reducers/conditionsSchema";
+import ConditionsList from "./ConditionsList";
 
 function InitialConditionsTab(props) {
 
@@ -8,6 +10,15 @@ function InitialConditionsTab(props) {
       <p className="lead-muted p-2">
     Initial environmental conditions, concentrations for chemical species, and reaction rates/rate constants that have a MUSICA name can be set here. The conditions you set here will remain at the value you specify until updated by the solver (as is the case for chemical species concentrations) or overwritten by evolving conditions you specify.
       </p>
+      <div className="configbox container-fluid">
+        {initialConditionsSchema.map(schema => {
+            return (
+              <div className="row m-2">
+                <ConditionsList schema={schema} />
+              </div>
+            );
+        })}
+      </div>
     </>
   )
 }

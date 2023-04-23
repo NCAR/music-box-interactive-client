@@ -6,3 +6,17 @@ export const updateBasicConfiguration = (content) => {
         payload: { content }
     }
 }
+
+export const addCondition = (content) => {
+    return {
+        type: utils.action_types.ADD_CONDITION,
+        payload: { content }
+    }
+}
+
+export const removeCondition = (content) => {
+    return {
+        type: utils.action_types.REMOVE_CONDITION,
+        payload: { content }
+    }
+}

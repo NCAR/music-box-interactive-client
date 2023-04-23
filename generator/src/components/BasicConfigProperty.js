@@ -22,8 +22,6 @@ const BasicConfigProperty = (props) => {
     });
   };
 
-  console.log("BasicConfigProperty", props);
-
   const floatInput = (
     <div>
       <label> {props.schema.label} </label>
