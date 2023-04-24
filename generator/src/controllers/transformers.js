@@ -57,7 +57,8 @@ function translate_from_camp_config(config) {
           data: {
             ...reactionSchema.firstOrderLoss.data,
             species: reaction['species'],
-            scaling_factor: reaction['scaling factor'] || 1.0
+            scaling_factor: reaction['scaling factor'] || 1.0,
+            musica_name: reaction['MUSICA name']
           }
         }
       }
@@ -192,25 +193,24 @@ function translate_to_camp_config(config) {
       }
       break;
       case ReactionTypes.EMISSION: {
-        console.log(reaction)
-        let { type, species, ...data } = reaction.data
+        let { type, species, scaling_factor, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
+          "scaling factor": scaling_factor,
           species: species.name
         }
       }
-      // case ReactionTypes.FIRST_ORDER_LOSS: {
-      //   return {
-      //     ...reactionSchema.firstOrderLoss,
-      //     id: id++,
-      //     data: {
-      //       ...reactionSchema.firstOrderLoss.data,
-      //       species: reaction['species'],
-      //       scaling_factor: reaction['scaling factor'] || 1.0
-      //     }
-      //   }
-      // }
+      case ReactionTypes.FIRST_ORDER_LOSS: {
+        let { type, species, scaling_factor, ...data } = reaction.data
+        console.log(reaction)
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          "scaling factor": scaling_factor,
+          "species": species
+        }
+      }
       // case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
       //   return {
       //     ...reactionSchema.ternaryChemicalActivation,
