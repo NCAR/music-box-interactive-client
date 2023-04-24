@@ -131,7 +131,7 @@ function translate_from_camp_config(config) {
       }
       default:
         console.error(`Unknown reaction type: ${reaction.type}`);
-        return { id: id++, shortName() { return "" } }
+        return { id: id++, data: {type: "UNKNOWN"}, shortName() { return "" } }
     }
   })
   return {
@@ -167,7 +167,6 @@ function translate_to_camp_config(config) {
     return camp_species;
   })
   let reactions = config.reactions.map((reaction) => {
-    console.log(reaction)
     let camp_reaction = {
       "type": reaction.data.type,
     }
@@ -183,27 +182,24 @@ function translate_to_camp_config(config) {
       }
       break;
       case ReactionTypes.PHOTOLYSIS: {
-        let { type, products, reactants, ...data } = reaction.data
+        let { type, products, reactant, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          // reactants: parseReactants(reactants),
-          // products: parseProducts(products),
+          reactants: {[reactant]: {}},
+          products: parseProducts(products),
         }
       }
       break;
-      // case ReactionTypes.EMISSION: {
-      //   return {
-      //     ...reactionSchema.emission,
-      //     id: id++,
-      //     data: {
-      //       ...reactionSchema.emission.data,
-      //       scaling_factor: reaction['scaling factor'] || 1.0,
-      //       species: {name: reaction['species'], qty: 1},
-      //       musica_name: reaction['MUSICA name'] || ''
-      //     }
-      //   }
-      // }
+      case ReactionTypes.EMISSION: {
+        console.log(reaction)
+        let { type, species, ...data } = reaction.data
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          species: species.name
+        }
+      }
       // case ReactionTypes.FIRST_ORDER_LOSS: {
       //   return {
       //     ...reactionSchema.firstOrderLoss,
