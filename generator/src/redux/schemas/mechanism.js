@@ -31,7 +31,7 @@ const stringifyReaction = (reactants, products) => {
   return str.length > 50 ? str.slice(0, 16) + "..."  : str;
 }
 
-export const reactionTypes = {
+export const reactionSchmea = {
     arrhenius: {
         data: {
             type: ReactionTypes.ARRHENIUS,

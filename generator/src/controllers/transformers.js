@@ -1,4 +1,4 @@
-import reactionTypes from '../redux/reducers/reaction_types'
+import { reactionSchmea } from '../redux/schemas'
 import { ReactionTypes } from './models'
 
 function translate_from_camp_config(config) {
@@ -12,15 +12,15 @@ function translate_from_camp_config(config) {
     switch (reaction.type) {
       case ReactionTypes.ARRHENIUS: {
         return {
-          ...reactionTypes.arrhenius,
+          ...reactionSchmea.arrhenius,
           id: id++,
           data: {
-            ...reactionTypes.arrhenius.data,
-            A: reaction.A || reactionTypes.arrhenius.data.A,
-            Ea: reaction.Ea || reactionTypes.arrhenius.data.Ea,
-            B: reaction.B || reactionTypes.arrhenius.data.B,
-            D: reaction.D || reactionTypes.arrhenius.data.D,
-            E: reaction.E || reactionTypes.arrhenius.data.E,
+            ...reactionSchmea.arrhenius.data,
+            A: reaction.A || reactionSchmea.arrhenius.data.A,
+            Ea: reaction.Ea || reactionSchmea.arrhenius.data.Ea,
+            B: reaction.B || reactionSchmea.arrhenius.data.B,
+            D: reaction.D || reactionSchmea.arrhenius.data.D,
+            E: reaction.E || reactionSchmea.arrhenius.data.E,
             products: parseProducts(reaction),
             reactants: parseReactants(reaction)
           }
@@ -28,10 +28,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.PHOTOLYSIS: {
         return {
-          ...reactionTypes.photolysis,
+          ...reactionSchmea.photolysis,
           id: id++,
           data: {
-            ...reactionTypes.photolysis.data,
+            ...reactionSchmea.photolysis.data,
             reactant: parseReactants(reaction)[0].name,
             products: parseProducts(reaction),
             scaling_factor: reaction['scaling factor'] || 1.0
@@ -40,10 +40,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.EMISSION: {
         return {
-          ...reactionTypes.emission,
+          ...reactionSchmea.emission,
           id: id++,
           data: {
-            ...reactionTypes.emission.data,
+            ...reactionSchmea.emission.data,
             scaling_factor: reaction['scaling factor'] || 1.0,
             species: {name: reaction['species'], qty: 1},
             musica_name: reaction['MUSICA name'] || ''
@@ -52,10 +52,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
         return {
-          ...reactionTypes.firstOrderLoss,
+          ...reactionSchmea.firstOrderLoss,
           id: id++,
           data: {
-            ...reactionTypes.firstOrderLoss.data,
+            ...reactionSchmea.firstOrderLoss.data,
             species: reaction['species'],
             scaling_factor: reaction['scaling factor'] || 1.0
           }
@@ -63,10 +63,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
         return {
-          ...reactionTypes.ternaryChemicalActivation,
+          ...reactionSchmea.ternaryChemicalActivation,
           id: id++,
           data: {
-            ...reactionTypes.ternaryChemicalActivation.data,
+            ...reactionSchmea.ternaryChemicalActivation.data,
             k0_A: reaction['k0_A'] || 1.0,
             k0_B: reaction['k0_B'] || 0.0,
             k0_C: reaction['k0_C'] || 0.0,
@@ -82,10 +82,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.TROE: {
         return {
-          ...reactionTypes.troe,
+          ...reactionSchmea.troe,
           id: id++,
           data: {
-            ...reactionTypes.troe.data,
+            ...reactionSchmea.troe.data,
             k0_A: reaction['k0_A'] || 1.0,
             k0_B: reaction['k0_B'] || 0.0,
             k0_C: reaction['k0_C'] || 0.0,
@@ -101,10 +101,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.WENNBERG_NO_RO2: {
         return {
-          ...reactionTypes.branched,
+          ...reactionSchmea.branched,
           id: id++,
           data: {
-              ...reactionTypes.branched.data,
+              ...reactionSchmea.branched.data,
               X: reaction['X:'] || 1.0,
               Y: reaction['Y:'] || 0.0,
               a0: reaction['a0'] || 1.0,
@@ -117,10 +117,10 @@ function translate_from_camp_config(config) {
       }
       case ReactionTypes.WENNBERG_TUNNELING: {
         return {
-          ...reactionTypes.tunneling,
+          ...reactionSchmea.tunneling,
           id: id++,
           data: {
-              ...reactionTypes.tunneling,
+              ...reactionSchmea.tunneling,
               A: reaction['A:'] || 1.0,
               B: reaction['B:'] || 0.0,
               C: reaction['C:'] || 0.0,
