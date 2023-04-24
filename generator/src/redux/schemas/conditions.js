@@ -1,0 +1,63 @@
+import React from "react";
+import SpeciesCondition from "../../components/SpeciesCondition";
+import EnvironmentalCondition from "../../components/EnvironmentalCondition";
+import ReactionCondition from "../../components/ReactionCondition";
+
+export const basicConfigSchema = [
+  {
+    type: "FLOAT",
+    label: "Chemistry time step",
+    key: "chemistry_time_step",
+    units: {
+      values: [ "sec", "min", "hour", "day" ],
+      key: "chemistry_time_step_units"
+    }
+  },
+  {
+    type: "FLOAT",
+    label: "Output time step",
+    key: "output_time_step",
+    units: {
+      values: [ "sec", "min", "hour", "day" ],
+      key: "output_time_step_units"
+    }
+  },
+  {
+    type: "FLOAT",
+    label: "Simulation time",
+    key: "simulation_time",
+    units: {
+      values: [ "sec", "min", "hour", "day" ],
+      key: "simulation_time_units"
+    }
+  }
+]
+
+export const initialConditionsSchema = [
+  {
+    label: "Species Concentrations",
+    nameLabel: "Species name",
+    classKey: "initial_species_concentrations",
+    allowAddRemove: true,
+    getComponent(id, schema) {return <SpeciesCondition conditionId={id} schema={schema} />},
+    units: [ "mol m-3", "mol cm-3", "molec m-3", "molec cm-3" ]
+  },
+  {
+    label: "Environmental Conditions",
+    nameLabel: "Property",
+    classKey: "initial_environmental",
+    allowAddRemove: false,
+    getComponent(id, schema) {return <EnvironmentalCondition conditionId={id} schema={schema} />},
+    units: {
+      temperature: [ "K", "C", "F" ],
+      pressure: [ "Pa", "atm", "bar", "kPa", "hPa", "mbar" ]
+    }
+  },
+  {
+    label: "Reaction Rates and Rate Constants",
+    nameLabel: "Reaction label",
+    classKey: "initial_reactions",
+    allowAddRemove: true,
+    getComponent(id, schema) {return <ReactionCondition conditionId={id} schema={schema} />}
+  }
+]

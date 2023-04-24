@@ -33,3 +33,21 @@ export const getProducts = (store, reactionId, schema) => {
     });
     return reaction[0].data[schema.key];
 };
+
+export const getUserDefinedRates = (store) => {
+    return getMechanism(store).reactions.filter(reaction => {
+        return reaction.isUserDefined
+               && reaction.data.musica_name
+               && reaction.data.musica_name.length;
+    }).map(reaction => {
+        return reaction.data.musica_name;
+    });
+}
+
+export const getPossibleUnits = (store, musicaName) => {
+    return getMechanism(store).reactions.filter(reaction => {
+        return reaction.data.musica_name === musicaName;
+    }).map(reaction => {
+        return reaction.possibleUnits;
+    })[0];
+}

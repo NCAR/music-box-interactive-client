@@ -31,7 +31,7 @@ const stringifyReaction = (reactants, products) => {
   return str.length > 50 ? str.slice(0, 16) + "..."  : str;
 }
 
-const reactionTypes = {
+export const reactionSchmea = {
     arrhenius: {
         data: {
             type: ReactionTypes.ARRHENIUS,
@@ -105,6 +105,8 @@ const reactionTypes = {
             musica_name: ""
         },
         typeLabel: "Emission",
+        isUserDefined: true,
+        possibleUnits: [ "mol m-3 s-1" ],
         shortName() { return stringifyReaction( [ ], this.data.species !== undefined ?
                                                      [ { name: this.data.species } ] : [ ] ); },
         elements: [
@@ -140,9 +142,12 @@ const reactionTypes = {
         data: {
             type: ReactionTypes.FIRST_ORDER_LOSS,
             species: undefined,
-            scaling_factor: 1.0
+            scaling_factor: 1.0,
+            musica_name: ""
         },
         typeLabel: "First-Order Loss",
+        isUserDefined: true,
+        possibleUnits: [ "s-1" ],
         shortName() { return stringifyReaction( this.data.species !== undefined ?
                                                 [ { name: this.data.species } ] : [ ], [ ] ); },
         elements: [
@@ -179,9 +184,12 @@ const reactionTypes = {
             type: ReactionTypes.PHOTOLYSIS,
             reactant: undefined,
             products: [],
-            scaling_factor: 1.0
+            scaling_factor: 1.0,
+            musica_name: ""
         },
         typeLabel: "Photolysis",
+        isUserDefined: true,
+        possibleUnits: [ "s-1" ],
         shortName() { return stringifyReaction( this.data.reactant !== undefined ?
                                                 [ { name: this.data.reactant } ] : [ ],
                                                 this.data.products ); },
@@ -549,5 +557,3 @@ const reactionTypes = {
         ]
     }
 }
-
-export default reactionTypes;

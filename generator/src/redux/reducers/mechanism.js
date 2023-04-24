@@ -164,10 +164,10 @@ export const mechanismReducer = (state = initialState, action) => {
                                   ...reactant,
                                   id: reactantId
                               }
-                          ]
+                          ].sort( compareId )
                       }
                   }
-              ]
+              ].sort( compareId )
           };
         }
         case utils.action_types.REMOVE_REACTANT: {
@@ -192,10 +192,10 @@ export const mechanismReducer = (state = initialState, action) => {
                           ...updatedReaction.data,
                           reactants: [
                               ...otherReactants
-                          ]
+                          ].sort( compareId )
                       }
                   }
-              ]
+              ].sort( compareId )
           };
         }
         case utils.action_types.ADD_PRODUCT: {
@@ -228,10 +228,10 @@ export const mechanismReducer = (state = initialState, action) => {
                                   ...product,
                                   id: productId
                               }
-                          ]
+                          ].sort( compareId )
                       }
                   }
-              ]
+              ].sort( compareId )
           };
         }
         case utils.action_types.REMOVE_PRODUCT: {
@@ -257,10 +257,10 @@ export const mechanismReducer = (state = initialState, action) => {
                           ...updatedReaction.data,
                           [schema.key]: [
                               ...otherReactants
-                          ]
+                          ].sort( compareId )
                       }
                   }
-              ]
+              ].sort( compareId )
           };
         }
         case utils.action_types.EXAMPLE_FETCHED: {

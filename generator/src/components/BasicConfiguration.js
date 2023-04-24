@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from 'react-redux'
-import basicConfigEntries from "../redux/reducers/configuration_schema";
-import { getBasicConfiguration } from "../redux/selectors";
+import { basicConfigSchema } from "../redux/schemas";
+import { getConditions } from "../redux/selectors";
 import BasicConfigProperty from "./BasicConfigProperty";
 
 function BasicConfiguration(props) {
@@ -15,7 +15,7 @@ function BasicConfiguration(props) {
               </div>
               <div className="bg-ncar-body p-3">
                 <input type="hidden" />
-                {basicConfigEntries.map((param, index) => {
+                {basicConfigSchema.map((param, index) => {
                   return <BasicConfigProperty key={`config-${index}`}
                                               data={props.data}
                                               schema={param} />;
@@ -29,7 +29,7 @@ function BasicConfiguration(props) {
 }
 
 const mapStateToProps = (state) => {
-  return { data: getBasicConfiguration(state) }
+  return { data: getConditions(state, { classKey: "basic" }) }
 }
 
 export default connect(mapStateToProps)(BasicConfiguration)
