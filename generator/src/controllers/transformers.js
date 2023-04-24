@@ -121,7 +121,7 @@ function translate_from_camp_config(config) {
           ...reactionSchema.tunneling,
           id: id++,
           data: {
-            ...reactionSchema.tunneling,
+            ...reactionSchema.tunneling.data,
             A: reaction['A'] || 1.0,
             B: reaction['B'] || 0.0,
             C: reaction['C'] || 0.0,
@@ -235,7 +235,6 @@ function translate_to_camp_config(config) {
       }
       case ReactionTypes.WENNBERG_NO_RO2: {
         let { type, reactants, primary_products, secondary_products, ...data } = reaction.data
-        console.log(reaction)
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -243,24 +242,18 @@ function translate_to_camp_config(config) {
           "alkoxy products": parseProducts(primary_products),
           "nitrate products": parseProducts(secondary_products),
         }
-        console.log(camp_reaction)
         break;
       }
-      // case ReactionTypes.WENNBERG_TUNNELING: {
-      //   return {
-      //     ...reactionSchema.tunneling,
-      //     id: id++,
-      //     data: {
-      //         ...reactionSchema.tunneling,
-      //         A: reaction['A:'] || 1.0,
-      //         B: reaction['B:'] || 0.0,
-      //         C: reaction['C:'] || 0.0,
-      //         reactants: parseReactants(reaction),
-      //         products: parseProducts(reaction)
-      //     },
-      //   }
-
-      // }
+      case ReactionTypes.WENNBERG_TUNNELING: {
+        let { type, reactants, products, ...data } = reaction.data
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          reactants: parseReactants(reactants),
+          products: parseProducts(products)
+        }
+        break;
+      }
       default:
         break
     }
@@ -273,7 +266,7 @@ function translate_to_camp_config(config) {
 
   let camp_config = { "camp-data": [...species, reactions] }
 
-  return camp_config
+  return camp_config;
 }
 
 export {
