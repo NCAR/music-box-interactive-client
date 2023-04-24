@@ -75,7 +75,7 @@ function translate_from_camp_config(config) {
             kinf_B: reaction['kinf_B'] || 0.0,
             kinf_C: reaction['kinf_C'] || 0.0,
             Fc: reaction['Fc'] || 0.6,
-            N: reaction['N:'] || 1.0,
+            N: reaction['N'] || 1.0,
             reactants: parseReactants(reaction),
             products: parseProducts(reaction)
           }
@@ -94,7 +94,7 @@ function translate_from_camp_config(config) {
             kinf_B: reaction['kinf_B'] || 0.0,
             kinf_C: reaction['kinf_C'] || 0.0,
             Fc: reaction['Fc'] || 0.6,
-            N: reaction['N:'] || 1.0,
+            N: reaction['N'] || 1.0,
             products: parseProducts(reaction),
             reactants: parseReactants(reaction)
           }
@@ -106,10 +106,10 @@ function translate_from_camp_config(config) {
           id: id++,
           data: {
             ...reactionSchema.branched.data,
-            X: reaction['X:'] || 1.0,
-            Y: reaction['Y:'] || 0.0,
+            X: reaction['X'] || 1.0,
+            Y: reaction['Y'] || 0.0,
             a0: reaction['a0'] || 1.0,
-            n: reaction['n:'] || 0,
+            n: reaction['n'] || 0,
             reactants: parseReactants(reaction),
             primary_products: parseAlkoxyProducts(reaction['alkoxy products']),
             secondary_products: parseNitrateProducts(reaction['nitrate products'])
@@ -122,9 +122,9 @@ function translate_from_camp_config(config) {
           id: id++,
           data: {
             ...reactionSchema.tunneling,
-            A: reaction['A:'] || 1.0,
-            B: reaction['B:'] || 0.0,
-            C: reaction['C:'] || 0.0,
+            A: reaction['A'] || 1.0,
+            B: reaction['B'] || 0.0,
+            C: reaction['C'] || 0.0,
             reactants: parseReactants(reaction),
             products: parseProducts(reaction)
           },
@@ -233,22 +233,19 @@ function translate_to_camp_config(config) {
         console.log(camp_reaction)
         break;
       }
-      // case ReactionTypes.WENNBERG_NO_RO2: {
-      //   return {
-      //     ...reactionSchema.branched,
-      //     id: id++,
-      //     data: {
-      //         ...reactionSchema.branched.data,
-      //         X: reaction['X:'] || 1.0,
-      //         Y: reaction['Y:'] || 0.0,
-      //         a0: reaction['a0'] || 1.0,
-      //         n: reaction['n:'] || 0,
-      //         reactants: parseReactants(reaction),
-      //         primary_products: parseAlkoxyProducts(reaction['alkoxy products']),
-      //         secondary_products: parseNitrateProducts(reaction['nitrate products'])
-      //     },
-      //   }
-      // }
+      case ReactionTypes.WENNBERG_NO_RO2: {
+        let { type, reactants, primary_products, secondary_products, ...data } = reaction.data
+        console.log(reaction)
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          reactants: parseReactants(reactants),
+          "alkoxy products": parseProducts(primary_products),
+          "nitrate products": parseProducts(secondary_products),
+        }
+        console.log(camp_reaction)
+        break;
+      }
       // case ReactionTypes.WENNBERG_TUNNELING: {
       //   return {
       //     ...reactionSchema.tunneling,
