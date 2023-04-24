@@ -132,7 +132,7 @@ function translate_from_camp_config(config) {
       }
       default:
         console.error(`Unknown reaction type: ${reaction.type}`);
-        return { id: id++, data: {type: "UNKNOWN"}, shortName() { return "" } }
+        return { id: id++, data: { type: "UNKNOWN" }, shortName() { return "" } }
     }
   })
   return {
@@ -180,18 +180,18 @@ function translate_to_camp_config(config) {
           reactants: parseReactants(reactants),
           products: parseProducts(products),
         }
+        break;
       }
-      break;
       case ReactionTypes.PHOTOLYSIS: {
         let { type, products, reactant, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: {[reactant]: {}},
+          reactants: { [reactant]: {} },
           products: parseProducts(products),
         }
+        break;
       }
-      break;
       case ReactionTypes.EMISSION: {
         let { type, species, scaling_factor, ...data } = reaction.data
         camp_reaction = {
@@ -200,36 +200,28 @@ function translate_to_camp_config(config) {
           "scaling factor": scaling_factor,
           species: species.name
         }
+        break;
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
         let { type, species, scaling_factor, ...data } = reaction.data
-        console.log(reaction)
         camp_reaction = {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
           "species": species
         }
+        break;
       }
-      // case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
-      //   return {
-      //     ...reactionSchema.ternaryChemicalActivation,
-      //     id: id++,
-      //     data: {
-      //       ...reactionSchema.ternaryChemicalActivation.data,
-      //       k0_A: reaction['k0_A'] || 1.0,
-      //       k0_B: reaction['k0_B'] || 0.0,
-      //       k0_C: reaction['k0_C'] || 0.0,
-      //       kinf_A: reaction['kinf_A'] || 1.0,
-      //       kinf_B: reaction['kinf_B'] || 0.0,
-      //       kinf_C: reaction['kinf_C'] || 0.0,
-      //       Fc: reaction['Fc'] || 0.6,
-      //       N: reaction['N:'] || 1.0,
-      //       reactants: parseReactants(reaction),
-      //       products: parseProducts(reaction)
-      //     }
-      //   }
-      // }
+      case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
+        let { type, products, reactants, ...data } = reaction.data
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          reactants: parseReactants(reactants),
+          products: parseProducts(products)
+        }
+        break;
+      }
       // case ReactionTypes.TROE: {
       //   return {
       //     ...reactionSchema.troe,
