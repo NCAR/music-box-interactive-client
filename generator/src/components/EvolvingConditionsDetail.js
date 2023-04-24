@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import Table from "react-bootstrap/Table";
 import { getEvolvingConditions } from "../redux/selectors";
 
 const EvolvingConditionsDetail = props => {
@@ -10,10 +11,27 @@ const EvolvingConditionsDetail = props => {
         <h4 className="my-0 fw-normal">Evolving Conditions</h4>
       </div>
       <div className="body card-body">
-        Evolving conditions table
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>time</th>
+              {props.conditions.values.map(({ name }, index) => {
+                return (
+                  <th key={`column-${index}`}>{name}</th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </Table>
       </div>
     </div>
   );
 }
 
-export default connect()(EvolvingConditionsDetail);
+const mapStateToProps = state => {
+  return { conditions: getEvolvingConditions(state) }
+}
+
+export default connect(mapStateToProps)(EvolvingConditionsDetail);

@@ -24,7 +24,20 @@ const initialState = {
             units: "Pa"
         }
     ],
-    initial_reactions: []
+    initial_reactions: [],
+    evolving: {
+        times: [ 0.0, 1.2, 2.5 ],
+        values: [
+            {
+                name: "foo",
+                values: [ 14.3, 62.3, 42.3 ]
+            },
+            {
+                name: "bar",
+                values: [ 2.3, 12.4, 55.3 ]
+            }
+        ]
+    }
 }
 
 const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
