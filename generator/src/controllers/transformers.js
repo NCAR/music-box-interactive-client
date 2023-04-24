@@ -141,7 +141,20 @@ function translate_from_camp_config(config) {
 }
 
 function translate_to_camp_config(config) {
-  return config
+  let species = config.gasSpecies.map((species) => {
+    return {
+      "name": species.name,
+      "type": "CHEM_SPEC",
+      ...species.properties.reduce((acc, prop) => ({...acc, [prop.name]: prop.value}), {})
+    }
+  })
+  let reactions = config.reactions.map((reaction) => {
+    console.log(reaction)
+  })
+
+  let camp_config = { "camp-data" : [...species, ...reactions] }
+
+  return camp_config
 }
 
 export {
