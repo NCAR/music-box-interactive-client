@@ -1,3 +1,5 @@
+import { ReactionTypes } from '../../controllers/models'
+
 const stringifyReaction = (reactants, products) => {
   const validReactants = reactants.filter(species => {
       return species.name !== undefined;
@@ -32,7 +34,7 @@ const stringifyReaction = (reactants, products) => {
 export const reactionTypes = {
     arrhenius: {
         data: {
-            type: "ARRHENIUS",
+            type: ReactionTypes.ARRHENIUS,
             A: 1.0,
             Ea: 0.0,
             B: 0.0,
@@ -97,7 +99,7 @@ export const reactionTypes = {
     },
     emission: {
         data: {
-            type: "EMISSION",
+            type: ReactionTypes.EMISSION,
             species: undefined,
             scaling_factor: 1.0,
             musica_name: ""
@@ -138,7 +140,7 @@ export const reactionTypes = {
     },
     firstOrderLoss: {
         data: {
-            type: "FIRST_ORDER_LOSS",
+            type: ReactionTypes.FIRST_ORDER_LOSS,
             species: undefined,
             scaling_factor: 1.0,
             musica_name: ""
@@ -179,7 +181,7 @@ export const reactionTypes = {
     },
     photolysis: {
         data: {
-            type: "PHOTOLYSIS",
+            type: ReactionTypes.PHOTOLYSIS,
             reactant: undefined,
             products: [],
             scaling_factor: 1.0,
@@ -231,7 +233,7 @@ export const reactionTypes = {
     },
     ternaryChemicalActivation: {
         data: {
-            type: "TERNARY_CHEMICAL_ACTIVATION",
+            type: ReactionTypes.TERNARY_CHEMICAL_ACTIVATION,
             k0_A: 1.0,
             k0_B: 0.0,
             k0_C: 0.0,
@@ -325,7 +327,7 @@ export const reactionTypes = {
     },
     troe: {
         data: {
-            type: "TROE",
+            type: ReactionTypes.TROE,
             k0_A: 1.0,
             k0_B: 0.0,
             k0_C: 0.0,
@@ -419,7 +421,7 @@ export const reactionTypes = {
     },
     branched: {
         data: {
-            type: "WENNBERG_NO_RO2",
+            type: ReactionTypes.WENNBERG_NO_RO2,
             X: 1.0,
             Y: 0.0,
             a0: 1.0,
@@ -502,7 +504,7 @@ export const reactionTypes = {
     },
     tunneling: {
         data: {
-            type: "WENNBERG_TUNNELING",
+            type: ReactionTypes.WENNBERG_TUNNELING,
             A: 1.0,
             B: 0.0,
             C: 0.0,

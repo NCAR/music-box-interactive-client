@@ -1,4 +1,5 @@
 import utils from '../utils';
+import { translate_from_camp_config } from '../../controllers/transformers'
 
 const initialState = {
     gasSpecies: [],
@@ -263,10 +264,7 @@ export const mechanismReducer = (state = initialState, action) => {
           };
         }
         case utils.action_types.EXAMPLE_FETCHED: {
-            return {
-                gasSpecies: action.payload['species'].map((species) => ({name: species, properties: []})),
-                reactions: action.payload['reactions']
-            };
+            return translate_from_camp_config(action.payload);
         }
         default:
             return state;
