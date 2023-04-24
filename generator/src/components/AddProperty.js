@@ -9,40 +9,53 @@ function AddProperty(props) {
     props.addProperty({ property: property, speciesName: props.speciesName });
   };
 
+  let options = [
+    {
+      displayName: "description",
+      name: "description",
+      "data-type": "string",
+      value: ""
+    },
+    {
+      displayName: "absolute convergence tolerance",
+      name: "absolute convergence tolerance [mol mol-1]",
+      "data-type": "number",
+      value: 1e-12
+    },
+    {
+      displayName: "molecular weight",
+      name: "molecular weight [kg mol-1]",
+      "data-type": "number",
+      value: 0
+    },
+    {
+      displayName: "fixed concentration",
+      name: "fixed concentration",
+      "data-type": "string",
+      value: "CONSTANT"
+    }
+  ]
+
   return (
     <Dropdown>
       <Dropdown.Toggle variant="success" className="btn btn-primary">
         Add property
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item
-           href="#"
-           onClick={() => handleAddProperty({ name: "description",
-                                              "data-type": "string",
-                                              value: "" })}>
-          description
-        </Dropdown.Item>
-        <Dropdown.Item
-           href="#"
-           onClick={() => handleAddProperty({ name: "absolute convergence tolerance [mol mol-1]",
-                                              "data-type": "number",
-                                              value: 1e-12 })}>
-          absolute convergence tolerance
-        </Dropdown.Item>
-        <Dropdown.Item
-           href="#"
-           onClick={() => handleAddProperty({ name: "molecular weight [kg mol-1]",
-                                              "data-type": "number",
-                                              value: 0 })}>
-          molecular weight
-        </Dropdown.Item>
-        <Dropdown.Item
-           href="#"
-           onClick={() => handleAddProperty({ name: "fixed concentration",
-                                              "data-type": "string",
-                                              value: "CONSTANT" })}>
-          fixed concentration
-        </Dropdown.Item>
+        {
+          options.map(({ displayName, ...option }, index) => {
+            console.log(displayName, index)
+            return (
+              <Dropdown.Item
+                key={index}
+                href="#"
+                onClick={() => handleAddProperty(option)}>
+                {displayName}
+              </Dropdown.Item>
+            )
+          }
+          )
+        }
       </Dropdown.Menu>
     </Dropdown>
   );
