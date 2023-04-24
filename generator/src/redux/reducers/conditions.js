@@ -86,6 +86,12 @@ export const conditionsReducer = (state = initialState, action) => {
                 ].sort( compareId )
             };
         }
+        case utils.action_types.UPDATE_EVOLVING_CONDITIONS: {
+            return {
+                ...state,
+                evolving: action.payload.content
+            };
+        }
         default:
             return state;
     }

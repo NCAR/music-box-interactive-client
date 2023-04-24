@@ -20,3 +20,10 @@ export const removeCondition = (content) => {
         payload: { content }
     }
 }
+
+export const updateEvolvingConditions = content => {
+    return {
+        type: utils.action_types.UPDATE_EVOLVING_CONDITIONS,
+        payload: { content }
+    }
+}
