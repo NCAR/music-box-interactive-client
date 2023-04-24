@@ -222,25 +222,17 @@ function translate_to_camp_config(config) {
         }
         break;
       }
-      // case ReactionTypes.TROE: {
-      //   return {
-      //     ...reactionSchema.troe,
-      //     id: id++,
-      //     data: {
-      //       ...reactionSchema.troe.data,
-      //       k0_A: reaction['k0_A'] || 1.0,
-      //       k0_B: reaction['k0_B'] || 0.0,
-      //       k0_C: reaction['k0_C'] || 0.0,
-      //       kinf_A: reaction['kinf_A'] || 1.0,
-      //       kinf_B: reaction['kinf_B'] || 0.0,
-      //       kinf_C: reaction['kinf_C'] || 0.0,
-      //       Fc: reaction['Fc'] || 0.6,
-      //       N: reaction['N:'] || 1.0,
-      //       products: parseProducts(reaction),
-      //       reactants: parseReactants(reaction)
-      //     }
-      //   }
-      // }
+      case ReactionTypes.TROE: {
+        let { type, products, reactants, ...data } = reaction.data
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          reactants: parseReactants(reactants),
+          products: parseProducts(products)
+        }
+        console.log(camp_reaction)
+        break;
+      }
       // case ReactionTypes.WENNBERG_NO_RO2: {
       //   return {
       //     ...reactionSchema.branched,
