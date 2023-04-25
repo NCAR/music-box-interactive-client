@@ -27,3 +27,24 @@ export const updateEvolvingConditions = content => {
         payload: { content }
     }
 }
+
+export const updateEvolvingTime = content => {
+    return {
+        type: utils.action_types.UPDATE_EVOLVING_TIME,
+        payload: { content }
+    }
+}
+
+export const updateEvolvingConditionValue = content => {
+    return {
+        type: utils.action_types.UPDATE_EVOLVING_CONDITION_VALUE,
+        payload: { content }
+    }
+}
+
+export const resortEvolvingConditions = content => {
+    return {
+        type: utils.action_types.RESORT_EVOLVING_CONDITIONS,
+        payload: { content }
+    }
+}

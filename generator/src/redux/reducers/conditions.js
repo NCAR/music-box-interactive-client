@@ -92,6 +92,67 @@ export const conditionsReducer = (state = initialState, action) => {
                 evolving: { ...action.payload.content }
             };
         }
+        case utils.action_types.UPDATE_EVOLVING_TIME: {
+            const timeIndex = action.payload.content.timeIndex;
+            const value = action.payload.content.value;
+            return {
+                ...state,
+                evolving: {
+                    ...state.evolving,
+                    times: [
+                        ...state.evolving.times.slice(0, timeIndex),
+                        value,
+                        ...state.evolving.times.slice(timeIndex+1)
+                    ]
+                }
+            }
+        }
+        case utils.action_types.UPDATE_EVOLVING_CONDITION_VALUE: {
+            const timeIndex = action.payload.content.timeIndex;
+            const conditionName = action.payload.content.conditionName;
+            const value = action.payload.content.value;
+            return {
+                ...state,
+                evolving: {
+                    ...state.evolving,
+                    values: [
+                        ...state.evolving.values.map((condition, index) =>
+                            condition.name !== conditionName ?
+                            condition :
+                            {
+                                ...condition,
+                                values: [
+                                    ...condition.values.slice(0, timeIndex),
+                                    value,
+                                    ...condition.values.slice(timeIndex+1)
+                                ]
+                            }
+                        )
+                    ]
+                }
+            }
+        }
+        case utils.action_types.RESORT_EVOLVING_CONDITIONS: {
+            const compareTime = (a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+            const sortOrder = state.evolving.times.map((time, index) => {
+                return { time: parseFloat(time), index: index }
+            }).sort( compareTime ).map(({ index }) => index);
+            return {
+                ...state,
+                evolving: {
+                    ...state.evolving,
+                    times: state.evolving.times.map((_, index) =>
+                        parseFloat(state.evolving.times[sortOrder[index]])),
+                    values: state.evolving.values.map(condition => {
+                        return {
+                            ...condition,
+                            values: condition.values.map((_, index) =>
+                                parseFloat(condition.values[sortOrder[index]]))
+                        }
+                    })
+                }
+            }
+        }
         default:
             return state;
     }

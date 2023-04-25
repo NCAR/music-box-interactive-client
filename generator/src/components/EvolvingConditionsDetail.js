@@ -2,59 +2,26 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import Table from "react-bootstrap/Table";
 import { getEvolvingConditions } from "../redux/selectors";
-import { updateEvolvingConditions } from "../redux/actions";
+import { resortEvolvingConditions, updateEvolvingTime, updateEvolvingConditionValue } from "../redux/actions";
 
 const EvolvingConditionsDetail = props => {
 
   const handleRefresh = () => {
-    const conditions = props.conditions
-    const compareTime = (a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
-    const sortOrder = conditions.times.map((time, index) => {
-      return { time: parseFloat(time), index: index }
-    }).sort( compareTime ).map(({ index }) => index);
-    props.updateEvolvingConditions({
-      ...conditions,
-      times: conditions.times.map((_, index) => parseFloat(conditions.times[sortOrder[index]])),
-      values: conditions.values.map(condition => {
-        return {
-          ...condition,
-          values: condition.values.map((_, index) => parseFloat(condition.values[sortOrder[index]]))
-        }
-      })
-    });
+    props.resortEvolvingConditions();
   }
 
   const handleUpdateTime = (timeIndex, value) => {
-    const conditions = { ...props.conditions }
-    const times = [
-      ...conditions.times.slice(0,timeIndex),
-      value,
-      ...conditions.times.slice(timeIndex+1)
-    ]
-    props.updateEvolvingConditions({
-      ...conditions,
-      times: times
+    props.updateEvolvingTime({
+      timeIndex: timeIndex,
+      value: value
     });
   }
 
-  const handleUpdateConditionValue = (timeIndex, columnName, value) => {
-    const conditions = { ...props.conditions }
-    props.updateEvolvingConditions({
-      ...conditions,
-      values: [
-        ...conditions.values.map((condition, index) =>
-          condition.name !== columnName ?
-          condition :
-          {
-            ...condition,
-            values: [
-              ...condition.values.slice(0,timeIndex),
-              value,
-              ...condition.values.slice(timeIndex+1)
-            ]
-          }
-        )
-      ]
+  const handleUpdateConditionValue = (timeIndex, conditionName, value) => {
+    props.updateEvolvingConditionValue({
+      timeIndex: timeIndex,
+      conditionName: conditionName,
+      value: value
     })
   }
 
@@ -115,4 +82,10 @@ const mapStateToProps = state => {
   return { conditions: getEvolvingConditions(state) }
 }
 
-export default connect(mapStateToProps, { updateEvolvingConditions })(EvolvingConditionsDetail);
+const dispatchers = {
+  resortEvolvingConditions,
+  updateEvolvingTime,
+  updateEvolvingConditionValue
+}
+
+export default connect(mapStateToProps, dispatchers)(EvolvingConditionsDetail);
