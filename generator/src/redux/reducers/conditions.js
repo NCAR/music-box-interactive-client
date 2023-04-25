@@ -1,4 +1,5 @@
 import utils from '../utils';
+import { extract_conditions_from_example } from '../../controllers/transformers'
 
 const initialState = {
     basic: {
@@ -72,6 +73,9 @@ export const conditionsReducer = (state = initialState, action) => {
                     ...otherConditions,
                 ].sort( compareId )
             };
+        }
+        case utils.action_types.EXAMPLE_FETCHED: {
+            return extract_conditions_from_example(action.payload);
         }
         default:
             return state;

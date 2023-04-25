@@ -1,7 +1,7 @@
 import { reactionSchema } from '../redux/schemas'
 import { ReactionTypes } from './models'
 
-function translate_from_camp_config(config) {
+function extract_mechanism_from_example(config) {
   let id = 0;
   const parseReactants = (reaction) => Object.entries(reaction.reactants).map(([name, props]) => ({ name: name, qty: props.qty || 1 }));
   const parseProducts = (reaction) => Object.entries(reaction.products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
@@ -180,6 +180,37 @@ function translate_from_camp_config(config) {
   }
 }
 
+function extract_conditions_from_example(config) {
+  console.log(config.conditions)
+  let schema = {
+    basic: {
+        chemistry_time_step: 1.0,
+        chemistry_time_step_units: "sec",
+        output_time_step: 1.0,
+        output_time_step_units: "sec",
+        simulation_time: 100.0,
+        simulation_time_units: "sec"
+    },
+    initial_species_concentrations: [ ],
+    initial_environmental: [
+        {
+            id: 0,
+            name: "temperature",
+            value: 298.15,
+            units: "K"
+        },
+        {
+            id: 1,
+            name: "pressure",
+            value: 101325.0,
+            units: "Pa"
+        }
+    ],
+    initial_reactions: []
+  }
+  return schema;
+}
+
 function translate_to_camp_config(config) {
   const parseReactants = (reactants) => reactants.map(({ name, qty }) => ({ [name]: { qty: qty } }));
   const parseProducts = (products) => products.map((product) => ({ [product.name]: { yield: product.yield } }));
@@ -269,7 +300,6 @@ function translate_to_camp_config(config) {
           reactants: parseReactants(reactants),
           products: parseProducts(products)
         }
-        console.log(camp_reaction)
         break;
       }
       case ReactionTypes.WENNBERG_NO_RO2: {
@@ -348,7 +378,8 @@ function translate_to_musicbox_conditions(conditions) {
 }
 
 export {
-  translate_from_camp_config,
+  extract_mechanism_from_example,
+  extract_conditions_from_example,
   translate_to_camp_config,
   translate_to_musicbox_conditions
 }

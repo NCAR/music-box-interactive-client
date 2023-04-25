@@ -1,5 +1,5 @@
 import utils from '../utils';
-import { translate_from_camp_config } from '../../controllers/transformers'
+import { extract_mechanism_from_example } from '../../controllers/transformers'
 
 const initialState = {
     gasSpecies: [],
@@ -264,7 +264,7 @@ export const mechanismReducer = (state = initialState, action) => {
           };
         }
         case utils.action_types.EXAMPLE_FETCHED: {
-            return translate_from_camp_config(action.payload);
+            return extract_mechanism_from_example(action.payload);
         }
         default:
             return state;
