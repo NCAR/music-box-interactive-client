@@ -269,7 +269,32 @@ function translate_to_camp_config(config) {
   return camp_config;
 }
 
+function translate_to_musicbox_conditions(conditions) {
+  console.log(conditions)
+  let initial_species_concentrations = conditions.initial_species_concentrations.reduce((acc, curr) => {
+    acc[curr.name] = {[`initial value [${curr.units}]`]: parseFloat(curr.value)}
+    return acc;
+  }, {});
+  let musicbox_conditions = {
+    "box model options": { 
+      "grid": "box",
+      [`chemistry time step [${conditions.basic.chemistry_time_step_units}]`]: conditions.basic.chemistry_time_step,
+      [`output time step [${conditions.basic.output_time_step_units}]`]: conditions.basic.output_time_step,
+      [`simulation length [${conditions.basic.simulation_time_units}]`]: conditions.basic.simulation_time,
+    },
+    "chemical species": { 
+      ...initial_species_concentrations
+    },
+    "environmental conditions": { },
+    "evolving conditions": { },
+    "model components": [ ]
+  }
+
+  return musicbox_conditions;
+}
+
 export {
   translate_from_camp_config,
   translate_to_camp_config,
+  translate_to_musicbox_conditions
 }

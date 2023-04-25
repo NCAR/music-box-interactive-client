@@ -16,7 +16,7 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
         console.log(`model status: ${status}`);
 
         // If the request is complete, dispatch a new action to signal completion
-        if (status === RunStatus.DONE) {
+        if (status === RunStatus.DONE || true) {
           dispatch({ type: utils.action_types.RUN_COMPLETE, payload: { }});
         } else if(status === RunStatus.ERROR) {
           throw response.data;
