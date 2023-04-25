@@ -87,9 +87,9 @@ export const conditionsReducer = (state = initialState, action) => {
             };
         }
         case utils.action_types.UPDATE_EVOLVING_CONDITIONS: {
-            return {
+          return {
                 ...state,
-                evolving: action.payload.content
+                evolving: { ...action.payload.content }
             };
         }
         default:
