@@ -8,7 +8,46 @@ function translate_from_camp_config(config) {
   const parseAlkoxyProducts = (products) => Object.entries(products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
   const parseNitrateProducts = parseAlkoxyProducts;
 
-  const reactions = config['reactions'].map(reaction => {
+  let camp_reactions = config.mechanism.reactions['camp-data'] || [];
+  let camp_species = config.mechanism.species['camp-data'] || [];
+
+  if(camp_reactions.length > 0) {
+    camp_reactions = camp_reactions[0].reactions
+  }
+
+  const species = camp_species.map((species) => {
+    let properties = []
+    Object.keys(species).map((key) => {
+      switch(key) {
+        case "tracer type": {
+          properties.push({
+            name: "fixed concentration",
+            value: species[key]
+          })
+          break;
+        }
+        case "absolute tolerance": {
+          properties.push({
+            name: "absolute convergence tolerance [mol mol-1]",
+            value: species[key]
+          })
+          break;
+        }
+        case "molecular weight": {
+          properties.push({
+            name: "molecular weight [kg mol-1]",
+            value: species[key]
+          })
+          break;
+        }
+        default:
+          break;
+      }
+    })
+    return { name: species.name, properties: properties }
+  });
+
+  const reactions = camp_reactions.map(reaction => {
     switch (reaction.type) {
       case ReactionTypes.ARRHENIUS: {
         return {
@@ -136,7 +175,7 @@ function translate_from_camp_config(config) {
     }
   })
   return {
-    gasSpecies: config['species'].map((species) => ({ name: species, properties: [] })),
+    gasSpecies: species,
     reactions: reactions
   }
 }
