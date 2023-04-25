@@ -1,10 +1,15 @@
 import utils from '../utils';
 import { run } from '../../controllers/api'
-import { translate_to_camp_config } from '../../controllers/transformers'
+import { 
+  translate_to_camp_config, 
+  translate_to_musicbox_conditions 
+} from '../../controllers/transformers'
 
-export const doRun = (config) => async (dispatch) => {
+export const doRun = (mechanism, conditions) => async (dispatch) => {
   try {
-    await run(translate_to_camp_config(config));
+    const camp_mechanism = translate_to_camp_config(mechanism);
+    const musicbox_conditions = translate_to_musicbox_conditions(conditions);
+    await run({mechanism: camp_mechanism, conditions: musicbox_conditions});
     dispatch({ type: utils.action_types.START_POLLING, payload: {} });
   } catch (error) {
     console.error(`Error starting run: ${error.message}`);

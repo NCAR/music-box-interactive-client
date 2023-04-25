@@ -269,7 +269,47 @@ function translate_to_camp_config(config) {
   return camp_config;
 }
 
+function translate_to_musicbox_conditions(conditions) {
+  let intial_value_reducer = (acc, curr) => {
+    acc[curr.name] = {[`initial value [${curr.units}]`]: parseFloat(curr.value)}
+    return acc;
+  };
+
+  let musicbox_conditions = {
+    "box model options": { 
+      "grid": "box",
+      [`chemistry time step [${conditions.basic.chemistry_time_step_units}]`]: conditions.basic.chemistry_time_step,
+      [`output time step [${conditions.basic.output_time_step_units}]`]: conditions.basic.output_time_step,
+      [`simulation length [${conditions.basic.simulation_time_units}]`]: conditions.basic.simulation_time,
+    },
+    "chemical species": { 
+      ...conditions.initial_species_concentrations.reduce(intial_value_reducer, {})
+    },
+    "environmental conditions": {
+      ...conditions.initial_environmental.reduce(intial_value_reducer, {})
+     },
+    "evolving conditions": { },
+    "model components": [
+      {
+        "type": "CAMP",
+        "configuration file": "camp_data/config.json",
+        "override species": {
+            "M": {
+                "mixing ratio mol mol-1": 1.0
+            }
+        },
+        "suppress output": {
+            "M": {}
+        }
+      }
+    ]
+  }
+
+  return musicbox_conditions;
+}
+
 export {
   translate_from_camp_config,
   translate_to_camp_config,
+  translate_to_musicbox_conditions
 }
