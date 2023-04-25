@@ -270,8 +270,6 @@ function translate_to_camp_config(config) {
 }
 
 function translate_to_musicbox_conditions(conditions) {
-  console.log(conditions)
-
   let intial_value_reducer = (acc, curr) => {
     acc[curr.name] = {[`initial value [${curr.units}]`]: parseFloat(curr.value)}
     return acc;
@@ -291,7 +289,20 @@ function translate_to_musicbox_conditions(conditions) {
       ...conditions.initial_environmental.reduce(intial_value_reducer, {})
      },
     "evolving conditions": { },
-    "model components": [ ]
+    "model components": [
+      {
+        "type": "CAMP",
+        "configuration file": "camp_data/config.json",
+        "override species": {
+            "M": {
+                "mixing ratio mol mol-1": 1.0
+            }
+        },
+        "suppress output": {
+            "M": {}
+        }
+      }
+    ]
   }
 
   return musicbox_conditions;
