@@ -271,10 +271,12 @@ function translate_to_camp_config(config) {
 
 function translate_to_musicbox_conditions(conditions) {
   console.log(conditions)
-  let initial_species_concentrations = conditions.initial_species_concentrations.reduce((acc, curr) => {
+
+  let intial_value_reducer = (acc, curr) => {
     acc[curr.name] = {[`initial value [${curr.units}]`]: parseFloat(curr.value)}
     return acc;
-  }, {});
+  };
+
   let musicbox_conditions = {
     "box model options": { 
       "grid": "box",
@@ -283,9 +285,11 @@ function translate_to_musicbox_conditions(conditions) {
       [`simulation length [${conditions.basic.simulation_time_units}]`]: conditions.basic.simulation_time,
     },
     "chemical species": { 
-      ...initial_species_concentrations
+      ...conditions.initial_species_concentrations.reduce(intial_value_reducer, {})
     },
-    "environmental conditions": { },
+    "environmental conditions": {
+      ...conditions.initial_environmental.reduce(intial_value_reducer, {})
+     },
     "evolving conditions": { },
     "model components": [ ]
   }
