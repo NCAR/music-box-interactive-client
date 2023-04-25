@@ -11,14 +11,14 @@ function extract_mechanism_from_example(config) {
   let camp_reactions = config.mechanism.reactions['camp-data'] || [];
   let camp_species = config.mechanism.species['camp-data'] || [];
 
-  if(camp_reactions.length > 0) {
+  if (camp_reactions.length > 0) {
     camp_reactions = camp_reactions[0].reactions
   }
 
   const species = camp_species.map((species) => {
     let properties = []
     Object.keys(species).map((key) => {
-      switch(key) {
+      switch (key) {
         case "tracer type": {
           properties.push({
             name: "fixed concentration",
@@ -181,31 +181,102 @@ function extract_mechanism_from_example(config) {
 }
 
 function extract_conditions_from_example(config) {
-  console.log(config.conditions)
+  const units_re = /\[(.*?)\]/;
+
+  let box_options = config.conditions['box model options'];
+
+  let basic = Object.keys(box_options).reduce((acc, key) => {
+    if (key.includes("chemistry time step")) {
+      acc['chemistry_time_step'] = box_options[key];
+
+      // check for units
+      const matches = units_re.exec(key);
+      if (matches) {
+        acc['chemistry_time_step_units'] = matches[1];
+      } else {
+        acc['chemistry_time_step_units'] = 'sec';
+        console.warn("No chemistry time step units found. Using default (sec).");
+      }
+    }
+    if (key.includes("output time step")) {
+      acc['output_time_step'] = box_options[key];
+
+      // check for units
+      const matches = units_re.exec(key);
+      if (matches) {
+        acc['output_time_step_units'] = matches[1];
+      } else {
+        acc['output_time_step_units'] = 'sec';
+        console.warn("No output time step units found. Using default (sec).");
+      }
+    }
+    if (key.includes("simulation length")) {
+      acc['simulation_time'] = box_options[key];
+
+      // check for units
+      const matches = units_re.exec(key);
+      if (matches) {
+        acc['simulation_time_units'] = matches[1];
+      } else {
+        acc['simulation_time_units'] = 'sec';
+        console.warn("No output time step units found. Using default (sec).");
+      }
+    }
+
+    return acc;
+  }, {});
+
+  let conditions = config.conditions['environmental conditions'];
+  let temperature = { id: 0, name: "temperature", 'value': 298.15, 'units': "K" }
+  let pressure = { id: 1, name: "pressure", value: 101325.0, units: "Pa" };
+
+  if ('temperature' in conditions) {
+    Object.keys(conditions['temperature']).map((key) => {
+      const matches = units_re.exec(key);
+      if (matches) {
+        temperature['value'] = conditions['temperature'][key];
+        temperature['units'] = matches[1];
+      } else {
+        console.warn(`No initial temperature, using ${temperature.value} ${temperature.units}.`)
+      }
+    });
+  }
+  else {
+    console.warn(`No initial temperature, using ${temperature.value} ${temperature.units}.`)
+  }
+
+  if ('pressure' in conditions) {
+    Object.keys(conditions['pressure']).map((key) => {
+      const matches = units_re.exec(key);
+      if (matches) {
+        pressure['value'] = conditions['pressure'][key];
+        pressure['units'] = matches[1];
+      } else {
+        console.warn(`No initial pressure, using ${pressure.value} ${pressure.units}.`)
+      }
+    });
+  }
+  else {
+    console.warn(`No initial pressure, using ${pressure.value} ${pressure.units}.`)
+  }
+
+  let species = config.conditions["chemical species"];
+  let id = 0;
+  let initial_species_concentrations = Object.keys(species).map((spec) => {
+    const concentration_units = Object.keys(species[spec])[0]
+    const matches = units_re.exec(concentration_units);
+    return {
+      id : id++,
+      name : spec,
+      units : matches[1],
+      value : species[spec][concentration_units],
+    }
+  })
+
   let schema = {
-    basic: {
-        chemistry_time_step: 1.0,
-        chemistry_time_step_units: "sec",
-        output_time_step: 1.0,
-        output_time_step_units: "sec",
-        simulation_time: 100.0,
-        simulation_time_units: "sec"
-    },
-    initial_species_concentrations: [ ],
-    initial_environmental: [
-        {
-            id: 0,
-            name: "temperature",
-            value: 298.15,
-            units: "K"
-        },
-        {
-            id: 1,
-            name: "pressure",
-            value: 101325.0,
-            units: "Pa"
-        }
-    ],
+    basic: basic,
+    initial_species_concentrations: initial_species_concentrations,
+    initial_environmental: [temperature, pressure],
     initial_reactions: []
   }
   return schema;
@@ -340,35 +411,37 @@ function translate_to_camp_config(config) {
 
 function translate_to_musicbox_conditions(conditions) {
   let intial_value_reducer = (acc, curr) => {
-    acc[curr.name] = {[`initial value [${curr.units}]`]: parseFloat(curr.value)}
+    acc[curr.name] = { [`initial value [${curr.units}]`]: parseFloat(curr.value) }
     return acc;
   };
 
+  console.log(conditions.initial_species_concentrations)
+
   let musicbox_conditions = {
-    "box model options": { 
+    "box model options": {
       "grid": "box",
       [`chemistry time step [${conditions.basic.chemistry_time_step_units}]`]: conditions.basic.chemistry_time_step,
       [`output time step [${conditions.basic.output_time_step_units}]`]: conditions.basic.output_time_step,
       [`simulation length [${conditions.basic.simulation_time_units}]`]: conditions.basic.simulation_time,
     },
-    "chemical species": { 
+    "chemical species": {
       ...conditions.initial_species_concentrations.reduce(intial_value_reducer, {})
     },
     "environmental conditions": {
       ...conditions.initial_environmental.reduce(intial_value_reducer, {})
-     },
-    "evolving conditions": { },
+    },
+    "evolving conditions": {},
     "model components": [
       {
         "type": "CAMP",
         "configuration file": "camp_data/config.json",
         "override species": {
-            "M": {
-                "mixing ratio mol mol-1": 1.0
-            }
+          "M": {
+            "mixing ratio mol mol-1": 1.0
+          }
         },
         "suppress output": {
-            "M": {}
+          "M": {}
         }
       }
     ]

@@ -44,7 +44,6 @@ function AddProperty(props) {
       <Dropdown.Menu>
         {
           options.map(({ displayName, ...option }, index) => {
-            console.log(displayName, index)
             return (
               <Dropdown.Item
                 key={index}
