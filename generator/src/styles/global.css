@@ -61,6 +61,11 @@
       color: var(--ncar-color-primary-dark-green);
   }
   
+  .btn-small {
+      --bs-btn-padding-x: 0.5rem;
+     --bs-btn-padding-y: 0.0rem;
+  }
+
   .btn-primary,
   .btn-primary:hover,
   .btn-primary:active,

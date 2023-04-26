@@ -5,6 +5,8 @@ import { getEvolvingConditions } from "../redux/selectors";
 import { resortEvolvingConditions, updateEvolvingTime, updateEvolvingConditionValue } from "../redux/actions";
 import AddEvolvingCondition from "./AddEvolvingCondition";
 import AddEvolvingTime from "./AddEvolvingTime";
+import RemoveEvolvingTime from "./RemoveEvolvingTime";
+import RemoveEvolvingCondition from "./RemoveEvolvingCondition";
 
 const EvolvingConditionsDetail = props => {
 
@@ -40,7 +42,12 @@ const EvolvingConditionsDetail = props => {
               <th>time</th>
               {props.conditions.values.map(({ name }, index) => {
                 return (
-                  <th className="fw-bold" key={`column-${index}`}>{name}</th>
+                  <th className="fw-bold" key={`column-${index}`}>
+                    <div className="d-flex justify-content-between">
+                      {name}
+                      <RemoveEvolvingCondition conditionIndex={index} />
+                    </div>
+                  </th>
                 );
               })}
             </tr>
@@ -71,12 +78,17 @@ const EvolvingConditionsDetail = props => {
                       </td>
                     );
                   })}
+                  <td>
+                    <RemoveEvolvingTime timeIndex={timeIndex}/>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </Table>
-        <AddEvolvingTime />
+        <div className="m-2">
+          <AddEvolvingTime />
+        </div>
       </div>
     </div>
   );

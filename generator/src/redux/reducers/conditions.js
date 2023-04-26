@@ -183,6 +183,43 @@ export const conditionsReducer = (state = initialState, action) => {
                 }
             }
         }
+        case utils.action_types.REMOVE_EVOLVING_CONDITION: {
+            const conditionIndex = action.payload.content.conditionIndex
+            return {
+                ...state,
+                evolving: {
+                    ...state.evolving,
+                    values: [
+                        ...state.evolving.values.slice(0, conditionIndex),
+                        ...state.evolving.values.slice(conditionIndex + 1)
+                    ]
+                }
+            }
+        }
+      case utils.action_types.REMOVE_EVOLVING_TIME: {
+          const timeIndex = action.payload.content.timeIndex
+          return {
+              ...state,
+              evolving: {
+                  ...state.evolving,
+                  times: [
+                      ...state.evolving.times.slice(0, timeIndex),
+                      ...state.evolving.times.slice(timeIndex + 1)
+                  ],
+                  values: [
+                      ...state.evolving.values.map(value => {
+                          return {
+                              ...value,
+                              values: [
+                                  ...value.values.slice(0, timeIndex),
+                                  ...value.values.slice(timeIndex + 1)
+                              ]
+                          }
+                      })
+                  ]
+              }
+          }
+      }
         default:
             return state;
     }

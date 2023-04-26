@@ -62,3 +62,18 @@ export const addEvolvingTime = content => {
         payload: { content }
     }
 }
+
+export const removeEvolvingCondition = content => {
+    return {
+        type: utils.action_types.REMOVE_EVOLVING_CONDITION,
+        payload: { content }
+    }
+}
+
+export const removeEvolvingTime = content => {
+    return {
+        type: utils.action_types.REMOVE_EVOLVING_TIME,
+        payload: { content }
+    }
+}
+
