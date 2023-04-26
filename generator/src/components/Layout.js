@@ -10,7 +10,7 @@ import { getMechanism, getAllConditions } from "../redux/selectors";
 import { navigate } from 'gatsby';
 
 function Layout(props) {
-    const activeColor = { color: "#000080" }
+    const activeColor = { color: "#00797C" }
     const dispatch = useDispatch();
 
     const handleClick = () => {
@@ -56,6 +56,19 @@ function Layout(props) {
                                     <button id="run-model" style={{ margin: 'auto' }} className="btn btn-primary btn-ncar-active" onClick={handleClick}>Run Model</button>
                                 </div>
                             </div>
+                            <small className="nav-section">ANALYSIS</small>
+                            <Link className="nav-link" to="/plots" activeStyle={activeColor}>
+                                <span className="oi oi-graph oi-prefix"></span>
+                                 Plot Results
+                            </Link>
+                            <Link className="nav-link" to="/flow_diagram" activeStyle={activeColor}>
+                                <span className="oi oi-fork oi-prefix"></span>
+                                Flow Diagram
+                            </Link>
+                            <Link className="nav-link" to="/downloads" activeStyle={activeColor}>
+                                <span className="oi oi-data-transfer-download oi-prefix"></span>
+                                Download
+                            </Link>
                         </Nav>
                         <div className="mt-auto mb-4">
                             <img id="logo" className="img-fluid p-2" alt="" src={logo} />
