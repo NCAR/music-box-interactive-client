@@ -6,7 +6,7 @@ import DocumentMeta from "react-document-meta"
 import { useDispatch, connect } from 'react-redux';
 import { Link } from "gatsby"
 import { doRun } from '../redux/actions';
-import { getMechanismAsObject } from "../redux/selectors";
+import { getMechanism, getAllConditions } from "../redux/selectors";
 import { navigate } from 'gatsby';
 
 function Layout(props) {
@@ -14,7 +14,7 @@ function Layout(props) {
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(doRun(props.mechanism));
+        dispatch(doRun(props.mechanism, props.conditions));
         navigate("/results");
     }
 
@@ -90,8 +90,12 @@ function Layout(props) {
 }
 
 const mapStateToProps = state => {
-    const mechanism = getMechanismAsObject(state);
-    return mechanism;
+    const mechanism = getMechanism(state);
+    const conditions = getAllConditions(state);
+    return {
+        mechanism: mechanism,
+        conditions: conditions
+    };
 };
 
 export default connect(mapStateToProps)(Layout);

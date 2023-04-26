@@ -44,7 +44,9 @@ const EvolvingConditionsDetail = props => {
                 return (
                   <th className="fw-bold" key={`column-${index}`}>
                     <div className="d-flex justify-content-between">
-                      {name}
+                      <div className="text-nowrap">
+                        {name}
+                      </div>
                       <RemoveEvolvingCondition conditionIndex={index} />
                     </div>
                   </th>

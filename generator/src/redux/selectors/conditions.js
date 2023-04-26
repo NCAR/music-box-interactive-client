@@ -29,3 +29,5 @@ export const getPossibleConditions = store => {
     })
   ]
 }
+
+export const getAllConditions = (store) => store.conditions
