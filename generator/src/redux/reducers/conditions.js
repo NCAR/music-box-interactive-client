@@ -1,4 +1,5 @@
 import utils from '../utils';
+import { extract_conditions_from_example } from '../../controllers/transformers'
 
 const initialState = {
     basic: {
@@ -9,7 +10,7 @@ const initialState = {
         simulation_time: 100.0,
         simulation_time_units: "sec"
     },
-    initial_species_concentrations: [ ],
+    initial_species_concentrations: [],
     initial_environmental: [
         {
             id: 0,
@@ -24,7 +25,17 @@ const initialState = {
             units: "Pa"
         }
     ],
-    initial_reactions: []
+    initial_reactions: [],
+    model_components: {
+        "type": "CAMP",
+        "configuration file": "camp_data/config.json",
+        "override species": {
+            "M": { "mixing ratio mol mol-1": 1.0 }
+        },
+        "suppress output": {
+            "M": {}
+        }
+    }
 }
 
 const compareName = (a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
@@ -41,11 +52,11 @@ export const conditionsReducer = (state = initialState, action) => {
         case utils.action_types.ADD_CONDITION: {
             const schema = action.payload.content.schema;
             const condition = action.payload.content.condition !== undefined ?
-                              action.payload.content.condition :
-                              { name: undefined, value: undefined, units: undefined };
+                action.payload.content.condition :
+                { name: undefined, value: undefined, units: undefined };
             const conditionId = "id" in condition ? condition.id :
-                                state[schema.classKey].length > 0 ?
-                                Math.max(...state[schema.classKey].map(c => c.id))+1 : 0;
+                state[schema.classKey].length > 0 ?
+                    Math.max(...state[schema.classKey].map(c => c.id)) + 1 : 0;
             const otherConditions = state[schema.classKey].filter(condition => {
                 return condition.id !== conditionId;
             });
@@ -57,7 +68,7 @@ export const conditionsReducer = (state = initialState, action) => {
                         ...condition,
                         id: conditionId
                     }
-                ].sort( compareId )
+                ].sort(compareId)
             };
         }
         case utils.action_types.REMOVE_CONDITION: {
@@ -70,8 +81,11 @@ export const conditionsReducer = (state = initialState, action) => {
                 ...state,
                 [schema.classKey]: [
                     ...otherConditions,
-                ].sort( compareId )
+                ].sort(compareId)
             };
+        }
+        case utils.action_types.EXAMPLE_FETCHED: {
+            return extract_conditions_from_example(action.payload);
         }
         default:
             return state;
