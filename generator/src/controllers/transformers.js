@@ -416,8 +416,6 @@ function translate_to_musicbox_conditions(conditions) {
     return acc;
   };
 
-  console.log(conditions.initial_species_concentrations)
-
   let musicbox_conditions = {
     "box model options": {
       "grid": "box",
