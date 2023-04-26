@@ -17,7 +17,7 @@ function extract_mechanism_from_example(config) {
 
   const species = camp_species.map((species) => {
     let properties = []
-    Object.keys(species).map((key) => {
+    Object.keys(species).forEach((key) => {
       switch (key) {
         case "tracer type": {
           properties.push({
@@ -231,7 +231,7 @@ function extract_conditions_from_example(config) {
   let pressure = { id: 1, name: "pressure", value: 101325.0, units: "Pa" };
 
   if ('temperature' in conditions) {
-    Object.keys(conditions['temperature']).map((key) => {
+    Object.keys(conditions['temperature']).forEach((key) => {
       const matches = units_re.exec(key);
       if (matches) {
         temperature['value'] = conditions['temperature'][key];
@@ -246,7 +246,7 @@ function extract_conditions_from_example(config) {
   }
 
   if ('pressure' in conditions) {
-    Object.keys(conditions['pressure']).map((key) => {
+    Object.keys(conditions['pressure']).forEach((key) => {
       const matches = units_re.exec(key);
       if (matches) {
         pressure['value'] = conditions['pressure'][key];
@@ -280,13 +280,13 @@ function extract_conditions_from_example(config) {
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
       let [type, reaction, units] = key.split(".")
       let default_units = '';
-      if (type == "LOSS") {
+      if (type === "LOSS") {
         default_units = 'mol m-3 s-1';
       }
-      else if (type == "EMIS") {
+      else if (type === "EMIS") {
         default_units = 'mol m-3 s-1';
       }
-      else if (type == "PHOT") {
+      else if (type === "PHOT") {
         default_units = 's-1';
       }
       return {
@@ -310,8 +310,14 @@ function extract_conditions_from_example(config) {
 }
 
 function translate_to_camp_config(config) {
-  const parseReactants = (reactants) => reactants.map(({ name, qty }) => ({ [name]: { qty: qty } }));
-  const parseProducts = (products) => products.map((product) => ({ [product.name]: { yield: product.yield } }));
+  const parseReactants = (reactants) => reactants.reduce((acc, reactant) => {
+    acc[reactant.name] = { qty: reactant.qty };
+    return acc;
+  }, {});
+  const parseProducts = (products) => products.reduce((acc, product) => {
+    acc[product.name] = { yield: product.yield };
+    return acc;
+  }, {});
 
   let species = config.gasSpecies.map((species) => {
     let camp_species = {
@@ -345,8 +351,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: parseReactants(reactants),
-          products: parseProducts(products),
+          reactants: {...parseReactants(reactants)},
+          products: {...parseProducts(products)},
         }
         break;
       }
@@ -356,7 +362,7 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: { [reactant]: {} },
-          products: parseProducts(products),
+          products: {...parseProducts(products)}
         }
         break;
       }
@@ -385,8 +391,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: parseReactants(reactants),
-          products: parseProducts(products)
+          reactants: {...parseReactants(reactants)},
+          products: {...parseProducts(products)}
         }
         break;
       }
@@ -395,8 +401,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: parseReactants(reactants),
-          products: parseProducts(products)
+          reactants: {...parseReactants(reactants)},
+          products: {...parseProducts(products)}
         }
         break;
       }
@@ -405,9 +411,9 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: parseReactants(reactants),
-          "alkoxy products": parseProducts(primary_products),
-          "nitrate products": parseProducts(secondary_products),
+          reactants: {...parseReactants(reactants)},
+          "alkoxy products": {...parseProducts(primary_products)},
+          "nitrate products": {...parseProducts(secondary_products)},
         }
         break;
       }
@@ -416,8 +422,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: parseReactants(reactants),
-          products: parseProducts(products)
+          reactants: {...parseReactants(reactants)},
+          products: {...parseProducts(products)}
         }
         break;
       }
@@ -428,6 +434,7 @@ function translate_to_camp_config(config) {
   })
   reactions = {
     "type": "MECHANISM",
+    "name": "music box interactive configuration",
     "reactions": reactions
   }
 
