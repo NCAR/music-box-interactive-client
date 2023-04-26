@@ -160,6 +160,29 @@ export const conditionsReducer = (state = initialState, action) => {
                 }
             }
         }
+        case utils.action_types.ADD_EVOLVING_TIME: {
+            return {
+                ...state,
+                evolving: {
+                    ...state.evolving,
+                    times: [
+                        ...state.evolving.times,
+                        state.evolving.times.length > 0 ? Math.max(...state.evolving.times) + 1 : 0
+                    ],
+                    values: [
+                        ...state.evolving.values.map(value => {
+                            return {
+                                ...value,
+                                values: [
+                                    ...value.values,
+                                    0
+                                ]
+                            }
+                        })
+                    ]
+                }
+            }
+        }
         default:
             return state;
     }

@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import { getEvolvingConditions } from "../redux/selectors";
 import { resortEvolvingConditions, updateEvolvingTime, updateEvolvingConditionValue } from "../redux/actions";
 import AddEvolvingCondition from "./AddEvolvingCondition";
+import AddEvolvingTime from "./AddEvolvingTime";
 
 const EvolvingConditionsDetail = props => {
 
@@ -75,6 +76,7 @@ const EvolvingConditionsDetail = props => {
             })}
           </tbody>
         </Table>
+        <AddEvolvingTime />
       </div>
     </div>
   );

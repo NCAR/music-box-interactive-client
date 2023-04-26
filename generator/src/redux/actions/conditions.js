@@ -55,3 +55,10 @@ export const addEvolvingCondition = content => {
         payload: { content }
     }
 }
+
+export const addEvolvingTime = content => {
+    return {
+        type: utils.action_types.ADD_EVOLVING_TIME,
+        payload: { content }
+    }
+}
