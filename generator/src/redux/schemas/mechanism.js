@@ -106,6 +106,7 @@ export const reactionSchema = {
         },
         typeLabel: "Emission",
         isUserDefined: true,
+        tablePrefix: "EMIS",
         possibleUnits: [ "mol m-3 s-1" ],
         shortName() { return stringifyReaction( [ ], this.data.species !== undefined ?
                                                      [ { name: this.data.species } ] : [ ] ); },
@@ -147,6 +148,7 @@ export const reactionSchema = {
         },
         typeLabel: "First-Order Loss",
         isUserDefined: true,
+        tablePrefix: "LOSS",
         possibleUnits: [ "s-1" ],
         shortName() { return stringifyReaction( this.data.species !== undefined ?
                                                 [ { name: this.data.species } ] : [ ], [ ] ); },
@@ -189,6 +191,7 @@ export const reactionSchema = {
         },
         typeLabel: "Photolysis",
         isUserDefined: true,
+        tablePrefix: "PHOT",
         possibleUnits: [ "s-1" ],
         shortName() { return stringifyReaction( this.data.reactant !== undefined ?
                                                 [ { name: this.data.reactant } ] : [ ],
