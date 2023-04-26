@@ -266,18 +266,44 @@ function extract_conditions_from_example(config) {
     const concentration_units = Object.keys(species[spec])[0]
     const matches = units_re.exec(concentration_units);
     return {
-      id : id++,
-      name : spec,
-      units : matches[1],
-      value : species[spec][concentration_units],
+      id: id++,
+      name: spec,
+      units: matches[1],
+      value: species[spec][concentration_units],
     }
   })
+
+  id = 0;
+  let initial_conditions = config.conditions["initial conditions"]
+  let reaction_conditions = []
+  if (initial_conditions) {
+    console.log(initial_conditions)
+    reaction_conditions = Object.keys(initial_conditions).map((key) => {
+      let [type, reaction, units] = key.split(".")
+      let default_units = '';
+      if(type == "LOSS"){
+        default_units = 'mol m-3 s-1';
+      }
+      else if (type == "EMIS") {
+        default_units = 'mol m-3 s-1';
+      }
+      else if (type == "PHOT") {
+        default_units = 's-1';
+      }
+      return {
+        id: id++,
+        name: reaction,
+        value: initial_conditions[key]["0"],
+        units: units || default_units
+      }
+    });
+  }
 
   let schema = {
     basic: basic,
     initial_species_concentrations: initial_species_concentrations,
     initial_environmental: [temperature, pressure],
-    initial_reactions: [],
+    initial_reactions: reaction_conditions,
     model_components: config.conditions["model components"]
   }
   return schema;
