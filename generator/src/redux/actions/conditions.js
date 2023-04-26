@@ -48,3 +48,10 @@ export const resortEvolvingConditions = content => {
         payload: { content }
     }
 }
+
+export const addEvolvingCondition = content => {
+    return {
+        type: utils.action_types.ADD_EVOLVING_CONDITION,
+        payload: { content }
+    }
+}

@@ -26,17 +26,8 @@ const initialState = {
     ],
     initial_reactions: [],
     evolving: {
-        times: [ 0.0, 1.2, 2.5 ],
-        values: [
-            {
-                name: "foo",
-                values: [ 14.3, 62.3, 42.3 ]
-            },
-            {
-                name: "bar",
-                values: [ 2.3, 12.4, 55.3 ]
-            }
-        ]
+        times: [ 0.0 ],
+        values: []
     }
 }
 
@@ -150,6 +141,23 @@ export const conditionsReducer = (state = initialState, action) => {
                                 parseFloat(condition.values[sortOrder[index]]))
                         }
                     })
+                }
+            }
+        }
+        case utils.action_types.ADD_EVOLVING_CONDITION: {
+            console.log("add evovlving", action.payload.content);
+            const condition = action.payload.content.condition
+            return {
+                ...state,
+                evolving: {
+                    ...state.evolving,
+                    values: [
+                        ...state.evolving.values,
+                        {
+                            ...condition,
+                            values: [ ...state.evolving.times.map(() => 0) ]
+                        }
+                    ]
                 }
             }
         }

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Table from "react-bootstrap/Table";
 import { getEvolvingConditions } from "../redux/selectors";
 import { resortEvolvingConditions, updateEvolvingTime, updateEvolvingConditionValue } from "../redux/actions";
+import AddEvolvingCondition from "./AddEvolvingCondition";
 
 const EvolvingConditionsDetail = props => {
 
@@ -27,10 +28,11 @@ const EvolvingConditionsDetail = props => {
 
   return (
     <div className="card mb-4 conditions-card shadow-sm">
-      <div className="card-header">
+      <div className="card-header d-flex justify-content-between">
         <h4 className="my-0 fw-normal">Evolving Conditions</h4>
+        <AddEvolvingCondition />
       </div>
-      <div className="body card-body">
+      <div className="body body-card">
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
