@@ -145,7 +145,6 @@ export const conditionsReducer = (state = initialState, action) => {
             }
         }
         case utils.action_types.ADD_EVOLVING_CONDITION: {
-            console.log("add evovlving", action.payload.content);
             const condition = action.payload.content.condition
             return {
                 ...state,

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import { addEvolvingCondition } from "../redux/actions";
-import { getPossibleConditions } from "../redux/selectors";
+import { getEvolvingConditions, getPossibleConditions } from "../redux/selectors";
 
 const AddEvolvingCondition = props => {
 
@@ -29,7 +29,10 @@ const AddEvolvingCondition = props => {
 }
 
 const mapStateToProps = state => {
-  return { possibleConditions: getPossibleConditions(state) }
+  const currentConditions = getEvolvingConditions(state).values.map(condition => condition.name)
+  return { possibleConditions: getPossibleConditions(state).filter(condition => {
+    return !currentConditions.includes(condition.name)
+  })}
 }
 
 export default connect(mapStateToProps, { addEvolvingCondition })(AddEvolvingCondition)
