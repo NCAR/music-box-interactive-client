@@ -277,11 +277,10 @@ function extract_conditions_from_example(config) {
   let initial_conditions = config.conditions["initial conditions"]
   let reaction_conditions = []
   if (initial_conditions) {
-    console.log(initial_conditions)
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
       let [type, reaction, units] = key.split(".")
       let default_units = '';
-      if(type == "LOSS"){
+      if (type == "LOSS") {
         default_units = 'mol m-3 s-1';
       }
       else if (type == "EMIS") {
@@ -294,6 +293,7 @@ function extract_conditions_from_example(config) {
         id: id++,
         name: reaction,
         value: initial_conditions[key]["0"],
+        type: type,
         units: units || default_units
       }
     });
@@ -442,6 +442,8 @@ function translate_to_musicbox_conditions(conditions) {
     return acc;
   };
 
+  console.log(conditions.initial_reactions)
+
   let musicbox_conditions = {
     "box model options": {
       "grid": "box",
@@ -456,6 +458,13 @@ function translate_to_musicbox_conditions(conditions) {
       ...conditions.initial_environmental.reduce(intial_value_reducer, {})
     },
     "evolving conditions": {},
+    "initial conditions": {
+      ...conditions.initial_reactions.reduce((acc, curr) => {
+        let key = `${curr.type}.${curr.name}.${curr.units}`;
+        acc[key] = curr.value;
+        return acc
+      }, {})
+    },
     "model components": conditions.model_components
   }
 
