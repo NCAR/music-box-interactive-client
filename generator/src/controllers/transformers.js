@@ -277,7 +277,8 @@ function extract_conditions_from_example(config) {
     basic: basic,
     initial_species_concentrations: initial_species_concentrations,
     initial_environmental: [temperature, pressure],
-    initial_reactions: []
+    initial_reactions: [],
+    model_components: config.conditions["model components"]
   }
   return schema;
 }
