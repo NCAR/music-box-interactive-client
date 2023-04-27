@@ -77,3 +77,9 @@ export const removeEvolvingTime = content => {
     }
 }
 
+export const loadEvolvingConditionsTable = content => {
+    return {
+        type: utils.action_types.LOAD_EVOLVING_CONDITIONS_TABLE,
+        payload: { content }
+    }
+}
