@@ -12,8 +12,7 @@ const RemoveEvolvingTime = props => {
     <div>
       <button type="button"
               className="btn btn-small btn-primary remove-element"
-              onClick={handleRemoveTime}
-              onKeyDown={handleRemoveTime}>
+              onClick={handleRemoveTime}>
         <span className="oi oi-x" toggle="tooltip" aria-hidden="true" title="Remove row"></span>
       </button>
     </div>

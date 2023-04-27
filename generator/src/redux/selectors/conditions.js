@@ -30,4 +30,18 @@ export const getPossibleConditions = store => {
   ]
 }
 
+export const getEvolvingTable = store => {
+  return [
+    [
+      "time.s",
+      ...store.conditions.evolving.values.map(value => value.tableName)
+    ],
+    ...store.conditions.evolving.times.map((time, timeIndex) => {
+      return [
+        time,
+        ...store.conditions.evolving.values.map(value => value.values[timeIndex])
+      ]})
+  ]
+}
+
 export const getAllConditions = (store) => store.conditions
