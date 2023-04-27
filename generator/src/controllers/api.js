@@ -30,7 +30,7 @@ async function checkRunStatus() {
     const response = await axios.get(`${process.env.GATSBY_API_URL}/api/run-status`);
     return response;
   } catch (error) {
-    console.error(`Error checkign run status: ${error.message}`);
+    console.error(`Error checking run status: ${error.message}`);
     throw error;
   }
 }
