@@ -449,8 +449,6 @@ function translate_to_musicbox_conditions(conditions) {
     return acc;
   };
 
-  console.log(conditions.initial_reactions)
-
   let musicbox_conditions = {
     "box model options": {
       "grid": "box",

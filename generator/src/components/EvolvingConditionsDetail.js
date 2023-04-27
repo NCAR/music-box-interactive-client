@@ -53,7 +53,7 @@ const EvolvingConditionsDetail = props => {
           <thead>
             <tr>
               <th>time</th>
-              {props.conditions.values.map(({ name }, index) => {
+              {props?.conditions?.values.map(({ name }, index) => {
                 return (
                   <th className="fw-bold" key={`column-${index}`}>
                     <div className="d-flex justify-content-between">

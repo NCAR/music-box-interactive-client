@@ -1,4 +1,7 @@
 const axios = require('axios');
+axios.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 async function fetchExample(example) {
   try {
@@ -31,6 +34,7 @@ async function checkRunStatus() {
     throw error;
   }
 }
+
 
 module.exports = { 
   fetchExample,
