@@ -24,7 +24,7 @@ export const getPossibleConditions = store => {
       return {
         name: reaction.data.musica_name + " [" + reaction.possibleUnits[0] + "]",
         tableName: reaction.tablePrefix + "." + reaction.data.musica_name
-                   + "." + reaction.possibleUnits[0]
+          + "." + reaction.possibleUnits[0]
       }
     })
   ]
@@ -40,7 +40,8 @@ export const getEvolvingTable = store => {
       return [
         time,
         ...store.conditions.evolving.values.map(value => value.values[timeIndex])
-      ]})
+      ]
+    })
   ]
 }
 

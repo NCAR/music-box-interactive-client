@@ -6,7 +6,7 @@ import DocumentMeta from "react-document-meta"
 import { useDispatch, connect } from 'react-redux';
 import { Link } from "gatsby"
 import { doRun } from '../redux/actions';
-import { getMechanism, getAllConditions } from "../redux/selectors";
+import { getMechanism, getAllConditions, getEvolvingTable } from "../redux/selectors";
 import { navigate } from 'gatsby';
 
 function Layout(props) {
@@ -103,8 +103,11 @@ function Layout(props) {
 }
 
 const mapStateToProps = state => {
-    const mechanism = getMechanism(state);
-    const conditions = getAllConditions(state);
+    const mechanism = {...getMechanism(state)};
+    const conditions = {...getAllConditions(state)};
+    const evolving = getEvolvingTable(state);
+    console.log(evolving)
+    conditions.evolving = evolving;
     return {
         mechanism: mechanism,
         conditions: conditions

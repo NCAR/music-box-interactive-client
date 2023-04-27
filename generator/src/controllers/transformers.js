@@ -304,6 +304,10 @@ function extract_conditions_from_example(config) {
     initial_species_concentrations: initial_species_concentrations,
     initial_environmental: [temperature, pressure],
     initial_reactions: reaction_conditions,
+    evolving: {
+      times: [ ],
+      values: []
+    },
     model_components: config.conditions["model components"]
   }
   return schema;
@@ -449,6 +453,8 @@ function translate_to_musicbox_conditions(conditions) {
     return acc;
   };
 
+  console.log(conditions);
+
   let musicbox_conditions = {
     "box model options": {
       "grid": "box",
@@ -462,7 +468,7 @@ function translate_to_musicbox_conditions(conditions) {
     "environmental conditions": {
       ...conditions.initial_environmental.reduce(intial_value_reducer, {})
     },
-    "evolving conditions": {},
+    "evolving conditions": conditions.evolving,
     "initial conditions": {
       ...conditions.initial_reactions.reduce((acc, curr) => {
         let key = `${curr.type}.${curr.name}.${curr.units}`;
