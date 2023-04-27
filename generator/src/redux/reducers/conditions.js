@@ -231,6 +231,28 @@ export const conditionsReducer = (state = initialState, action) => {
                 }
             }
         }
+        case utils.action_types.LOAD_EVOLVING_CONDITIONS_TABLE: {
+            const table = action.payload.content.table;
+            const possibleConditions = action.payload.content.possibleConditions;
+            return {
+                ...state,
+                evolving: {
+                    times: [
+                        ...table.slice(1).map(row => row[0])
+                    ],
+                    values: [
+                        ...table[0].slice(1).map((name, colIndex) => {
+                          return {
+                            ...possibleConditions.filter(condition => {
+                              return condition.tableName === name
+                            })[0],
+                            values: [ ...table.slice(1).map(row => row[colIndex+1]) ]
+                          }
+                        })
+                    ]
+                }
+            }
+        }
         case utils.action_types.EXAMPLE_FETCHED: {
             return extract_conditions_from_example(action.payload);
         }

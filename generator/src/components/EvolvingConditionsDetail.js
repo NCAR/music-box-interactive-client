@@ -7,6 +7,8 @@ import AddEvolvingCondition from "./AddEvolvingCondition";
 import AddEvolvingTime from "./AddEvolvingTime";
 import RemoveEvolvingTime from "./RemoveEvolvingTime";
 import RemoveEvolvingCondition from "./RemoveEvolvingCondition";
+import DownloadEvolvingConditions from "./DownloadEvolvingConditions";
+import UploadEvolvingConditions from "./UploadEvolvingConditions";
 
 const EvolvingConditionsDetail = props => {
 
@@ -30,6 +32,17 @@ const EvolvingConditionsDetail = props => {
   }
 
   return (
+    <>
+    <div className="container">
+      <div className="row">
+        <div className="col-5">
+          <DownloadEvolvingConditions />
+        </div>
+        <div className="col-7">
+          <UploadEvolvingConditions />
+        </div>
+      </div>
+    </div>
     <div className="card mb-4 conditions-card shadow-sm">
       <div className="card-header d-flex justify-content-between">
         <h4 className="my-0 fw-normal">Evolving Conditions</h4>
@@ -93,6 +106,7 @@ const EvolvingConditionsDetail = props => {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

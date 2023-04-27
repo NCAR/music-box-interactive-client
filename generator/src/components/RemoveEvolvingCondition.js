@@ -12,8 +12,7 @@ const RemoveEvolvingCondition = props => {
     <div>
       <button type="button"
               className="btn btn-small btn-primary remove-element"
-              onClick={handleRemoveCondition}
-              onKeyDown={handleRemoveCondition}>
+              onClick={handleRemoveCondition}>
         <span className="oi oi-x" toggle="tooltip" aria-hidden="true" title="Remove condition"></span>
       </button>
     </div>
