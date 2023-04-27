@@ -154,10 +154,11 @@
       color: var(--ncar-color-text-dark);
   }
   
-  .nav-link.active {
+  .nav-link.active,
+  .nav-link:hover {
       color: var(--ncar-color-primary-dark-green);
   }
-  
+ 
   #logo {
       max-height: 200px;
       display: block;
