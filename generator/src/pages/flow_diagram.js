@@ -60,7 +60,6 @@ function FlowDiagram(props) {
     debouncedFetchData();
   }; 
 
-
   console.log(
     "scale:", scale,
     "physics:", physics,
@@ -73,7 +72,6 @@ function FlowDiagram(props) {
     "blockedElements:", blockedElements,
     "selectedElements:", selectedElements
   );
-
 
   const handleScaleChange = (e) => {
     setScale(e.target.value);
