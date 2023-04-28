@@ -299,11 +299,39 @@ function extract_conditions_from_example(config) {
     });
   }
 
+  id = 0;
+  let evolving_conditions = config.conditions["evolving conditions"]
+  let evolving = {
+    times: [],
+    values: []
+  }
+  if (evolving_conditions) {
+    Object.keys(evolving_conditions).forEach((key) => {
+      if (key.includes('time')) {
+        evolving.times = Object.values(evolving_conditions[key])
+      }
+      else {
+        let [type, name, units] = key.split(".")
+        if (!units) {
+          if (type === "PHOT") {
+            units = 'mol m-3'
+          }
+        }
+        evolving.values.push({
+          name: `${name} [${units}]`,
+          tableName: key,
+          values: evolving_conditions[key]
+        })
+      }
+    });
+  }
+
   let schema = {
     basic: basic,
     initial_species_concentrations: initial_species_concentrations,
     initial_environmental: [temperature, pressure],
     initial_reactions: reaction_conditions,
+    evolving: evolving,
     model_components: config.conditions["model components"]
   }
   return schema;
@@ -462,7 +490,7 @@ function translate_to_musicbox_conditions(conditions) {
     "environmental conditions": {
       ...conditions.initial_environmental.reduce(intial_value_reducer, {})
     },
-    "evolving conditions": {},
+    "evolving conditions": conditions.evolving,
     "initial conditions": {
       ...conditions.initial_reactions.reduce((acc, curr) => {
         let key = `${curr.type}.${curr.name}.${curr.units}`;
