@@ -12,7 +12,7 @@ const PlotsTab = props => {
         <div className="col-md-4 col-lg-3 mh-100 overflow-auto">
           <div className="row flex-shrink-0">
             <div className="col">
-              <PlotSelector availablePlots={props.availablePlots} units={props.units}/>
+              <PlotSelector type={props.plotType} availablePlots={props.availablePlots} units={props.units}/>
             </div>
           </div>
         </div>

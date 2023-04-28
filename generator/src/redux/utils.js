@@ -33,6 +33,8 @@ const utils = {
         EXAMPLE_FETCHED: 'EXAMPLE_FETCHED',
         START_POLLING: 'START_POLLING',
         RUN_COMPLETE: 'RUN_COMPLETE',
+        ADD_PLOT: 'ADD_PLOT',
+        REMOVE_PLOT: 'REMOVE_PLOT'
     },
     examples: {
         CHAPMAN: 'CHAPMAN',

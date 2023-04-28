@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
+import PlotButton from "./PlotButton";
 
 const PlotSelector = props => {
 
@@ -39,13 +40,7 @@ const PlotSelector = props => {
           Select species to plot
         </div>
         {props.availablePlots.map((plot, index) => {
-          return (
-            <button className="sub_p list-group-item list-group-item-action"
-                     subtype="normal"
-                     key={`plot-${index}`}>
-              {plot.label}
-            </button>
-          )
+          return <PlotButton type={props.type} plot={plot} key={`plot-${index}`} />
         })}
       </ul>
     </nav>

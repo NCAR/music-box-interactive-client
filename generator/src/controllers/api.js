@@ -35,9 +35,26 @@ async function checkRunStatus() {
   }
 }
 
+async function getPlot(plot) {
+  try {
+    const params = {
+      type: plot.id,
+      unit: plot.unit && plot.unit.length ? plot.unit : "n/a"
+    }
+    console.log("sending", params);
+    const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/api/plots/get/`, {
+      params: params
+    });
+    return response;
+  } catch (error) {
+    console.error(`Error getting plot ${plot}: ${error.message}`);
+    throw error;
+  }
+}
 
-module.exports = { 
+module.exports = {
   fetchExample,
   run,
-  checkRunStatus
+  checkRunStatus,
+  getPlot
 };
