@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
 import { getRunStatus } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
+import debounce from 'lodash/debounce';
+import { fetchFlowDiagram } from "../controllers/api"
 
 import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
@@ -18,6 +20,46 @@ function FlowDiagram(props) {
   const [showBlockedElements, setShowBlockedElements] = useState(false);
   const [blockedElements, setBlockedElements] = useState([]);
   const [selectedElements, setSelectedElements] = useState([]);
+  const requestInProgress = useRef(false);
+
+  const [data, setData] = useState({
+    includedSpecies: selectedElements,
+    blockedSpecies: blockedElements,
+    startStep: startRange,
+    endStep: endRange,
+    maxArrowWidth: arrowWidth,
+    arrowScalingType: scale,
+    minMolval: startFilterRange,
+    maxMolval: endFilterRange,
+    currentMinValOfGraph: 'N/A',
+    currentMaxValOfGraph: 'N/A',
+    isPhysicsEnabled: physics,
+  });
+
+  const fetchData = async () => {
+    try {
+      requestInProgress.current = true;
+      await fetchFlowDiagram(data);
+    } catch (error) {
+      // handle error
+    } finally {
+      requestInProgress.current = false;
+    }
+  };
+
+  const debouncedFetchData = useCallback(
+    debounce(() => {
+      if (!requestInProgress.current) {
+        fetchData();
+      }
+    }, 1000),
+    [data]
+  );
+  
+  const handleDataChange = () => {
+    debouncedFetchData();
+  }; 
+
 
   console.log(
     "scale:", scale,
@@ -125,10 +167,10 @@ function FlowDiagram(props) {
           {props.runStatus === RunStatus.DONE ?
             <Container fluid style={{ maxWidth: '3000px' }}>
               <Row>
-                <Col xs={4} id="flow-sidebar-col">
+                <Col xs={4}>
                   <nav>
                     <ListGroup className="bg-ncar-menu-secondary p-2">
-                      <Form>
+                      <Form onChange={handleDataChange}>
                         <ListGroup.Item>
                           <Form.Label htmlFor="flow-scale-select">Arrow width scaling:</Form.Label>
                           <Form.Select value={scale} onChange={handleScaleChange}>
@@ -145,10 +187,10 @@ function FlowDiagram(props) {
                           />
                         </ListGroup.Item>
                         <ListGroup.Item>
-                          <Form.Label htmlFor="flow-arrow-width-range" id="max-arrow-label">
+                          <Form.Label htmlFor="flow-arrow-width-range">
                             Max arrow width: {arrowWidth}
                           </Form.Label>
-                          <Form.Range min="1" max="15" value={arrowWidth} id="flow-arrow-width-range" onChange={handleArrowWidthChange} />
+                          <Form.Range min="1" max="15" value={arrowWidth} onChange={handleArrowWidthChange} />
                         </ListGroup.Item>
                         <ListGroup.Item>
                           <Form.Label htmlFor="flow-start-range">Time Range (seconds):</Form.Label>
@@ -207,11 +249,10 @@ function FlowDiagram(props) {
                         <ListGroup.Item
                           className="menu-it selected-menu-it"
                           style={{ float: 'left' }}
-                          id="show-elements"
                         >
                           Add Species
                         </ListGroup.Item>
-                        <ListGroup.Item className="menu-it" id="block-elements">
+                        <ListGroup.Item className="menu-it">
                           Block Species
                         </ListGroup.Item>
                       </ListGroup>
