@@ -73,7 +73,8 @@ function extract_mechanism_from_example(config) {
             ...reactionSchema.photolysis.data,
             reactant: parseReactants(reaction)[0].name,
             products: parseProducts(reaction),
-            scaling_factor: reaction['scaling factor'] || 1.0
+            scaling_factor: reaction['scaling factor'] || 1.0,
+            musica_name: reaction['MUSICA name']
           }
         }
       }
@@ -406,32 +407,35 @@ function translate_to_camp_config(config) {
         break;
       }
       case ReactionTypes.PHOTOLYSIS: {
-        let { type, products, reactant, ...data } = reaction.data
+        let { type, products, reactant, musica_name, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
+          "MUSICA name": musica_name,
           reactants: { [reactant]: {} },
           products: {...parseProducts([...products, { name: irrSpecies }])}
         }
         break;
       }
       case ReactionTypes.EMISSION: {
-        let { type, species, scaling_factor, ...data } = reaction.data
+        let { type, species, scaling_factor, musica_name, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
+          "MUSICA name": musica_name,
           species: species.name,
           products: {...parseProducts({ name: irrSpecies })}
         }
         break;
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
-        let { type, species, scaling_factor, ...data } = reaction.data
+        let { type, species, scaling_factor, musica_name, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
+          "MUSICA name": musica_name,
           "species": species,
           products: {...parseProducts({ name: irrSpecies })}
         }
