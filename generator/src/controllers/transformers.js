@@ -72,7 +72,8 @@ function extract_mechanism_from_example(config) {
             ...reactionSchema.photolysis.data,
             reactant: campReactantsToRedux(reaction)[0].name,
             products: campProductsToRedux(reaction),
-            scaling_factor: reaction['scaling factor'] || 1.0
+            scaling_factor: reaction['scaling factor'] || 1.0,
+            musica_name: reaction['MUSICA name']
           }
         }
       }
@@ -363,32 +364,35 @@ function translate_reactions_to_camp_config(config) {
         break;
       }
       case ReactionTypes.PHOTOLYSIS: {
-        let { type, products, reactant, ...data } = reaction.data
+        let { type, products, reactant, musica_name, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
+          "MUSICA name": musica_name,
           reactants: { [reactant]: {} },
           products: {...reduxProductsToCamp([...products, { name: irrSpecies }])}
         }
         break;
       }
       case ReactionTypes.EMISSION: {
-        let { type, species, scaling_factor, ...data } = reaction.data
+        let { type, species, scaling_factor, musica_name, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
+          "MUSICA name": musica_name,
           species: species.name,
           products: {...reduxProductsToCamp({ name: irrSpecies })}
         }
         break;
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
-        let { type, species, scaling_factor, ...data } = reaction.data
+        let { type, species, scaling_factor, musica_name, ...data } = reaction.data
         camp_reaction = {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
+          "MUSICA name": musica_name,
           "species": species,
           products: {...reduxProductsToCamp({ name: irrSpecies })}
         }
