@@ -253,7 +253,10 @@ export const conditionsReducer = (state = initialState, action) => {
             }
         }
         case utils.action_types.EXAMPLE_FETCHED: {
-            return extract_conditions_from_example(action.payload);
+            return {
+                ...state,
+                ...extract_conditions_from_example(action.payload)
+            }
         }
         default:
             return state;

@@ -6,6 +6,12 @@ export const getSpeciesNames = store => {
     return store.mechanism.gasSpecies.map(species => species.name);
 };
 
+export const getSpeciesTolerance = (store, speciesName) => {
+    const species = store.mechanism.gasSpecies.filter(species => species.name === speciesName)[0]
+    const tol = species.properties.filter(prop => prop.name === "absolute convergence tolerance [mol mol-1]")
+    return tol.length > 0 ? tol[0].value : 1.0e-14
+}
+
 export const getProperty = (store, speciesName) => {
     const species = getMechanism(store).gasSpecies.filter(species => {
         return species.name === speciesName;

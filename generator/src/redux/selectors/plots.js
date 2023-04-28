@@ -1,4 +1,5 @@
 import { getMechanism, getSpeciesNames } from "./mechanism";
+import { ReactionTypes } from "../../controllers/models";
 
 export const getPlots = store => store.plots
 
@@ -9,14 +10,28 @@ export const getSpeciesPlots = store => {
 }
 
 export const getReactionPlots = store => {
-  return getMechanism(store).reactions.map((reaction, index) => {
+  return getMechanism(store).reactions.reduce((list, reaction, index) => {
     const strLabel = reaction.shortName() + " (" + reaction.typeLabel + ")";
-    return {
-      label: strLabel,
-      id: `RATE.${index}`,
-      index: index
+    if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
+      list.push({
+        label: strLabel + " primary",
+        id: `CONC.irr__${index}a`,
+        index: index
+      })
+      list.push({
+        label: strLabel + " secondary",
+        id: `CONC.irr__${index}b`,
+        index: index
+      })
+    } else {
+      list.push({
+        label: strLabel,
+        id: `CONC.irr__${index}`,
+        index: index
+      })
     }
-  })
+    return list
+  }, [])
 }
 
 export const getEnvironmentPlots = store => {

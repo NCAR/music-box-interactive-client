@@ -2,40 +2,13 @@ import utils from "../utils";
 
 const initialState = {
   species: {
-    plots: [
-      {
-        label: "species plot 1",
-        id: "CONC.species plot 1"
-      },
-      {
-        label: "species plot 2",
-        id: "CONC.species plot 2"
-      }
-    ]
+    plots: []
   },
   reactions: {
-    plots: [
-      {
-        label: "reaction rate plot 1",
-        id: "RATE.1"
-      },
-      {
-        label: "reaction rate plot 2",
-        id: "RATE.2"
-      },
-      {
-        label: "reaction rate plot 3",
-        id: "RATE.2"
-      }
-    ]
+    plots: []
   },
   environment: {
-    plots: [
-      {
-        label: "environmental condition plot 1",
-        id: "ENV.environmental condition plot 1"
-      }
-    ]
+    plots: []
   }
 }
 
@@ -46,10 +19,13 @@ export const plotsReducer = (state = initialState, action) => {
       const plot = action.payload.content.plot;
       return {
         ...state,
-        [type]: [
+        [type]: {
           ...state[type],
-          plot
-        ]
+          plots: [
+            ...state[type].plots,
+            plot
+          ]
+        }
       }
     }
     case utils.action_types.REMOVE_PLOT: {
@@ -57,9 +33,12 @@ export const plotsReducer = (state = initialState, action) => {
       const id   = action.payload.content.id;
       return {
         ...state,
-        [type]: [
-          ...state[type].filter(plot => plot.id !== id)
-        ]
+        [type]: {
+          ...state[type],
+          plots: [
+            ...state[type].plots.filter(plot => plot.id !== id)
+          ]
+        }
       }
     }
     default:

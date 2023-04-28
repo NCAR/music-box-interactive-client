@@ -25,12 +25,22 @@ async function run(config) {
   }
 }
 
+async function fetchFlowDiagram(data) {
+  try {
+    const response = await axios.post(`${process.env.GATSBY_API_URL}/plots/get_flow/`, { ...data });
+    return response;
+  } catch (error) {
+    console.error(`Error calling run: ${error.message}`);
+    throw error;
+  }
+}
+
 async function checkRunStatus() {
   try {
     const response = await axios.get(`${process.env.GATSBY_API_URL}/api/run-status`);
     return response;
   } catch (error) {
-    console.error(`Error calling run: ${error.message}`);
+    console.error(`Error checking run status: ${error.message}`);
     throw error;
   }
 }
@@ -39,11 +49,13 @@ async function getPlot(plot) {
   try {
     const params = {
       type: plot.id,
-      unit: plot.unit && plot.unit.length ? plot.unit : "n/a"
+      unit: plot.units && plot.units.length ? plot.units : "n/a",
+      tolerance : plot.tolerance,
+      label: plot.label
     }
-    console.log("sending", params);
-    const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/api/plots/get/`, {
-      params: params
+    const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/get/`, {
+      params: params,
+      responseType: 'arraybuffer'
     });
     return response;
   } catch (error) {
@@ -53,8 +65,9 @@ async function getPlot(plot) {
 }
 
 module.exports = {
-  fetchExample,
-  run,
   checkRunStatus,
-  getPlot
+  fetchExample,
+  fetchFlowDiagram,
+  getPlot,
+  run,
 };
