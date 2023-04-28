@@ -113,7 +113,6 @@ function FlowDiagram(props) {
     }
   };
 
-
   const handleShowBlockElementChange = () => {
     setShowBlockedElements(!showBlockedElements);
   };
