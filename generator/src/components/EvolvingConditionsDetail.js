@@ -30,6 +30,7 @@ const EvolvingConditionsDetail = props => {
       value: value
     })
   }
+  console.log(props.conditions)
 
   return (
     <>

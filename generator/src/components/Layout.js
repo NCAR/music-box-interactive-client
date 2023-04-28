@@ -106,7 +106,6 @@ const mapStateToProps = state => {
     const mechanism = {...getMechanism(state)};
     const conditions = {...getAllConditions(state)};
     const evolving = getEvolvingTable(state);
-    console.log(evolving)
     conditions.evolving = evolving;
     return {
         mechanism: mechanism,
