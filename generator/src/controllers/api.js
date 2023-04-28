@@ -42,7 +42,7 @@ async function getPlot(plot) {
       unit: plot.units && plot.units.length ? plot.units : "n/a"
     }
     console.log("sending", params);
-    const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/api/plots/get/`, {
+    const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/get/`, {
       params: params
     });
     return response;
