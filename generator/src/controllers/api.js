@@ -39,11 +39,12 @@ async function getPlot(plot) {
   try {
     const params = {
       type: plot.id,
-      unit: plot.units && plot.units.length ? plot.units : "n/a"
+      unit: plot.units && plot.units.length ? plot.units : "n/a",
+      tolerance : plot.tolerance
     }
-    console.log("sending", params);
     const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/get/`, {
-      params: params
+      params: params,
+      responseType: 'arraybuffer'
     });
     return response;
   } catch (error) {

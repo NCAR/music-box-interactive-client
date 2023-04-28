@@ -1,20 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
 import { addPlot, removePlot } from "../redux/actions";
-import { getPlotsByType } from "../redux/selectors";
+import { getPlotsByType, getSpeciesTolerance } from "../redux/selectors";
 import { getPlot } from "../controllers/api";
+import { Buffer } from "buffer";
 
 const PlotButton = props => {
 
   const handlePlot = () => {
     if (props.active) {
-      removePlot({ type: props.type, id: props.plot.id })
+      props.removePlot({ type: props.type, id: props.plot.id })
     } else {
       const doGetPlot = async () => {
         try {
-          const response = await getPlot(props.plot);
-          console.log(`plot request response: ${response.data}`);
-          addPlot({ type: props.type, plot: props.plot });
+          const response = await getPlot({ ...props.plot, tolerance: props.tolerance });
+          props.addPlot({
+            type: props.type,
+            plot: {
+              ...props.plot,
+               srcValue: "data:image/png;base64,"+Buffer.from(response.data, 'binary').toString('base64')
+            }
+          });
         } catch (error) {
           console.error(`Error retrieving plot: ${error}`);
         }
@@ -34,8 +40,9 @@ const PlotButton = props => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    active: getPlotsByType(state, ownProps.type).map(plot => plot.id).includes(ownProps.plot.id)
+    active: getPlotsByType(state, ownProps.type).map(plot => plot.id).includes(ownProps.plot.id),
+    tolerance: getSpeciesTolerance(state, ownProps.plot.label)
   }
 }
 
-export default connect(mapStateToProps)(PlotButton)
+export default connect(mapStateToProps, { addPlot, removePlot })(PlotButton)
