@@ -40,7 +40,7 @@ const PlotSelector = props => {
           Select species to plot
         </div>
         {props.availablePlots.map((plot, index) => {
-          return <PlotButton type={props.type} plot={plot} key={`plot-${index}`} />
+          return <PlotButton type={props.type} plot={{ ...plot, units: units }} key={`plot-${index}`} />
         })}
       </ul>
     </nav>
