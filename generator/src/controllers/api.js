@@ -25,6 +25,16 @@ async function run(config) {
   }
 }
 
+async function fetchFlowDiagram(data) {
+  try {
+    const response = await axios.post(`${process.env.GATSBY_API_URL}/plots/get_flow/`, { ...data });
+    return response;
+  } catch (error) {
+    console.error(`Error calling run: ${error.message}`);
+    throw error;
+  }
+}
+
 async function checkRunStatus() {
   try {
     const response = await axios.get(`${process.env.GATSBY_API_URL}/api/run-status`);
@@ -55,8 +65,9 @@ async function getPlot(plot) {
 }
 
 module.exports = {
-  fetchExample,
-  run,
   checkRunStatus,
-  getPlot
+  fetchExample,
+  fetchFlowDiagram,
+  getPlot,
+  run,
 };
