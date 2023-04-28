@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
-import { getRunStatus } from "../redux/selectors";
+import PlotsTab from "../components/PlotsTab";
+import {
+  getRunStatus,
+  getPlots,
+  getSpeciesPlots,
+  getReactionPlots,
+  getEnvironmentPlots } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
+import { plotSpeciesUnits } from "../redux/schemas";
 
 const Plots = props => {
   const SPECIES = 0
@@ -30,9 +37,14 @@ const Plots = props => {
                 Environmental conditions
               </button>
             </div>
-            {tab === SPECIES ? <p>species plots</p> : null}
-            {tab === REACTIONS ? <p>reaction rate plots</p> : null}
-            {tab === ENVIRONMENT ? <p>environmental condition plots</p> : null}
+            {tab === SPECIES ? <PlotsTab plotType="species"
+                                         availablePlots={props.speciesPlots}
+                                         units={plotSpeciesUnits} /> : null}
+            {tab === REACTIONS ? <PlotsTab plotType="reactions"
+                                           availablePlots={props.reactionPlots}
+                                           units={plotSpeciesUnits} /> : null}
+            {tab === ENVIRONMENT ? <PlotsTab plotType="environment"
+                                             availablePlots={props.environmentPlots} /> : null}
             </>
           :
             <p> Plots will be available once a model run has been completed </p>
@@ -45,7 +57,11 @@ const Plots = props => {
 
 const mapStateToProps = state => {
   return {
-    runStatus: getRunStatus(state)
+    runStatus: getRunStatus(state),
+    plots: getPlots(state),
+    speciesPlots: getSpeciesPlots(state),
+    reactionPlots: getReactionPlots(state),
+    environmentPlots: getEnvironmentPlots(state)
   }
 }
 

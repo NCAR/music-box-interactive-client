@@ -101,7 +101,19 @@
       border-width: medium;
       color: white;
   }
-  
+
+  .btn-white,
+  .btn-white:hover,
+  .btn-white:active,
+  .btn-white:focus,
+  .btn-white.active,
+  .show>.btn-white.dropdown-toggle {
+      background-color: var(--bs-list-group-bg);
+      border-color: var(--ncar-color-bg-dark);
+      border-width: medium;
+      color: var(--ncar-color-text-dark);
+    }
+
   .btn-clear,
   .btn-clear:hover,
   .btn-clear:active,
