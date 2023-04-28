@@ -1,12 +1,11 @@
 import { reactionSchema } from '../redux/schemas'
 import { ReactionTypes } from './models'
 
-const campReactantsToRedux = (reaction) => Object.entries(reaction.reactants).map(([name, props]) => ({ name: name, qty: props.qty || 1 }));
-const campProductsToRedux = (reaction) => Object.entries(reaction.products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
-const campAlkoxyProductsToRedux = (products) => Object.entries(products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
-const campNitrateProductsToRedux = campAlkoxyProductsToRedux;
-
 function extract_mechanism_from_example(config) {
+  const campReactantsToRedux = (reaction) => Object.entries(reaction.reactants).map(([name, props]) => ({ name: name, qty: props.qty || 1 }));
+  const campProductsToRedux = (reaction) => Object.entries(reaction.products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
+  const campAlkoxyProductsToRedux = (products) => Object.entries(products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
+  const campNitrateProductsToRedux = campAlkoxyProductsToRedux;
   let id = 0;
   let camp_reactions = config.mechanism.reactions['camp-data'] || [];
   let camp_species = config.mechanism.species['camp-data'] || [];
@@ -337,17 +336,16 @@ function extract_conditions_from_example(config) {
   return schema;
 }
 
-const reduxReactantsToCamp = (reactants) => reactants.reduce((acc, reactant) => {
-  acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
-  return acc;
-}, {});
+function translate_reactions_to_camp_config(config) {
+  const reduxReactantsToCamp = (reactants) => reactants.reduce((acc, reactant) => {
+    acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
+    return acc;
+  }, {});
 
-const reduxProductsToCamp = (products) => products.reduce((acc, product) => {
-  acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
-  return acc;
-}, {});
-
-function reactions_to_camp_config(config) {
+  const reduxProductsToCamp = (products) => products.reduce((acc, product) => {
+    acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
+    return acc;
+  }, {});
   let reactions = config.reactions.map((reaction, reactionId) => {
     const irrSpecies = `irr__${reactionId}`
     let camp_reaction = {
@@ -491,7 +489,7 @@ function translate_to_camp_config(config) {
     }
     return irrList
   }, []) ]
-  let reactions = reactions_to_camp_config(config)
+  let reactions = translate_reactions_to_camp_config(config)
 
   let camp_config = { "camp-data": [...species, reactions] }
 
@@ -532,8 +530,9 @@ function translate_to_musicbox_conditions(conditions) {
 }
 
 export {
-  extract_mechanism_from_example,
   extract_conditions_from_example,
+  extract_mechanism_from_example,
+  translate_reactions_to_camp_config,
   translate_to_camp_config,
   translate_to_musicbox_conditions
 }

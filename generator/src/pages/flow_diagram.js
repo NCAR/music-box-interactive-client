@@ -1,15 +1,18 @@
 import React, { useRef, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
-import { getRunStatus } from "../redux/selectors";
+import { getRunStatus, getMechanism } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import debounce from 'lodash/debounce';
 import { fetchFlowDiagram } from "../controllers/api"
+import { translate_reactions_to_camp_config } from "../controllers/transformers"
 
 import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
 function FlowDiagram(props) {
+  console.log(props.mechanism)
+  console.log(props.mechanism.gasSpecies.map(a => a.name))
   const [scale, setScale] = useState('log');
   const [physics, setPhysics] = useState(false);
   const [arrowWidth, setArrowWidth] = useState(7);
@@ -19,7 +22,7 @@ function FlowDiagram(props) {
   const [endFilterRange, setEndFilterRange] = useState(1);
   const [showBlockedElements, setShowBlockedElements] = useState(false);
   const [blockedElements, setBlockedElements] = useState([]);
-  const [selectedElements, setSelectedElements] = useState([]);
+  const [selectedElements, setSelectedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
   const requestInProgress = useRef(false);
 
   const [data, setData] = useState({
@@ -34,6 +37,7 @@ function FlowDiagram(props) {
     currentMinValOfGraph: startRange,
     currentMaxValOfGraph: endRange,
     isPhysicsEnabled: physics,
+    reactions: translate_reactions_to_camp_config(props.mechanism)
   });
 
   const fetchData = async () => {
@@ -256,7 +260,8 @@ function FlowDiagram(props) {
 
 const mapStateToProps = state => {
   return {
-    runStatus: getRunStatus(state)
+    runStatus: getRunStatus(state),
+    mechanism: getMechanism(state)
   }
 }
 
