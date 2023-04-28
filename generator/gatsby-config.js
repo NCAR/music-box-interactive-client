@@ -8,5 +8,9 @@ require("dotenv").config({
 })
 
 module.exports = {
+  siteMetadata : {
+    title: "MusicBox",
+    version: `2.0.0`
+  },
   plugins: [],
 }
