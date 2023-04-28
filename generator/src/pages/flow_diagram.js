@@ -31,15 +31,15 @@ function FlowDiagram(props) {
     arrowScalingType: scale,
     minMolval: startFilterRange,
     maxMolval: endFilterRange,
-    currentMinValOfGraph: 'N/A',
-    currentMaxValOfGraph: 'N/A',
+    currentMinValOfGraph: startRange,
+    currentMaxValOfGraph: endRange,
     isPhysicsEnabled: physics,
   });
 
   const fetchData = async () => {
     try {
       requestInProgress.current = true;
-      await fetchFlowDiagram(data);
+      const diagram = await fetchFlowDiagram(data);
     } catch (error) {
       // handle error
     } finally {
@@ -59,19 +59,6 @@ function FlowDiagram(props) {
   const handleDataChange = () => {
     debouncedFetchData();
   }; 
-
-  console.log(
-    "scale:", scale,
-    "physics:", physics,
-    "arrowWidth:", arrowWidth,
-    "startRange:", startRange,
-    "endRange:", endRange,
-    "startFilterRange:", startFilterRange,
-    "endFilterRange:", endFilterRange,
-    "showBlockedElements:", showBlockedElements,
-    "blockedElements:", blockedElements,
-    "selectedElements:", selectedElements
-  );
 
   const handleScaleChange = (e) => {
     setScale(e.target.value);
