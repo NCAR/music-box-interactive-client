@@ -41,7 +41,8 @@ const Plots = props => {
                                          availablePlots={props.speciesPlots}
                                          units={plotSpeciesUnits} /> : null}
             {tab === REACTIONS ? <PlotsTab plotType="reactions"
-                                           availablePlots={props.reactionPlots} /> : null}
+                                           availablePlots={props.reactionPlots}
+                                           units={plotSpeciesUnits} /> : null}
             {tab === ENVIRONMENT ? <PlotsTab plotType="environment"
                                              availablePlots={props.environmentPlots} /> : null}
             </>

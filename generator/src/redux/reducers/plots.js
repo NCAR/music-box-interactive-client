@@ -5,28 +5,10 @@ const initialState = {
     plots: []
   },
   reactions: {
-    plots: [
-      {
-        label: "reaction rate plot 1",
-        id: "RATE.1"
-      },
-      {
-        label: "reaction rate plot 2",
-        id: "RATE.2"
-      },
-      {
-        label: "reaction rate plot 3",
-        id: "RATE.2"
-      }
-    ]
+    plots: []
   },
   environment: {
-    plots: [
-      {
-        label: "environmental condition plot 1",
-        id: "ENV.environmental condition plot 1"
-      }
-    ]
+    plots: []
   }
 }
 

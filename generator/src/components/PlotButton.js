@@ -41,7 +41,7 @@ const PlotButton = props => {
 const mapStateToProps = (state, ownProps) => {
   return {
     active: getPlotsByType(state, ownProps.type).map(plot => plot.id).includes(ownProps.plot.id),
-    tolerance: getSpeciesTolerance(state, ownProps.plot.label)
+    tolerance: ownProps.type === "species" ? getSpeciesTolerance(state, ownProps.plot.label) : 1.0e-12
   }
 }
 

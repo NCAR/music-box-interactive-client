@@ -40,7 +40,8 @@ async function getPlot(plot) {
     const params = {
       type: plot.id,
       unit: plot.units && plot.units.length ? plot.units : "n/a",
-      tolerance : plot.tolerance
+      tolerance : plot.tolerance,
+      label: plot.label
     }
     const response = await axios.get(`${process.env.GATSBY_API_URL}/plots/get/`, {
       params: params,

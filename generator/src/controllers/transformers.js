@@ -339,15 +339,15 @@ function extract_conditions_from_example(config) {
 
 function translate_to_camp_config(config) {
   const parseReactants = (reactants) => reactants.reduce((acc, reactant) => {
-    acc[reactant.name] = { qty: reactant.qty };
+    acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
     return acc;
   }, {});
   const parseProducts = (products) => products.reduce((acc, product) => {
-    acc[product.name] = { yield: product.yield };
+    acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
     return acc;
   }, {});
 
-  let species = config.gasSpecies.map((species) => {
+  let species = [ ...config.gasSpecies.map((species) => {
     let camp_species = {
       "name": species.name,
       "type": "CHEM_SPEC",
@@ -368,8 +368,29 @@ function translate_to_camp_config(config) {
       }
     })
     return camp_species;
-  })
-  let reactions = config.reactions.map((reaction) => {
+  }),
+  ...config.reactions.reduce((irrList, reaction, reactionId) => {
+    const irrSpecies = `irr__${reactionId}`
+    if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
+      irrList.push({
+        name: `${irrSpecies}a`,
+        type: "CHEM_SPEC"
+      })
+      irrList.push({
+        name: `${irrSpecies}b`,
+        type: "CHEM_SPEC"
+      })
+    } else {
+      irrList.push({
+        name: irrSpecies,
+        type: "CHEM_SPEC"
+      })
+    }
+    return irrList
+  }, []) ]
+
+  let reactions = config.reactions.map((reaction, reactionId) => {
+    const irrSpecies = `irr__${reactionId}`
     let camp_reaction = {
       "type": reaction.data.type,
     }
@@ -380,7 +401,7 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: {...parseReactants(reactants)},
-          products: {...parseProducts(products)},
+          products: {...parseProducts([...products, { name: irrSpecies }])},
         }
         break;
       }
@@ -390,7 +411,7 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: { [reactant]: {} },
-          products: {...parseProducts(products)}
+          products: {...parseProducts([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -400,7 +421,8 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
-          species: species.name
+          species: species.name,
+          products: {...parseProducts({ name: irrSpecies })}
         }
         break;
       }
@@ -410,7 +432,8 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           "scaling factor": scaling_factor,
-          "species": species
+          "species": species,
+          products: {...parseProducts({ name: irrSpecies })}
         }
         break;
       }
@@ -420,7 +443,7 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: {...parseReactants(reactants)},
-          products: {...parseProducts(products)}
+          products: {...parseProducts([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -430,7 +453,7 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: {...parseReactants(reactants)},
-          products: {...parseProducts(products)}
+          products: {...parseProducts([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -440,8 +463,8 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: {...parseReactants(reactants)},
-          "alkoxy products": {...parseProducts(primary_products)},
-          "nitrate products": {...parseProducts(secondary_products)},
+          "alkoxy products": {...parseProducts([...primary_products, { name: `${irrSpecies}a` }])},
+          "nitrate products": {...parseProducts([...secondary_products, { name: `${irrSpecies}b` }])},
         }
         break;
       }
@@ -451,7 +474,7 @@ function translate_to_camp_config(config) {
           ...camp_reaction,
           ...data,
           reactants: {...parseReactants(reactants)},
-          products: {...parseProducts(products)}
+          products: {...parseProducts([...products, { name: irrSpecies }])}
         }
         break;
       }
