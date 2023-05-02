@@ -12,8 +12,6 @@ import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
 function FlowDiagram(props) {
-  console.log(props.mechanism)
-  console.log(props.mechanism.gasSpecies.map(a => a.name))
   const [scale, setScale] = useState('log');
   const [physics, setPhysics] = useState(false);
   const [arrowWidth, setArrowWidth] = useState(7);
@@ -24,7 +22,6 @@ function FlowDiagram(props) {
   const [showBlockedElements, setShowBlockedElements] = useState(false);
   const [blockedElements, setBlockedElements] = useState([]);
   const [selectedElements, setSelectedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
-  const [diagramHtml, setDiagramHtml] = useState('');
   const requestInProgress = useRef(false);
   const iframeRef = useRef();
 
@@ -287,7 +284,7 @@ function FlowDiagram(props) {
                   </nav>
                 </Col>
                 <Col>
-                  <div id="flow-diagram-container">
+                  <div id="flow-diagram-container" style={{height: `100%`}}>
                     <img
                       src={legend}
                       style={{
