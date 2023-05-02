@@ -6,6 +6,7 @@ import { RunStatus } from "../controllers/models";
 import debounce from 'lodash/debounce';
 import { fetchFlowDiagram } from "../controllers/api"
 import { translate_reactions_to_camp_config } from "../controllers/transformers"
+import legend from "../assets/plot_diagram_legend.png"
 
 import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
@@ -23,7 +24,9 @@ function FlowDiagram(props) {
   const [showBlockedElements, setShowBlockedElements] = useState(false);
   const [blockedElements, setBlockedElements] = useState([]);
   const [selectedElements, setSelectedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
+  const [diagramHtml, setDiagramHtml] = useState('');
   const requestInProgress = useRef(false);
+  const iframeRef = useRef();
 
   const [data, setData] = useState({
     includedSpecies: selectedElements,
@@ -40,10 +43,18 @@ function FlowDiagram(props) {
     reactions: translate_reactions_to_camp_config(props.mechanism)
   });
 
+  const displayFlowDiagram = (diagram) => {
+    const doc = iframeRef.current.contentDocument;
+    doc.open();
+    doc.write(diagram);
+    doc.close();
+  };
+
   const fetchData = async () => {
     try {
       requestInProgress.current = true;
-      const diagram = await fetchFlowDiagram(data);
+      const response = await fetchFlowDiagram(data);
+      displayFlowDiagram(response.data);
     } catch (error) {
       // handle error
     } finally {
@@ -59,27 +70,43 @@ function FlowDiagram(props) {
     }, 1000),
     [data]
   );
-  
+
   const handleDataChange = () => {
     debouncedFetchData();
-  }; 
+  };
 
   const handleScaleChange = (e) => {
     setScale(e.target.value);
+    setData({
+      ...data,
+      arrowScalingType: e.target.value
+    })
   };
 
   const handlePhysicsChange = (e) => {
     setPhysics(e.target.checked);
+    setData({
+      ...data,
+      physics: e.target.value
+    })
   };
 
   const handleArrowWidthChange = (e) => {
     setArrowWidth(e.target.value);
+    setData({
+      ...data,
+      maxArrowWidth: e.target.value
+    })
   };
 
   const handleStartRangeChange = (value) => {
     const newValue = parseFloat(value);
     if (!isNaN(newValue) && newValue < endRange && newValue >= 0) {
       setStartRange(newValue);
+      setData({
+        ...data,
+        startStep: newValue
+      })
     }
   };
 
@@ -87,6 +114,10 @@ function FlowDiagram(props) {
     const newValue = parseFloat(value);
     if (!isNaN(newValue) && newValue > startRange) {
       setEndRange(newValue);
+      setData({
+        ...data,
+        endStep: newValue
+      })
     }
   };
 
@@ -94,6 +125,10 @@ function FlowDiagram(props) {
     const newValue = parseFloat(value);
     if (!isNaN(newValue) && newValue < endFilterRange && newValue >= 0) {
       setStartFilterRange(newValue);
+      setData({
+        ...data,
+        minMolval: newValue
+      })
     }
   };
 
@@ -101,6 +136,10 @@ function FlowDiagram(props) {
     const newValue = parseFloat(value);
     if (!isNaN(newValue) && newValue > startFilterRange) {
       setEndFilterRange(newValue);
+      setData({
+        ...data,
+        maxMolval: newValue
+      })
     }
   };
 
@@ -246,6 +285,25 @@ function FlowDiagram(props) {
                       </ListGroup>
                     </ListGroup>
                   </nav>
+                </Col>
+                <Col>
+                  <div id="flow-diagram-container">
+                    <img
+                      src={legend}
+                      style={{
+                        marginLeft: '40px',
+                        marginTop: '40px',
+                        width: '200px',
+                        position: 'absolute',
+                        border: '2px solid rgb(189,189,189)',
+                      }}
+                    />
+                    <iframe
+                      ref={iframeRef}
+                      style={{ width: '100%', height: '100%' }}
+                      title="Network plot"
+                    />
+                  </div>
                 </Col>
               </Row>
             </Container>
