@@ -15,10 +15,10 @@ function FlowDiagram(props) {
   const [scale, setScale] = useState('log');
   const [physics, setPhysics] = useState(false);
   const [arrowWidth, setArrowWidth] = useState(7);
-  const [startRange, setStartRange] = useState(0);
-  const [endRange, setEndRange] = useState(1);
-  const [startFilterRange, setStartFilterRange] = useState(0);
-  const [endFilterRange, setEndFilterRange] = useState(1);
+  const [timeStartRange, setTimeStartRange] = useState(0);
+  const [timeEndRange, setTimeEndRange] = useState(1);
+  const [concentrationStartRange, setConcentrationStartRange] = useState(0);
+  const [concentrationEndRange, setConcentrationEndRange] = useState(1);
   const [showBlockedElements, setShowBlockedElements] = useState(false);
   const [blockedElements, setBlockedElements] = useState([]);
   const [selectedElements, setSelectedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
@@ -28,14 +28,14 @@ function FlowDiagram(props) {
   const [data, setData] = useState({
     includedSpecies: selectedElements,
     blockedSpecies: blockedElements,
-    startStep: startRange,
-    endStep: endRange,
+    startStep: timeStartRange,
+    endStep: timeEndRange,
     maxArrowWidth: arrowWidth,
     arrowScalingType: scale,
-    minMolval: startFilterRange,
-    maxMolval: endFilterRange,
-    currentMinValOfGraph: startRange,
-    currentMaxValOfGraph: endRange,
+    minMolval: concentrationStartRange,
+    maxMolval: concentrationEndRange,
+    currentMinValOfGraph: timeStartRange,
+    currentMaxValOfGraph: timeEndRange,
     isPhysicsEnabled: physics,
     reactions: translate_reactions_to_camp_config(props.mechanism)
   });
@@ -96,10 +96,10 @@ function FlowDiagram(props) {
     })
   };
 
-  const handleStartRangeChange = (value) => {
+  const handleTimeStartRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue < endRange && newValue >= 0) {
-      setStartRange(newValue);
+    if (!isNaN(newValue) && newValue < timeEndRange && newValue >= 0) {
+      setTimeStartRange(newValue);
       setData({
         ...data,
         startStep: newValue
@@ -107,10 +107,10 @@ function FlowDiagram(props) {
     }
   };
 
-  const handleEndRangeChange = (value) => {
+  const handleTimeEndRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue > startRange) {
-      setEndRange(newValue);
+    if (!isNaN(newValue) && newValue > timeStartRange) {
+      setTimeEndRange(newValue);
       setData({
         ...data,
         endStep: newValue
@@ -118,10 +118,10 @@ function FlowDiagram(props) {
     }
   };
 
-  const handleStartFilterRangeChange = (value) => {
+  const handleConcentrationStartRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue < endFilterRange && newValue >= 0) {
-      setStartFilterRange(newValue);
+    if (!isNaN(newValue) && newValue < concentrationEndRange && newValue >= 0) {
+      setConcentrationStartRange(newValue);
       setData({
         ...data,
         minMolval: newValue
@@ -129,10 +129,10 @@ function FlowDiagram(props) {
     }
   };
 
-  const handleEndFilterRangeChange = (value) => {
+  const handleConcentrationEndRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue > startFilterRange) {
-      setEndFilterRange(newValue);
+    if (!isNaN(newValue) && newValue > concentrationStartRange) {
+      setConcentrationEndRange(newValue);
       setData({
         ...data,
         maxMolval: newValue
@@ -223,10 +223,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={startRange}
-                                onChange={(e) => handleStartRangeChange(e.target.value)}
-                                onBlur={(e) => handleStartRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleStartRangeChange)}
+                                value={timeStartRange}
+                                onChange={(e) => handleTimeStartRangeChange(e.target.value)}
+                                onBlur={(e) => handleTimeStartRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleTimeStartRangeChange)}
                               />
                             </Col>
                             <Col xs={2}>to</Col>
@@ -234,10 +234,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={endRange}
-                                onChange={(e) => handleEndRangeChange(e.target.value)}
-                                onBlur={(e) => handleEndRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleEndRangeChange)}
+                                value={timeEndRange}
+                                onChange={(e) => handleTimeEndRangeChange(e.target.value)}
+                                onBlur={(e) => handleTimeEndRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleTimeEndRangeChange)}
                               />
                             </Col>
                           </Row>
@@ -249,10 +249,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={startFilterRange}
-                                onChange={(e) => handleStartFilterRangeChange(e.target.value)}
-                                onBlur={(e) => handleStartFilterRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleStartFilterRangeChange)}
+                                value={concentrationStartRange}
+                                onChange={(e) => handleConcentrationStartRangeChange(e.target.value)}
+                                onBlur={(e) => handleConcentrationStartRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleConcentrationStartRangeChange)}
                               />
                             </Col>
                             <Col xs={2}>to</Col>
@@ -260,10 +260,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={endFilterRange}
-                                onChange={(e) => handleEndFilterRangeChange(e.target.value)}
-                                onBlur={(e) => handleEndFilterRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleEndFilterRangeChange)}
+                                value={concentrationEndRange}
+                                onChange={(e) => handleConcentrationEndRangeChange(e.target.value)}
+                                onBlur={(e) => handleConcentrationEndRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleConcentrationEndRangeChange)}
                               />
                             </Col>
                           </Row>
