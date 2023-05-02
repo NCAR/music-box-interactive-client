@@ -87,6 +87,8 @@ async function getPlot(plot) {
 }
 
 module.exports = {
+  fetchConfiguration,
+  fetchCompressedConfiguration,
   checkRunStatus,
   fetchExample,
   fetchFlowDiagram,

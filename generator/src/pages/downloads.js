@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, connect } from "react-redux";
 import Layout from "../components/Layout";
-import { getRunStatus, getMechanism, getConditions, getEvolvingTable } from "../redux/selectors";
+import { getRunStatus, getMechanism, getAllConditions, getEvolvingTable } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import { downloadConfiguration } from "../redux/actions";
 
@@ -39,7 +39,7 @@ const Download = props => {
 
 const mapStateToProps = state => {
   const mechanism = { ...getMechanism(state) }
-  const conditions = { ...getConditions(state) }
+  const conditions = { ...getAllConditions(state) }
   const evolving = getEvolvingTable(state)
   conditions.evolving = evolving
   return {
