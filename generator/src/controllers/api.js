@@ -3,6 +3,28 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+async function fetchConfiguration(file) {
+  const formData = new FormData()
+  formData.append('file', file)
+  try {
+    const response = await axios.get(`${process.env.GATSBY_API_URL}/api/extract-config`, formData)
+    return response.data
+  } catch (error) {
+    console.error(`Error loading compressed configuration: ${error.message}`)
+    throw error
+  }
+}
+
+async function fetchCompressedConfiguration(config) {
+  try {
+    const response = await axios.post(`${process.env.GATSBY_API_URL}/api/compress-config`, { ...config })
+    return response.data
+  } catch (error) {
+    console.log(`Error fetching compressed configuration: ${error.message}`)
+    throw error
+  }
+}
+
 async function fetchExample(example) {
   try {
     const params = {
