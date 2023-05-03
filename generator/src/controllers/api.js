@@ -7,7 +7,7 @@ async function fetchConfiguration(file) {
   const formData = new FormData()
   formData.append('file', file)
   try {
-    const response = await axios.get(`${process.env.GATSBY_API_URL}/api/extract-config`, formData)
+    const response = await axios.post(`${process.env.GATSBY_API_URL}/api/extract-config`, formData)
     return response.data
   } catch (error) {
     console.error(`Error loading compressed configuration: ${error.message}`)

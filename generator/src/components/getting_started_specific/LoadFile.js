@@ -14,7 +14,8 @@ export default function LoadFile() {
       setIsFileSelected(true)
     }
 
-    const handleUpload = () => {
+    const handleUpload = (e) => {
+      e.preventDefault()
       dispatch(loadConfiguration(selectedFile))
       navigate('/mechanism')
     }
@@ -26,13 +27,13 @@ export default function LoadFile() {
                     <div>
                         <h3>Select configuration Zip file</h3>
                     </div>
-                    <form enctype="multipart/form-data">
+                    <form encType="multipart/form-data">
                         <input type="file"
                                name="file"
                                savebutton="jsonConfigSave"
                                className="form-control"
                                required=""
-                               onClick={handleFileChange} />
+                               onChange={handleFileChange} />
                         <button type="submit"
                                 className="btn btn-primary m-2"
                                 onClick={handleUpload}>

@@ -493,9 +493,10 @@ function translate_to_camp_config(config) {
     "reactions": reactions
   }
 
-  let camp_config = { "camp-data": [...species, reactions] }
+  let camp_species_config = { "camp-data": [...species] }
+  let camp_reactions_config = { "camp-data": [reactions] }
 
-  return camp_config;
+  return { species: camp_species_config, reactions: camp_reactions_config };
 }
 
 function translate_to_musicbox_conditions(conditions) {
