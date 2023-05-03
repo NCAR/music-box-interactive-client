@@ -31,14 +31,13 @@ export const downloadConfiguration = (mechanism, conditions) => async dispatch =
   try {
     const camp_mechanism = translate_to_camp_config(mechanism)
     const musicbox_conditions = translate_to_musicbox_conditions(conditions)
-    const data = await fetchCompressedConfiguration({
+    const url = await fetchCompressedConfiguration({
       mechanism: camp_mechanism,
       conditions: musicbox_conditions
     })
-    const url = window.URL.createObjectURL(new Blob([data], { type: 'application/zip' }))
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', 'config.zip')
+    link.download = 'config.zip'
     document.body.appendChild(link)
     link.click()
     link.parentNode.removeChild(link)
