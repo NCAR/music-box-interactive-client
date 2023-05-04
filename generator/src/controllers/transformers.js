@@ -338,15 +338,61 @@ function extract_conditions_from_example(config) {
 }
 
 function translate_reactions_to_camp_config(config) {
-  const reduxReactantsToCamp = (reactants) => reactants.reduce((acc, reactant) => {
-    acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
-    return acc;
-  }, {});
+  const reduxReactantsToCamp = (reactants) => {
+    return reactants === undefined ? {} : reactants.reduce((acc, reactant) => {
+      acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
+      return acc;
+    }, {})
+  }
+  const reduxProductsToCamp = (products) => {
+    return products === undefined ? {} : products.reduce((acc, product) => {
+      acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
+      return acc;
+    }, {})
+  }
 
-  const reduxProductsToCamp = (products) => products.reduce((acc, product) => {
-    acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
-    return acc;
-  }, {});
+  let species = [ ...config.gasSpecies.map((species) => {
+    let camp_species = {
+      "name": species.name,
+      "type": "CHEM_SPEC",
+    }
+    species.properties.forEach(property => {
+      switch (property.name) {
+        case "absolute convergence tolerance [mol mol-1]":
+          camp_species["absolute tolerance"] = property.value
+          break;
+        case "molecular weight [kg mol-1]":
+          camp_species["molecular weight"] = property.value
+          break;
+        case "fixed concentration":
+          camp_species["tracer type"] = property.value
+          break;
+        default:
+          camp_species[property.name] = property.value
+      }
+    })
+    return camp_species;
+  }),
+  ...config.reactions.reduce((irrList, reaction, reactionId) => {
+    const irrSpecies = `irr__${reactionId}`
+    if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
+      irrList.push({
+        name: `${irrSpecies}a`,
+        type: "CHEM_SPEC"
+      })
+      irrList.push({
+        name: `${irrSpecies}b`,
+        type: "CHEM_SPEC"
+      })
+    } else {
+      irrList.push({
+        name: irrSpecies,
+        type: "CHEM_SPEC"
+      })
+    }
+    return irrList
+  }, []) ]
+
   let reactions = config.reactions.map((reaction, reactionId) => {
     const irrSpecies = `irr__${reactionId}`
     let camp_reaction = {
@@ -382,7 +428,7 @@ function translate_reactions_to_camp_config(config) {
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           species: species.name,
-          products: {...reduxProductsToCamp({ name: irrSpecies })}
+          products: {...reduxProductsToCamp([{ name: irrSpecies }])}
         }
         break;
       }
@@ -394,7 +440,7 @@ function translate_reactions_to_camp_config(config) {
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           "species": species,
-          products: {...reduxProductsToCamp({ name: irrSpecies })}
+          products: {...reduxProductsToCamp([{ name: irrSpecies }])}
         }
         break;
       }
@@ -495,9 +541,10 @@ function translate_to_camp_config(config) {
   }, []) ]
   let reactions = translate_reactions_to_camp_config(config)
 
-  let camp_config = { "camp-data": [...species, reactions] }
+  let camp_species_config = { "camp-data": [...species] }
+  let camp_reactions_config = { "camp-data": [reactions] }
 
-  return camp_config;
+  return { species: camp_species_config, reactions: camp_reactions_config };
 }
 
 function translate_to_musicbox_conditions(conditions) {

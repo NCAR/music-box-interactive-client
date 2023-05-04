@@ -1,10 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import Layout from "../components/Layout";
-import { getRunStatus } from "../redux/selectors";
+import { getRunStatus, getMechanism, getAllConditions, getEvolvingTable } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
+import { downloadConfiguration } from "../redux/actions";
 
 const Download = props => {
+  const dispatch = useDispatch()
+
+  const handleDownloadConfig = () => {
+    dispatch(downloadConfiguration(props.mechanism, props.conditions))
+  }
 
   return(
     <Layout>
@@ -15,7 +21,7 @@ const Download = props => {
           </p>
           <section className="jumbotron text-center">
             <p>
-              <button className="btn btn-secondary m-2" onClick={() => {console.error("Download config not implemented")}}>
+              <button className="btn btn-secondary m-2" onClick={handleDownloadConfig}>
                 Download Configuration File
               </button>
               {props.runStatus === RunStatus.DONE ?
@@ -32,8 +38,14 @@ const Download = props => {
 }
 
 const mapStateToProps = state => {
+  const mechanism = { ...getMechanism(state) }
+  const conditions = { ...getAllConditions(state) }
+  const evolving = getEvolvingTable(state)
+  conditions.evolving = evolving
   return {
-    runStatus: getRunStatus(state)
+    runStatus: getRunStatus(state),
+    mechanism: mechanism,
+    conditions: conditions
   }
 }
 
