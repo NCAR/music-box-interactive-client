@@ -1,10 +1,12 @@
 import React, { useRef, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
-import { getRunStatus } from "../redux/selectors";
+import { getRunStatus, getMechanism } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import debounce from 'lodash/debounce';
 import { fetchFlowDiagram } from "../controllers/api"
+import { translate_reactions_to_camp_config } from "../controllers/transformers"
+import legend from "../assets/plot_diagram_legend.png"
 
 import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
@@ -13,33 +15,43 @@ function FlowDiagram(props) {
   const [scale, setScale] = useState('log');
   const [physics, setPhysics] = useState(false);
   const [arrowWidth, setArrowWidth] = useState(7);
-  const [startRange, setStartRange] = useState(0);
-  const [endRange, setEndRange] = useState(1);
-  const [startFilterRange, setStartFilterRange] = useState(0);
-  const [endFilterRange, setEndFilterRange] = useState(1);
+  const [timeStartRange, setTimeStartRange] = useState(0);
+  const [timeEndRange, setTimeEndRange] = useState(1);
+  const [concentrationStartRange, setConcentrationStartRange] = useState(0);
+  const [concentrationEndRange, setConcentrationEndRange] = useState(1);
   const [showBlockedElements, setShowBlockedElements] = useState(false);
   const [blockedElements, setBlockedElements] = useState([]);
-  const [selectedElements, setSelectedElements] = useState([]);
+  const [selectedElements, setSelectedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
   const requestInProgress = useRef(false);
+  const iframeRef = useRef();
 
   const [data, setData] = useState({
     includedSpecies: selectedElements,
     blockedSpecies: blockedElements,
-    startStep: startRange,
-    endStep: endRange,
+    startStep: timeStartRange,
+    endStep: timeEndRange,
     maxArrowWidth: arrowWidth,
     arrowScalingType: scale,
-    minMolval: startFilterRange,
-    maxMolval: endFilterRange,
-    currentMinValOfGraph: 'N/A',
-    currentMaxValOfGraph: 'N/A',
+    minMolval: concentrationStartRange,
+    maxMolval: concentrationEndRange,
+    currentMinValOfGraph: timeStartRange,
+    currentMaxValOfGraph: timeEndRange,
     isPhysicsEnabled: physics,
+    reactions: translate_reactions_to_camp_config(props.mechanism)
   });
+
+  const displayFlowDiagram = (diagram) => {
+    const doc = iframeRef.current.contentDocument;
+    doc.open();
+    doc.write(diagram);
+    doc.close();
+  };
 
   const fetchData = async () => {
     try {
       requestInProgress.current = true;
-      await fetchFlowDiagram(data);
+      const response = await fetchFlowDiagram(data);
+      displayFlowDiagram(response.data);
     } catch (error) {
       // handle error
     } finally {
@@ -55,66 +67,78 @@ function FlowDiagram(props) {
     }, 1000),
     [data]
   );
-  
+
   const handleDataChange = () => {
     debouncedFetchData();
-  }; 
-
-
-  console.log(
-    "scale:", scale,
-    "physics:", physics,
-    "arrowWidth:", arrowWidth,
-    "startRange:", startRange,
-    "endRange:", endRange,
-    "startFilterRange:", startFilterRange,
-    "endFilterRange:", endFilterRange,
-    "showBlockedElements:", showBlockedElements,
-    "blockedElements:", blockedElements,
-    "selectedElements:", selectedElements
-  );
-
+  };
 
   const handleScaleChange = (e) => {
     setScale(e.target.value);
+    setData({
+      ...data,
+      arrowScalingType: e.target.value
+    })
   };
 
   const handlePhysicsChange = (e) => {
     setPhysics(e.target.checked);
+    setData({
+      ...data,
+      physics: e.target.value
+    })
   };
 
   const handleArrowWidthChange = (e) => {
     setArrowWidth(e.target.value);
+    setData({
+      ...data,
+      maxArrowWidth: e.target.value
+    })
   };
 
-  const handleStartRangeChange = (value) => {
+  const handleTimeStartRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue < endRange && newValue >= 0) {
-      setStartRange(newValue);
+    if (!isNaN(newValue) && newValue < timeEndRange && newValue >= 0) {
+      setTimeStartRange(newValue);
+      setData({
+        ...data,
+        startStep: newValue
+      })
     }
   };
 
-  const handleEndRangeChange = (value) => {
+  const handleTimeEndRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue > startRange) {
-      setEndRange(newValue);
+    if (!isNaN(newValue) && newValue > timeStartRange) {
+      setTimeEndRange(newValue);
+      setData({
+        ...data,
+        endStep: newValue
+      })
     }
   };
 
-  const handleStartFilterRangeChange = (value) => {
+  const handleConcentrationStartRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue < endFilterRange && newValue >= 0) {
-      setStartFilterRange(newValue);
+    if (!isNaN(newValue) && newValue < concentrationEndRange && newValue >= 0) {
+      setConcentrationStartRange(newValue);
+      setData({
+        ...data,
+        minMolval: newValue
+      })
     }
   };
 
-  const handleEndFilterRangeChange = (value) => {
+  const handleConcentrationEndRangeChange = (value) => {
     const newValue = parseFloat(value);
-    if (!isNaN(newValue) && newValue > startFilterRange) {
-      setEndFilterRange(newValue);
+    if (!isNaN(newValue) && newValue > concentrationStartRange) {
+      setConcentrationEndRange(newValue);
+      setData({
+        ...data,
+        maxMolval: newValue
+      })
     }
   };
-
 
   const handleShowBlockElementChange = () => {
     setShowBlockedElements(!showBlockedElements);
@@ -199,10 +223,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={startRange}
-                                onChange={(e) => handleStartRangeChange(e.target.value)}
-                                onBlur={(e) => handleStartRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleStartRangeChange)}
+                                value={timeStartRange}
+                                onChange={(e) => handleTimeStartRangeChange(e.target.value)}
+                                onBlur={(e) => handleTimeStartRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleTimeStartRangeChange)}
                               />
                             </Col>
                             <Col xs={2}>to</Col>
@@ -210,10 +234,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={endRange}
-                                onChange={(e) => handleEndRangeChange(e.target.value)}
-                                onBlur={(e) => handleEndRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleEndRangeChange)}
+                                value={timeEndRange}
+                                onChange={(e) => handleTimeEndRangeChange(e.target.value)}
+                                onBlur={(e) => handleTimeEndRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleTimeEndRangeChange)}
                               />
                             </Col>
                           </Row>
@@ -225,10 +249,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={startFilterRange}
-                                onChange={(e) => handleStartFilterRangeChange(e.target.value)}
-                                onBlur={(e) => handleStartFilterRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleStartFilterRangeChange)}
+                                value={concentrationStartRange}
+                                onChange={(e) => handleConcentrationStartRangeChange(e.target.value)}
+                                onBlur={(e) => handleConcentrationStartRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleConcentrationStartRangeChange)}
                               />
                             </Col>
                             <Col xs={2}>to</Col>
@@ -236,10 +260,10 @@ function FlowDiagram(props) {
                               <Form.Control
                                 type="text"
                                 step="any"
-                                value={endFilterRange}
-                                onChange={(e) => handleEndFilterRangeChange(e.target.value)}
-                                onBlur={(e) => handleEndFilterRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleEndFilterRangeChange)}
+                                value={concentrationEndRange}
+                                onChange={(e) => handleConcentrationEndRangeChange(e.target.value)}
+                                onBlur={(e) => handleConcentrationEndRangeChange(e.target.value)}
+                                onKeyDown={(e) => scientificInputDebounce(e, handleConcentrationEndRangeChange)}
                               />
                             </Col>
                           </Row>
@@ -259,6 +283,25 @@ function FlowDiagram(props) {
                     </ListGroup>
                   </nav>
                 </Col>
+                <Col>
+                  <div id="flow-diagram-container" style={{height: `100%`}}>
+                    <img
+                      src={legend}
+                      style={{
+                        marginLeft: '40px',
+                        marginTop: '40px',
+                        width: '200px',
+                        position: 'absolute',
+                        border: '2px solid rgb(189,189,189)',
+                      }}
+                    />
+                    <iframe
+                      ref={iframeRef}
+                      style={{ width: '100%', height: '100%' }}
+                      title="Network plot"
+                    />
+                  </div>
+                </Col>
               </Row>
             </Container>
             :
@@ -272,7 +315,8 @@ function FlowDiagram(props) {
 
 const mapStateToProps = state => {
   return {
-    runStatus: getRunStatus(state)
+    runStatus: getRunStatus(state),
+    mechanism: getMechanism(state)
   }
 }
 

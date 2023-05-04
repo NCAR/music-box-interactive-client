@@ -2,12 +2,11 @@ import { reactionSchema } from '../redux/schemas'
 import { ReactionTypes } from './models'
 
 function extract_mechanism_from_example(config) {
+  const campReactantsToRedux = (reaction) => Object.entries(reaction.reactants).map(([name, props]) => ({ name: name, qty: props.qty || 1 }));
+  const campProductsToRedux = (reaction) => Object.entries(reaction.products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
+  const campAlkoxyProductsToRedux = (products) => Object.entries(products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
+  const campNitrateProductsToRedux = campAlkoxyProductsToRedux;
   let id = 0;
-  const parseReactants = (reaction) => Object.entries(reaction.reactants).map(([name, props]) => ({ name: name, qty: props.qty || 1 }));
-  const parseProducts = (reaction) => Object.entries(reaction.products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
-  const parseAlkoxyProducts = (products) => Object.entries(products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
-  const parseNitrateProducts = parseAlkoxyProducts;
-
   let camp_reactions = config.mechanism.reactions['camp-data'] || [];
   let camp_species = config.mechanism.species['camp-data'] || [];
 
@@ -60,8 +59,8 @@ function extract_mechanism_from_example(config) {
             B: reaction.B || reactionSchema.arrhenius.data.B,
             D: reaction.D || reactionSchema.arrhenius.data.D,
             E: reaction.E || reactionSchema.arrhenius.data.E,
-            products: parseProducts(reaction),
-            reactants: parseReactants(reaction)
+            products: campProductsToRedux(reaction),
+            reactants: campReactantsToRedux(reaction)
           }
         }
       }
@@ -71,8 +70,8 @@ function extract_mechanism_from_example(config) {
           id: id++,
           data: {
             ...reactionSchema.photolysis.data,
-            reactant: parseReactants(reaction)[0].name,
-            products: parseProducts(reaction),
+            reactant: campReactantsToRedux(reaction)[0].name,
+            products: campProductsToRedux(reaction),
             scaling_factor: reaction['scaling factor'] || 1.0,
             musica_name: reaction['MUSICA name']
           }
@@ -116,8 +115,8 @@ function extract_mechanism_from_example(config) {
             kinf_C: reaction['kinf_C'] || 0.0,
             Fc: reaction['Fc'] || 0.6,
             N: reaction['N'] || 1.0,
-            reactants: parseReactants(reaction),
-            products: parseProducts(reaction)
+            reactants: campReactantsToRedux(reaction),
+            products: campProductsToRedux(reaction)
           }
         }
       }
@@ -135,8 +134,8 @@ function extract_mechanism_from_example(config) {
             kinf_C: reaction['kinf_C'] || 0.0,
             Fc: reaction['Fc'] || 0.6,
             N: reaction['N'] || 1.0,
-            products: parseProducts(reaction),
-            reactants: parseReactants(reaction)
+            products: campProductsToRedux(reaction),
+            reactants: campReactantsToRedux(reaction)
           }
         }
       }
@@ -150,9 +149,9 @@ function extract_mechanism_from_example(config) {
             Y: reaction['Y'] || 0.0,
             a0: reaction['a0'] || 1.0,
             n: reaction['n'] || 0,
-            reactants: parseReactants(reaction),
-            primary_products: parseAlkoxyProducts(reaction['alkoxy products']),
-            secondary_products: parseNitrateProducts(reaction['nitrate products'])
+            reactants: campReactantsToRedux(reaction),
+            primary_products: campAlkoxyProductsToRedux(reaction['alkoxy products']),
+            secondary_products: campNitrateProductsToRedux(reaction['nitrate products'])
           },
         }
       }
@@ -165,8 +164,8 @@ function extract_mechanism_from_example(config) {
             A: reaction['A'] || 1.0,
             B: reaction['B'] || 0.0,
             C: reaction['C'] || 0.0,
-            reactants: parseReactants(reaction),
-            products: parseProducts(reaction)
+            reactants: campReactantsToRedux(reaction),
+            products: campProductsToRedux(reaction)
           },
         }
       }
@@ -339,13 +338,13 @@ function extract_conditions_from_example(config) {
 }
 
 function translate_to_camp_config(config) {
-  const parseReactants = (reactants) => {
+  const reduxReactantsToCamp = (reactants) => {
     return reactants === undefined ? {} : reactants.reduce((acc, reactant) => {
       acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
       return acc;
     }, {})
   }
-  const parseProducts = (products) => {
+  const reduxProductsToCamp = (products) => {
     return products === undefined ? {} : products.reduce((acc, product) => {
       acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
       return acc;
@@ -405,8 +404,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: {...parseReactants(reactants)},
-          products: {...parseProducts([...products, { name: irrSpecies }])},
+          reactants: {...reduxReactantsToCamp(reactants)},
+          products: {...reduxProductsToCamp([...products, { name: irrSpecies }])},
         }
         break;
       }
@@ -417,7 +416,7 @@ function translate_to_camp_config(config) {
           ...data,
           "MUSICA name": musica_name,
           reactants: { [reactant]: {} },
-          products: {...parseProducts([...products, { name: irrSpecies }])}
+          products: {...reduxProductsToCamp([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -429,7 +428,7 @@ function translate_to_camp_config(config) {
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           species: species.name,
-          products: {...parseProducts([{ name: irrSpecies }])}
+          products: {...reduxProductsToCamp([{ name: irrSpecies }])}
         }
         break;
       }
@@ -441,7 +440,7 @@ function translate_to_camp_config(config) {
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           "species": species,
-          products: {...parseProducts([{ name: irrSpecies }])}
+          products: {...reduxProductsToCamp([{ name: irrSpecies }])}
         }
         break;
       }
@@ -450,8 +449,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: {...parseReactants(reactants)},
-          products: {...parseProducts([...products, { name: irrSpecies }])}
+          reactants: {...reduxReactantsToCamp(reactants)},
+          products: {...reduxProductsToCamp([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -460,8 +459,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: {...parseReactants(reactants)},
-          products: {...parseProducts([...products, { name: irrSpecies }])}
+          reactants: {...reduxReactantsToCamp(reactants)},
+          products: {...reduxProductsToCamp([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -470,9 +469,9 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: {...parseReactants(reactants)},
-          "alkoxy products": {...parseProducts([...primary_products, { name: `${irrSpecies}a` }])},
-          "nitrate products": {...parseProducts([...secondary_products, { name: `${irrSpecies}b` }])},
+          reactants: {...reduxReactantsToCamp(reactants)},
+          "alkoxy products": {...reduxProductsToCamp([...primary_products, { name: `${irrSpecies}a` }])},
+          "nitrate products": {...reduxProductsToCamp([...secondary_products, { name: `${irrSpecies}b` }])},
         }
         break;
       }
@@ -481,8 +480,8 @@ function translate_to_camp_config(config) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          reactants: {...parseReactants(reactants)},
-          products: {...parseProducts([...products, { name: irrSpecies }])}
+          reactants: {...reduxReactantsToCamp(reactants)},
+          products: {...reduxProductsToCamp([...products, { name: irrSpecies }])}
         }
         break;
       }
@@ -491,11 +490,56 @@ function translate_to_camp_config(config) {
     }
     return camp_reaction
   })
-  reactions = {
+  return {
     "type": "MECHANISM",
     "name": "music box interactive configuration",
     "reactions": reactions
   }
+}
+
+function translate_to_camp_config(config) {
+  let species = [ ...config.gasSpecies.map((species) => {
+    let camp_species = {
+      "name": species.name,
+      "type": "CHEM_SPEC",
+    }
+    species.properties.forEach(property => {
+      switch (property.name) {
+        case "absolute convergence tolerance [mol mol-1]":
+          camp_species["absolute tolerance"] = property.value
+          break;
+        case "molecular weight [kg mol-1]":
+          camp_species["molecular weight"] = property.value
+          break;
+        case "fixed concentration":
+          camp_species["tracer type"] = property.value
+          break;
+        default:
+          camp_species[property.name] = property.value
+      }
+    })
+    return camp_species;
+  }),
+  ...config.reactions.reduce((irrList, reaction, reactionId) => {
+    const irrSpecies = `irr__${reactionId}`
+    if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
+      irrList.push({
+        name: `${irrSpecies}a`,
+        type: "CHEM_SPEC"
+      })
+      irrList.push({
+        name: `${irrSpecies}b`,
+        type: "CHEM_SPEC"
+      })
+    } else {
+      irrList.push({
+        name: irrSpecies,
+        type: "CHEM_SPEC"
+      })
+    }
+    return irrList
+  }, []) ]
+  let reactions = translate_reactions_to_camp_config(config)
 
   let camp_species_config = { "camp-data": [...species] }
   let camp_reactions_config = { "camp-data": [reactions] }
@@ -537,8 +581,9 @@ function translate_to_musicbox_conditions(conditions) {
 }
 
 export {
-  extract_mechanism_from_example,
   extract_conditions_from_example,
+  extract_mechanism_from_example,
+  translate_reactions_to_camp_config,
   translate_to_camp_config,
   translate_to_musicbox_conditions
 }
