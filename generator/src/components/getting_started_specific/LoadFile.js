@@ -16,8 +16,10 @@ export default function LoadFile() {
 
     const handleUpload = (e) => {
       e.preventDefault()
-      dispatch(loadConfiguration(selectedFile))
-      navigate('/mechanism')
+      if (isFileSelected) {
+        dispatch(loadConfiguration(selectedFile))
+        navigate('/mechanism')
+      }
     }
 
     return (

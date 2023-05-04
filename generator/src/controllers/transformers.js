@@ -337,7 +337,7 @@ function extract_conditions_from_example(config) {
   return schema;
 }
 
-function translate_to_camp_config(config) {
+function translate_reactions_to_camp_config(config) {
   const reduxReactantsToCamp = (reactants) => {
     return reactants === undefined ? {} : reactants.reduce((acc, reactant) => {
       acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
