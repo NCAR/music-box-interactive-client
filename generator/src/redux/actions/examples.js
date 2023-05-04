@@ -2,7 +2,8 @@ import utils from '../utils';
 import {
   fetchExample,
   fetchConfiguration,
-  fetchCompressedConfiguration
+  fetchCompressedConfiguration,
+  fetchResults
 } from '../../controllers/api'
 import {
   translate_to_camp_config,
@@ -43,5 +44,19 @@ export const downloadConfiguration = (mechanism, conditions) => async dispatch =
     link.parentNode.removeChild(link)
   } catch (error) {
     console.error(`Error fetching compressed configuration: ${error.message}`)
+  }
+}
+
+export const downloadResults = () => async dispatch => {
+  try {
+    const url = await fetchResults()
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'results.csv'
+    document.body.appendChild(link)
+    link.click()
+    link.parentNode.removeChild(link)
+  } catch (error) {
+    console.error(`Error downloading results: ${error.message}`)
   }
 }

@@ -22,7 +22,18 @@ async function fetchCompressedConfiguration(config) {
     const blob = new Blob([response.data], { type: response.headers.get("content-type") })
     return window.URL.createObjectURL(blob)
   } catch (error) {
-    console.log(`Error fetching compressed configuration: ${error.message}`)
+    console.error(`Error fetching compressed configuration: ${error.message}`)
+    throw error
+  }
+}
+
+async function fetchResults() {
+  try {
+    const response = await axios.get(`${process.env.GATSBY_API_URL}/api/download-results`, { params: {} })
+    const blob = new Blob([response.data], { type: response.headers.get("content-type") })
+    return window.URL.createObjectURL(blob)
+  } catch (error) {
+    console.error(`Error fetching results csv`)
     throw error
   }
 }
@@ -91,6 +102,7 @@ async function getPlot(plot) {
 module.exports = {
   fetchConfiguration,
   fetchCompressedConfiguration,
+  fetchResults,
   checkRunStatus,
   fetchExample,
   fetchFlowDiagram,
