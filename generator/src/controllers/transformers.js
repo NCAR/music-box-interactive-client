@@ -339,14 +339,18 @@ function extract_conditions_from_example(config) {
 }
 
 function translate_to_camp_config(config) {
-  const parseReactants = (reactants) => reactants.reduce((acc, reactant) => {
-    acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
-    return acc;
-  }, {});
-  const parseProducts = (products) => products.reduce((acc, product) => {
-    acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
-    return acc;
-  }, {});
+  const parseReactants = (reactants) => {
+    return reactants === undefined ? {} : reactants.reduce((acc, reactant) => {
+      acc[reactant.name] = { qty: reactant.qty === undefined ? 1 : reactant.qty };
+      return acc;
+    }, {})
+  }
+  const parseProducts = (products) => {
+    return products === undefined ? {} : products.reduce((acc, product) => {
+      acc[product.name] = { yield: product.yield === undefined ? 1.0 : product.yield };
+      return acc;
+    }, {})
+  }
 
   let species = [ ...config.gasSpecies.map((species) => {
     let camp_species = {
@@ -425,7 +429,7 @@ function translate_to_camp_config(config) {
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           species: species.name,
-          products: {...parseProducts({ name: irrSpecies })}
+          products: {...parseProducts([{ name: irrSpecies }])}
         }
         break;
       }
@@ -437,7 +441,7 @@ function translate_to_camp_config(config) {
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           "species": species,
-          products: {...parseProducts({ name: irrSpecies })}
+          products: {...parseProducts([{ name: irrSpecies }])}
         }
         break;
       }
