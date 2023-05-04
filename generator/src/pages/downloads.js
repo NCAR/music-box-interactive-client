@@ -3,13 +3,17 @@ import { useDispatch, connect } from "react-redux";
 import Layout from "../components/Layout";
 import { getRunStatus, getMechanism, getAllConditions, getEvolvingTable } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
-import { downloadConfiguration } from "../redux/actions";
+import { downloadConfiguration, downloadResults } from "../redux/actions";
 
 const Download = props => {
   const dispatch = useDispatch()
 
   const handleDownloadConfig = () => {
     dispatch(downloadConfiguration(props.mechanism, props.conditions))
+  }
+
+  const handleDownloadResults = () => {
+    dispatch(downloadResults())
   }
 
   return(
@@ -25,7 +29,7 @@ const Download = props => {
                 Download Configuration File
               </button>
               {props.runStatus === RunStatus.DONE ?
-                <button className="btn btn-secondary m-2" onClick={() => {console.error("Download results not implemented")}}>
+                <button className="btn btn-secondary m-2" onClick={handleDownloadResults}>
                   Download Results
                 </button>
                : null}
