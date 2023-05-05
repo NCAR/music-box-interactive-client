@@ -12,16 +12,15 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
       try {
         // Make a new web request to check the status of the original request
         const response = await checkRunStatus();
-        const status = RunStatus[response.data.status];
-        console.log(`model status: ${status}`);
+        const content = {
+          status: RunStatus[response.data.status],
+          error: response.data.error
+        }
+        console.log(`model status: ${content}`);
+        dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: content })
 
-        // If the request is complete, dispatch a new action to signal completion
-        if (status === RunStatus.DONE) {
-          dispatch({ type: utils.action_types.RUN_COMPLETE, payload: { }});
-        } else if(status === RunStatus.ERROR) {
-          throw response.data;
-        } else {
-          // Otherwise, keep polling
+        // If the simulation is still running, keep polling
+        if (content.status === RunStatus.RUNNING) {
           setTimeout(poll, 1000); // Poll every second
         }
       } catch (error) {
