@@ -16,11 +16,15 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
           status: RunStatus[response.data.status],
           error: response.data.error
         }
-        console.log(`model status: ${content}`);
+        console.log(`model status: ${content.status}`);
         dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: content })
 
+
         // If the simulation is still running, keep polling
-        if (content.status === RunStatus.RUNNING) {
+        if (
+          content.status === RunStatus.RUNNING
+          || content.status === RunStatus.WAITING
+        ) {
           setTimeout(poll, 1000); // Poll every second
         }
       } catch (error) {
