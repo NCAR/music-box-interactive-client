@@ -94,6 +94,8 @@ const Results = ({ runStatus, error }) => {
     renderCount.current++
   })
 
+  let message = `Run Status: ${runStatus.toLowerCase()}`
+
   return (
     <Layout>
       <Container className="jumbotron text-center hero-img">
@@ -102,8 +104,10 @@ const Results = ({ runStatus, error }) => {
             case RunStatus.RUNNING:
               return <ResultsRunning updateCount={renderCount.current}/>
             case RunStatus.DONE:
+              {message = ''}
               return <ResultsDone />
             case RunStatus.ERROR:
+              {message = ''}
               return <ResultsError errorMessage={error.message} />
             case RunStatus.WAITING:
               return <ResultsNotStarted />
@@ -114,6 +118,7 @@ const Results = ({ runStatus, error }) => {
               return <ResultsNotStarted />
           }
         })()}
+        <p>{message}</p>
       </Container>
     </Layout>
   )
