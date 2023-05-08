@@ -6,6 +6,7 @@ const utils = {
         UPLOAD_CONFIG: 'UPLOAD_CONFIG'
     },
     action_types: {
+        RESET_ALL: 'RESET_ALL',
         ADD_GAS_SPECIES: 'ADD_GAS_SPECIES',
         REMOVE_GAS_SPECIES: 'REMOVE_GAS_SPECIES',
         ADD_PROPERTY: 'ADD_PROPERTY',

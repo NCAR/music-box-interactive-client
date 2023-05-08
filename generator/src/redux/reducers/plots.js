@@ -14,6 +14,11 @@ const initialState = {
 
 export const plotsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case utils.action_types.RESET_ALL: {
+      return {
+        ...initialState
+      }
+    }
     case utils.action_types.ADD_PLOT: {
       const type = action.payload.content.type;
       const plot = action.payload.content.plot;

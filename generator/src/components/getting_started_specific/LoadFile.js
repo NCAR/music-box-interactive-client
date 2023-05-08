@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { loadConfiguration } from '../../redux/actions'
+import { resetAll, loadConfiguration } from '../../redux/actions'
 import { navigate } from 'gatsby'
 
 //TODO: Complete functions for uploading files 
@@ -17,6 +17,7 @@ export default function LoadFile() {
     const handleUpload = (e) => {
       e.preventDefault()
       if (isFileSelected) {
+        dispatch(resetAll())
         dispatch(loadConfiguration(selectedFile))
         navigate('/mechanism')
       }

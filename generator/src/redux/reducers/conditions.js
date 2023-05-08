@@ -46,6 +46,11 @@ const compareId = (a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
 
 export const conditionsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case utils.action_types.RESET_ALL: {
+            return {
+                ...initialState
+            }
+        }
         case utils.action_types.UPDATE_BASIC_CONFIGURATION: {
             return {
                 ...state,

@@ -11,6 +11,11 @@ const compareId = (a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
 
 export const mechanismReducer = (state = initialState, action) => {
     switch (action.type) {
+        case utils.action_types.RESET_ALL: {
+            return {
+                ...initialState
+            }
+        }
         case utils.action_types.ADD_GAS_SPECIES: {
             const species = action.payload.content;
             const otherSpecies = state.gasSpecies.filter(other => {

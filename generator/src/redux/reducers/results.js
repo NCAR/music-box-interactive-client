@@ -10,6 +10,11 @@ const initialState = {
 
 export const resultsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case utils.action_types.RESET_ALL: {
+            return {
+                ...initialState
+            }
+        }
         case utils.action_types.UPDATE_RUN_STATUS: {
           console.log("Updating run status", { ...action.payload.content })
           return {
