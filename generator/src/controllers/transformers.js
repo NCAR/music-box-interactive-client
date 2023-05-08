@@ -78,13 +78,14 @@ function extract_mechanism_from_example(config) {
         }
       }
       case ReactionTypes.EMISSION: {
+        console.log("emissions reaction:", reaction)
         return {
           ...reactionSchema.emission,
           id: id++,
           data: {
             ...reactionSchema.emission.data,
             scaling_factor: reaction['scaling factor'] || 1.0,
-            species: { name: reaction['species'], qty: 1 },
+            species: reaction['species'],
             musica_name: reaction['MUSICA name'] || ''
           }
         }
@@ -427,7 +428,7 @@ function translate_reactions_to_camp_config(config) {
           ...data,
           "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
-          species: species.name,
+          species: species,
           products: {...reduxProductsToCamp([{ name: irrSpecies }])}
         }
         break;
