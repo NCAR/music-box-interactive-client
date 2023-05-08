@@ -11,7 +11,12 @@ const initialState = {
 export const resultsReducer = (state = initialState, action) => {
     switch (action.type) {
         case utils.action_types.UPDATE_RUN_STATUS: {
-            return { ...action.payload.content }
+          console.log("Updating run status", { ...action.payload.content })
+          return {
+            ...state,
+            runStatus: action.payload.content.status,
+            error: action.payload.content.error
+          }
         }
         default:
             return state

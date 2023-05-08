@@ -41,7 +41,7 @@ export const ResultsError = props => {
     <>
       <h1>You have encountered an error</h1>
       <Alert variant='danger'>
-        props.error.message
+        {props.errorMessage}
       </Alert>
     </>
   )
@@ -63,15 +63,19 @@ const Results = (props) => {
   return (
     <Layout>
       <Container className="jumbotron text-center hero-img">
-      {props.runStatus}
       {(() => {switch(props.runStatus) {
         case RunStatus.RUNNING:
           return <ResultsRunning />
         case RunStatus.DONE:
           return <ResultsDone />
         case RunStatus.ERROR:
-          return <ResultsError errorMessage={props.errorMessage} />
+          return <ResultsError errorMessage={props.error.message} />
+        case RunStatus.WAITING:
+          return <ResultsNotStarted />
+        case RunStatus.NOT_FOUND:
+          return <ResultsError errorMessage="Unexpected server error. Please try your run again." />
         default:
+          console.error(`Unknown model run status: ${props.runStatus}`)
           return <ResultsNotStarted />
       }})()}
       </Container>

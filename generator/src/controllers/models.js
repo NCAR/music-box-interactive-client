@@ -3,8 +3,7 @@ const RunStatus = Object.freeze({
   WAITING: 'WAITING',
   NOT_FOUND: 'NOT_FOUND',
   DONE: 'DONE',
-  ERROR: 'ERROR',
-  UNKNOWN: 'UNKNOWN',
+  ERROR: 'ERROR'
 });
 
 const ReactionTypes = Object.freeze({

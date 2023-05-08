@@ -17,7 +17,7 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
           error: response.data.error
         }
         console.log(`model status: ${content.status}`);
-        dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: content })
+        dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: { content } })
 
 
         // If the simulation is still running, keep polling
@@ -29,6 +29,13 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
         }
       } catch (error) {
         // Handle errors here
+        const content = {
+          status: "ERROR",
+          error: {
+            message: "Internal server error."
+          }
+        }
+        dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: { content } })
         console.error(error);
       }
     };
