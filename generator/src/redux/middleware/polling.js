@@ -16,7 +16,6 @@ const pollingMiddleware = ({ dispatch, getState }) => next => action => {
           status: RunStatus[response.data.status],
           error: response.data.error
         }
-        console.log(`model status: ${content.status}`);
         dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: { content } })
 
 

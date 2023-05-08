@@ -16,7 +16,6 @@ export const resultsReducer = (state = initialState, action) => {
             }
         }
         case utils.action_types.UPDATE_RUN_STATUS: {
-          console.log("Updating run status", { ...action.payload.content })
           return {
             ...state,
             runStatus: action.payload.content.status,
