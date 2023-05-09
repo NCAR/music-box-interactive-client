@@ -7,15 +7,27 @@ import { useDispatch, connect } from 'react-redux';
 import { Link } from "gatsby"
 import { doRun } from '../redux/actions';
 import { navigate, graphql, StaticQuery } from 'gatsby';
-import { getMechanism, getAllConditions, getEvolvingTable } from "../redux/selectors";
+import { getMechanism,
+         getAllConditions,
+         getEvolvingTable,
+         getRunStatus } from "../redux/selectors";
+import { RunStatus } from "../controllers/models"
+import utils from "../redux/utils"
 
 function Layout(props) {
     const activeColor = { color: "#00797C" }
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(doRun(props.mechanism, props.conditions));
-        navigate("/results");
+        if (props.runStatus !== RunStatus.RUNNING) {
+            const content = {
+                status: "RUNNING",
+                error: ""
+            }
+            dispatch({ type: utils.action_types.UPDATE_RUN_STATUS, payload: { content } })
+            dispatch(doRun(props.mechanism, props.conditions));
+            navigate("/results");
+        }
     }
 
     return (
@@ -122,7 +134,8 @@ const mapStateToProps = state => {
     conditions.evolving = evolving;
     return {
         mechanism: mechanism,
-        conditions: conditions
+        conditions: conditions,
+        runStatus: getRunStatus(state)
     };
 };
 
