@@ -1,22 +1,15 @@
-FROM httpd:latest
+FROM fedora:37
 
 # install packages
-RUN apt-get update \
-    && apt-get -y install nodejs
-
-# install gatsby 
-RUN npm install -g gatsby-cli
+RUN dnf -y update \
+    && dnf -y install \
+        nodejs \
+    && dnf clean all
 
 # move our files into docker
 COPY . /music-box-interactive-client
 
-# work on them
-WORKDIR /music-box-interactive-client
-
 # install site dependencies and build
-RUN npm install && gatsby build
-
-# copy to httpd
-RUN cp -r public/* /usr/local/apache2/htdocs/
-
-CMD ["httpd-foreground"]
+RUN cd /music-box-interactive-client/generator \
+    && npm install gatsby-cli --legacy-peer-deps \
+    && gatsby build
