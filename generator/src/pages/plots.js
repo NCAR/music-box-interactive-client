@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
-import PlotsTab from "../components/PlotsTab";
+import { PlotsTab } from "../components/Plots";
 import {
   getRunStatus,
   getPlots,

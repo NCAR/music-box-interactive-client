@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import Layout from "../components/Layout";
-import GasSpeciesTab from "../components/GasSpeciesTab.js";
-import ReactionsTab from "../components/ReactionsTab.js";
+import { GasSpeciesTab, ReactionsTab } from "../components/Mechanism";
 
 function Mechanism(props) {
   const SPECIES = 0

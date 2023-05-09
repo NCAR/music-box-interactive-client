@@ -1,9 +1,7 @@
 import React, { useState } from "react"
 import { connect } from 'react-redux'
 import Layout from "../components/Layout";
-import BasicConfigurationTab from "../components/BasicConfigurationTab";
-import InitialConditionsTab from "../components/InitialConditionsTab";
-import EvolvingConditionsTab from "../components/EvolvingConditionsTab";
+import {BasicConfigurationTab, InitialConditionsTab, EvolvingConditionsTab} from "../components/Conditions";
 
 function Conditions(props) {
   const BASIC = 0

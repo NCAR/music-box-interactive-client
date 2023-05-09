@@ -1,7 +1,7 @@
 import React from "react";
-import SpeciesCondition from "../../components/SpeciesCondition";
-import EnvironmentalCondition from "../../components/EnvironmentalCondition";
-import ReactionCondition from "../../components/ReactionCondition";
+import SpeciesCondition from "../../components/Conditions/SpeciesCondition";
+import EnvironmentalCondition from "../../components/Conditions/EnvironmentalCondition";
+import ReactionCondition from "../../components/Conditions/ReactionCondition";
 
 export const basicConfigSchema = [
   {
