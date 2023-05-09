@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { navigate } from 'gatsby';
 import Examples from "./Examples"
@@ -20,10 +20,10 @@ export default function QuickStart() {
 
     useEffect(() => {
         if (method === utils.methods.START_FROM_SCRATCH) {
-            dispatch(resetAll());
+            dispatch(resetAll())
             navigate('/mechanism')
         }
-    }, [method])
+    }, [method, dispatch])
 
     return (
         <section className="jumbotron text-center">

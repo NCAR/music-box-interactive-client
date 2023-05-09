@@ -351,48 +351,6 @@ function translate_reactions_to_camp_config(config) {
     }, {})
   }
 
-  let species = [ ...config.gasSpecies.map((species) => {
-    let camp_species = {
-      "name": species.name,
-      "type": "CHEM_SPEC",
-    }
-    species.properties.forEach(property => {
-      switch (property.name) {
-        case "absolute convergence tolerance [mol mol-1]":
-          camp_species["absolute tolerance"] = property.value
-          break;
-        case "molecular weight [kg mol-1]":
-          camp_species["molecular weight"] = property.value
-          break;
-        case "fixed concentration":
-          camp_species["tracer type"] = property.value
-          break;
-        default:
-          camp_species[property.name] = property.value
-      }
-    })
-    return camp_species;
-  }),
-  ...config.reactions.reduce((irrList, reaction, reactionId) => {
-    const irrSpecies = `irr__${reactionId}`
-    if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
-      irrList.push({
-        name: `${irrSpecies}a`,
-        type: "CHEM_SPEC"
-      })
-      irrList.push({
-        name: `${irrSpecies}b`,
-        type: "CHEM_SPEC"
-      })
-    } else {
-      irrList.push({
-        name: irrSpecies,
-        type: "CHEM_SPEC"
-      })
-    }
-    return irrList
-  }, []) ]
-
   let reactions = config.reactions.map((reaction, reactionId) => {
     const irrSpecies = `irr__${reactionId}`
     let camp_reaction = {
