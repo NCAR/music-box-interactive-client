@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import utils from '../../redux/utils';
-import { getExample } from '../../redux/actions/examples';
+import { resetAll, getExample } from '../../redux/actions';
 import { navigate } from 'gatsby';
 
 const examples = [
@@ -26,6 +26,7 @@ export default function Examples() {
     const dispatch = useDispatch();
 
     const handleClick = (example) => {
+        dispatch(resetAll());
         dispatch(getExample(example.type));
         navigate('/mechanism')
     }

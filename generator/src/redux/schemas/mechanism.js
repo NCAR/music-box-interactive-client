@@ -28,7 +28,7 @@ const stringifyReaction = (reactants, products) => {
   } else {
       str += " <none>";
   }
-  return str.length > 50 ? str.slice(0, 16) + "..."  : str;
+  return str.length > 40 ? str.slice(0, 37) + "..."  : str;
 }
 
 export const reactionSchema = {

@@ -46,7 +46,10 @@ export const getUserDefinedRates = (store) => {
                && reaction.data.musica_name
                && reaction.data.musica_name.length;
     }).map(reaction => {
-        return reaction.data.musica_name;
+        return {
+          name: reaction.data.musica_name,
+          prefix: reaction.tablePrefix
+        }
     });
 }
 

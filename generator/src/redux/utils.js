@@ -6,6 +6,7 @@ const utils = {
         UPLOAD_CONFIG: 'UPLOAD_CONFIG'
     },
     action_types: {
+        RESET_ALL: 'RESET_ALL',
         ADD_GAS_SPECIES: 'ADD_GAS_SPECIES',
         REMOVE_GAS_SPECIES: 'REMOVE_GAS_SPECIES',
         ADD_PROPERTY: 'ADD_PROPERTY',
@@ -32,7 +33,7 @@ const utils = {
         LOAD_CONFIG: 'LOAD_CONFIG',
         EXAMPLE_FETCHED: 'EXAMPLE_FETCHED',
         START_POLLING: 'START_POLLING',
-        RUN_COMPLETE: 'RUN_COMPLETE',
+        UPDATE_RUN_STATUS: 'UPDATE_RUN_STATUS',
         ADD_PLOT: 'ADD_PLOT',
         REMOVE_PLOT: 'REMOVE_PLOT'
     },
