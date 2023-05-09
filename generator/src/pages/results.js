@@ -7,11 +7,11 @@ import { getRunStatus, getLastError } from '../redux/selectors'
 import { RunStatus } from '../controllers/models'
 import { navigate } from 'gatsby';
 
-export const ResultsRunning = (props) => {
+const ResultsRunning = (props) => {
   const colors = ['#91A6FF', '#FF88DC', '#FF5154']
-  let outerCircleColor  = props.updateCount % 3 == 2 ? colors[0] : ''
-  let middleCircleColor = props.updateCount % 3 == 1 ? colors[1] : ''
-  let innerCircleColor  = props.updateCount % 3 == 0 ? colors[2] : ''
+  let outerCircleColor  = props.updateCount % 3 === 2 ? colors[0] : ''
+  let middleCircleColor = props.updateCount % 3 === 1 ? colors[1] : ''
+  let innerCircleColor  = props.updateCount % 3 === 0 ? colors[2] : ''
 
   return (
     <div style={{ display: `flex`, justifyContent: `center`, margin: `auto` }}>
@@ -31,7 +31,7 @@ export const ResultsRunning = (props) => {
   )
 }
 
-export const ResultsDone = () => {
+const ResultsDone = () => {
   return (
     <>
       <h1>Your simulation is finished!</h1>
@@ -65,7 +65,7 @@ export const ResultsDone = () => {
   )
 }
 
-export const ResultsError = props => {
+const ResultsError = props => {
   return (
     <>
       <h1>You have encountered an error</h1>
@@ -76,7 +76,7 @@ export const ResultsError = props => {
   )
 }
 
-export const ResultsNotStarted = () => {
+const ResultsNotStarted = () => {
   return (
     <>
       <h1>To run a simulation, click the green Run button to the left</h1>
