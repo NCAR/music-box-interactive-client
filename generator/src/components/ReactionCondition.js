@@ -9,12 +9,12 @@ const ReactionCondition = props => {
   const condition = props.condition
   const schema = props.schema
 
-  const handleUpdate = (key, value) => {
+  const handleUpdate = (newProps) => {
     props.addCondition({
       schema: schema,
       condition: {
         ...condition,
-        [key]: value
+        ...newProps
       }
     });
   };
@@ -29,8 +29,9 @@ const ReactionCondition = props => {
           <Dropdown.Menu>
             {schema.allowAddRemove ? props.reactionNames.map(value => {
               return (
-                <Dropdown.Item href="#" key={value} onClick={(e) => {handleUpdate("name", e.target.innerHTML);}}>
-                  {value}
+                <Dropdown.Item href="#" key={value.name} onClick={() => {
+                    handleUpdate({ name: value.name, type: value.prefix });}}>
+                  {value.name}
                 </Dropdown.Item>
               );
             }) : condition.name }
@@ -41,7 +42,7 @@ const ReactionCondition = props => {
         <input type="text"
                className="form-control"
                defaultValue={condition.value}
-               onBlur={(e) => {handleUpdate("value", e.target.value);}}>
+               onBlur={(e) => {handleUpdate({ value: e.target.value });}}>
         </input>
       </div>
       <div className="col-3">
@@ -53,7 +54,8 @@ const ReactionCondition = props => {
             {props.possibleUnits && props.possibleUnits.length ?
               props.possibleUnits.map(value => {
               return (
-                <Dropdown.Item href="#" key={value} onClick={(e) => {handleUpdate("units", e.target.innerHTML);}}>
+                <Dropdown.Item href="#" key={value} onClick={(e) => {
+                    handleUpdate({ units: e.target.innerHTML })}}>
                   {value}
                 </Dropdown.Item>
               );
