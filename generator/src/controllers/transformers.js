@@ -78,7 +78,6 @@ function extract_mechanism_from_example(config) {
         }
       }
       case ReactionTypes.EMISSION: {
-        console.log("emissions reaction:", reaction)
         return {
           ...reactionSchema.emission,
           id: id++,
