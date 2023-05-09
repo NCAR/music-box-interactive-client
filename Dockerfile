@@ -6,10 +6,13 @@ RUN dnf -y update \
         nodejs \
     && dnf clean all
 
+# install gatsby
+RUN npm install -g gatsby-cli
+
 # move our files into docker
 COPY . /music-box-interactive-client
 
 # install site dependencies and build
 RUN cd /music-box-interactive-client/generator \
-    && npm install gatsby-cli --legacy-peer-deps \
+    && npm install --legacy-peer-deps \
     && gatsby build
