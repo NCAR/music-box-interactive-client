@@ -14,12 +14,14 @@ function BasicConfiguration(props) {
                 <h4 className="my-0 fw-normal">Basic Configuration</h4>
               </div>
               <div className="bg-ncar-body p-3">
-                <input type="hidden" />
-                {basicConfigSchema.map((param, index) => {
-                  return <BasicConfigProperty key={`config-${index}`}
-                                              data={props.data}
-                                              schema={param} />;
-                })}
+                <div className="container-fluid">
+                  <input type="hidden" />
+                  {basicConfigSchema.map((param, index) => {
+                    return <BasicConfigProperty key={`config-${index}`}
+                                                data={props.data}
+                                                schema={param} />;
+                  })}
+                </div>
               </div>
             </div>
           </div>
