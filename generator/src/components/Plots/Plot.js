@@ -6,7 +6,7 @@ const Plot = props => {
   return(
     <div>
       {props.plot.srcValue ?
-        <img alt={props.plot.label} src={props.plot.srcValue} />
+        <img src={props.plot.srcValue} />
        :<>Plot for {props.plot.label}</>}
     </div>
   )
