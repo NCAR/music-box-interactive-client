@@ -3,6 +3,9 @@ FROM fedora:37
 # install packages
 RUN dnf -y update \
     && dnf -y install \
+        gcc \
+        g++ \
+        make \
         nodejs \
     && dnf clean all
 
@@ -12,7 +15,8 @@ RUN npm install -g gatsby-cli
 # move our files into docker
 COPY . /music-box-interactive-client
 
+WORKDIR /music-box-interactive-client/generator
+
 # install site dependencies and build
-RUN cd /music-box-interactive-client/generator \
-    && npm install --legacy-peer-deps \
-    && gatsby build
+RUN npm install --legacy-peer-deps
+RUN gatsby build
