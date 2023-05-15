@@ -1,0 +1,9 @@
+# ignore all
+*
+
+# add things to copy
+!generator/*.js
+!generator/src
+!generator/static
+!generator/.env.*
+!generator/package.json
