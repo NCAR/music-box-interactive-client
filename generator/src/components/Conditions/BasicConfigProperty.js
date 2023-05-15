@@ -13,42 +13,52 @@ const BasicConfigProperty = (props) => {
     });
   };
 
-  const handleUpdateListString = (stringValue) => {
+  const handleUpdateUnits = (stringValue) => {
     props.updateBasicConfiguration({
       data: {
         ...props.data,
-        [props.schema.key]: stringValue
+        [props.schema.units.key]: stringValue
       }
     });
   };
 
   const floatInput = (
-    <div>
-      <label> {props.schema.label} </label>
-      <input type="text"
-             className="form-control"
-             defaultValue={props.data[props.schema.key]}
-             onBlur={handleUpdateFloat}>
-      </input>
-      {props.schema.units && props.schema.units.length ?
-        <div className="input-group-append">
-          <Dropdown>
-            <Dropdown.Toggle variant="success" className="btn btn-light">
-              {props.data[props.schema.units.key]}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {props.schema.units.values.map(units => {
-                return (
-                  <Dropdown.Item href="#" key={units} onClick={() => {handleUpdateListString(units)}}>
-                    {units}
-                  </Dropdown.Item>
-                );
-              })}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        : null}
+    <>
+    <div className="row">
+      <div className="col-12">
+        <label> {props.schema.label} </label>
+      </div>
     </div>
+    <div className="row">
+      <div className="col-8">
+        <input type="text"
+               className="form-control"
+               defaultValue={props.data[props.schema.key]}
+               onBlur={handleUpdateFloat}>
+        </input>
+      </div>
+      <div className="col-4">
+        {props.schema.units.values && props.schema.units.values.length ?
+          <div className="input-group-append">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" className="btn btn-light">
+                {props.data[props.schema.units.key]}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {props.schema.units.values.map(units => {
+                  return (
+                    <Dropdown.Item href="#" key={units} onClick={() => {handleUpdateUnits(units)}}>
+                      {units}
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          : null}
+      </div>
+    </div>
+    </>
   );
 
   const getProperty = () => {
