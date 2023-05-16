@@ -49,7 +49,7 @@ const EvolvingConditionsDetail = props => {
         <AddEvolvingCondition />
       </div>
       <div className="body body-card">
-        <Table striped bordered hover size="sm">
+        <Table responsive striped bordered hover size="sm">
           <thead>
             <tr>
               <th>time</th>
