@@ -1,7 +1,14 @@
 import React, { useRef, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
-import { getRunStatus, getMechanism } from "../redux/selectors";
+import {
+  getRunStatus,
+  getMechanism,
+  getPlots,
+  getSpeciesPlots,
+  getReactionPlots,
+  getEnvironmentPlots
+} from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import debounce from 'lodash/debounce';
 import { fetchFlowDiagram } from "../controllers/api"
@@ -9,12 +16,12 @@ import { translate_reactions_to_camp_config } from "../controllers/transformers"
 import legend from "../assets/plot_diagram_legend.png"
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button';
+import { plotSpeciesUnits } from "../redux/schemas";
 
 
 import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
-import { set } from "lodash";
-// import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
+
 
 function FlowDiagram(props) {
   const [loaded, setLoaded] = useState(false);
@@ -24,10 +31,13 @@ function FlowDiagram(props) {
   const [timeStartRange, setTimeStartRange] = useState("0");
   const [timeEndRange, setTimeEndRange] = useState("0");
   const [concentrationStartRange, setConcentrationStartRange] = useState("0");
-  const [concentrationEndRange, setConcentrationEndRange] = useState("1");
+  const [concentrationEndRange, setConcentrationEndRange] = useState("100000");
   const [showFilteredNodes, setShowFilteredNodes] = useState(false);
-  const [blockedElements, setBlockedElements] = useState([]);
+  const [blockedElements, setBlockedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
   const [selectedElements, setSelectedElements] = useState(props.mechanism.gasSpecies.map(a => a.name));
+  const [timeStep, setTimeStep] = useState("1");
+  const [fluxStartRange, setFluxStartRange] = useState(0);
+  const [fluxEndRange, setFluxEndRange] = useState(100000);
   const requestInProgress = useRef(false);
   const iframeRef = useRef();
 
@@ -45,17 +55,21 @@ function FlowDiagram(props) {
     showFilteredNodesAndEdges: showFilteredNodes
   });
 
-  
+
   const handleUserInterfaceOptions = (response) => {
     setTimeStartRange(response.timeRange[0])
     setTimeEndRange(response.timeRange[1])
+    setTimeStep(response.timeStep)
     setConcentrationStartRange(response.filterRange[0])
     setConcentrationEndRange(response.filterRange[1])
+    setFluxStartRange(response.minMaxFlux[0])
+    setFluxEndRange(response.minMaxFlux[1])
     setData({
       ...data,
       startStep: response.timeRange[0],
-      endStep: response.timeRange[1]
-
+      endStep: response.timeRange[1],
+      minMolval: parseFloat(response.filterRange[0]),
+      maxMolval: parseFloat(response.filterRange[1])
     })
   }
 
@@ -67,14 +81,13 @@ function FlowDiagram(props) {
   }
 
   const [dropdownSpeciesList, setDropdownSpeciesList] = useState(
-    selectedElements.map((element, index) => ([element, true]))
+    selectedElements.map((element, index) => ([element, false]))
   );
 
 
 
   const displayFlowDiagram = (diagram) => {
     const doc = iframeRef.current.contentDocument;
-    // console.log(diagram);
     doc.open();
     doc.write(diagram);
     doc.close();
@@ -111,7 +124,6 @@ function FlowDiagram(props) {
 
   const handleScaleChange = (e) => {
     setScale(e.target.value);
-    console.log('scale is: ', e.target.value)
     setData({
       ...data,
       arrowScalingType: e.target.value
@@ -119,20 +131,15 @@ function FlowDiagram(props) {
   };
 
   const handlePhysicsChange = (e) => {
-    console.log(e.target.checked)
     setPhysics(e.target.checked);
     setData({
       ...data,
       isPhysicsEnabled: e.target.checked
     })
-    console.log("e.target.value", e.target.value)
-    console.log("e.target.checked", e.target.checked)
-    console.log("data.isPhysicsEnabled", data.isPhysicsEnabled)
   };
 
   const handleArrowWidthChange = (e) => {
     setArrowWidth(e.target.value);
-    console.log('arrow width is: ', e.target)
     setData({
       ...data,
       maxArrowWidth: e.target.value
@@ -157,7 +164,6 @@ function FlowDiagram(props) {
       ...data,
       endStep: newValue
     })
-    console.log("data.endStep", data.endStep)
   };
 
   const handleConcentrationStartRangeChange = (value) => {
@@ -170,9 +176,7 @@ function FlowDiagram(props) {
   };
 
   const handleConcentrationEndRangeChange = (value) => {
-    console.log("value", value)
     const newValue = parseFloat(value);
-    console.log("newValue", newValue)
     setConcentrationEndRange(value);
     setData({
       ...data,
@@ -180,9 +184,7 @@ function FlowDiagram(props) {
     })
   };
 
-  // const handleSelectionOfSpecies = (e) => {
-  //   console.log(e.target);
-  // };
+
 
   const handleDropDownChange = (value) => {
     setDropdownSpeciesList(
@@ -190,7 +192,6 @@ function FlowDiagram(props) {
         [element[0], element[0] === value[0] ? !value[1] : element[1]]
       )
     );
-    console.log(dropdownSpeciesList); // currently inaccurate due to async?
   };
 
   const handleShowBlockElementChange = () => {
@@ -227,7 +228,6 @@ function FlowDiagram(props) {
       selectionEnd properties are then used to move the cursor to the correct position. Finally, the state is updated with the new value.
       Note that the onBlur event listener is used to convert the input value to a number after the user has finished typing.
     */
-    console.log('e.key', e.key)
     e.preventDefault();
     if (e.key === 'e' || e.key === 'E') {
       e.preventDefault();
@@ -237,7 +237,6 @@ function FlowDiagram(props) {
       e.target.selectionStart = cursorPos + 1;
       e.target.selectionEnd = cursorPos + 1;
       setFunction(e.target.value);
-      console.log("e.target.value", e.target.value)
     }
   }
 
@@ -252,8 +251,8 @@ function FlowDiagram(props) {
                   <nav>
                     <ListGroup className="bg-ncar-menu-secondary p-2">
                       <Form onSubmit={handleDataChange} id="graphSettingsForm">
-                        <ListGroup.Item>.
-                          <Form.Label htmlFor="flow-scale-select">Arrow width scaling:</Form.Label>
+                        <ListGroup.Item>
+                          <Form.Label htmlFor="flow-scale-select">Arrow Width Scaling:</Form.Label>
                           <Form.Select value={scale} onChange={handleScaleChange}>
                             <option value="log">Log</option>
                             <option value="linear">Linear</option>
@@ -269,12 +268,12 @@ function FlowDiagram(props) {
                         </ListGroup.Item>
                         <ListGroup.Item>
                           <Form.Label htmlFor="flow-arrow-width-range">
-                            Max arrow width: {arrowWidth}
+                            Max Arrow Width: {arrowWidth}
                           </Form.Label>
                           <Form.Range min="1" max="15" value={arrowWidth} onChange={handleArrowWidthChange} />
                         </ListGroup.Item>
                         <ListGroup.Item>
-                          <Form.Label htmlFor="flow-start-range">Time Range (seconds):</Form.Label>
+                          <Form.Label htmlFor="flow-start-range">Time Range (Δt = {timeStep} s):</Form.Label>
                           <Row>
                             <Col>
                               <Form.Control
@@ -282,8 +281,6 @@ function FlowDiagram(props) {
                                 step="any"
                                 value={timeStartRange}
                                 onChange={(e) => handleTimeStartRangeChange(e.target.value)}
-                                onBlur={(e) => handleTimeStartRangeChange(e.target.value)}
-                                onKeyDown={(e) => scientificInputDebounce(e, handleTimeStartRangeChange)}
                               />
                             </Col>
                             <Col xs={2}>to</Col>
@@ -293,14 +290,12 @@ function FlowDiagram(props) {
                                 step="any"
                                 value={timeEndRange}
                                 onChange={(e) => handleTimeEndRangeChange(e.target.value)}
-                              // onBlur={(e) => handleTimeEndRangeChange(e.target.value)}
-                              // onKeyDown={(e) => scientificInputDebounce(e, handleTimeEndRangeChange)}
                               />
                             </Col>
                           </Row>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                          <Form.Label htmlFor="flow-start-range2">Filter range (mol·m<sup>-3</sup>·s<sup>-1</sup>):</Form.Label>
+                          <Form.Label htmlFor="flow-start-range2">Flux Filter Range (mol·m<sup>-3</sup>·s<sup>-1</sup>):</Form.Label>
                           <Row>
                             <Col>
                               <Form.Control
@@ -308,8 +303,6 @@ function FlowDiagram(props) {
                                 step="any"
                                 value={concentrationStartRange}
                                 onChange={(e) => handleConcentrationStartRangeChange(e.target.value)}
-                              // onBlur={(e) => handleConcentrationStartRangeChange(e.target.value)}
-                              // onKeyDown={(e) => scientificInputDebounce(e, handleConcentrationStartRangeChange)}
                               />
                             </Col>
                             <Col xs={2}>to</Col>
@@ -319,11 +312,10 @@ function FlowDiagram(props) {
                                 step="any"
                                 value={concentrationEndRange}
                                 onChange={(e) => handleConcentrationEndRangeChange(e.target.value)}
-                              // onBlur={(e) => scientificInputDebounce(e, handleConcentrationEndRangeChange)}
-                              // onKeyDown={(e) => scientificInputDebounce(e, handleConcentrationEndRangeChange)}
                               />
                             </Col>
                           </Row>
+                          Total flux range for current selections: {fluxStartRange.toPrecision(1)} to {fluxEndRange.toPrecision(1)}
                         </ListGroup.Item>
                         <ListGroup.Item>
                           <Form.Check
@@ -334,7 +326,6 @@ function FlowDiagram(props) {
                           />
                         </ListGroup.Item>
                         <ListGroup.Item>
-                          {/* despite being inside a ListGroup.Item, handleDataChange will not run */}
                           <Dropdown autoClose="inside">
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic">Reactant Selection</Dropdown.Toggle>
                             <DropdownMenu style={{ overflowY: 'scroll', maxHeight: 400 }}>
@@ -345,7 +336,6 @@ function FlowDiagram(props) {
                                   value={item[0]}
                                   id={item[0]}
                                   onClick={(e) => {
-                                    // handleSelectionOfSpecies(e);
                                     handleBlockedElementsChange(item[0]);
                                     handleDropDownChange(item);
                                   }}
@@ -403,6 +393,10 @@ const mapStateToProps = state => {
   return {
     runStatus: getRunStatus(state),
     mechanism: getMechanism(state),
+    plots: getPlots(state),
+    speciesPlots: getSpeciesPlots(state),
+    reactionPlots: getReactionPlots(state),
+    environmentPlots: getEnvironmentPlots(state)
   }
 }
 
