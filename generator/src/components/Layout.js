@@ -114,7 +114,7 @@ function Layout(props) {
                                             <a className="footer-link" href="/getting_started#how-to-use"><h5>How to use</h5></a>
                                         </div>
                                         <div className="col-md">
-                                            <a className="footer-link" href="/home#report-a-bug"><h5>Report a bug</h5></a>
+                                            <a className="footer-link" href="https://github.com/NCAR/music-box-interactive-client/issues/new?template=bug_report.md"><h5>Report a bug</h5></a>
                                         </div>
                                     </div>
                                 </div>
