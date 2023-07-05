@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import GasSpeciesDetail from "./GasSpeciesDetail.js";
 import GasSpeciesList from "./GasSpeciesList.js";
+import SpeciesInstruction from "./SpeciesInstruction.js";
 
 function GasSpeciesTab(props) {
 
