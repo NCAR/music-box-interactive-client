@@ -1,3 +1,4 @@
+export {default as AerosolSpeciesTab } from './AerosolSpeciesTab'
 export { default as AddGasSpecies } from './AddGasSpecies'
 export { default as AddProduct } from './AddProduct'
 export { default as AddProperty } from './AddProperty'
