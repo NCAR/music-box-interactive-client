@@ -35,3 +35,37 @@
   text-align: center;
   padding-top: 10px;
 }
+
+.consentBanner {
+  position: fixed;
+  bottom: 0;
+  right: 0%;
+  z-index: 9999;
+
+  font-size: smaller;
+  text-align: center;
+
+  width: 50%;
+  padding: 10px;
+
+  background-color: rgba(26, 101, 143);
+  color: white;
+}
+
+
+.consentBanner p {
+  margin-bottom: 10px;
+}
+
+.consentBanner button {
+  background-color: transparent;
+  color: rgb(168, 199, 0);
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.consentBanner a {
+  text-decoration: none;
+  color: rgb(168, 199, 0);
+}

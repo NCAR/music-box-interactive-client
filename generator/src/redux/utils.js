@@ -35,7 +35,9 @@ const utils = {
         START_POLLING: 'START_POLLING',
         UPDATE_RUN_STATUS: 'UPDATE_RUN_STATUS',
         ADD_PLOT: 'ADD_PLOT',
-        REMOVE_PLOT: 'REMOVE_PLOT'
+        REMOVE_PLOT: 'REMOVE_PLOT',
+        SHOW_COOKIE_BANNER: 'SHOW_COOKIE_BANNER',
+        HIDE_COOKIE_BANNER: 'HIDE_COOKIE_BANNER',
     },
     examples: {
         CHAPMAN: 'CHAPMAN',
