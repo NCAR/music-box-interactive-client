@@ -13,6 +13,7 @@
     --ncar-color-text-mid-dark: #97999B;
     --ncar-color-text-mid-light: #BBBCBC;
     --ncar-color-text-light: #D9D9D6;
+    --ncar-color-text-highlight-green: #A8C700;
   }
   
 @import url('https://fonts.googleapis.com/css?family=Poppins');
