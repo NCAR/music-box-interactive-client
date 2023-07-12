@@ -2,8 +2,17 @@
 
 ## Install gatsby
 
+### MacOS
 ```
-brew install gatsby-cli
+brew install node gatsby-cli
+```
+
+### Windows
+
+Go to [https://nodejs.org/en/download](https://nodejs.org/en/download) and install node and npm
+
+```
+npm install -g gatsby-cli
 ```
 
 ## Start the server
