@@ -6,6 +6,7 @@ import DocumentMeta from "react-document-meta"
 import { useDispatch, connect } from 'react-redux';
 import { Link } from "gatsby"
 import { doRun } from '../redux/actions';
+import { showCookieBanner, hideCookieBanner } from '../redux/actions';
 import { navigate, graphql, StaticQuery } from 'gatsby';
 import { getMechanism,
          getAllConditions,
@@ -118,6 +119,20 @@ function Layout(props) {
                                         </div>
                                     </div>
                                 </div>
+                                {props.cookieBannerVisible && (
+                                    <div className={styles.consentBanner}>
+                                        <p>
+                                        UCAR uses cookies to make our website function; however, UCAR cookies do not collect personal information about you.
+                                        When using our website, you may encounter embedded content, such as YouTube videos and other social media links, that use their own cookies.
+                                        To learn more about third-party cookies on this website, and to set your cookie preferences,&nbsp;
+                                        <a href="https://www.ucar.edu/cookie-other-tracking-technologies-notice" target="_blank" rel="noopener noreferrer">
+                                            click here
+                                        </a>
+                                        .
+                                        </p>
+                                        <button onClick={props.hideCookieBanner}>Accept</button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -135,8 +150,9 @@ const mapStateToProps = state => {
     return {
         mechanism: mechanism,
         conditions: conditions,
-        runStatus: getRunStatus(state)
+        runStatus: getRunStatus(state),
+        cookieBannerVisible: state.cookies.cookieBannerVisible,
     };
 };
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps, { showCookieBanner, hideCookieBanner })(Layout);
