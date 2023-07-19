@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import GasSpeciesDetail from "./GasSpeciesDetail.js";
-import GasSpeciesList from "./GasSpeciesList.js";
+import AerosolSpeciesDetail from "./AerosolSpeciesDetail.js";
+import AerosolSpeciesList from "./AerosolSpeciesList.js";
 import SpeciesInstruction from "./SpeciesInstruction.js"
 
 function AerosolSpeciesTab(props) {
@@ -19,7 +19,7 @@ function AerosolSpeciesTab(props) {
                 {/* TODO: Remove the following line when refactored is done */}
                 <div> Aerosol Species (this line differentiates the gas page and the aerosol page before refactoring) </div>
 
-                  <GasSpeciesList detailSpecies={detailSpecies}
+                  <AerosolSpeciesList detailSpecies={detailSpecies}
                                   setDetailSpecies={setDetailSpecies}/>
                 </div>
               </div>
@@ -28,7 +28,7 @@ function AerosolSpeciesTab(props) {
               <div className="row flex-shrink-0">
                 <div className="col species-detail">
                   {Object.keys(detailSpecies).map(key => {
-                     return <GasSpeciesDetail species={detailSpecies[key]}
+                     return <AerosolSpeciesDetail species={detailSpecies[key]}
                                               key={key}
                                               detailSpecies={detailSpecies}
                                               setDetailSpecies={setDetailSpecies}/>;
