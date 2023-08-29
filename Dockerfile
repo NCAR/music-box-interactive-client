@@ -19,4 +19,5 @@ WORKDIR /music-box-interactive-client/generator
 
 # install site dependencies and build
 RUN npm install --legacy-peer-deps
+RUN npm install d3 --legacy-peer-deps
 RUN gatsby build

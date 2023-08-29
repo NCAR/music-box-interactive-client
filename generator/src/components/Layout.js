@@ -89,6 +89,10 @@ function Layout(props) {
                                         <span className="oi oi-fork oi-prefix"></span>
                                         Flow Diagram
                                     </Link>
+                                    <Link className="nav-link" to="/d3_flow" activeStyle={activeColor}>
+                                        <span className="oi oi-fork oi-prefix"></span>
+                                        d3_flow
+                                    </Link>
                                     <Link className="nav-link" to="/downloads" activeStyle={activeColor}>
                                         <span className="oi oi-data-transfer-download oi-prefix"></span>
                                         Download
