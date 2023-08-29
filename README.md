@@ -30,7 +30,6 @@ npm install -g gatsby-cli
 
 ## Start the server
 ```
-cd generator
 npm install --legacy-peer-deps
 gatsby develop -p 8002
 ```
