@@ -3,6 +3,7 @@ import { extract_mechanism_from_example } from '../../controllers/transformers'
 
 const initialState = {
     gasSpecies: [],
+    aerosolSpecies: [],
     reactions: []
 };
 
@@ -15,6 +16,31 @@ export const mechanismReducer = (state = initialState, action) => {
             return {
                 ...initialState
             }
+        }
+        case utils.action_types.ADD_AEROSOL_SPECIES: {
+            const species = action.payload.content;
+            const otherSpecies = state.aerosolSpecies.filter(other => {
+                return other.name !== species.name;
+            });
+            return species.name === "" ? state : {
+                ...state,
+                aerosolSpecies: [
+                    ...otherSpecies,
+                    species
+                ].sort( compareName )
+            };
+        }
+        case utils.action_types.REMOVE_AEROSOL_SPECIES: {
+            const speciesName = action.payload.content;
+            const newAerosolSpecies = state.aerosolSpecies.filter(species => {
+                return species.name !== speciesName;
+            });
+            return {
+                ...state,
+                aerosolSpecies: [
+                  ...newAerosolSpecies
+                ].sort( compareName )
+            };
         }
         case utils.action_types.ADD_GAS_SPECIES: {
             const species = action.payload.content;
