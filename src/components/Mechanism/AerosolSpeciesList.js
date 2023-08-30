@@ -5,7 +5,6 @@ import AerosolSpecies from "./AerosolSpecies";
 import { getMechanism } from "../../redux/selectors";
 
 function AerosolSpeciesList(props) {
-  console.log(props)
   return (
     <nav className="bg-ncar-menu-secondary p-2">
       <AddAerosolSpecies />

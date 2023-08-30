@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropertyList from "./PropertyList";
+import AerosolPropertyList from "./AerosolPropertyList";
 
 const AerosolSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
   const handleClick = (e) => {
@@ -16,7 +16,7 @@ const AerosolSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
         <h4 className="my-0 fw-normal">{species.name}</h4>
       </div>
       <form className="body card-body">
-        <PropertyList speciesName={species.name} />
+        <AerosolPropertyList speciesName={species.name} />
         <div className="container text-center mt-3">
           <button type="button"
                   className="btn btn-secondary btn-cancel"

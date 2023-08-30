@@ -18,7 +18,7 @@ function Mechanism(props) {
     <Layout>
       <main role="main">
         <div className="container text-center">
-          <div className="navbox pt-2">
+          <div className="navbox pt-2" style={{display: 'flex', justifyContent: 'space-around'}}>
             {tabs.map(tab => (
               <button
                 key={tab.value}
