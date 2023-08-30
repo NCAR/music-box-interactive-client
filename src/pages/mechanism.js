@@ -4,34 +4,36 @@ import Layout from "../components/Layout";
 import { GasSpeciesTab, ReactionsTab, AerosolSpeciesTab } from "../components/Mechanism";
 
 function Mechanism(props) {
-  const SPECIES = 0
-  const REACTIONS = 1
-  const AEROSOL = 2
-  const [param, setParam] = useState(SPECIES)
+  const [activeTab, setActiveTab] = useState(0);
 
-  const paramSelected = "btn btn-primary btn-ncar-active"
-  const paramNotSelected = "btn btn-secondary"
+  const paramClass = (value) => (activeTab === value ? "btn btn-primary btn-ncar-active" : "btn btn-secondary");
+
+  const tabs = [
+    { value: 0, label: "Gas Species", component: <GasSpeciesTab key={0} /> },
+    { value: 1, label: "Aerosol Species", component: <AerosolSpeciesTab key={1} /> },
+    { value: 2, label: "Reactions", component: <ReactionsTab  key={2}/> },
+  ];
 
   return (
     <Layout>
       <main role="main">
         <div className="container text-center">
           <div className="navbox pt-2">
-            <button className={param === SPECIES ?  paramSelected : paramNotSelected} onClick={() => setParam(SPECIES)}>
-              Gas Species
-            </button>
-            <button className={param === AEROSOL ?  paramSelected : paramNotSelected} onClick={() => setParam(AEROSOL)}>
-              Aerosol Species
-            </button>
-            <button className={param === REACTIONS ? paramSelected : paramNotSelected} onClick={() => setParam(REACTIONS)}>Reactions</button>
+            {tabs.map(tab => (
+              <button
+                key={tab.value}
+                className={paramClass(tab.value)}
+                onClick={() => setActiveTab(tab.value)}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
         </div>
-        {param === SPECIES ? <GasSpeciesTab /> : null}
-        {param == AEROSOL ? <AerosolSpeciesTab /> : null}
-        {param === REACTIONS ? <ReactionsTab /> : null}
+        {tabs.map(tab => activeTab === tab.value && tab.component)}
       </main>
     </Layout>
   );
 }
 
-export default connect()(Mechanism)
+export default connect()(Mechanism);

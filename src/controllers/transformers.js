@@ -1,7 +1,7 @@
 import { reactionSchema } from '../redux/schemas'
 import { ReactionTypes } from './models'
 
-function extract_mechanism_from_example(config) {
+function extract_mechanism_from_example(config, state) {
   const campReactantsToRedux = (reaction) => Object.entries(reaction.reactants).map(([name, props]) => ({ name: name, qty: props.qty || 1 }));
   const campProductsToRedux = (reaction) => Object.entries(reaction.products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
   const campAlkoxyProductsToRedux = (products) => Object.entries(products).map(([name, props]) => ({ name: name, yield: props.yield || 1 }));
@@ -175,8 +175,9 @@ function extract_mechanism_from_example(config) {
     }
   })
   return {
+    ...state,
     gasSpecies: species,
-    reactions: reactions
+    reactions: reactions,
   }
 }
 

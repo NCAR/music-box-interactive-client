@@ -4,7 +4,7 @@ import GasSpeciesDetail from "./GasSpeciesDetail.js";
 import GasSpeciesList from "./GasSpeciesList.js";
 import SpeciesInstruction from "./SpeciesInstruction.js";
 
-function GasSpeciesTab(props) {
+function GasSpeciesTab() {
 
   const [detailSpecies, setDetailSpecies] = useState({ });
 
