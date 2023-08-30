@@ -2,7 +2,6 @@ export { default as AddCondition } from './AddCondition';
 export { default as AddEvolvingCondition } from './AddEvolvingCondition';
 export { default as AddEvolvingTime } from './AddEvolvingTime';
 export { default as BasicConfigProperty } from './BasicConfigProperty';
-export { default as BasicConfiguration } from './BasicConfiguration';
 export { default as BasicConfigurationTab } from './BasicConfigurationTab';
 export { default as ConditionsList } from './ConditionsList';
 export { default as DownloadEvolvingConditions } from './DownloadEvolvingConditions';

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from 'react-redux';
-import { Container, Button } from 'react-bootstrap';
 import TabbedLayout from "../components/TabbedLayout";
 import { BasicConfigurationTab, InitialConditionsTab, EvolvingConditionsTab } from "../components/Conditions";
 
