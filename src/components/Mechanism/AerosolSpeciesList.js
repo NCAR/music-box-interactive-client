@@ -1,17 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import AddAerosolSpecies from "./AddAerosolSpecies";
-import AerosolSpecies from "./AerosolSpecies";
 import { getMechanism } from "../../redux/selectors";
 import SpeciesList from "./SpeciesList";
+import AddSpecies from "./AddSpecies";
+import Species from "./Species";
 
 function AerosolSpeciesList(props) {
   return (
     <SpeciesList 
       {...props}
       species={props.aerosolSpecies} 
-      addSpeciesComponent={AddAerosolSpecies} 
-      speciesComponent={AerosolSpecies} 
+      addSpeciesComponent={() => <AddSpecies type="aerosol"/>} 
+      speciesComponent={(props) => <Species {...props} type="aerosol"/>} 
     />
   )
 }

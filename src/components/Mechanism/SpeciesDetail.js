@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import AerosolPropertyList from "./AerosolPropertyList";
 
-const AerosolSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
+const SpeciesDetail = ({ species, detailSpecies, setDetailSpecies, propertyListComponent }) => {
   const handleClick = (e) => {
     e.preventDefault();
     let newDetailSpecies = { ...detailSpecies };
     delete newDetailSpecies[species.name];
     setDetailSpecies(newDetailSpecies);
   }
+  const PropertyList = propertyListComponent;
 
   return (
     <div className="card mb-4 species-card shadow-sm">
@@ -16,15 +16,15 @@ const AerosolSpeciesDetail = ({ species, detailSpecies, setDetailSpecies }) => {
         <h4 className="my-0 fw-normal">{species.name}</h4>
       </div>
       <form className="body card-body">
-        <AerosolPropertyList speciesName={species.name} />
+        <PropertyList speciesName={species.name} />
         <div className="container text-center mt-3">
           <button type="button"
-                  className="btn btn-secondary btn-cancel"
-                  onClick={handleClick}>Close</button>
+            className="btn btn-secondary btn-cancel"
+            onClick={handleClick}>Close</button>
         </div>
       </form>
     </div>
   );
 }
 
-export default connect()(AerosolSpeciesDetail);
+export default connect()(SpeciesDetail);

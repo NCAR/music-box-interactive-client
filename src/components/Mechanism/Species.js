@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import { removeGasSpecies } from "../../redux/actions";
 import { removeAerosolSpecies } from "../../redux/actions";
 
-const AerosolSpecies = (props) => {
+const Species = (props) => {
   const handleDetailClick = (e) => {
     e.preventDefault();
     props.setDetailSpecies({ ...props.detailSpecies, [props.species.name]: props.species });
@@ -12,10 +13,10 @@ const AerosolSpecies = (props) => {
     e.preventDefault();
     const { [props.species.name]: _, ...detailSpecies } = props.detailSpecies;
     props.setDetailSpecies({ ...detailSpecies });
-    props.removeAerosolSpecies(props.species.name);
+    props.removeAction(props.species.name);
   }
 
-  
+
   return (
     <li className="list-group-item list-group-item-action d-flex justify-content-between detailitem">
       <button type='button'
@@ -43,4 +44,24 @@ const AerosolSpecies = (props) => {
   );
 };
 
-export default connect(null, { removeAerosolSpecies })(AerosolSpecies);
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const { type } = ownProps;
+
+    let action = null;
+
+    switch (type)
+    {
+        case 'aerosol':
+            action = species => dispatch(removeAerosolSpecies(species))
+            break;
+        case 'gas':
+            action = species => dispatch(removeGasSpecies(species))
+            break;
+    }
+    
+    return {
+        removeAction: action
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Species);

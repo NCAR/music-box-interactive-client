@@ -1,17 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import AddGasSpecies from "./AddGasSpecies";
-import GasSpecies from "./GasSpecies";
 import SpeciesList from "./SpeciesList";
 import { getMechanism } from "../../redux/selectors";
+import AddSpecies from "./AddSpecies";
+import Species from "./Species";
 
 function GasSpeciesList(props) {
   return (
     <SpeciesList 
       {...props}
       species={props.gasSpecies} 
-      addSpeciesComponent={AddGasSpecies} 
-      speciesComponent={GasSpecies} 
+      addSpeciesComponent={() => <AddSpecies type="gas"/>} 
+      speciesComponent={(props) => <Species {...props} type="gas"/>} 
     />
   )
 }

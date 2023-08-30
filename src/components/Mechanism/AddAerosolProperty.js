@@ -25,7 +25,6 @@ function AddAerosolProperty(props) {
         value: 0
     }
   ]
-  console.log(options)
 
   return (
     <Dropdown>

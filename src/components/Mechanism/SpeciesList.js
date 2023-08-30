@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Container, ListGroup } from "react-bootstrap";
 
 function SpeciesList(props) {
-  console.log(props)
   const AddSpeciesComponent = props.addSpeciesComponent;
   const SpeciesComponent = props.speciesComponent;
 
