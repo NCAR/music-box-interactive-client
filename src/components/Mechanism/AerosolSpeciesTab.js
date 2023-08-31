@@ -1,18 +1,35 @@
 import React from "react";
 import { connect } from "react-redux";
-import AerosolSpeciesList from "./AerosolSpeciesList.js";
-import SpeciesTab from "./SpeciesTab.js";
-import AerosolPropertyList from "./AerosolPropertyList";
-import SpeciesDetail from "./SpeciesDetail.js";
 
-function AerosolSpeciesTab() {
+import AerosolPropertyList from "./AerosolPropertyList";
+
+import SpeciesList from "./SpeciesList";
+import AddSpecies from "./AddSpecies";
+import Species from "./Species";
+import SpeciesTab from "./SpeciesTab.js";
+import SpeciesDetail from "./SpeciesDetail.js";
+import { getMechanism } from "../../redux/selectors";
+
+function AerosolSpeciesTab(props) {
   return (
     <SpeciesTab
       speciesType="aerosol"
-      SpeciesList={AerosolSpeciesList}
-      SpeciesDetail={(props) => <SpeciesDetail {...props} propertyListComponent={AerosolPropertyList}/>}
+      SpeciesList={
+        (otherProps) =>     <SpeciesList 
+          {...otherProps}
+          species={props.aerosolSpecies} 
+          addSpeciesComponent={() => <AddSpecies type="aerosol"/>} 
+          speciesComponent={(otherProps) => <Species {...otherProps} type="aerosol"/>} 
+        />
+      }
+      SpeciesDetail={(otherProps) => <SpeciesDetail {...otherProps} propertyListComponent={AerosolPropertyList}/>}
     />
   );
 }
 
-export default connect()(AerosolSpeciesTab);
+const mapStateToProps = (state) => {
+  const mechanism = getMechanism(state);
+  return mechanism;
+};
+
+export default connect(mapStateToProps)(AerosolSpeciesTab);
