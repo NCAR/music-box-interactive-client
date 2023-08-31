@@ -2,8 +2,21 @@ import React from "react";
 import { connect } from "react-redux";
 import Property from "./Property";
 import AddProperty from "./AddProperty";
+import { aerosol_options, gas_options } from "./shared_properties"
 
 function PropertyList(props) {
+  let options = [];
+  switch(props.type){
+    case "gas":
+      options = gas_options;
+      break;
+    case "aerosol":
+      options = aerosol_options;
+      break;
+    default:
+      console.warn(`Unknown property type: ${props.type}`);
+  }
+
   return (
     <div className="form-group properties">
       {

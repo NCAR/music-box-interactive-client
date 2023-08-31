@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import SpeciesInstruction from "./SpeciesInstruction.js";
 import { Container, Row, Col } from "react-bootstrap";
-import SpeciesList from "./SpeciesList";
 
+import SpeciesInstruction from "./SpeciesInstruction.js";
+import SpeciesList from "./SpeciesList";
 import AddSpecies from "./AddSpecies";
 import Species from "./Species";
+import SpeciesDetail from "./SpeciesDetail.js";
+import PropertyList from "./PropertyList";
 
-function SpeciesTab({ speciesType, SpeciesDetail, species }) {
+function SpeciesTab({ speciesType, species }) {
   const [detailSpecies, setDetailSpecies] = useState({});
 
   return (
@@ -37,6 +39,10 @@ function SpeciesTab({ speciesType, SpeciesDetail, species }) {
                     key={key}
                     detailSpecies={detailSpecies}
                     setDetailSpecies={setDetailSpecies}
+                    propertyListComponent={(propListProps)  => <PropertyList
+                        {...propListProps}
+                        type={speciesType}
+                      />}
                   />
                 ))}
               </Col>

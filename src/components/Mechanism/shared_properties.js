@@ -25,6 +25,23 @@ const options = [
   }
 ];
 
+const aerosol_options = [
+  ...options,
+  {
+      displayName: "density",
+      name: "density",
+      "data-type": "number",
+      value: 0
+  },
+  {
+      displayName: "kappa",
+      name: "kappa",
+      "data-type": "number",
+      value: 0
+  }
+]
+
 export {
-  options as shared_properties
+  options as gas_options,
+  aerosol_options
 }
