@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import SpeciesInstruction from "./SpeciesInstruction.js";
 import { Container, Row, Col } from "react-bootstrap";
+import SpeciesList from "./SpeciesList";
 
-function SpeciesTab({ speciesType, SpeciesList, SpeciesDetail }) {
+import AddSpecies from "./AddSpecies";
+import Species from "./Species";
+
+function SpeciesTab({ speciesType, SpeciesDetail, species }) {
   const [detailSpecies, setDetailSpecies] = useState({});
 
   return (
@@ -14,7 +18,13 @@ function SpeciesTab({ speciesType, SpeciesList, SpeciesDetail }) {
           <Col md={4} lg={4} className="mh-100 overflow-auto">
             <Row className="flex-shrink-0">
               <Col>
-                <SpeciesList detailSpecies={detailSpecies} setDetailSpecies={setDetailSpecies} />
+                <SpeciesList
+                  species={species}
+                  detailSpecies={detailSpecies}
+                  setDetailSpecies={setDetailSpecies}
+                  addSpeciesComponent={() => <AddSpecies type={speciesType} />}
+                  speciesComponent={(specCompProps) => <Species {...specCompProps} type={speciesType} />}
+                />
               </Col>
             </Row>
           </Col>

@@ -30,14 +30,7 @@ function AerosolSpeciesTab(props) {
   return (
     <SpeciesTab
       speciesType="aerosol"
-      SpeciesList={
-        (otherProps) => <SpeciesList
-          {...otherProps}
-          species={props.aerosolSpecies}
-          addSpeciesComponent={() => <AddSpecies type="aerosol" />}
-          speciesComponent={(otherProps) => <Species {...otherProps} type="aerosol" />}
-        />
-      }
+      species={props.aerosolSpecies}
       SpeciesDetail={(specDetailProps) => <SpeciesDetail
         {...specDetailProps}
         propertyListComponent={(propListProps)  => <PropertyList

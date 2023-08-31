@@ -18,14 +18,7 @@ function GasSpeciesTab(props) {
   return (
     <SpeciesTab
       speciesType="gas"
-      SpeciesList={
-        (specListProps) => <SpeciesList
-          {...specListProps}
-          species={props.gasSpecies}
-          addSpeciesComponent={() => <AddSpecies type="gas" />}
-          speciesComponent={(specCompProps) => <Species {...specCompProps} type="gas" />}
-        />
-      }
+      species={props.gasSpecies}
       SpeciesDetail={(specDetailProps) => <SpeciesDetail
         {...specDetailProps}
         propertyListComponent={(propListProps)  => <PropertyList
