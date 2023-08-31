@@ -5,23 +5,37 @@ import SpeciesList from "./SpeciesList";
 import AddSpecies from "./AddSpecies";
 import Species from "./Species";
 import SpeciesTab from "./SpeciesTab.js";
-import GasPropertyList from "./GasPropertyList.js";
 import SpeciesDetail from "./SpeciesDetail.js";
+import PropertyList from "./PropertyList";
 import { getMechanism } from "../../redux/selectors";
+import { shared_properties } from "./shared_properties"
+
+let options = [
+  ...shared_properties
+]
 
 function GasSpeciesTab(props) {
   return (
     <SpeciesTab
       speciesType="gas"
       SpeciesList={
-        (specListProps) => <SpeciesList 
+        (specListProps) => <SpeciesList
           {...specListProps}
-          species={props.gasSpecies} 
-          addSpeciesComponent={() => <AddSpecies type="gas"/>} 
-          speciesComponent={(specCompProps) => <Species {...specCompProps} type="gas"/>} 
+          species={props.gasSpecies}
+          addSpeciesComponent={() => <AddSpecies type="gas" />}
+          speciesComponent={(specCompProps) => <Species {...specCompProps} type="gas" />}
         />
       }
-      SpeciesDetail={(specDetailProps) => <SpeciesDetail {...specDetailProps} propertyListComponent={GasPropertyList}/>}
+      SpeciesDetail={(specDetailProps) => <SpeciesDetail
+        {...specDetailProps}
+        propertyListComponent={(propListProps)  => <PropertyList
+            {...propListProps}
+            type="gas" 
+            options={options}
+          />
+        }
+      />
+      }
     />
   );
 }
