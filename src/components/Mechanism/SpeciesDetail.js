@@ -1,14 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 
-const SpeciesDetail = ({ species, detailSpecies, setDetailSpecies, propertyListComponent }) => {
+import PropertyList from "./PropertyList";
+
+const SpeciesDetail = ({ speciesType, species, detailSpecies, setDetailSpecies }) => {
   const handleClick = (e) => {
     e.preventDefault();
     let newDetailSpecies = { ...detailSpecies };
     delete newDetailSpecies[species.name];
     setDetailSpecies(newDetailSpecies);
   }
-  const PropertyList = propertyListComponent;
 
   return (
     <div className="card mb-4 species-card shadow-sm">
@@ -16,7 +17,7 @@ const SpeciesDetail = ({ species, detailSpecies, setDetailSpecies, propertyListC
         <h4 className="my-0 fw-normal">{species.name}</h4>
       </div>
       <form className="body card-body">
-        <PropertyList speciesName={species.name} />
+        <PropertyList type={speciesType} speciesName={species.name} />
         <div className="container text-center mt-3">
           <button type="button"
             className="btn btn-secondary btn-cancel"

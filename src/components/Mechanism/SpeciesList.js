@@ -1,17 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Container, ListGroup } from "react-bootstrap";
+import AddSpecies from "./AddSpecies";
+import Species from "./Species";
 
 function SpeciesList(props) {
-  const AddSpeciesComponent = props.addSpeciesComponent;
-  const SpeciesComponent = props.speciesComponent;
-
   return (
     <Container fluid className="bg-ncar-menu-secondary p-2">
-      <AddSpeciesComponent />
+      <AddSpecies type={props.speciesType} />
       <ListGroup className="species-list">
         {props?.species?.map((species, index) => (
-          <SpeciesComponent
+          <Species
+          speciesType={props.speciesType}
             key={index}
             species={species}
             detailSpecies={props.detailSpecies}

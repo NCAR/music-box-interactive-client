@@ -5,17 +5,7 @@ import AddProperty from "./AddProperty";
 import { aerosol_options, gas_options } from "./shared_properties"
 
 function PropertyList(props) {
-  let options = [];
-  switch(props.type){
-    case "gas":
-      options = gas_options;
-      break;
-    case "aerosol":
-      options = aerosol_options;
-      break;
-    default:
-      console.warn(`Unknown property type: ${props.type}`);
-  }
+  const options = props.type === "gas" ? gas_options : props.type === "aerosol" ? aerosol_options : [];
 
   return (
     <div className="form-group properties">
@@ -26,7 +16,7 @@ function PropertyList(props) {
                            speciesName={props.speciesName}/>;
         })
       }
-      <AddProperty type={props.type} speciesName={props.speciesName} options={props.options}/>
+      <AddProperty type={props.type} speciesName={props.speciesName} options={options}/>
       <p>
       You may specify any property you like, but this is only <em>necessary</em> under certain circumstances (i.e., when the species participates in a reaction that requires the property be set). You will be prompted to set the property when it is required.
       </p>

@@ -45,11 +45,11 @@ const Species = (props) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    const { type } = ownProps;
+    const { speciesType } = ownProps;
 
     let action = null;
 
-    switch (type)
+    switch (speciesType)
     {
         case 'aerosol':
             action = species => dispatch(removeAerosolSpecies(species))

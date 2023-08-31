@@ -4,10 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import SpeciesInstruction from "./SpeciesInstruction.js";
 import SpeciesList from "./SpeciesList";
-import AddSpecies from "./AddSpecies";
-import Species from "./Species";
 import SpeciesDetail from "./SpeciesDetail.js";
-import PropertyList from "./PropertyList";
 
 function SpeciesTab({ speciesType, species }) {
   const [detailSpecies, setDetailSpecies] = useState({});
@@ -21,11 +18,10 @@ function SpeciesTab({ speciesType, species }) {
             <Row className="flex-shrink-0">
               <Col>
                 <SpeciesList
+                  speciesType={speciesType}
                   species={species}
                   detailSpecies={detailSpecies}
                   setDetailSpecies={setDetailSpecies}
-                  addSpeciesComponent={() => <AddSpecies type={speciesType} />}
-                  speciesComponent={(specCompProps) => <Species {...specCompProps} type={speciesType} />}
                 />
               </Col>
             </Row>
@@ -35,14 +31,11 @@ function SpeciesTab({ speciesType, species }) {
               <Col className="species-detail">
                 {Object.keys(detailSpecies).map(key => (
                   <SpeciesDetail
+                    speciesType={speciesType}
                     species={detailSpecies[key]}
                     key={key}
                     detailSpecies={detailSpecies}
                     setDetailSpecies={setDetailSpecies}
-                    propertyListComponent={(propListProps)  => <PropertyList
-                        {...propListProps}
-                        type={speciesType}
-                      />}
                   />
                 ))}
               </Col>
