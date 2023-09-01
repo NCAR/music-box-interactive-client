@@ -2,46 +2,32 @@ import React from "react";
 import { connect } from "react-redux";
 import { Container, ListGroup } from "react-bootstrap";
 
-import AddSpecies from "./AddSpecies";
-import AddReaction from "./AddReaction";
-import Species from "./Species";
+import AddSpecies from "./Species/AddSpecies";
+import AddReaction from "./Reactions/AddReaction";
+import Species from "./Species/Species";
+import Reaction from "./Reaction";
 import { getMechanism } from "../../redux/selectors";
 
-const AddItemComponent = (props) => {
-  const { type } = props;
-
-  switch(type) {
-    case "reactions":
-      return (
-        <AddReaction />
-      );
-    case "gas":
-    case "aerosol":
-      return (
-        <AddSpecies type={type} />
-      );
-    default:
-      return (
-        <p>
-          {`Unknown type ${type} in List`}
-        </p>
-      )
-  }
+const AddItemComponent = ({ type }) => {
+  return type === "reactions" ? <AddReaction /> : <AddSpecies type={type} />
 }
 
-function SpeciesList(props) {
-  const { type, objects } = props;
+const ItemComponent = ({ type, ...otherprops }) => {
+  return type === "reactions" ? <Reaction {...otherprops} /> : <Species type={type} {...otherprops} />
+}
+
+function List({ type, objects, details, setDetails }) {
   return (
     <Container fluid className="bg-ncar-menu-secondary p-2">
       <AddItemComponent type={type} />
       <ListGroup className="species-list">
-        {objects.map((elem, index) => (
-          <Species
-            type={props.type}
+        {objects?.map((elem, index) => (
+          <ItemComponent
+            type={type}
             key={index}
-            species={elem}
-            detailSpecies={props.detailSpecies}
-            setDetailSpecies={props.setDetailSpecies}
+            item={elem}
+            details={details}
+            setDetails={setDetails}
           />
         ))}
       </ListGroup>
@@ -52,22 +38,24 @@ function SpeciesList(props) {
 const mapStateToProps = (state, { type }) => {
   const mechanism = getMechanism(state);
 
-  objects = [];
-  switch(type) {
+  let objects = [];
+  switch (type) {
     case "gas":
-      objects = props.gasSpecies;
+      objects = mechanism.gasSpecies;
       break;
     case "aerosol":
-      objects = props.aerosolSpecies;
+      objects = mechanism.aerosolSpecies;
       break;
     case "reactions":
-      objectsj = props.reactions;
+      objects = mechanism.reactions;
       break;
     default:
       console.warn(`Unknown type ${type} in List`);
   }
 
-  return mechanism;
+  return {
+    objects: objects,
+  }
 };
 
-export default connect(mapStateToProps)(SpeciesList);
+export default connect(mapStateToProps)(List);

@@ -1,29 +1,32 @@
 import React from "react";
 import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
-import { addReactant } from "../../redux/actions";
-import { getSpeciesNames } from "../../redux/selectors";
-import RemoveReactant from "./RemoveReactant";
+import { addProduct } from "../../../redux/actions";
+import { getSpeciesNames } from "../../../redux/selectors";
+import RemoveProduct from "./RemoveProduct";
 
-const Reactant = (props) => {
-  const reactant = props.reactant;
+const Product = (props) => {
+  const product = props.product;
+  const schema = props.schema;
 
   const handleChangeSpecies = (e) => {
-    props.addReactant({
+    props.addProduct({
       reactionId: props.reactionId,
-      reactant: {
-        ...reactant,
+      schema: schema,
+      product: {
+        ...product,
         name: e.target.innerHTML
       }
     });
   };
 
-  const handleChangeQty = (e) => {
-    props.addReactant({
+  const handleChangeYield = (e) => {
+    props.addProduct({
       reactionId: props.reactionId,
-      reactant: {
-        ...reactant,
-        qty: parseInt(e.target.value)
+      schema: schema,
+      product: {
+        ...product,
+        yield: parseFloat(e.target.value)
       }
     });
   };
@@ -33,7 +36,7 @@ const Reactant = (props) => {
       <div className="col-3">
         <Dropdown>
           <Dropdown.Toggle variant="success" className="btn btn-light">
-            {reactant.name && reactant.name.length ? reactant.name : "<none>"}
+            {product.name && product.name.length ? product.name : "<none>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {props.speciesNames.map(speciesName => {
@@ -47,22 +50,24 @@ const Reactant = (props) => {
         </Dropdown>
       </div>
       <div className="col-7 element-properties">
-        <div className="container-fluid property-qty mb-3">
-          <div className="input-group" property="qty" data-type="int">
+        <div className="container-fluid property-yield mb-3">
+          <div className="input-group" property="yield" data-type="int">
             <div className="input-group-prepend">
-              <span className="input-group-text">qty</span>
+              <span className="input-group-text">yield</span>
             </div>
             <input type="text"
-                   className="form-control"
-                    defaultValue={reactant.qty}
-                   onBlur={handleChangeQty}>
+              className="form-control"
+              defaultValue={product.yield}
+              onBlur={handleChangeYield}>
             </input>
           </div>
         </div>
       </div>
       <div className="col-2 d-flex justify-content-between">
         <div></div>
-        <RemoveReactant reactionId={props.reactionId} reactantId={props.reactant.id} />
+        <RemoveProduct reactionId={props.reactionId}
+          schema={props.schema}
+          productId={props.product.id} />
         <div></div>
       </div>
     </>
@@ -73,4 +78,4 @@ const mapStateToProps = state => {
   return { speciesNames: getSpeciesNames(state) };
 }
 
-export default connect(mapStateToProps, { addReactant })(Reactant);
+export default connect(mapStateToProps, { addProduct })(Product);

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import AddReactant from "./AddReactant";
 import Reactant from "./Reactant";
-import { getReactants } from "../../redux/selectors";
+import { getReactants } from "../../../redux/selectors";
 
 const ReactantList = props => {
   return (
@@ -18,14 +18,14 @@ const ReactantList = props => {
               props.reactants.map((reactant, index) => {
                 return (
                   <div key={`reactant-${reactant.name}`}
-                       className={`row flex-nowrap array-element array-element-${index}`}
-                       array-element-index={index}>
+                    className={`row flex-nowrap array-element array-element-${index}`}
+                    array-element-index={index}>
                     <Reactant reactionId={props.reactionId}
-                              reactant={reactant}/>
+                      reactant={reactant} />
                   </div>
                 );
               })
-              : null }
+              : null}
           </div>
         </div>
       </div>

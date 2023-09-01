@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from 'react-redux';
 import TabbedLayout from "../components/TabbedLayout";
-import { GasSpeciesTab, ReactionsTab, AerosolSpeciesTab } from "../components/Mechanism";
+import { MechanismTab } from "../components/Mechanism";
 
 const tabs = [
-  { label: "Gas Species", component: GasSpeciesTab },
-  { label: "Aerosol Species", component: AerosolSpeciesTab },
-  { label: "Reactions", component: ReactionsTab },
+  { label: "Gas Species", component: () => <MechanismTab type="gas" /> },
+  { label: "Aerosol Species", component: () => <MechanismTab type="aerosol" /> },
+  { label: "Reactions", component: () => <MechanismTab type="reactions" /> },
 ];
 
 function Mechanism() {

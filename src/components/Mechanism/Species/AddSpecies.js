@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { addAerosolSpecies, addGasSpecies } from "../../redux/actions";
+import { addAerosolSpecies, addGasSpecies } from "../../../redux/actions";
 
 function AddSpecies(props) {
     const { type, addAction } = props;
@@ -35,8 +35,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     let action = null;
 
-    switch (type)
-    {
+    switch (type) {
         case 'aerosol':
             action = species => dispatch(addAerosolSpecies(species))
             break;
@@ -44,7 +43,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             action = species => dispatch(addGasSpecies(species))
             break;
     }
-    
+
     return {
         addAction: action
     };

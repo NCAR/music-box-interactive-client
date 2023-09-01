@@ -2,18 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import { removeReaction } from "../../redux/actions";
 
-const Reaction = (props) => {
-  const { reaction } = props.item;
+const Reaction = ({ item: reaction, details, setDetails, removeReaction  }) => {
   const handleDetailClick = (e) => {
     e.preventDefault();
-    props.setDetailReactions({ ...props.detailReactions, [reaction.id]: reaction });
+    setDetails({ ...details, [reaction.id]: reaction });
   }
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
-    const { [reaction.id]: _, ...detailReactions } = props.detailReactions;
-    props.setDetailReactions({ ...detailReactions });
-    props.removeReaction(reaction.id);
+    const { [reaction.id]: _, ...details } = details;
+    setDetails({ ...details });
+    removeReaction(reaction.id);
   }
 
   return (
