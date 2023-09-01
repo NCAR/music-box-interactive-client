@@ -3,16 +3,17 @@ import { connect } from "react-redux";
 import { removeReaction } from "../../redux/actions";
 
 const Reaction = (props) => {
+  const { reaction } = props.item;
   const handleDetailClick = (e) => {
     e.preventDefault();
-    props.setDetailReactions({ ...props.detailReactions, [props.reaction.id]: props.reaction });
+    props.setDetailReactions({ ...props.detailReactions, [reaction.id]: reaction });
   }
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
-    const { [props.reaction.id]: _, ...detailReactions } = props.detailReactions;
+    const { [reaction.id]: _, ...detailReactions } = props.detailReactions;
     props.setDetailReactions({ ...detailReactions });
-    props.removeReaction(props.reaction.id);
+    props.removeReaction(reaction.id);
   }
 
   return (
@@ -22,7 +23,7 @@ const Reaction = (props) => {
               onClick={handleDetailClick}
               onKeyDown={handleDetailClick}>
         <span className="reaction-detail-link">
-          {props.reaction.shortName()}
+          {reaction.shortName()}
         </span>
       </button>
       <button type="button"
@@ -33,7 +34,7 @@ const Reaction = (props) => {
           <span className="oi oi-x"
                 toggle="tooltip"
                 aria-hidden="true"
-                title={`remove ${props.reaction.shortName()}`}>
+                title={`remove ${reaction.shortName()}`}>
           </span>
         </span>
       </button>

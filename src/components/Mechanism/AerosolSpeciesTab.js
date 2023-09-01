@@ -1,21 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
-
 import SpeciesTab from "./SpeciesTab.js";
-import { getMechanism } from "../../redux/selectors";
 
-function AerosolSpeciesTab(props) {
+function AerosolSpeciesTab() {
   return (
     <SpeciesTab
-      speciesType="aerosol"
-      species={props.aerosolSpecies}
+      type="aerosol"
     />
   );
 }
 
-const mapStateToProps = (state) => {
-  const mechanism = getMechanism(state);
-  return mechanism;
-};
-
-export default connect(mapStateToProps)(AerosolSpeciesTab);
+export default AerosolSpeciesTab;

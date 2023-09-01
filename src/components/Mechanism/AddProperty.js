@@ -1,12 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
-import { addProperty, addAerosolProperty } from "../../redux/actions";
 
-function AddProperty({ addProperty, speciesName, options} ) {
+function AddProperty({ addAction, speciesName, options }) {
 
   const handleAddProperty = (property) => {
-    addProperty({ property: property, speciesName: speciesName });
+    addAction({ property: property, speciesName: speciesName });
   };
 
   return (
@@ -33,24 +31,4 @@ function AddProperty({ addProperty, speciesName, options} ) {
   );
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    const { type } = ownProps;
-
-    let action = null;
-
-    switch (type)
-    {
-        case 'aerosol':
-            action = property => dispatch(addAerosolProperty(property))
-            break;
-        case 'gas':
-            action = property => dispatch(addProperty(property))
-            break;
-    }
-    
-    return {
-        addAction: action
-    };
-};
-
-export default connect(null, mapDispatchToProps)(AddProperty);
+export default AddProperty;

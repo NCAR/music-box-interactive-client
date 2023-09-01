@@ -6,13 +6,13 @@ import { removeAerosolSpecies } from "../../redux/actions";
 const Species = (props) => {
   const handleDetailClick = (e) => {
     e.preventDefault();
-    props.setDetailSpecies({ ...props.detailSpecies, [props.species.name]: props.species });
+    props.setDetails({ ...props.details, [props.species.name]: props.species });
   }
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
-    const { [props.species.name]: _, ...detailSpecies } = props.detailSpecies;
-    props.setDetailSpecies({ ...detailSpecies });
+    const { [props.species.name]: _, ...details } = props.details;
+    props.setDetails({ ...details });
     props.removeAction(props.species.name);
   }
 
@@ -45,11 +45,11 @@ const Species = (props) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    const { speciesType } = ownProps;
+    const { type } = ownProps;
 
     let action = null;
 
-    switch (speciesType)
+    switch (type)
     {
         case 'aerosol':
             action = species => dispatch(removeAerosolSpecies(species))

@@ -8,17 +8,16 @@ function ReactionsList(props) {
 
   return (
     <nav className="bg-ncar-menu-secondary p-2">
-      <AddReaction detailReactions={props.detailReactions}
-                   setDetailReactions={props.setDetailReactions} />
+      <AddReaction/>
       <ul className="list-group reactions-list">
-        {props.reactions && props.reactions.length
-          ? props.reactions.map((reaction, index) => {
-            return <Reaction key={`reaction-${reaction.id}`}
-                             reaction={reaction}
-                             detailReactions={props.detailReactions}
-                             setDetailReactions={props.setDetailReactions} />;
-          })
-          : null }
+        {props?.reactions?.map((reaction, index) => {
+          return <Reaction 
+            key={index}
+            item={reaction}
+            detailReactions={props.detailReactions}
+            setDetailReactions={props.setDetailReactions} />;
+        }
+        )}
       </ul>
     </nav>
   );

@@ -6,9 +6,9 @@ import { getReaction } from "../../redux/selectors";
 const ReactionDetail = (props) => {
   const handleClick = (e) => {
     e.preventDefault();
-    let newDetailReactions = { ...props.detailReactions };
+    let newDetailReactions = { ...props.details };
     delete newDetailReactions[props.reactionId];
-    props.setDetailReactions(newDetailReactions);
+    props.setDetails(newDetailReactions);
   }
 
   return (

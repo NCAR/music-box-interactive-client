@@ -1,27 +1,30 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "gatsby";
 
-import SpeciesInstruction from "./SpeciesInstruction.js";
 import SpeciesList from "./SpeciesList";
 import SpeciesDetail from "./SpeciesDetail.js";
 
-function SpeciesTab({ speciesType, species }) {
-  const [detailSpecies, setDetailSpecies] = useState({});
+function SpeciesTab({ type }) {
+  const [details, setDetails] = useState({});
 
   return (
     <>
-      <SpeciesInstruction />
+      <p className="lead-muted p-2">
+        Select a chemical species from the list to view/edit its properties, or add a new chemical species to the mechansim.
+        The chemical species you add here will be available to participate in <Link to="mechanism/reactions">reactions</Link> 
+        &nbsp;and can be include in the <Link to="conditions">model conditions</Link>.
+      </p>
       <Container fluid className="p-2 d-flex flex-column overflow-hidden">
         <Row className="flex-grow-1 overflow-hidden">
           <Col md={4} lg={4} className="mh-100 overflow-auto">
             <Row className="flex-shrink-0">
               <Col>
                 <SpeciesList
-                  speciesType={speciesType}
-                  species={species}
-                  detailSpecies={detailSpecies}
-                  setDetailSpecies={setDetailSpecies}
+                  type={type}
+                  details={details}
+                  setDetails={setDetails}
                 />
               </Col>
             </Row>
@@ -29,13 +32,13 @@ function SpeciesTab({ speciesType, species }) {
           <Col className="mh-100 overflow-auto">
             <Row className="flex-shrink-0">
               <Col className="species-detail">
-                {Object.keys(detailSpecies).map(key => (
+                {Object.keys(details).map(key => (
                   <SpeciesDetail
-                    speciesType={speciesType}
-                    species={detailSpecies[key]}
+                    type={type}
+                    species={details[key]}
                     key={key}
-                    detailSpecies={detailSpecies}
-                    setDetailSpecies={setDetailSpecies}
+                    details={details}
+                    setDetails={setDetails}
                   />
                 ))}
               </Col>

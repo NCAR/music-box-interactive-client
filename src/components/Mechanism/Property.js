@@ -1,16 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
-import { addProperty } from "../../redux/actions";
 
-const Property = (props) => {
-  const property = props.property
-
+const Property = ({ property, addAction, speciesName }) => {
   const handleAddProperty = (event) => {
-    props.addProperty({ property: {
+    addAction({ property: {
                           ...property,
                           value: event.target.value
                         },
-                        speciesName: props.speciesName
+                        speciesName: speciesName
                       });
   };
 
@@ -29,4 +25,4 @@ const Property = (props) => {
   );
 };
 
-export default connect(null, { addProperty })(Property);
+export default Property;

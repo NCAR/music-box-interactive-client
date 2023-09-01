@@ -1,31 +1,30 @@
-import React from "react";
-import { connect } from "react-redux";
-
+import React from 'react';
+import { Card, Button } from 'react-bootstrap';
 import PropertyList from "./PropertyList";
 
-const SpeciesDetail = ({ speciesType, species, detailSpecies, setDetailSpecies }) => {
+const SpeciesDetail = ({ type, species, details, setDetails }) => {
   const handleClick = (e) => {
     e.preventDefault();
-    let newDetailSpecies = { ...detailSpecies };
+    let newDetailSpecies = { ...details };
     delete newDetailSpecies[species.name];
-    setDetailSpecies(newDetailSpecies);
-  }
+    setDetails(newDetailSpecies);
+  };
 
   return (
-    <div className="card mb-4 species-card shadow-sm">
-      <div className="card-header">
+    <Card className="mb-4 species-card shadow-sm">
+      <Card.Header>
         <h4 className="my-0 fw-normal">{species.name}</h4>
-      </div>
-      <form className="body card-body">
-        <PropertyList type={speciesType} speciesName={species.name} />
+      </Card.Header>
+      <Card.Body>
+        <PropertyList type={type} species={species} speciesName={species.name} properties={species.properties} />
         <div className="container text-center mt-3">
-          <button type="button"
-            className="btn btn-secondary btn-cancel"
-            onClick={handleClick}>Close</button>
+          <Button variant="secondary" className="btn-cancel" onClick={handleClick}>
+            Close
+          </Button>
         </div>
-      </form>
-    </div>
+      </Card.Body>
+    </Card>
   );
-}
+};
 
-export default connect()(SpeciesDetail);
+export default SpeciesDetail;
