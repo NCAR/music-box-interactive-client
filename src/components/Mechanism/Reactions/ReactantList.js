@@ -14,8 +14,7 @@ const ReactantList = props => {
         </div>
         <div className="card-body">
           <div className="form-group array-elements array-elements-reactants container-fluid">
-            {props.reactants && props.reactants.length ?
-              props.reactants.map((reactant, index) => {
+            {props?.reactants?.map((reactant, index) => {
                 return (
                   <div key={`reactant-${reactant.name}`}
                     className={`row flex-nowrap array-element array-element-${index}`}
@@ -25,7 +24,7 @@ const ReactantList = props => {
                   </div>
                 );
               })
-              : null}
+            }
           </div>
         </div>
       </div>
