@@ -2,45 +2,49 @@ import React from "react";
 import { connect } from "react-redux";
 import MathJax from "react-mathjax";
 import Dropdown from "react-bootstrap/Dropdown";
-import { updateReactionData } from "../../redux/actions";
-import { getSpeciesNames } from "../../redux/selectors";
+import { updateReactionData } from "../../../redux/actions";
+import { getSpeciesNames } from "../../../redux/selectors";
 import ReactantList from "./ReactantList";
 import ProductList from "./ProductList";
 
 const ReactionProperty = (props) => {
   const handleUpdateFloat = (e) => {
-    props.updateReactionData({ id: props.reactionId,
-                               data: {
-                                 ...props.data,
-                                 [props.schema.key]: parseFloat(e.target.value)
-                               }
+    props.updateReactionData({
+      id: props.reactionId,
+      data: {
+        ...props.data,
+        [props.schema.key]: parseFloat(e.target.value)
+      }
     });
   };
 
   const handleUpdateInt = (e) => {
-    props.updateReactionData({ id: props.reactionId,
-                               data: {
-                                 ...props.data,
-                                 [props.schema.key]: parseInt(e.target.value)
-                               }
+    props.updateReactionData({
+      id: props.reactionId,
+      data: {
+        ...props.data,
+        [props.schema.key]: parseInt(e.target.value)
+      }
     });
   };
 
   const handleUpdateString = (e) => {
-    props.updateReactionData({ id: props.reactionId,
-                               data: {
-                                 ...props.data,
-                                 [props.schema.key]: e.target.value
-                               }
+    props.updateReactionData({
+      id: props.reactionId,
+      data: {
+        ...props.data,
+        [props.schema.key]: e.target.value
+      }
     });
   };
 
   const handleUpdateSpecies = (speciesName) => {
-    props.updateReactionData({ id: props.reactionId,
-                               data: {
-                                 ...props.data,
-                                 [props.schema.key]: speciesName
-                               }
+    props.updateReactionData({
+      id: props.reactionId,
+      data: {
+        ...props.data,
+        [props.schema.key]: speciesName
+      }
     });
   };
 
@@ -54,7 +58,7 @@ const ReactionProperty = (props) => {
         <MathJax.Node formula={props.schema.value} />
       </MathJax.Provider>
       {props.schema.description && props.schema.description.length ?
-          <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.description}</small></p>` }} />
+        <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.description}</small></p>` }} />
         : null}
     </>
   );
@@ -65,10 +69,10 @@ const ReactionProperty = (props) => {
         <span className="input-group-text">{props.schema.label}</span>
       </div>
       <input type="text"
-             className="form-control"
-             placeholder="Property value"
-             defaultValue={props.data[props.schema.key]}
-             onBlur={handleUpdateFloat}>
+        className="form-control"
+        placeholder="Property value"
+        defaultValue={props.data[props.schema.key]}
+        onBlur={handleUpdateFloat}>
       </input>
       {props.schema.units && props.schema.units.length ?
         <div className="input-group-append">
@@ -86,10 +90,10 @@ const ReactionProperty = (props) => {
         <span className="input-group-text">{props.schema.label}</span>
       </div>
       <input type="text"
-             className="form-control"
-             placeholder="Property value"
-             defaultValue={props.data[props.schema.key]}
-             onBlur={handleUpdateInt}>
+        className="form-control"
+        placeholder="Property value"
+        defaultValue={props.data[props.schema.key]}
+        onBlur={handleUpdateInt}>
       </input>
       {props.schema.units && props.schema.units.length ?
         <div className="input-group-append">
@@ -107,10 +111,10 @@ const ReactionProperty = (props) => {
         <span className="input-group-text">{props.schema.label}</span>
       </div>
       <input type="text"
-             className="form-control"
-             placeholder="Property value"
-             defaultValue={props.data[props.schema.key]}
-             onBlur={handleUpdateString}>
+        className="form-control"
+        placeholder="Property value"
+        defaultValue={props.data[props.schema.key]}
+        onBlur={handleUpdateString}>
       </input>
       {props.schema.units && props.schema.units.length ?
         <div className="input-group-append">
@@ -134,7 +138,7 @@ const ReactionProperty = (props) => {
         <Dropdown.Menu>
           {props.speciesNames.map(speciesName => {
             return (
-              <Dropdown.Item href="#" key={speciesName} onClick={() => {handleUpdateSpecies(speciesName)}}>
+              <Dropdown.Item href="#" key={speciesName} onClick={() => { handleUpdateSpecies(speciesName) }}>
                 {speciesName}
               </Dropdown.Item>
             );
@@ -145,7 +149,7 @@ const ReactionProperty = (props) => {
   );
 
   const getProperty = () => {
-    switch(props.schema.type) {
+    switch (props.schema.type) {
       case "DESCRIPTION":
         return description;
       case "EQUATION":
@@ -158,7 +162,7 @@ const ReactionProperty = (props) => {
         return stringInput;
       case "PRODUCT_LIST":
         return <ProductList reactionId={props.reactionId}
-                            schema={props.schema} />
+          schema={props.schema} />
       case "REACTANT_LIST":
         return <ReactantList reactionId={props.reactionId} />
       case "SPECIES":

@@ -90,3 +90,10 @@ export const removeProduct = (content) => {
         payload: { content }
     }
 }
+
+export const addAerosolProperty = (content) => {
+    return {
+        type: utils.action_types.ADD_AEROSOL_PROPERTY,
+        payload: { content }
+    }
+}
