@@ -13,6 +13,8 @@
   "dependencies": {
     "axios": "^1.6.2",
     "better-react-mathjax": "^2.0.3",
+    "bootstrap": "^5.3.2",
+    "open-iconic": "^1.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-csv": "^2.2.2",
