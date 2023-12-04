@@ -31,10 +31,12 @@ function Layout(props) {
     }
   }
 
+  const title = `MusicBox Interactive ${process.env.VITE_APP_VERSION}`;
+
   return (
 
     <DocumentMeta {...{
-      title: `MusicBox Interactive 2.0.0`,
+      title: title,
       meta: {
         charset: "UTF-8",
         name: "viewport",
@@ -44,7 +46,7 @@ function Layout(props) {
       <div className={styles.dashboard}>
         <Navbar className="shadow p-0 sticky-top flex-md-nowrap" bg="dark" variant="dark">
           <Navbar.Brand className="navbar-brand col-md-3 col-lg-2 me-0 px-3"
-            href="/">{"MusicBox Interactive"}</Navbar.Brand>
+            href="/">{title}</Navbar.Brand>
         </Navbar>
         <div className={styles.content}>
           <div className={styles.menu}>

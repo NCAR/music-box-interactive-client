@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   css: {
-    modules: true, // Enable CSS modules
+    modules: true,
+  },
+  define: {
+    'process.env.VITE_APP_VERSION': JSON.stringify(require('./package.json').version),
   },
 });

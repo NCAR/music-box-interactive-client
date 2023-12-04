@@ -4,9 +4,12 @@ import Examples from "./Examples"
 import LoadFile from "./LoadFile"
 import utils from "../../redux/utils"
 import { resetAll } from "../../redux/actions"
+import { useNavigate } from "react-router-dom";
 
 export default function QuickStart() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+    console.log(navigate)
     const [method, setMethod] = useState(utils.methods.NONE_SELECTED)
     // toggle the component related to the method selected
     const setMethodWrapper = (method_selected) => {
