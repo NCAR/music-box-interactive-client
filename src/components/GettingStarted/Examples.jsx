@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import utils from '../../redux/utils';
 import { resetAll, getExample } from '../../redux/actions';
+import { useNavigate } from "react-router-dom";
 
 const examples = [
     {
@@ -23,6 +24,7 @@ const examples = [
 
 export default function Examples() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleClick = (example) => {
         dispatch(resetAll());

@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png"
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css"
-import DocumentMeta from "react-document-meta"
+import { Helmet } from 'react-helmet';
 import { useDispatch, connect } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { doRun } from '../redux/actions';
@@ -15,9 +15,11 @@ import {
 } from "../redux/selectors";
 import { RunStatus } from "../controllers/models"
 import utils from "../redux/utils"
+import { useNavigate } from "react-router-dom";
 
 function Layout(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (props.runStatus !== RunStatus.RUNNING) {
@@ -34,15 +36,10 @@ function Layout(props) {
   const title = `MusicBox Interactive ${process.env.VITE_APP_VERSION}`;
 
   return (
-
-    <DocumentMeta {...{
-      title: title,
-      meta: {
-        charset: "UTF-8",
-        name: "viewport",
-        content: "idth=device-width, initial-scale=1"
-      }
-    }}>
+    <>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <div className={styles.dashboard}>
         <Navbar className="shadow p-0 sticky-top flex-md-nowrap" bg="dark" variant="dark">
           <Navbar.Brand className="navbar-brand col-md-3 col-lg-2 me-0 px-3"
@@ -130,7 +127,7 @@ function Layout(props) {
           </div>
         </div>
       </div>
-    </DocumentMeta >
+    </>
   )
 }
 

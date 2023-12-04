@@ -4,6 +4,7 @@ import Home from "./pages";
 import GettingStarted from "./pages/getting_started";
 import Mechanism from "./pages/mechanism"
 import Conditions from "./pages/conditions"
+import Results from "./pages/results"
 import { Provider } from "react-redux";
 import { store } from "./redux/store/createStore";
 import { MathJaxContext } from "better-react-mathjax";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/conditions",
     element: <Conditions />
+  },
+  {
+    path: "/results",
+    element: <Results />
   },
 ]);
 

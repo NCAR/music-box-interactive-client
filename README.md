@@ -1,10 +1,10 @@
 # Getting Started
 
-## Install gatsby
+## Install required packages
 
 ### MacOS
 ```
-brew install node gatsby-cli
+brew install node
 ```
 
 ### Windows
@@ -22,14 +22,8 @@ winget install -e --id OpenJS.NodeJS
 
 Once that install, close and reopen the command prompt and then move to the directory where `music-box-interactive-client` was cloned to
 
-#### Install gatsby
-
-```
-npm install -g gatsby-cli
-```
-
 ## Start the server
 ```
-npm install --legacy-peer-deps
-gatsby develop -p 8002
+npm install
+npm run dev
 ```
