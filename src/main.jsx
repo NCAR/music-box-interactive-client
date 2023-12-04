@@ -8,6 +8,7 @@ import Results from "./pages/results"
 import { Provider } from "react-redux";
 import { store } from "./redux/store/createStore";
 import { MathJaxContext } from "better-react-mathjax";
+import { HelmetProvider } from 'react-helmet-async';
 import './styles/global.css';
 
 import {
@@ -40,10 +41,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <MathJaxContext>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
-    </MathJaxContext>
+    <HelmetProvider>
+      <MathJaxContext>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </MathJaxContext>
+    </HelmetProvider>
   </React.StrictMode>,
 );

@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png"
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css"
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useDispatch, connect } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { doRun } from '../redux/actions';
