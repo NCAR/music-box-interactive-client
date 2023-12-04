@@ -2,7 +2,6 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import utils from '../../redux/utils';
 import { resetAll, getExample } from '../../redux/actions';
-import { navigate } from 'gatsby';
 
 const examples = [
     {

@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -99,7 +99,7 @@ async function getPlot(plot) {
   }
 }
 
-module.exports = {
+export {
   fetchConfiguration,
   fetchCompressedConfiguration,
   fetchResults,

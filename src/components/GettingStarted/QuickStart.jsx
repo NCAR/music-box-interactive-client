@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { navigate } from 'gatsby';
 import Examples from "./Examples"
 import LoadFile from "./LoadFile"
 import utils from "../../redux/utils"

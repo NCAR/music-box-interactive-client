@@ -5,7 +5,6 @@ import { Container, Alert } from 'react-bootstrap'
 import Layout from "../components/Layout"
 import { getRunStatus, getLastError } from '../redux/selectors'
 import { RunStatus } from '../controllers/models'
-import { navigate } from 'gatsby';
 
 const ResultsRunning = (props) => {
   const colors = ['#91A6FF', '#FF88DC', '#FF5154']

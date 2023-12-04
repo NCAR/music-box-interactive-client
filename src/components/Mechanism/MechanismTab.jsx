@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "gatsby";
 
 import List from "./List";
 import Detail from "./Detail";
