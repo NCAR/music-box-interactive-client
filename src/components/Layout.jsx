@@ -21,6 +21,9 @@ function Layout(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
+  console.log(featureFlags)
+
   const handleClick = () => {
     if (props.runStatus !== RunStatus.RUNNING) {
       const content = {

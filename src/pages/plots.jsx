@@ -21,7 +21,7 @@ const Plots = props => {
   const tabNotSelected = "btn btn-secondary"
 
   return(
-    <Layout>
+    <Layout title={"Plots"}>
       <main role="main">
         <div className="container text-center">
           {props.runStatus === RunStatus.DONE ?

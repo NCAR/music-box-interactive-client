@@ -11,19 +11,6 @@ import {
     getReactionPlots,
     getEnvironmentPlots
 } from "../redux/selectors";
-import { RunStatus } from "../controllers/models";
-import debounce from 'lodash/debounce';
-import { fetchFlowDiagram } from "../controllers/api"
-import { translate_reactions_to_camp_config } from "../controllers/transformers"
-import legend from "../assets/plot_diagram_legend.png"
-import Dropdown from 'react-bootstrap/Dropdown'
-import Button from 'react-bootstrap/Button';
-import { plotSpeciesUnits } from "../redux/schemas";
-
-
-import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap';
-import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
-
 
 function ForceGraph({ nodes, charge }) {
     const [animatedNodes, setAnimatedNodes] = useState([]);
