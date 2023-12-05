@@ -27,19 +27,21 @@ const initialState = {
     ],
     initial_reactions: [],
     evolving: {
-        times: [ 0.0 ],
+        times: [0.0],
         values: []
     },
-    model_components: {
-        "type": "CAMP",
-        "configuration file": "camp_data/config.json",
-        "override species": {
-            "M": { "mixing ratio mol mol-1": 1.0 }
-        },
-        "suppress output": {
-            "M": {}
+    model_components: [
+        {
+            "type": "CAMP",
+            "configuration file": "camp_data/config.json",
+            "override species": {
+                "M": { "mixing ratio mol mol-1": 1.0 }
+            },
+            "suppress output": {
+                "M": {}
+            }
         }
-    }
+    ]
 }
 
 const compareId = (a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
@@ -93,7 +95,7 @@ export const conditionsReducer = (state = initialState, action) => {
             };
         }
         case utils.action_types.UPDATE_EVOLVING_CONDITIONS: {
-          return {
+            return {
                 ...state,
                 evolving: { ...action.payload.content }
             };
@@ -108,7 +110,7 @@ export const conditionsReducer = (state = initialState, action) => {
                     times: [
                         ...state.evolving.times.slice(0, timeIndex),
                         value,
-                        ...state.evolving.times.slice(timeIndex+1)
+                        ...state.evolving.times.slice(timeIndex + 1)
                     ]
                 }
             }
@@ -124,15 +126,15 @@ export const conditionsReducer = (state = initialState, action) => {
                     values: [
                         ...state.evolving.values.map((condition, index) =>
                             condition.name !== conditionName ?
-                            condition :
-                            {
-                                ...condition,
-                                values: [
-                                    ...condition.values.slice(0, timeIndex),
-                                    value,
-                                    ...condition.values.slice(timeIndex+1)
-                                ]
-                            }
+                                condition :
+                                {
+                                    ...condition,
+                                    values: [
+                                        ...condition.values.slice(0, timeIndex),
+                                        value,
+                                        ...condition.values.slice(timeIndex + 1)
+                                    ]
+                                }
                         )
                     ]
                 }
@@ -142,7 +144,7 @@ export const conditionsReducer = (state = initialState, action) => {
             const compareTime = (a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
             const sortOrder = state.evolving.times.map((time, index) => {
                 return { time: parseFloat(time), index: index }
-            }).sort( compareTime ).map(({ index }) => index);
+            }).sort(compareTime).map(({ index }) => index);
             return {
                 ...state,
                 evolving: {
@@ -169,7 +171,7 @@ export const conditionsReducer = (state = initialState, action) => {
                         ...state.evolving.values,
                         {
                             ...condition,
-                            values: [ ...state.evolving.times.map(() => 0) ]
+                            values: [...state.evolving.times.map(() => 0)]
                         }
                     ]
                 }
@@ -246,12 +248,12 @@ export const conditionsReducer = (state = initialState, action) => {
                     ],
                     values: [
                         ...table[0].slice(1).map((name, colIndex) => {
-                          return {
-                            ...possibleConditions.filter(condition => {
-                              return condition.tableName === name
-                            })[0],
-                            values: [ ...table.slice(1).map(row => row[colIndex+1]) ]
-                          }
+                            return {
+                                ...possibleConditions.filter(condition => {
+                                    return condition.tableName === name
+                                })[0],
+                                values: [...table.slice(1).map(row => row[colIndex + 1])]
+                            }
                         })
                     ]
                 }
