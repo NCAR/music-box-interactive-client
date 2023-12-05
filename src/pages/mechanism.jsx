@@ -3,23 +3,18 @@ import { connect } from 'react-redux';
 import TabbedLayout from "../components/TabbedLayout";
 import { MechanismTab } from "../components/Mechanism";
 
-const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
+// default to false
+const { PART_MC = false } = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
 
-const gas = { label: "Gas Species", component: () => <MechanismTab type="gas" /> };
-const aerosols = { label: "Aerosol Species", component: () => <MechanismTab type="aerosol" /> };
-const reactions = { label: "Reactions", component: () => <MechanismTab type="reactions" /> };
-let tabs = [
-  gas,
-  reactions
-];
+const tabDefinitions = {
+  gas: { label: "Gas Species", component: () => <MechanismTab type="gas" /> },
+  aerosol: { label: "Aerosol Species", component: () => <MechanismTab type="aerosol" /> },
+  reactions: { label: "Reactions", component: () => <MechanismTab type="reactions" /> },
+};
 
-if (featureFlags.PART_MC) {
-  tabs = [
-    gas,
-    aerosols,
-    reactions
-  ];
-}
+const tabs = PART_MC
+  ? [tabDefinitions.gas, tabDefinitions.aerosol, tabDefinitions.reactions]
+  : [tabDefinitions.gas, tabDefinitions.reactions];
 
 function Mechanism() {
   return (
