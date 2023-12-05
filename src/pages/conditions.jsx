@@ -11,7 +11,7 @@ const tabs = [
 
 function Conditions() {
   return (
-    <TabbedLayout tabs={tabs}/>
+    <TabbedLayout title={"Conditions"} tabs={tabs}/>
   )
 }
 

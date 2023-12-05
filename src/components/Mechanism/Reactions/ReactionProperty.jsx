@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import MathJax from "react-mathjax";
+import { MathJax } from "better-react-mathjax";
 import Dropdown from "react-bootstrap/Dropdown";
 import { updateReactionData } from "../../../redux/actions";
 import { getSpeciesNames } from "../../../redux/selectors";
@@ -52,11 +52,12 @@ const ReactionProperty = (props) => {
     <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.text}</small></p>` }} />
   );
 
+  if (props.schema.type == "EQUATION") {
+    console.log(props.schema.value)
+  }
   const equation = (
     <>
-      <MathJax.Provider>
-        <MathJax.Node formula={props.schema.value} />
-      </MathJax.Provider>
+      <MathJax>{props.schema.value}</MathJax>
       {props.schema.description && props.schema.description.length ?
         <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.description}</small></p>` }} />
         : null}

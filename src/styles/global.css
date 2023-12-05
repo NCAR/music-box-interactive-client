@@ -1,3 +1,7 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "open-iconic/font/css/open-iconic-bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
 :root {
     --jumbotron-padding-y: 3rem;
     --ncar-color-bg-dark: #C3D7EE;
@@ -16,7 +20,6 @@
     --ncar-color-text-highlight-green: #A8C700;
   }
   
-@import url('https://fonts.googleapis.com/css?family=Poppins');
 
   html,body {
       background: var(--ncar-color-bg-dark);

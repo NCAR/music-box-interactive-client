@@ -1,0 +1,81 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Home from "./pages";
+import GettingStarted from "./pages/getting_started";
+import Mechanism from "./pages/mechanism"
+import Conditions from "./pages/conditions"
+import Results from "./pages/results"
+import Plots from "./pages/plots"
+import NetworkGraph from "./pages/d3_flow"
+import FlowDiagram from "./pages/flow_diagram"
+import Download from "./pages/downloads"
+import { Provider } from "react-redux";
+import { store } from "./redux/store/createStore";
+import { MathJaxContext } from "better-react-mathjax";
+import { HelmetProvider } from 'react-helmet-async';
+import './styles/global.css';
+
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
+
+let routes = [
+  {
+    path: "/",
+    element: <Home />
+  },
+  {
+    path: "/getting_started",
+    element: <GettingStarted />
+  },
+  {
+    path: "/mechanism",
+    element: <Mechanism />
+  },
+  {
+    path: "/conditions",
+    element: <Conditions />
+  },
+  {
+    path: "/results",
+    element: <Results />
+  },
+  {
+    path: "/plots",
+    element: <Plots />
+  },
+  {
+    path: "/downloads",
+    element: <Download />
+  },
+];
+
+if (featureFlags.FLOW_DIAGRAM) {
+  routes.push(
+    {
+      path: "/d3_flow",
+      element: <NetworkGraph />
+    },
+    {
+      path: "/flow_diagram",
+      element: <FlowDiagram />
+    },
+  )
+}
+
+const router = createBrowserRouter(routes);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <HelmetProvider>
+      <MathJaxContext>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </MathJaxContext>
+    </HelmetProvider>
+  </React.StrictMode>,
+);

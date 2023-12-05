@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Container, Button } from 'react-bootstrap';
 import Layout from "./Layout";
 
-function TabedLayout({tabs}) {
+function TabedLayout({tabs, title}) {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <Layout>
+    <Layout title={title}>
       <main role="main">
         <Container className="text-center">
           <div className="navbox pt-2" style={{ display: 'flex', justifyContent: 'space-around' }}>

@@ -62,7 +62,7 @@ export const reactionSchema = {
             },
             {
                 type: "EQUATION",
-                value: "k = Ae^{(\\frac{-E_a}{k_bT})}(\\frac{T}{D})^B(1.0+E*P)",
+                value: "\\(k = Ae^{(\\frac{-E_a}{k_bT})}(\\frac{T}{D})^B(1.0+E*P)\\)",
                 description: "k<sub>B</sub>: Boltzmann constant (J K<sup>-1</sup>); T: temperature (K); P: pressure (Pa)"
             },
             {
@@ -267,15 +267,15 @@ export const reactionSchema = {
             },
             {
                 type: "EQUATION",
-                value: "k_0 = k_{0A}e^{(\\frac{k_{0C}}{T})}(\\frac{T}{300.0})^{k_{0B}}"
+                value: "\\(k_0 = k_{0A}e^{(\\frac{k_{0C}}{T})}(\\frac{T}{300.0})^{k_{0B}}\\)"
             },
             {
                 type: "EQUATION",
-                value: "k_{inf} = k_{infA}e^{(\\frac{k_{infC}}{T})}(\\frac{T}{300.0})^{k_{infB}}"
+                value: "\\(k_{inf} = k_{infA}e^{(\\frac{k_{infC}}{T})}(\\frac{T}{300.0})^{k_{infB}}\\)"
             },
             {
                 type: "EQUATION",
-                value: "k = \\frac{k_0}{1+k_0[\\mbox{M}]/k_{\\inf}}F_C^{(1+1/N[log_{10}(k_0[\\mbox{M}]/k_{\\inf})]^2)^{-1}}",
+                value: "\\(k = \\frac{k_0}{1+k_0[\\mbox{M}]/k_{\\inf}}F_C^{(1+1/N[log_{10}(k_0[\\mbox{M}]/k_{\\inf})]^2)^{-1}}\\)",
                 description: "T: temperature (K); M: number density of air (# cm<sup>-3</sup>)"
             },
             {
@@ -361,15 +361,15 @@ export const reactionSchema = {
             },
             {
                 type: "EQUATION",
-                value: "k_0 = k_{0A}e^{(\\frac{k_{0C}}{T})}(\\frac{T}{300.0})^{k_{0B}}"
+                value: "\\(k_0 = k_{0A}e^{(\\frac{k_{0C}}{T})}(\\frac{T}{300.0})^{k_{0B}}\\)"
             },
             {
                 type: "EQUATION",
-                value: "k_{inf} = k_{infA}e^{(\\frac{k_{infC}}{T})}(\\frac{T}{300.0})^{k_{infB}}"
+                value: "\\(k_{inf} = k_{infA}e^{(\\frac{k_{infC}}{T})}(\\frac{T}{300.0})^{k_{infB}}\\)"
             },
             {
                 type: "EQUATION",
-                value: "k = \\frac{k_0[\\mbox{M}]}{1+k_0[\\mbox{M}]/k_{\\inf}}F_C^{(1+1/N[log_{10}(k_0[\\mbox{M}]/k_{\\inf})]^2)^{-1}}",
+                value: "\\(k = \\frac{k_0[\\mbox{M}]}{1+k_0[\\mbox{M}]/k_{\\inf}}F_C^{(1+1/N[log_{10}(k_0[\\mbox{M}]/k_{\\inf})]^2)^{-1}}\\)",
                 description: "T: temperature (K); M: number density of air (# cm<sup>-3</sup>)"
             },
             {
@@ -457,15 +457,15 @@ export const reactionSchema = {
             },
             {
                 type: "EQUATION",
-                value: "k_{firstBranch} = \\left(X e^{-Y/T}\\right) \\left(\\frac{A(T, \\mbox{[M]}, n)}{A(T, \\mbox{[M]}, n) + Z}\\right)"
+                value: "\\(k_{firstBranch} = \\left(X e^{-Y/T}\\right) \\left(\\frac{A(T, \\mbox{[M]}, n)}{A(T, \\mbox{[M]}, n) + Z}\\right)\\)"
             },
             {
                 type: "EQUATION",
-                value: "k_{secondBranch} = \\left(X e^{-Y/T}\\right)\\left(\\frac{Z}{Z + A(T, \\mbox{[M]}, n)}\\right)"
+                value: "\\(k_{secondBranch} = \\left(X e^{-Y/T}\\right)\\left(\\frac{Z}{Z + A(T, \\mbox{[M]}, n)}\\right)\\)"
             },
             {
                 type: "EQUATION",
-                value: "A(T, \\mbox{[M]}, n) = \\frac{2 \\times 10^{-22} e^n \\mbox{[M]}}{1 + \\frac{2 \\times 10^{-22} e^n \\mbox{[M]}}{0.43(T/298)^{-8}}} 0.41^{(1+[log( \\frac{2 \\times 10^{-22} e^n \\mbox{[M]}}{0.43(T/298)^{-8}})]^2)^{-1}}",
+                value: "\\(A(T, \\mbox{[M]}, n) = \\frac{2 \\times 10^{-22} e^n \\mbox{[M]}}{1 + \\frac{2 \\times 10^{-22} e^n \\mbox{[M]}}{0.43(T/298)^{-8}}} 0.41^{(1+[log( \\frac{2 \\times 10^{-22} e^n \\mbox{[M]}}{0.43(T/298)^{-8}})]^2)^{-1}}\\)",
                 description: "Typically used for NO + RO2 -> alkoxy radical + NO2 reactions, " +
                              "T is temperature (K), [M] is the number density of air " +
                              "(molecules cm<sup>-3</sup>), X and Y are Arrhenius " +
@@ -476,7 +476,7 @@ export const reactionSchema = {
             },
             {
                 type: "EQUATION",
-                value: "Z( \\alpha_0, n) = A(T = 293 \\mbox{K}, \\mbox{[M]} = 2.45 \\times 10^{19} \\frac{\\mbox{molec}}{\\mbox{cm}^3}, n) \\frac{(1-\\alpha_0)}{\\alpha_0}",
+                value: "\\(Z( \\alpha_0, n) = A(T = 293 \\mbox{K}, \\mbox{[M]} = 2.45 \\times 10^{19} \\frac{\\mbox{molec}}{\\mbox{cm}^3}, n) \\frac{(1-\\alpha_0)}{\\alpha_0}\\)",
                 description: "More details can be found in Wennberg et al. (2018)."
             },
             {
@@ -533,7 +533,7 @@ export const reactionSchema = {
             },
             {
                 type: "EQUATION",
-                value: "Ae^{(\\frac{-B}{T})}e^{(\\frac{C}{T^3})}",
+                value: "\\(Ae^{(\\frac{-B}{T})}e^{(\\frac{C}{T^3})}\\)",
                 description: "A is the pre-exponential factor " +
                              "((# cm<sup>-3</sup>)<sup>-(n-1)</sup>s<sup>-1</sup>), " +
                              "and B and C are parameters that capture the temperature " +

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { resetAll, loadConfiguration } from '../../redux/actions'
-import { navigate } from 'gatsby'
 
 //TODO: Complete functions for uploading files 
 export default function LoadFile() {

@@ -8,7 +8,6 @@ import Sponsors from "../components/Home/Sponsors"
 import Developers from "../components/Home/Developers"
 import Contact from "../components/Home/Contact"
 import gapImg from "../assets/image_ammann.jpg"
-import wrapApp from "../redux/store/WrapWithProvider";
 
 export default function Home() {
   const gapStyle = {
@@ -16,7 +15,7 @@ export default function Home() {
     height: "300px"
   }
 
-  return wrapApp({ element: (
+  return (
     <Layout>
       <main role="main">
         <About />
@@ -34,5 +33,5 @@ export default function Home() {
         </div>
       </main>
     </Layout>
-  )});
+  );
 }

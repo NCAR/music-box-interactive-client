@@ -17,7 +17,7 @@ const ReactionTypes = Object.freeze({
   WENNBERG_TUNNELING: 'WENNBERG_TUNNELING'
 })
 
-module.exports = {
+export {
   ReactionTypes,
   RunStatus
 }
