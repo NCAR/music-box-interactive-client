@@ -20,7 +20,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-const router = createBrowserRouter([
+const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
+
+let routes = [
   {
     path: "/",
     element: <Home />
@@ -46,18 +48,25 @@ const router = createBrowserRouter([
     element: <Plots />
   },
   {
-    path: "/d3_flow",
-    element: <NetworkGraph />
-  },
-  {
-    path: "/flow_diagram",
-    element: <FlowDiagram />
-  },
-  {
     path: "/downloads",
     element: <Download />
   },
-]);
+];
+
+if (featureFlags.FLOW_DIAGRAM) {
+  routes.push(
+    {
+      path: "/d3_flow",
+      element: <NetworkGraph />
+    },
+    {
+      path: "/flow_diagram",
+      element: <FlowDiagram />
+    },
+  )
+}
+
+const router = createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

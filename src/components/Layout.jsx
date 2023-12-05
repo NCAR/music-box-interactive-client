@@ -22,7 +22,6 @@ function Layout(props) {
   const navigate = useNavigate();
 
   const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
-  console.log(featureFlags)
 
   const handleClick = () => {
     if (props.runStatus !== RunStatus.RUNNING) {
@@ -75,14 +74,19 @@ function Layout(props) {
                 <span className="oi oi-graph oi-prefix"></span>
                 Plot Results
               </NavLink>
-              <NavLink to="/flow_diagram" className={({ isActive }) => ["nav-link", isActive ? "active" : "",].join(" ")} >
-                <span className="oi oi-fork oi-prefix"></span>
-                Flow Diagram
-              </NavLink>
-              <NavLink to="/d3_flow" className={({ isActive }) => ["nav-link", isActive ? "active" : "",].join(" ")} >
-                <span className="oi oi-fork oi-prefix"></span>
-                d3_flow
-              </NavLink>
+              {featureFlags.FLOW_DIAGRAM && (
+                <>
+                  <NavLink to="/flow_diagram" className={({ isActive }) => ["nav-link", isActive ? "active" : "",].join(" ")} >
+                    <span className="oi oi-fork oi-prefix"></span>
+                    Flow Diagram
+                  </NavLink>
+                  <NavLink to="/d3_flow" className={({ isActive }) => ["nav-link", isActive ? "active" : "",].join(" ")} >
+                    <span className="oi oi-fork oi-prefix"></span>
+                    d3_flow
+                  </NavLink>
+                </>
+              )
+              }
               <NavLink to="/downloads" className={({ isActive }) => ["nav-link", isActive ? "active" : "",].join(" ")} >
                 <span className="oi oi-data-transfer-download oi-prefix"></span>
                 Download
