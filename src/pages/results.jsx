@@ -5,12 +5,13 @@ import { Container, Alert } from 'react-bootstrap'
 import Layout from "../components/Layout"
 import { getRunStatus, getLastError } from '../redux/selectors'
 import { RunStatus } from '../controllers/models'
+import { useNavigate } from "react-router-dom";
 
 const ResultsRunning = (props) => {
   const colors = ['#91A6FF', '#FF88DC', '#FF5154']
-  let outerCircleColor  = props.updateCount % 3 === 2 ? colors[0] : ''
+  let outerCircleColor = props.updateCount % 3 === 2 ? colors[0] : ''
   let middleCircleColor = props.updateCount % 3 === 1 ? colors[1] : ''
-  let innerCircleColor  = props.updateCount % 3 === 0 ? colors[2] : ''
+  let innerCircleColor = props.updateCount % 3 === 0 ? colors[2] : ''
 
   return (
     <div style={{ display: `flex`, justifyContent: `center`, margin: `auto` }}>
@@ -31,6 +32,8 @@ const ResultsRunning = (props) => {
 }
 
 const ResultsDone = () => {
+  const navigate = useNavigate();
+  const { FLOW_DIAGRAM = false } = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || '{}');
   return (
     <>
       <h1>Your simulation is finished!</h1>
@@ -44,19 +47,25 @@ const ResultsDone = () => {
         <button
           style={{ margin: 'auto' }}
           className="btn btn-primary btn-ncar-active"
-          onClick={() => {navigate('/plots')}}>
+          onClick={() => { navigate('/plots') }}>
           Plots
         </button>
+        {FLOW_DIAGRAM &&
+          (
+            <>
+              <button
+                style={{ margin: 'auto' }}
+                className="btn btn-primary btn-ncar-active"
+                onClick={() => { navigate('/flow_diagram') }}>
+                Flow Diagram
+              </button>
+            </>
+          )
+        }
         <button
           style={{ margin: 'auto' }}
           className="btn btn-primary btn-ncar-active"
-          onClick={() => {navigate('/flow_diagram')}}>
-          Flow Diagram
-        </button>
-        <button
-          style={{ margin: 'auto' }}
-          className="btn btn-primary btn-ncar-active"
-          onClick={() => {navigate('/downloads')}}>
+          onClick={() => { navigate('/downloads') }}>
           Download Results
         </button>
       </div>
@@ -99,7 +108,7 @@ const Results = ({ runStatus, error }) => {
         {(() => {
           switch (runStatus) {
             case RunStatus.RUNNING:
-              return <ResultsRunning updateCount={renderCount.current}/>
+              return <ResultsRunning updateCount={renderCount.current} />
             case RunStatus.DONE:
               return <ResultsDone />
             case RunStatus.ERROR:
