@@ -38,7 +38,7 @@ function Layout(props) {
   return (
     <>
       <Helmet>
-        <title>{title}</title>
+        <title>{props.title || title}</title>
       </Helmet>
       <div className={styles.dashboard}>
         <Navbar className="shadow p-0 sticky-top flex-md-nowrap" bg="dark" variant="dark">

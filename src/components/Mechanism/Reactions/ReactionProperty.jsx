@@ -52,9 +52,12 @@ const ReactionProperty = (props) => {
     <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.text}</small></p>` }} />
   );
 
+  if (props.schema.type == "EQUATION") {
+    console.log(props.schema.value)
+  }
   const equation = (
     <>
-      <MathJax.Text text={props.schema.value} />
+      <MathJax>{props.schema.value}</MathJax>
       {props.schema.description && props.schema.description.length ?
         <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.description}</small></p>` }} />
         : null}

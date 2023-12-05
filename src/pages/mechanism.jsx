@@ -11,7 +11,7 @@ const tabs = [
 
 function Mechanism() {
   return (
-    <TabbedLayout tabs={tabs}/>
+    <TabbedLayout tabs={tabs} title={"Mechanism"}/>
   )
 }
 
