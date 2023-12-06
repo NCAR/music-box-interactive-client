@@ -11,7 +11,15 @@ function AddSpecies(props) {
     setState(input);
   };
 
+  const clickEnter =  (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddSpecies();
+    }
+  }
+
   const handleAddSpecies = () => {
+    
     addAction({ name: state, properties: [] });
     setState("");
   };
@@ -23,6 +31,7 @@ function AddSpecies(props) {
         className="form-control mb-2"
         onChange={(e) => updateInput(e.target.value)}
         value={state}
+        onKeyDown={clickEnter}
       />
       <button
         className="btn btn-primary mb-2 add-gas-species"
