@@ -11,15 +11,14 @@ function AddSpecies(props) {
     setState(input);
   };
 
-  const clickEnter =  (e) => {
-    if (e.key === 'Enter') {
+  const clickEnter = (e) => {
+    if (e.key === "Enter") {
       e.preventDefault();
       handleAddSpecies();
     }
-  }
+  };
 
   const handleAddSpecies = () => {
-    
     addAction({ name: state, properties: [] });
     setState("");
   };
