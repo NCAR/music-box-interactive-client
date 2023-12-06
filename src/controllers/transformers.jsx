@@ -516,11 +516,7 @@ function translate_reactions_to_camp_config(config) {
 
 function translate_to_camp_config(config) {
   let species = [
-    ...config.gasSpecies.map((species) => {
-      let camp_species = {
-        name: species.name,
-        type: "CHEM_SPEC",
-      };
+    ...config.gasSpecies.map((species) => { let camp_species = { name: species.name, type: "CHEM_SPEC", };
       species.properties.forEach((property) => {
         switch (property.name) {
           case "absolute convergence tolerance [mol mol-1]":
