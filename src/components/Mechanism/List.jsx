@@ -9,12 +9,16 @@ import Reaction from "./Reaction";
 import { getMechanism } from "../../redux/selectors";
 
 const AddItemComponent = ({ type }) => {
-  return type === "reactions" ? <AddReaction /> : <AddSpecies type={type} />
-}
+  return type === "reactions" ? <AddReaction /> : <AddSpecies type={type} />;
+};
 
 const ItemComponent = ({ type, ...otherprops }) => {
-  return type === "reactions" ? <Reaction {...otherprops} /> : <Species type={type} {...otherprops} />
-}
+  return type === "reactions" ? (
+    <Reaction {...otherprops} />
+  ) : (
+    <Species type={type} {...otherprops} />
+  );
+};
 
 function List({ type, objects, details, setDetails }) {
   return (
@@ -55,7 +59,7 @@ const mapStateToProps = (state, { type }) => {
 
   return {
     objects: objects,
-  }
+  };
 };
 
 export default connect(mapStateToProps)(List);

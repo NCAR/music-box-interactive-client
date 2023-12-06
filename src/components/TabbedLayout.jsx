@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { connect } from 'react-redux';
-import { Container, Button } from 'react-bootstrap';
+import { connect } from "react-redux";
+import { Container, Button } from "react-bootstrap";
 import Layout from "./Layout";
 
-function TabedLayout({tabs, title}) {
+function TabedLayout({ tabs, title }) {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
     <Layout title={title}>
       <main role="main">
         <Container className="text-center">
-          <div className="navbox pt-2" style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <div
+            className="navbox pt-2"
+            style={{ display: "flex", justifyContent: "space-around" }}
+          >
             {tabs.map((tab, index) => (
               <Button
                 key={index}
@@ -23,7 +26,9 @@ function TabedLayout({tabs, title}) {
             ))}
           </div>
         </Container>
-        {tabs.map((tab, index) => activeTab === index && <tab.component key={index} />)}
+        {tabs.map(
+          (tab, index) => activeTab === index && <tab.component key={index} />,
+        )}
       </main>
     </Layout>
   );

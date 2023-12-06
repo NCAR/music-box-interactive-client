@@ -4,45 +4,57 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { addCondition } from "../../redux/actions";
 import { getConditions } from "../../redux/selectors";
 
-const EnvironmentalCondition = props => {
-  const condition = props.condition
-  const schema = props.schema
+const EnvironmentalCondition = (props) => {
+  const condition = props.condition;
+  const schema = props.schema;
 
   const handleUpdate = (key, value) => {
     props.addCondition({
       schema: schema,
       condition: {
         ...condition,
-        [key]: value
-      }
+        [key]: value,
+      },
     });
   };
 
   return (
     <div className="row my-1 row-data">
       <div className="col-5">
-        <input type="text"
-               className="form-control"
-               value={condition.name}
-               disabled>
-        </input>
+        <input
+          type="text"
+          className="form-control"
+          value={condition.name}
+          disabled
+        ></input>
       </div>
       <div className="col-3">
-        <input type="text"
-               className="form-control"
-               defaultValue={condition.value}
-               onBlur={(e) => {handleUpdate("value", e.target.value);}}>
-        </input>
+        <input
+          type="text"
+          className="form-control"
+          defaultValue={condition.value}
+          onBlur={(e) => {
+            handleUpdate("value", e.target.value);
+          }}
+        ></input>
       </div>
       <div className="col-3">
         <Dropdown>
           <Dropdown.Toggle variant="success" className="btn btn-light">
-            {condition.units && condition.units.length ? condition.units : "<select>"}
+            {condition.units && condition.units.length
+              ? condition.units
+              : "<select>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {schema.units[condition.name].map(value => {
+            {schema.units[condition.name].map((value) => {
               return (
-                <Dropdown.Item href="#" key={value} onClick={(e) => {handleUpdate("units", e.target.innerHTML);}}>
+                <Dropdown.Item
+                  href="#"
+                  key={value}
+                  onClick={(e) => {
+                    handleUpdate("units", e.target.innerHTML);
+                  }}
+                >
                   {value}
                 </Dropdown.Item>
               );
@@ -52,11 +64,13 @@ const EnvironmentalCondition = props => {
       </div>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    condition: getConditions(state, ownProps.schema)[ownProps.conditionId]
+    condition: getConditions(state, ownProps.schema)[ownProps.conditionId],
   };
-}
-export default connect(mapStateToProps, { addCondition })(EnvironmentalCondition);
+};
+export default connect(mapStateToProps, { addCondition })(
+  EnvironmentalCondition,
+);

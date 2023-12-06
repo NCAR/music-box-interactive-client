@@ -2,22 +2,22 @@ import utils from "../utils";
 
 const initialState = {
   species: {
-    plots: []
+    plots: [],
   },
   reactions: {
-    plots: []
+    plots: [],
   },
   environment: {
-    plots: []
-  }
-}
+    plots: [],
+  },
+};
 
 export const plotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case utils.action_types.RESET_ALL: {
       return {
-        ...initialState
-      }
+        ...initialState,
+      };
     }
     case utils.action_types.ADD_PLOT: {
       const type = action.payload.content.type;
@@ -26,27 +26,22 @@ export const plotsReducer = (state = initialState, action) => {
         ...state,
         [type]: {
           ...state[type],
-          plots: [
-            ...state[type].plots,
-            plot
-          ]
-        }
-      }
+          plots: [...state[type].plots, plot],
+        },
+      };
     }
     case utils.action_types.REMOVE_PLOT: {
       const type = action.payload.content.type;
-      const id   = action.payload.content.id;
+      const id = action.payload.content.id;
       return {
         ...state,
         [type]: {
           ...state[type],
-          plots: [
-            ...state[type].plots.filter(plot => plot.id !== id)
-          ]
-        }
-      }
+          plots: [...state[type].plots.filter((plot) => plot.id !== id)],
+        },
+      };
     }
     default:
-      return state
+      return state;
   }
-}
+};

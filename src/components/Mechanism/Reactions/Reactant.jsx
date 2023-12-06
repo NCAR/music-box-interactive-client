@@ -13,8 +13,8 @@ const Reactant = (props) => {
       reactionId: props.reactionId,
       reactant: {
         ...reactant,
-        name: e.target.innerHTML
-      }
+        name: e.target.innerHTML,
+      },
     });
   };
 
@@ -23,8 +23,8 @@ const Reactant = (props) => {
       reactionId: props.reactionId,
       reactant: {
         ...reactant,
-        qty: parseInt(e.target.value)
-      }
+        qty: parseInt(e.target.value),
+      },
     });
   };
 
@@ -36,9 +36,13 @@ const Reactant = (props) => {
             {reactant.name && reactant.name.length ? reactant.name : "<none>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {props.speciesNames.map(speciesName => {
+            {props.speciesNames.map((speciesName) => {
               return (
-                <Dropdown.Item href="#" key={speciesName} onClick={handleChangeSpecies}>
+                <Dropdown.Item
+                  href="#"
+                  key={speciesName}
+                  onClick={handleChangeSpecies}
+                >
                   {speciesName}
                 </Dropdown.Item>
               );
@@ -52,25 +56,29 @@ const Reactant = (props) => {
             <div className="input-group-prepend">
               <span className="input-group-text">qty</span>
             </div>
-            <input type="text"
+            <input
+              type="text"
               className="form-control"
               defaultValue={reactant.qty}
-              onBlur={handleChangeQty}>
-            </input>
+              onBlur={handleChangeQty}
+            ></input>
           </div>
         </div>
       </div>
       <div className="col-2 d-flex justify-content-between">
         <div></div>
-        <RemoveReactant reactionId={props.reactionId} reactantId={props.reactant.id} />
+        <RemoveReactant
+          reactionId={props.reactionId}
+          reactantId={props.reactant.id}
+        />
         <div></div>
       </div>
     </>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { speciesNames: getSpeciesNames(state) };
-}
+};
 
 export default connect(mapStateToProps, { addReactant })(Reactant);

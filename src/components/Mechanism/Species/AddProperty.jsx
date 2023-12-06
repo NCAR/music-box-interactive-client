@@ -2,7 +2,6 @@ import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 
 function AddProperty({ addAction, speciesName, options }) {
-
   const handleAddProperty = (property) => {
     addAction({ property: property, speciesName: speciesName });
   };
@@ -13,22 +12,20 @@ function AddProperty({ addAction, speciesName, options }) {
         Add property
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {
-          options.map(({ displayName, ...option }, index) => {
-            return (
-              <Dropdown.Item
-                key={index}
-                href="#"
-                onClick={() => handleAddProperty(option)}>
-                {displayName}
-              </Dropdown.Item>
-            )
-          }
-          )
-        }
+        {options.map(({ displayName, ...option }, index) => {
+          return (
+            <Dropdown.Item
+              key={index}
+              href="#"
+              onClick={() => handleAddProperty(option)}
+            >
+              {displayName}
+            </Dropdown.Item>
+          );
+        })}
       </Dropdown.Menu>
     </Dropdown>
   );
-};
+}
 
 export default AddProperty;

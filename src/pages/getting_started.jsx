@@ -1,7 +1,7 @@
-import React from "react"
-import Layout from "../components/Layout"
-import EmptySpace from "../components/EmptySpace"
-import { QuickStart, UsageInfo } from "../components/GettingStarted"
+import React from "react";
+import Layout from "../components/Layout";
+import EmptySpace from "../components/EmptySpace";
+import { QuickStart, UsageInfo } from "../components/GettingStarted";
 
 export default function GettingStarted() {
   return (
@@ -10,5 +10,5 @@ export default function GettingStarted() {
       <EmptySpace height={0} />
       <UsageInfo />
     </Layout>
-  )
+  );
 }

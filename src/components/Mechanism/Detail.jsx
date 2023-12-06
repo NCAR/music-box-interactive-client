@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import React from "react";
+import { Card, Button } from "react-bootstrap";
 import PropertyList from "./Species/PropertyList";
 import ReactionProperty from "./Reactions/ReactionProperty";
 
@@ -9,16 +9,18 @@ const ListType = ({ type, item }) => {
     return (
       <div className="form-group properties">
         {reaction.elements.map((element, index) => {
-          return <ReactionProperty key={`property-${index}`}
-            schema={element}
-            data={reaction.data}
-            reactionId={reaction.id}
-          />;
+          return (
+            <ReactionProperty
+              key={`property-${index}`}
+              schema={element}
+              data={reaction.data}
+              reactionId={reaction.id}
+            />
+          );
         })}
       </div>
-    )
-  }
-  else {
+    );
+  } else {
     const species = item;
     return (
       <PropertyList
@@ -27,9 +29,9 @@ const ListType = ({ type, item }) => {
         speciesName={species.name}
         properties={species.properties}
       />
-    )
+    );
   }
-}
+};
 
 const Detail = ({ type, item, details, setDetails }) => {
   const handleClick = (e) => {
@@ -50,7 +52,11 @@ const Detail = ({ type, item, details, setDetails }) => {
       <Card.Body>
         <ListType type={type} item={item} />
         <div className="container text-center mt-3">
-          <Button variant="secondary" className="btn-cancel" onClick={handleClick}>
+          <Button
+            variant="secondary"
+            className="btn-cancel"
+            onClick={handleClick}
+          >
             Close
           </Button>
         </div>

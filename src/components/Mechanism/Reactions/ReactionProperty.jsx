@@ -13,8 +13,8 @@ const ReactionProperty = (props) => {
       id: props.reactionId,
       data: {
         ...props.data,
-        [props.schema.key]: parseFloat(e.target.value)
-      }
+        [props.schema.key]: parseFloat(e.target.value),
+      },
     });
   };
 
@@ -23,8 +23,8 @@ const ReactionProperty = (props) => {
       id: props.reactionId,
       data: {
         ...props.data,
-        [props.schema.key]: parseInt(e.target.value)
-      }
+        [props.schema.key]: parseInt(e.target.value),
+      },
     });
   };
 
@@ -33,8 +33,8 @@ const ReactionProperty = (props) => {
       id: props.reactionId,
       data: {
         ...props.data,
-        [props.schema.key]: e.target.value
-      }
+        [props.schema.key]: e.target.value,
+      },
     });
   };
 
@@ -43,24 +43,32 @@ const ReactionProperty = (props) => {
       id: props.reactionId,
       data: {
         ...props.data,
-        [props.schema.key]: speciesName
-      }
+        [props.schema.key]: speciesName,
+      },
     });
   };
 
   const description = (
-    <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.text}</small></p>` }} />
+    <div
+      dangerouslySetInnerHTML={{
+        __html: `<p><small>${props.schema.text}</small></p>`,
+      }}
+    />
   );
 
   if (props.schema.type == "EQUATION") {
-    console.log(props.schema.value)
+    console.log(props.schema.value);
   }
   const equation = (
     <>
       <MathJax>{props.schema.value}</MathJax>
-      {props.schema.description && props.schema.description.length ?
-        <div dangerouslySetInnerHTML={{ __html: `<p><small>${props.schema.description}</small></p>` }} />
-        : null}
+      {props.schema.description && props.schema.description.length ? (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<p><small>${props.schema.description}</small></p>`,
+          }}
+        />
+      ) : null}
     </>
   );
 
@@ -69,19 +77,20 @@ const ReactionProperty = (props) => {
       <div className="input-group-prepend">
         <span className="input-group-text">{props.schema.label}</span>
       </div>
-      <input type="text"
+      <input
+        type="text"
         className="form-control"
         placeholder="Property value"
         defaultValue={props.data[props.schema.key]}
-        onBlur={handleUpdateFloat}>
-      </input>
-      {props.schema.units && props.schema.units.length ?
+        onBlur={handleUpdateFloat}
+      ></input>
+      {props.schema.units && props.schema.units.length ? (
         <div className="input-group-append">
           <span className="input-group-text">
             <div dangerouslySetInnerHTML={{ __html: props.schema.units }} />
           </span>
         </div>
-        : null}
+      ) : null}
     </div>
   );
 
@@ -90,19 +99,20 @@ const ReactionProperty = (props) => {
       <div className="input-group-prepend">
         <span className="input-group-text">{props.schema.label}</span>
       </div>
-      <input type="text"
+      <input
+        type="text"
         className="form-control"
         placeholder="Property value"
         defaultValue={props.data[props.schema.key]}
-        onBlur={handleUpdateInt}>
-      </input>
-      {props.schema.units && props.schema.units.length ?
+        onBlur={handleUpdateInt}
+      ></input>
+      {props.schema.units && props.schema.units.length ? (
         <div className="input-group-append">
           <span className="input-group-text">
             <div dangerouslySetInnerHTML={{ __html: props.schema.units }} />
           </span>
         </div>
-        : null}
+      ) : null}
     </div>
   );
 
@@ -111,19 +121,20 @@ const ReactionProperty = (props) => {
       <div className="input-group-prepend">
         <span className="input-group-text">{props.schema.label}</span>
       </div>
-      <input type="text"
+      <input
+        type="text"
         className="form-control"
         placeholder="Property value"
         defaultValue={props.data[props.schema.key]}
-        onBlur={handleUpdateString}>
-      </input>
-      {props.schema.units && props.schema.units.length ?
+        onBlur={handleUpdateString}
+      ></input>
+      {props.schema.units && props.schema.units.length ? (
         <div className="input-group-append">
           <span className="input-group-text">
             <div dangerouslySetInnerHTML={{ __html: props.schema.units }} />
           </span>
         </div>
-        : null}
+      ) : null}
     </div>
   );
 
@@ -134,12 +145,20 @@ const ReactionProperty = (props) => {
       </div>
       <Dropdown>
         <Dropdown.Toggle variant="success" className="btn btn-light">
-          {props.data[props.schema.key] === undefined ? "<select>" : props.data[props.schema.key]}
+          {props.data[props.schema.key] === undefined
+            ? "<select>"
+            : props.data[props.schema.key]}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {props.speciesNames.map(speciesName => {
+          {props.speciesNames.map((speciesName) => {
             return (
-              <Dropdown.Item href="#" key={speciesName} onClick={() => { handleUpdateSpecies(speciesName) }}>
+              <Dropdown.Item
+                href="#"
+                key={speciesName}
+                onClick={() => {
+                  handleUpdateSpecies(speciesName);
+                }}
+              >
                 {speciesName}
               </Dropdown.Item>
             );
@@ -162,22 +181,25 @@ const ReactionProperty = (props) => {
       case "STRING":
         return stringInput;
       case "PRODUCT_LIST":
-        return <ProductList reactionId={props.reactionId}
-          schema={props.schema} />
+        return (
+          <ProductList reactionId={props.reactionId} schema={props.schema} />
+        );
       case "REACTANT_LIST":
-        return <ReactantList reactionId={props.reactionId} />
+        return <ReactantList reactionId={props.reactionId} />;
       case "SPECIES":
         return speciesInput;
       default:
-        return (<div>{props.schema.type}</div>);
-    };
+        return <div>{props.schema.type}</div>;
+    }
   };
 
   return getProperty();
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { speciesNames: getSpeciesNames(state) };
-}
+};
 
-export default connect(mapStateToProps, { updateReactionData })(ReactionProperty);
+export default connect(mapStateToProps, { updateReactionData })(
+  ReactionProperty,
+);

@@ -15,8 +15,8 @@ const Product = (props) => {
       schema: schema,
       product: {
         ...product,
-        name: e.target.innerHTML
-      }
+        name: e.target.innerHTML,
+      },
     });
   };
 
@@ -26,8 +26,8 @@ const Product = (props) => {
       schema: schema,
       product: {
         ...product,
-        yield: parseFloat(e.target.value)
-      }
+        yield: parseFloat(e.target.value),
+      },
     });
   };
 
@@ -39,9 +39,13 @@ const Product = (props) => {
             {product.name && product.name.length ? product.name : "<none>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {props.speciesNames.map(speciesName => {
+            {props.speciesNames.map((speciesName) => {
               return (
-                <Dropdown.Item href="#" key={speciesName} onClick={handleChangeSpecies}>
+                <Dropdown.Item
+                  href="#"
+                  key={speciesName}
+                  onClick={handleChangeSpecies}
+                >
                   {speciesName}
                 </Dropdown.Item>
               );
@@ -55,27 +59,30 @@ const Product = (props) => {
             <div className="input-group-prepend">
               <span className="input-group-text">yield</span>
             </div>
-            <input type="text"
+            <input
+              type="text"
               className="form-control"
               defaultValue={product.yield}
-              onBlur={handleChangeYield}>
-            </input>
+              onBlur={handleChangeYield}
+            ></input>
           </div>
         </div>
       </div>
       <div className="col-2 d-flex justify-content-between">
         <div></div>
-        <RemoveProduct reactionId={props.reactionId}
+        <RemoveProduct
+          reactionId={props.reactionId}
           schema={props.schema}
-          productId={props.product.id} />
+          productId={props.product.id}
+        />
         <div></div>
       </div>
     </>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { speciesNames: getSpeciesNames(state) };
-}
+};
 
 export default connect(mapStateToProps, { addProduct })(Product);

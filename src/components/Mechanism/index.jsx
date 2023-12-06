@@ -1,1 +1,1 @@
-export { default as MechanismTab } from './MechanismTab'
+export { default as MechanismTab } from "./MechanismTab";

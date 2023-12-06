@@ -5,7 +5,6 @@ import { addReaction } from "../../../redux/actions";
 import { reactionSchema } from "../../../redux/schemas";
 
 function AddReaction(props) {
-
   const handleAddReaction = (reaction) => {
     props.addReaction(reaction);
   };
@@ -18,7 +17,11 @@ function AddReaction(props) {
       <Dropdown.Menu>
         {Object.entries(reactionSchema).map(([key, value]) => {
           return (
-            <Dropdown.Item href="#" key={key} onClick={() => handleAddReaction(value)}>
+            <Dropdown.Item
+              href="#"
+              key={key}
+              onClick={() => handleAddReaction(value)}
+            >
               {value.typeLabel}
             </Dropdown.Item>
           );
@@ -26,6 +29,6 @@ function AddReaction(props) {
       </Dropdown.Menu>
     </Dropdown>
   );
-};
+}
 
 export default connect(null, { addReaction })(AddReaction);
