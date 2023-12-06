@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import Table from "react-bootstrap/Table";
+import { Table, Container, Row, Col, Card } from "react-bootstrap";
 import { getEvolvingConditions } from "../../redux/selectors";
 import {
   resortEvolvingConditions,
@@ -36,87 +36,81 @@ const EvolvingConditionsDetail = (props) => {
 
   return (
     <>
-      <div className="container">
-        <div className="row">
-          <div className="col-5">
+      <Container>
+        <Row>
+          <Col xs={5}>
             <DownloadEvolvingConditions />
-          </div>
-          <div className="col-7">
+          </Col>
+          <Col xs={7}>
             <UploadEvolvingConditions />
-          </div>
-        </div>
-      </div>
-      <div className="card mb-4 conditions-card shadow-sm">
-        <div className="card-header d-flex justify-content-between">
+          </Col>
+        </Row>
+      </Container>
+      <Card className="mb-4 conditions-card shadow-sm">
+        <Card.Header className="d-flex justify-content-between">
           <h4 className="my-0 fw-normal">Evolving Conditions</h4>
           <AddEvolvingCondition />
-        </div>
-        <div className="body body-card">
+        </Card.Header>
+        <Card.Body className="body-card">
           <Table responsive striped bordered hover size="sm">
             <thead>
               <tr>
                 <th>time</th>
-                {props.conditions.values.map(({ name }, index) => {
-                  return (
-                    <th className="fw-bold" key={`column-${index}`}>
-                      <div className="d-flex justify-content-between">
-                        <div className="text-nowrap">{name}</div>
-                        <RemoveEvolvingCondition conditionIndex={index} />
-                      </div>
-                    </th>
-                  );
-                })}
+                {props.conditions.values.map(({ name }, index) => (
+                  <th className="fw-bold" key={`column-${index}`}>
+                    <div className="d-flex justify-content-between">
+                      <div className="text-nowrap">{name}</div>
+                      <RemoveEvolvingCondition conditionIndex={index} />
+                    </div>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {props.conditions.times.map((time, timeIndex) => {
-                return (
-                  <tr key={`condition-time-${timeIndex}`}>
-                    <td>
+              {props.conditions.times.map((time, timeIndex) => (
+                <tr key={`condition-time-${timeIndex}`}>
+                  <td>
+                    <div onBlur={handleRefresh}>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={time}
+                        onChange={(e) =>
+                          handleUpdateTime(timeIndex, e.target.value)
+                        }
+                      ></input>
+                    </div>
+                  </td>
+                  {props.conditions.values.map(({ name, values }, index) => (
+                    <td key={`condition-${timeIndex}-${index}`}>
                       <div onBlur={handleRefresh}>
                         <input
                           type="text"
                           className="form-control"
-                          value={time}
+                          value={values[timeIndex]}
                           onChange={(e) =>
-                            handleUpdateTime(timeIndex, e.target.value)
+                            handleUpdateConditionValue(
+                              timeIndex,
+                              name,
+                              e.target.value,
+                            )
                           }
                         ></input>
                       </div>
                     </td>
-                    {props.conditions.values.map(({ name, values }, index) => {
-                      return (
-                        <td key={`condition-${timeIndex}-${index}`}>
-                          <div onBlur={handleRefresh}>
-                            <input
-                              type="text"
-                              className="form-control"
-                              value={values[timeIndex]}
-                              onChange={(e) =>
-                                handleUpdateConditionValue(
-                                  timeIndex,
-                                  name,
-                                  e.target.value,
-                                )
-                              }
-                            ></input>
-                          </div>
-                        </td>
-                      );
-                    })}
-                    <td>
-                      <RemoveEvolvingTime timeIndex={timeIndex} />
-                    </td>
-                  </tr>
-                );
-              })}
+                  ))}
+                  <td>
+                    <RemoveEvolvingTime timeIndex={timeIndex} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
           <div className="m-2">
             <AddEvolvingTime />
           </div>
-        </div>
-      </div>
+        </Card.Body>
+      </Card>
     </>
   );
 };

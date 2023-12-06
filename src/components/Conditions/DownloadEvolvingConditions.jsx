@@ -9,6 +9,7 @@ const DownloadEvolvingConditions = (props) => {
       data={props.table}
       filename="evolving_conditions.csv"
       className="btn btn-secondary"
+      enclosingCharacter={""}
     >
       Download CSV
     </CSVLink>
