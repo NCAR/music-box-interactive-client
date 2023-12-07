@@ -5,7 +5,7 @@ import * as styles from "../styles/layout.module.css";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { doRun } from "../redux/actions";
+import { doRun, resetPlots } from "../redux/actions";
 import { showCookieBanner, hideCookieBanner } from "../redux/actions";
 import {
   getMechanism,
@@ -29,6 +29,7 @@ function Layout(props) {
         status: "RUNNING",
         error: "",
       };
+      dispatch(resetPlots());
       dispatch({
         type: utils.action_types.UPDATE_RUN_STATUS,
         payload: { content },

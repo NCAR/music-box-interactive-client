@@ -4,7 +4,6 @@ import Layout from "../components/Layout";
 import { PlotsTab } from "../components/Plots";
 import {
   getRunStatus,
-  getPlots,
   getSpeciesPlots,
   getReactionPlots,
   getEnvironmentPlots,
@@ -80,7 +79,6 @@ const Plots = (props) => {
 const mapStateToProps = (state) => {
   return {
     runStatus: getRunStatus(state),
-    plots: getPlots(state),
     speciesPlots: getSpeciesPlots(state),
     reactionPlots: getReactionPlots(state),
     environmentPlots: getEnvironmentPlots(state),
