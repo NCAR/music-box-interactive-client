@@ -13,7 +13,15 @@ const InstructionsComponent = ({ type, tabIndexMap, setActiveTab }) => {
         Select a reaction from the list to view/edit its properties, or add a
         new reaction to the mechanism. The chemical species available to
         participate in reactions can be modified{" "}
-        <span onClick={() => {setActiveTab(tabIndexMap["Gas Species"])}} className="fake-link">here</span>.
+        <span
+          onClick={() => {
+            setActiveTab(tabIndexMap["Gas Species"]);
+          }}
+          className="fake-link"
+        >
+          here
+        </span>
+        .
       </p>
     );
   } else {
@@ -22,7 +30,14 @@ const InstructionsComponent = ({ type, tabIndexMap, setActiveTab }) => {
         Select a chemical species from the list to view/edit its properties, or
         add a new chemical species to the mechansim. The chemical species you
         add here will be available to participate in{" "}
-        <span onClick={() => {setActiveTab(tabIndexMap["Reactions"])}} className="fake-link">reactions</span>
+        <span
+          onClick={() => {
+            setActiveTab(tabIndexMap["Reactions"]);
+          }}
+          className="fake-link"
+        >
+          reactions
+        </span>
         &nbsp;and can be include in the{" "}
         <Link to="/conditions">model conditions</Link>.
       </p>
@@ -32,10 +47,14 @@ const InstructionsComponent = ({ type, tabIndexMap, setActiveTab }) => {
 
 function MechanismTab({ type, tabIndexMap, setActiveTab }) {
   const [details, setDetails] = useState({});
-  console.log(tabIndexMap)
+  console.log(tabIndexMap);
   return (
     <>
-      <InstructionsComponent type={type} tabIndexMap={tabIndexMap} setActiveTab={setActiveTab} />
+      <InstructionsComponent
+        type={type}
+        tabIndexMap={tabIndexMap}
+        setActiveTab={setActiveTab}
+      />
       <Container
         fluid
         className="p-2 d-flex flex-column vh-100 overflow-hidden"
