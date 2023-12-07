@@ -6,6 +6,11 @@ import Layout from "./Layout";
 function TabedLayout({ tabs, title }) {
   const [activeTab, setActiveTab] = useState(0);
 
+  const tabIndexMap = tabs.reduce((acc, tab, index) => {
+    acc[tab.label] = index;
+    return acc;
+  }, {});
+
   return (
     <Layout title={title}>
       <main role="main">
@@ -27,7 +32,7 @@ function TabedLayout({ tabs, title }) {
           </div>
         </Container>
         {tabs.map(
-          (tab, index) => activeTab === index && <tab.component key={index} />,
+          (tab, index) => activeTab === index && <tab.component key={index} tabIndexMap={tabIndexMap} setActiveTab={setActiveTab} />,
         )}
       </main>
     </Layout>

@@ -6,14 +6,14 @@ import { Link } from "react-router-dom";
 import List from "./List";
 import Detail from "./Detail";
 
-const InstructionsComponent = ({ type }) => {
+const InstructionsComponent = ({ type, tabIndexMap, setActiveTab }) => {
   if (type === "reactions") {
     return (
       <p className="lead-muted p-2">
         Select a reaction from the list to view/edit its properties, or add a
         new reaction to the mechanism. The chemical species available to
         participate in reactions can be modified{" "}
-        <Link to="mechanism/species">here</Link>.
+        <span onClick={() => {setActiveTab(tabIndexMap["Gas Species"])}} className="fake-link">here</span>.
       </p>
     );
   } else {
@@ -22,19 +22,20 @@ const InstructionsComponent = ({ type }) => {
         Select a chemical species from the list to view/edit its properties, or
         add a new chemical species to the mechansim. The chemical species you
         add here will be available to participate in{" "}
-        <Link to="mechanism/reactions">reactions</Link>
+        <span onClick={() => {setActiveTab(tabIndexMap["Reactions"])}} className="fake-link">reactions</span>
         &nbsp;and can be include in the{" "}
-        <Link to="conditions">model conditions</Link>.
+        <Link to="/conditions">model conditions</Link>.
       </p>
     );
   }
 };
 
-function MechanismTab({ type }) {
+function MechanismTab({ type, tabIndexMap, setActiveTab }) {
   const [details, setDetails] = useState({});
+  console.log(tabIndexMap)
   return (
     <>
-      <InstructionsComponent type={type} />
+      <InstructionsComponent type={type} tabIndexMap={tabIndexMap} setActiveTab={setActiveTab} />
       <Container
         fluid
         className="p-2 d-flex flex-column vh-100 overflow-hidden"
