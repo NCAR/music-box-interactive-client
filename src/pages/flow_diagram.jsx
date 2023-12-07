@@ -4,7 +4,6 @@ import Layout from "../components/Layout";
 import {
   getRunStatus,
   getMechanism,
-  getPlots,
   getSpeciesPlots,
   getReactionPlots,
   getEnvironmentPlots,
@@ -435,7 +434,6 @@ const mapStateToProps = (state) => {
   return {
     runStatus: getRunStatus(state),
     mechanism: getMechanism(state),
-    plots: getPlots(state),
     speciesPlots: getSpeciesPlots(state),
     reactionPlots: getReactionPlots(state),
     environmentPlots: getEnvironmentPlots(state),

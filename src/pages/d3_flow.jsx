@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import {
   getRunStatus,
   getMechanism,
-  getPlots,
   getSpeciesPlots,
   getReactionPlots,
   getEnvironmentPlots,

@@ -1,8 +1,6 @@
 import { getMechanism, getSpeciesNames } from "./mechanism";
 import { ReactionTypes } from "../../controllers/models";
 
-export const getPlots = (store) => store.plots;
-
 export const getPlotsByType = (store, plotType) => store.plots[plotType].plots;
 
 export const getSpeciesPlots = (store) => {

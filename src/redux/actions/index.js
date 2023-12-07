@@ -12,3 +12,10 @@ export const resetAll = (content) => {
     payload: {},
   };
 };
+
+export const resetPlots = (content) => {
+  return {
+    type: utils.action_types.RESET_PLOTS,
+    payload: {},
+  };
+};
