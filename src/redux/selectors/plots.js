@@ -5,9 +5,9 @@ export const getPlotsByType = (store, plotType) => store.plots[plotType].plots;
 
 export const getSpeciesPlots = (store) => {
   const speciesNames = getSpeciesNames(store);
-  const filteredSpecies = speciesNames.filter(name => name !== 'M');
-  
-  return filteredSpecies.map(name => ({
+  const filteredSpecies = speciesNames.filter((name) => name !== "M");
+
+  return filteredSpecies.map((name) => ({
     label: name,
     id: `CONC.${name}`,
   }));
