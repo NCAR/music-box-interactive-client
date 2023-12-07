@@ -196,7 +196,7 @@ const ReactionProperty = (props) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     data: getReaction(state, ownProps.reactionId).data,
-    speciesNames: getSpeciesNames(state)
+    speciesNames: getSpeciesNames(state),
   };
 };
 
