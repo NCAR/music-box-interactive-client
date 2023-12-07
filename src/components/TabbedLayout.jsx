@@ -32,7 +32,14 @@ function TabedLayout({ tabs, title }) {
           </div>
         </Container>
         {tabs.map(
-          (tab, index) => activeTab === index && <tab.component key={index} tabIndexMap={tabIndexMap} setActiveTab={setActiveTab} />,
+          (tab, index) =>
+            activeTab === index && (
+              <tab.component
+                key={index}
+                tabIndexMap={tabIndexMap}
+                setActiveTab={setActiveTab}
+              />
+            ),
         )}
       </main>
     </Layout>
