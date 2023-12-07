@@ -10,8 +10,11 @@ const Reaction = ({ item: reaction, details, setDetails, removeReaction }) => {
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
-    const { [reaction.id]: _, ...details } = details;
-    setDetails({ ...details });
+    // the details object is only present if the user is viewing the details of the reaction
+    if (details?.hasOwnProperty(reaction.id)) {
+      const { [reaction.id]: _, ...newDetails } = details;
+      setDetails({ ...newDetails });
+    }
     removeReaction(reaction.id);
   };
 

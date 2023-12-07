@@ -56,9 +56,6 @@ const ReactionProperty = (props) => {
     />
   );
 
-  if (props.schema.type == "EQUATION") {
-    console.log(props.schema.value);
-  }
   const equation = (
     <>
       <MathJax>{props.schema.value}</MathJax>
