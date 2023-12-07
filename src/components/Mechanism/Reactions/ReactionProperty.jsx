@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { MathJax } from "better-react-mathjax";
 import Dropdown from "react-bootstrap/Dropdown";
 import { updateReactionData } from "../../../redux/actions";
-import { getSpeciesNames } from "../../../redux/selectors";
+import { getSpeciesNames, getReaction } from "../../../redux/selectors";
 import ReactantList from "./ReactantList";
 import ProductList from "./ProductList";
 
@@ -196,8 +196,11 @@ const ReactionProperty = (props) => {
   return getProperty();
 };
 
-const mapStateToProps = (state) => {
-  return { speciesNames: getSpeciesNames(state) };
+const mapStateToProps = (state, ownProps) => {
+  return {
+    data: getReaction(state, ownProps.reactionId).data,
+    speciesNames: getSpeciesNames(state)
+  };
 };
 
 export default connect(mapStateToProps, { updateReactionData })(
