@@ -14,7 +14,6 @@ export const resetAll = (content) => {
 };
 
 export const resetPlots = (content) => {
-  console.log('resetting...')
   return {
     type: utils.action_types.RESET_PLOTS,
     payload: {},
