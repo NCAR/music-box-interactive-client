@@ -9,14 +9,14 @@ const { PART_MC = false } = JSON.parse(
 );
 
 const tabDefinitions = {
-  gas: { label: "Gas Species", component: () => <MechanismTab type="gas" /> },
+  gas: { label: "Gas Species", component: (props) => <MechanismTab type="gas" {...props}/> },
   aerosol: {
     label: "Aerosol Species",
-    component: () => <MechanismTab type="aerosol" />,
+    component: (props) => <MechanismTab type="aerosol" {...props}/>,
   },
   reactions: {
     label: "Reactions",
-    component: () => <MechanismTab type="reactions" />,
+    component: (props) => <MechanismTab type="reactions" {...props}/>,
   },
 };
 
