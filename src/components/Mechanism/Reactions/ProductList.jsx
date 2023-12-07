@@ -18,7 +18,7 @@ const ProductList = (props) => {
               ? props.products.map((product, index) => {
                   return (
                     <div
-                      key={`product-${product.name}`}
+                      key={`product-${index}`}
                       className={`row flex-nowrap array-element array-element-${index}`}
                       array-element-index={index}
                     >
