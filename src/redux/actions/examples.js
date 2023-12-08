@@ -24,7 +24,9 @@ export const loadConfiguration = (file) => async (dispatch) => {
     const data = await fetchConfiguration(file);
     dispatch({ type: utils.action_types.EXAMPLE_FETCHED, payload: data });
   } catch (error) {
-    console.error(`Error loading configuration: ${error.message}`);
+    const msg = `Error loading configuration: ${error.message}. If you believe your configuraiton is valid, please submit a bug at https://github.com/NCAR/music-box-interactive-client/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=`;
+    console.error(msg);
+    alert(msg)
   }
 };
 
