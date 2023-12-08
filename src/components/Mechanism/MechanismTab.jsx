@@ -47,7 +47,6 @@ const InstructionsComponent = ({ type, tabIndexMap, setActiveTab }) => {
 
 function MechanismTab({ type, tabIndexMap, setActiveTab }) {
   const [details, setDetails] = useState({});
-  console.log(tabIndexMap);
   return (
     <>
       <InstructionsComponent
