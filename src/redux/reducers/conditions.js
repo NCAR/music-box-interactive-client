@@ -1,5 +1,6 @@
 import utils from "../utils";
 import { extract_conditions_from_example } from "../../controllers/transformers";
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   basic: {
@@ -64,13 +65,8 @@ export const conditionsReducer = (state = initialState, action) => {
       const condition =
         action.payload.content.condition !== undefined
           ? action.payload.content.condition
-          : { name: undefined, value: undefined, units: undefined };
-      const conditionId =
-        "id" in condition
-          ? condition.id
-          : state[schema.classKey].length > 0
-            ? Math.max(...state[schema.classKey].map((c) => c.id)) + 1
-            : 0;
+          : { reactionId: undefined, value: undefined, units: undefined };
+      const conditionId = condition.id || uuidv4();
       const otherConditions = state[schema.classKey].filter((condition) => {
         return condition.id !== conditionId;
       });
