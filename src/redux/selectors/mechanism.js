@@ -80,10 +80,45 @@ export const getUserDefinedRates = (store) => {
     });
 };
 
-export const getPossibleUnits = (store, musicaName) => {
+const reactionToLabel = (reaction) => {
+  let name = "";
+  switch (reaction.type) {
+    case "PHOTOLYSIS":
+      name = reaction.reactant + "->";
+      name += reaction.products.map((item) => item.name).join("+");
+      break;
+    case "EMISSION":
+      name = "->" + reaction.species;
+      break;
+    case "FIRST_ORDER_LOSS":
+      name = reaction.species + "->";
+      break;
+    default:
+      name = reaction.reactants.map((item) => item.name).join("+") + "->";
+      name += reaction.products.map((item) => item.name).join("+");
+      break;
+  }
+  return name;
+};
+
+export const getUserDefinedRatesIds = (store) => {
   return getMechanism(store)
     .reactions.filter((reaction) => {
-      return reaction.data.musica_name === musicaName;
+      return reaction.isUserDefined;
+    })
+    .map((reaction) => {
+      return {
+        id: reaction.id,
+        name: reaction.data.musica_name || reactionToLabel(reaction.data),
+        prefix: reaction.tablePrefix,
+      };
+    });
+};
+
+export const getPossibleUnits = (store, reactionId) => {
+  return getMechanism(store)
+    .reactions.filter((reaction) => {
+      return reaction.id === reactionId;
     })
     .map((reaction) => {
       return reaction.possibleUnits;

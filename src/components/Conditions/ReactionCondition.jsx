@@ -6,12 +6,19 @@ import RemoveCondition from "./RemoveCondition";
 import {
   getConditions,
   getUserDefinedRates,
+  getReaction,
+  getUserDefinedRatesIds,
   getPossibleUnits,
 } from "../../redux/selectors";
 
 const ReactionCondition = (props) => {
   const condition = props.condition;
   const schema = props.schema;
+  const name = condition.reactionId
+    ? props.reactionNames.find(
+        (reaction) => reaction.id === condition.reactionId,
+      ).name
+    : null;
 
   const handleUpdate = (newProps) => {
     props.addCondition({
@@ -28,26 +35,27 @@ const ReactionCondition = (props) => {
       <div className="col-5">
         <Dropdown>
           <Dropdown.Toggle variant="success" className="btn btn-light">
-            {condition.name && condition.name.length
-              ? condition.name
-              : "<select>"}
+            {name || "<select>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {schema.allowAddRemove
-              ? props.reactionNames.map((value) => {
+              ? props.reactionNames.map((value, index) => {
                   return (
                     <Dropdown.Item
                       href="#"
-                      key={value.name}
+                      key={index}
                       onClick={() => {
-                        handleUpdate({ name: value.name, type: value.prefix });
+                        handleUpdate({
+                          reactionId: value.id,
+                          type: value.prefix,
+                        });
                       }}
                     >
                       {value.name}
                     </Dropdown.Item>
                   );
                 })
-              : condition.name}
+              : name}
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -64,9 +72,7 @@ const ReactionCondition = (props) => {
       <div className="col-3">
         <Dropdown>
           <Dropdown.Toggle variant="success" className="btn btn-light">
-            {condition.units && condition.units.length
-              ? condition.units
-              : "<select>"}
+            {condition.units || "<select>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {props.possibleUnits && props.possibleUnits.length
@@ -97,11 +103,13 @@ const ReactionCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const condition = getConditions(state, ownProps.schema)[ownProps.conditionId];
+  const condition = getConditions(state, ownProps.schema).find(
+    (condition) => condition.id === ownProps.conditionId,
+  );
   return {
     condition: condition,
-    reactionNames: getUserDefinedRates(state),
-    possibleUnits: getPossibleUnits(state, condition.name),
+    reactionNames: getUserDefinedRatesIds(state),
+    possibleUnits: getPossibleUnits(state, condition.reactionId),
   };
 };
 

@@ -1,5 +1,6 @@
 import utils from "../utils";
 import { extract_mechanism_from_example } from "../../controllers/transformers";
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],
@@ -131,12 +132,7 @@ export const mechanismReducer = (state = initialState, action) => {
     }
     case utils.action_types.ADD_REACTION: {
       const reaction = action.payload.content;
-      const id =
-        "id" in reaction
-          ? reaction.id
-          : state.reactions.length > 0
-            ? Math.max(...state.reactions.map((r) => r.id)) + 1
-            : 0;
+      const id = reaction.id || uuidv4();
       const otherReactions = state.reactions.filter((reaction) => {
         return reaction.id !== id;
       });
