@@ -14,7 +14,11 @@ import {
 const ReactionCondition = (props) => {
   const condition = props.condition;
   const schema = props.schema;
-  const name = condition.reactionId ? props.reactionNames.find((reaction) => reaction.id === condition.reactionId).name : null;
+  const name = condition.reactionId
+    ? props.reactionNames.find(
+        (reaction) => reaction.id === condition.reactionId,
+      ).name
+    : null;
 
   const handleUpdate = (newProps) => {
     props.addCondition({
@@ -41,7 +45,10 @@ const ReactionCondition = (props) => {
                       href="#"
                       key={index}
                       onClick={() => {
-                        handleUpdate({ reactionId: value.id, type: value.prefix });
+                        handleUpdate({
+                          reactionId: value.id,
+                          type: value.prefix,
+                        });
                       }}
                     >
                       {value.name}
@@ -96,7 +103,9 @@ const ReactionCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const condition = getConditions(state, ownProps.schema).find(condition => condition.id === ownProps.conditionId)
+  const condition = getConditions(state, ownProps.schema).find(
+    (condition) => condition.id === ownProps.conditionId,
+  );
   return {
     condition: condition,
     reactionNames: getUserDefinedRatesIds(state),

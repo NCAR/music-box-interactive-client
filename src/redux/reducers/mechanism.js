@@ -1,6 +1,6 @@
 import utils from "../utils";
 import { extract_mechanism_from_example } from "../../controllers/transformers";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],

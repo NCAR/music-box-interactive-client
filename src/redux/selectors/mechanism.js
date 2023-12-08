@@ -81,11 +81,11 @@ export const getUserDefinedRates = (store) => {
 };
 
 const reactionToLabel = (reaction) => {
-  let name = '';
-  switch(reaction.type) {
+  let name = "";
+  switch (reaction.type) {
     case "PHOTOLYSIS":
       name = reaction.reactant + "->";
-      name += reaction.products.map(item => item.name).join('+');
+      name += reaction.products.map((item) => item.name).join("+");
       break;
     case "EMISSION":
       name = "->" + reaction.species;
@@ -94,19 +94,17 @@ const reactionToLabel = (reaction) => {
       name = reaction.species + "->";
       break;
     default:
-      name = reaction.reactants.map(item => item.name).join('+') + "->";
-      name += reaction.products.map(item => item.name).join('+');
+      name = reaction.reactants.map((item) => item.name).join("+") + "->";
+      name += reaction.products.map((item) => item.name).join("+");
       break;
   }
   return name;
-}
+};
 
 export const getUserDefinedRatesIds = (store) => {
   return getMechanism(store)
     .reactions.filter((reaction) => {
-      return (
-        reaction.isUserDefined
-      );
+      return reaction.isUserDefined;
     })
     .map((reaction) => {
       return {
