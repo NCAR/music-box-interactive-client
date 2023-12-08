@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import { addCondition } from "../../redux/actions";
 import RemoveCondition from "./RemoveCondition";
-import { getConditions, getSpeciesNames } from "../../redux/selectors";
+import { getConditions, getVariableSpeciesNames } from "../../redux/selectors";
 
 const SpeciesCondition = (props) => {
   const condition = props.condition;
@@ -93,7 +93,7 @@ const SpeciesCondition = (props) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     condition: getConditions(state, ownProps.schema)[ownProps.conditionId],
-    speciesNames: getSpeciesNames(state),
+    speciesNames: getVariableSpeciesNames(state),
   };
 };
 

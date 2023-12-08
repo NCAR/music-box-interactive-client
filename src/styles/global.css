@@ -135,6 +135,19 @@ span.fake-link:hover {
     color: var(--ncar-color-text-dark);
 }
 
+.btn-clear.disabled,
+.btn-clear.disabled:hover,
+.btn-clear.disabled:active,
+.btn-clear.disabled:focus {
+    background: none;
+    color: transparent;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;    
+}
+
 .btn-clear,
 .btn-clear:hover,
 .btn-clear:active,

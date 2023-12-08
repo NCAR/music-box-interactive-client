@@ -2,7 +2,7 @@ import utils from "../utils";
 import { extract_mechanism_from_example } from "../../controllers/transformers";
 
 const initialState = {
-  gasSpecies: [],
+  gasSpecies: [{ name: "M", properties: [], static: true }],
   aerosolSpecies: [],
   reactions: [],
 };
@@ -77,7 +77,7 @@ export const mechanismReducer = (state = initialState, action) => {
     case utils.action_types.REMOVE_GAS_SPECIES: {
       const speciesName = action.payload.content;
       const newGasSpecies = state.gasSpecies.filter((species) => {
-        return species.name !== speciesName;
+        return species.name !== speciesName || species.static;
       });
       return {
         ...state,

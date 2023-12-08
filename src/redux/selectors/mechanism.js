@@ -6,6 +6,12 @@ export const getAerosolSpeciesNames = (store) => {
   return store.mechanism.aerosolSpecies.map((species) => species.name);
 };
 
+export const getVariableSpeciesNames = (store) => {
+  return store.mechanism.gasSpecies.filter((species) => {
+    return !species.static;
+  }).map((species) => species.name);
+};
+
 export const getSpeciesNames = (store) => {
   return store.mechanism.gasSpecies.map((species) => species.name);
 };
