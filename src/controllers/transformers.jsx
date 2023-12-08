@@ -55,7 +55,11 @@ function extract_mechanism_from_example(config, state) {
           break;
       }
     });
-    return { name: species.name, properties: properties, static: species.name == "M" };
+    return {
+      name: species.name,
+      properties: properties,
+      static: species.name == "M",
+    };
   });
 
   const reactions = camp_reactions.map((reaction) => {
