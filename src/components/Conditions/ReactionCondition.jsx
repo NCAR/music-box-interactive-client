@@ -97,11 +97,13 @@ const ReactionCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const condition = getConditions(state, ownProps.schema)[ownProps.conditionId];
+  const condition = getConditions(state, ownProps.schema).filter((condition) => {
+    return condition.id === ownProps.conditionId;
+  })[0];
   return {
     condition: condition,
     reactionNames: getUserDefinedRates(state),
-    possibleUnits: getPossibleUnits(state, condition.name),
+    possibleUnits: getPossibleUnits(state, condition?.name),
   };
 };
 
