@@ -1,6 +1,6 @@
 export const getConditions = (store, schema) => {
   return store.conditions[schema.classKey];
-}
+};
 
 export const getEvolvingConditions = (store) => store.conditions.evolving;
 

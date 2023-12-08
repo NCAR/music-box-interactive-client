@@ -1,6 +1,6 @@
 import utils from "../utils";
 import { extract_conditions_from_example } from "../../controllers/transformers";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   basic: {
