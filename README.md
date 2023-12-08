@@ -31,10 +31,8 @@ npm install
 npm run dev
 ```
 
-
 > [!NOTE]  
-> This repository is only the front end for music box. If you want to run simulations and plot results, you have **two** options for connecting to the API server. You can [clone and run the api server](https://github.com/NCAR/music-box-interactive-api), or you can change the `.env.development` files value of `VITE_API_URL` to `'https://musicbox.acom.ucar.edu/musicbox'`  which will allow you to use the deployed version of the API server.
-
+> This repository is only the front end for music box. If you want to run simulations and plot results, you have **two** options for connecting to the API server. You can [clone and run the api server](https://github.com/NCAR/music-box-interactive-api), or you can change the `.env.development` files value of `VITE_API_URL` to `'https://musicbox.acom.ucar.edu/musicbox'` which will allow you to use the deployed version of the API server.
 
 ## Testing a production build before deploying
 
