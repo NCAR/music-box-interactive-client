@@ -6,12 +6,13 @@ import { Helmet } from "react-helmet-async";
 import { useDispatch, connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { doRun, resetPlots } from "../redux/actions";
-import { showCookieBanner, hideCookieBanner } from "../redux/actions";
+import { hideCookieBanner } from "../redux/actions";
 import {
   getMechanism,
   getAllConditions,
   getEvolvingTable,
   getRunStatus,
+  getShowCookieBanner,
 } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
@@ -227,10 +228,10 @@ const mapStateToProps = (state) => {
     mechanism: mechanism,
     conditions: conditions,
     runStatus: getRunStatus(state),
-    cookieBannerVisible: state.cookies.cookieBannerVisible,
+    cookieBannerVisible: getShowCookieBanner(state),
   };
 };
 
-export default connect(mapStateToProps, { showCookieBanner, hideCookieBanner })(
+export default connect(mapStateToProps, { hideCookieBanner })(
   Layout,
 );
