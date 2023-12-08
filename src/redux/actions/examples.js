@@ -26,7 +26,7 @@ export const loadConfiguration = (file) => async (dispatch) => {
   } catch (error) {
     const msg = `Error loading configuration: ${error.message}. If you believe your configuraiton is valid, please submit a bug at https://github.com/NCAR/music-box-interactive-client/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=`;
     console.error(msg);
-    alert(msg)
+    alert(msg);
   }
 };
 
