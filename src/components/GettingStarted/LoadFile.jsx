@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { resetAll, loadConfiguration } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
 
-//TODO: Complete functions for uploading files
 export default function LoadFile() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
   const [isFileSelected, setIsFileSelected] = useState(false);
