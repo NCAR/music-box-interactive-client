@@ -101,7 +101,7 @@ function extract_mechanism_from_example(config, state) {
             ...reactionSchema.emission.data,
             scaling_factor: reaction["scaling factor"] || 1.0,
             species: reaction["species"],
-            musica_name: reaction["MUSICA name"]?.replace(/EMIS_/,'') || "",
+            musica_name: reaction["MUSICA name"]?.replace(/EMIS_/, "") || "",
           },
         };
       }
@@ -113,7 +113,7 @@ function extract_mechanism_from_example(config, state) {
             ...reactionSchema.firstOrderLoss.data,
             species: reaction["species"],
             scaling_factor: reaction["scaling factor"] || 1.0,
-            musica_name: reaction["MUSICA name"]?.replace(/LOSS_/,'') || "",
+            musica_name: reaction["MUSICA name"]?.replace(/LOSS_/, "") || "",
           },
         };
       }
@@ -316,10 +316,10 @@ function extract_conditions_from_example(config) {
       let [type, reaction, units] = key.split(".");
       let default_units = "";
       if (type === "LOSS") {
-        reaction = reaction.replace(/LOSS_/,'')
+        reaction = reaction.replace(/LOSS_/, "");
         default_units = "mol m-3 s-1";
       } else if (type === "EMIS") {
-        reaction = reaction.replace(/EMIS_/,'')
+        reaction = reaction.replace(/EMIS_/, "");
         default_units = "mol m-3 s-1";
       } else if (type === "PHOT") {
         default_units = "s-1";
@@ -434,10 +434,12 @@ function translate_reactions_to_camp_config(config) {
           music_box_type: "EMISSION",
           note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
           "scaling factor": scaling_factor,
-          "MUSICA name": "EMIS_"+musica_name,
+          "MUSICA name": "EMIS_" + musica_name,
           species: species,
           reactants: { M: {} },
-          products: { ...reduxProductsToCamp([{ name: species }, { name: irrSpecies }]) },
+          products: {
+            ...reduxProductsToCamp([{ name: species }, { name: irrSpecies }]),
+          },
         };
         break;
       }
@@ -451,7 +453,7 @@ function translate_reactions_to_camp_config(config) {
           music_box_type: "FIRST_ORDER_LOSS",
           note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
           "scaling factor": scaling_factor,
-          "MUSICA name": "LOSS_"+musica_name,
+          "MUSICA name": "LOSS_" + musica_name,
           species: species,
           reactants: { [species]: {} },
           products: { ...reduxProductsToCamp([{ name: irrSpecies }]) },
@@ -607,17 +609,17 @@ function translate_to_musicbox_conditions(conditions) {
     "evolving conditions": conditions.evolving,
     "initial conditions": {
       ...conditions.initial_reactions.reduce((acc, curr) => {
-        let type = curr.type
-        let musica_name = curr.name
-        let units = curr.units
+        let type = curr.type;
+        let musica_name = curr.name;
+        let units = curr.units;
         if (curr.type == "LOSS") {
-          type = "PHOT"
-          musica_name = "LOSS_"+curr.name
-          units = curr.units
+          type = "PHOT";
+          musica_name = "LOSS_" + curr.name;
+          units = curr.units;
         } else if (curr.type == "EMIS") {
-          type = "PHOT"
-          musica_name = "EMIS_"+curr.name
-          units = "s-1"
+          type = "PHOT";
+          musica_name = "EMIS_" + curr.name;
+          units = "s-1";
         }
         let key = `${type}.${musica_name}.${units}`;
         acc[key] = curr.value;
