@@ -11,8 +11,11 @@ const Species = ({ details, item: species, setDetails, removeAction }) => {
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
-    const { [species.name]: _, ...details } = species.details;
-    setDetails({ ...details });
+    // the details object is only present is the user is viewing the details of the species
+    if (details?.hasOwnProperty(species.name)) {
+      const { [species.name]: _, ...newDetails } = details;
+      setDetails({ ...newDetails });
+    }
     removeAction(species.name);
   };
 
@@ -28,9 +31,10 @@ const Species = ({ details, item: species, setDetails, removeAction }) => {
       </button>
       <button
         type="button"
-        className="btn-clear"
-        onClick={handleDeleteClick}
-        onKeyDown={handleDeleteClick}
+        className={species.static?"btn-clear disabled":"btn-clear"}
+        onClick={species.static?null:handleDeleteClick}
+        onKeyDown={species.static?null:handleDeleteClick}
+        disabled={species.static}
       >
         <span className="navlink species-remove m-0 p-0">
           <span
