@@ -10,16 +10,11 @@ import {
   getUserDefinedRatesIds,
   getPossibleUnits,
 } from "../../redux/selectors";
-import { cond } from "lodash";
 
 const ReactionCondition = (props) => {
   const condition = props.condition;
   const schema = props.schema;
-  const name = condition.reactionId ? "asdf" : null;
-  if (condition.reactionId) {
-    console.log(getReaction(condition.reactionId))
-  }
-  console.log(condition.reactionId)
+  const name = condition.reactionId ? props.reactionNames.find((reaction) => reaction.id === condition.reactionId).name : null;
 
   const handleUpdate = (newProps) => {
     props.addCondition({
@@ -41,7 +36,6 @@ const ReactionCondition = (props) => {
           <Dropdown.Menu>
             {schema.allowAddRemove
               ? props.reactionNames.map((value, index) => {
-                  console.log(value.name, name)
                   return (
                     <Dropdown.Item
                       href="#"
@@ -103,7 +97,6 @@ const ReactionCondition = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   const condition = getConditions(state, ownProps.schema).find(condition => condition.id === ownProps.conditionId)
-  console.log(condition)
   return {
     condition: condition,
     reactionNames: getUserDefinedRatesIds(state),

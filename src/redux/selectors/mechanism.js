@@ -43,7 +43,6 @@ export const getProperty = (store, speciesName) => {
 };
 
 export const getReaction = (store, reactionId) => {
-  console.log(getMechanism(store))
   const reaction = getMechanism(store).reactions.filter((reaction) => {
     return reaction.id === reactionId;
   });
@@ -121,7 +120,7 @@ export const getUserDefinedRatesIds = (store) => {
 export const getPossibleUnits = (store, reactionId) => {
   return getMechanism(store)
     .reactions.filter((reaction) => {
-      return reaction.data.id === reactionId;
+      return reaction.id === reactionId;
     })
     .map((reaction) => {
       return reaction.possibleUnits;

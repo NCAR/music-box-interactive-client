@@ -62,7 +62,6 @@ export const conditionsReducer = (state = initialState, action) => {
     }
     case utils.action_types.ADD_CONDITION: {
       const schema = action.payload.content.schema;
-      console.log(schema)
       const condition =
         action.payload.content.condition !== undefined
           ? action.payload.content.condition
