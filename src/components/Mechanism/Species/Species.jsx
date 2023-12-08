@@ -31,9 +31,9 @@ const Species = ({ details, item: species, setDetails, removeAction }) => {
       </button>
       <button
         type="button"
-        className={species.static?"btn-clear disabled":"btn-clear"}
-        onClick={species.static?null:handleDeleteClick}
-        onKeyDown={species.static?null:handleDeleteClick}
+        className={species.static ? "btn-clear disabled" : "btn-clear"}
+        onClick={species.static ? null : handleDeleteClick}
+        onKeyDown={species.static ? null : handleDeleteClick}
         disabled={species.static}
       >
         <span className="navlink species-remove m-0 p-0">
