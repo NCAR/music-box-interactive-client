@@ -25,6 +25,10 @@ let routes = [
     element: <Home />,
   },
   {
+    path: "/home",
+    element: <Home />
+  },
+  {
     path: "/getting_started",
     element: <GettingStarted />,
   },
