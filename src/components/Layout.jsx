@@ -41,7 +41,7 @@ function Layout(props) {
     }
   };
 
-  const title = `MusicBox Interactive ${process.env.VITE_APP_VERSION}`;
+  const title = `MusicBox ${process.env.VITE_APP_VERSION}`;
 
   return (
     <>
