@@ -62,8 +62,13 @@ function Layout(props) {
           </Navbar.Brand>
         </Navbar>
         <div className={styles.content}>
-            <button className={`${styles.asideBtn} ${menuIsOpen ? styles.active : ''}`} onClick={() => setMenuIsOpen(!menuIsOpen)}>{menuIsOpen ? "<<" : ">>"}</button>
-          <div className={`${styles.menu} ${menuIsOpen ? styles.active : ''}`}>
+          <button
+            className={`${styles.asideBtn} ${menuIsOpen ? styles.active : ""}`}
+            onClick={() => setMenuIsOpen(!menuIsOpen)}
+          >
+            {menuIsOpen ? "<<" : ">>"}
+          </button>
+          <div className={`${styles.menu} ${menuIsOpen ? styles.active : ""}`}>
             <Nav className="flex-column pt-3">
               <small className="nav-section">SETUP</small>
               <NavLink
