@@ -16,7 +16,9 @@ import { HelmetProvider } from "react-helmet-async";
 import { PersistGate } from "redux-persist/integration/react";
 import "./styles/global.css";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+
+const RedirectToRoot = () => <Navigate to="/" />;
 
 const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
 
@@ -27,7 +29,7 @@ let routes = [
   },
   {
     path: "/home",
-    element: <Home />,
+    element: <RedirectToRoot />,
   },
   {
     path: "/getting_started",
