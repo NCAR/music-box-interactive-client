@@ -27,7 +27,9 @@ const Reaction = ({ item: reaction, details, setDetails, removeReaction }) => {
         onClick={handleDetailClick}
         onKeyDown={handleDetailClick}
       >
-        <span className="reaction-detail-link">{ReactionTypes.shortName(reaction)}</span>
+        <span className="reaction-detail-link">
+          {ReactionTypes.shortName(reaction)}
+        </span>
       </button>
       <button
         type="button"
