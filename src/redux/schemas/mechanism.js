@@ -1,38 +1,5 @@
 import { ReactionTypes } from "../../controllers/models";
 
-const stringifyReaction = (reactants, products) => {
-  const validReactants = reactants.filter((species) => {
-    return species.name !== undefined;
-  });
-  const validProducts = products.filter((species) => {
-    return species.name !== undefined;
-  });
-  let str = "";
-  if (validReactants.length > 0) {
-    validReactants.forEach((species) => {
-      str +=
-        "qty" in species && species.qty > 1
-          ? species.qty.toString() + species.name + " + "
-          : species.name + " + ";
-    });
-    str = str.slice(0, -2) + " -> ";
-  } else {
-    str = "<none> -> ";
-  }
-  if (validProducts.length > 0) {
-    validProducts.forEach((species) => {
-      str +=
-        "yield" in species && species.yield !== 1.0
-          ? species.yield.toString() + species.name + " + "
-          : species.name + " + ";
-    });
-    str = str.slice(0, -3);
-  } else {
-    str += " <none>";
-  }
-  return str.length > 40 ? str.slice(0, 37) + "..." : str;
-};
-
 export const reactionSchema = {
   arrhenius: {
     data: {
@@ -46,9 +13,6 @@ export const reactionSchema = {
       products: [],
     },
     typeLabel: "Arrhenius",
-    shortName() {
-      return stringifyReaction(this.data.reactants, this.data.products);
-    },
     elements: [
       {
         type: "REACTANT_LIST",
@@ -113,12 +77,6 @@ export const reactionSchema = {
     isUserDefined: true,
     tablePrefix: "EMIS",
     possibleUnits: ["mol m-3 s-1"],
-    shortName() {
-      return stringifyReaction(
-        [],
-        this.data.species !== undefined ? [{ name: this.data.species }] : [],
-      );
-    },
     elements: [
       {
         type: "SPECIES",
@@ -161,12 +119,6 @@ export const reactionSchema = {
     isUserDefined: true,
     tablePrefix: "LOSS",
     possibleUnits: ["s-1"],
-    shortName() {
-      return stringifyReaction(
-        this.data.species !== undefined ? [{ name: this.data.species }] : [],
-        [],
-      );
-    },
     elements: [
       {
         type: "SPECIES",
@@ -210,12 +162,6 @@ export const reactionSchema = {
     isUserDefined: true,
     tablePrefix: "PHOT",
     possibleUnits: ["s-1"],
-    shortName() {
-      return stringifyReaction(
-        this.data.reactant !== undefined ? [{ name: this.data.reactant }] : [],
-        this.data.products,
-      );
-    },
     elements: [
       {
         type: "SPECIES",
@@ -271,9 +217,6 @@ export const reactionSchema = {
       products: [],
     },
     typeLabel: "Ternary Chemical Activation",
-    shortName() {
-      return stringifyReaction(this.data.reactants, this.data.products);
-    },
     elements: [
       {
         type: "REACTANT_LIST",
@@ -371,9 +314,6 @@ export const reactionSchema = {
       products: [],
     },
     typeLabel: "Troe (Fall-Off)",
-    shortName() {
-      return stringifyReaction(this.data.reactants, this.data.products);
-    },
     elements: [
       {
         type: "REACTANT_LIST",
@@ -468,9 +408,6 @@ export const reactionSchema = {
       secondary_products: [],
     },
     typeLabel: "Branched",
-    shortName() {
-      return stringifyReaction(this.data.reactants, this.data.primary_products);
-    },
     elements: [
       {
         type: "REACTANT_LIST",
@@ -556,9 +493,6 @@ export const reactionSchema = {
       products: [],
     },
     typeLabel: "Tunneling",
-    shortName() {
-      return stringifyReaction(this.data.reactants, this.data.products);
-    },
     elements: [
       {
         type: "REACTANT_LIST",
