@@ -193,7 +193,7 @@ function extract_mechanism_from_example(config, state) {
         console.error(`Unknown reaction type: ${reaction.type}`);
         return {
           id: id++,
-          data: { type: "UNKNOWN" }
+          data: { type: "UNKNOWN" },
         };
     }
   });

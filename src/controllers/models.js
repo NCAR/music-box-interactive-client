@@ -54,18 +54,38 @@ const ReactionTypes = Object.freeze({
       case this.TERNARY_CHEMICAL_ACTIVATION:
       case this.TROE:
       case this.WENNBERG_TUNNELING:
-        return stringifyReaction(reaction.data.reactants, reaction.data.products);
+        return stringifyReaction(
+          reaction.data.reactants,
+          reaction.data.products,
+        );
       case this.EMISSION:
-        return stringifyReaction([], reaction.data.species !== undefined ? [{ name: reaction.data.species }] : []);
+        return stringifyReaction(
+          [],
+          reaction.data.species !== undefined
+            ? [{ name: reaction.data.species }]
+            : [],
+        );
       case this.FIRST_ORDER_LOSS:
-        return stringifyReaction(reaction.data.species !== undefined ? [{ name: reaction.data.species }] : [], []);
+        return stringifyReaction(
+          reaction.data.species !== undefined
+            ? [{ name: reaction.data.species }]
+            : [],
+          [],
+        );
       case this.PHOTOLYSIS:
-        return stringifyReaction(reaction.data.reactant !== undefined ? [{ name: reaction.data.reactant }] : [], reaction.data.products);
+        return stringifyReaction(
+          reaction.data.reactant !== undefined
+            ? [{ name: reaction.data.reactant }]
+            : [],
+          reaction.data.products,
+        );
       case this.WENNBERG_NO_RO2:
-        return stringifyReaction(reaction.data.reactants, reaction.data.primary_products);
-
+        return stringifyReaction(
+          reaction.data.reactants,
+          reaction.data.primary_products,
+        );
     }
-  }
+  },
 });
 
 export { ReactionTypes, RunStatus };
