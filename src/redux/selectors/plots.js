@@ -15,7 +15,7 @@ export const getSpeciesPlots = (store) => {
 
 export const getReactionPlots = (store) => {
   return getMechanism(store).reactions.reduce((list, reaction, index) => {
-    const strLabel = reaction.shortName() + " (" + reaction.typeLabel + ")";
+    const strLabel = ReactionTypes.shortName(reaction) + " (" + reaction.typeLabel + ")";
     if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
       list.push({
         label: strLabel + " primary",
