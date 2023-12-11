@@ -2,8 +2,11 @@
 *
 
 # add things to copy
-!generator/*.js
-!generator/src
-!generator/static
-!generator/.env.*
-!generator/package.json
+!*.js
+!.eslintrc.cjs
+!src
+!static
+!.env.*
+!package.json
+!vite.config.js
+!index.html
