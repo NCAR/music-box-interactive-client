@@ -10,9 +10,10 @@ import NetworkGraph from "./pages/d3_flow";
 import FlowDiagram from "./pages/flow_diagram";
 import Download from "./pages/downloads";
 import { Provider } from "react-redux";
-import { store } from "./redux/store/createStore";
+import { store, persistor } from "./redux/store/createStore";
 import { MathJaxContext } from "better-react-mathjax";
 import { HelmetProvider } from "react-helmet-async";
+import { PersistGate } from 'redux-persist/integration/react'
 import "./styles/global.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -70,7 +71,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <HelmetProvider>
       <MathJaxContext>
         <Provider store={store}>
-          <RouterProvider router={router} />
+          <PersistGate loading={null} persistor={persistor}>
+            <RouterProvider router={router} />
+          </PersistGate>
         </Provider>
       </MathJaxContext>
     </HelmetProvider>
