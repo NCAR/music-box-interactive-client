@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png";
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css";
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 function Layout(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [menuIsOpen, setMenuIsOpen] = useState(true);
 
   const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
 
@@ -61,7 +62,8 @@ function Layout(props) {
           </Navbar.Brand>
         </Navbar>
         <div className={styles.content}>
-          <div className={styles.menu}>
+            <button className={`${styles.asideBtn} ${menuIsOpen ? styles.active : ''}`} onClick={() => setMenuIsOpen(!menuIsOpen)}>{menuIsOpen ? "<<" : ">>"}</button>
+          <div className={`${styles.menu} ${menuIsOpen ? styles.active : ''}`}>
             <Nav className="flex-column pt-3">
               <small className="nav-section">SETUP</small>
               <NavLink
