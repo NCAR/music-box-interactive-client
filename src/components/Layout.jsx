@@ -232,6 +232,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { hideCookieBanner })(
-  Layout,
-);
+export default connect(mapStateToProps, { hideCookieBanner })(Layout);

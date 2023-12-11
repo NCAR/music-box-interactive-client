@@ -1,2 +1,1 @@
-export const getShowCookieBanner = (store) =>
-  store.cookies.cookieBannerVisible;
+export const getShowCookieBanner = (store) => store.cookies.cookieBannerVisible;
