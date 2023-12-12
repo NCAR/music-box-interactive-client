@@ -4,6 +4,7 @@ import { conditionsReducer } from "./conditions";
 import { resultsReducer } from "./results";
 import { plotsReducer } from "./plots";
 import { cookiesReducer } from "./cookies";
+import { flowReducer } from "./flow";
 
 export default combineReducers({
   mechanism: mechanismReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   results: resultsReducer,
   plots: plotsReducer,
   cookies: cookiesReducer,
+  flow: flowReducer,
 });
