@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png";
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css";
@@ -6,12 +6,13 @@ import { Helmet } from "react-helmet-async";
 import { useDispatch, connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { doRun, resetPlots } from "../redux/actions";
-import { showCookieBanner, hideCookieBanner } from "../redux/actions";
+import { hideCookieBanner } from "../redux/actions";
 import {
   getMechanism,
   getAllConditions,
   getEvolvingTable,
   getRunStatus,
+  getShowCookieBanner,
 } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
@@ -20,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 function Layout(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [menuIsOpen, setMenuIsOpen] = useState(true);
 
   const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
 
@@ -39,7 +41,7 @@ function Layout(props) {
     }
   };
 
-  const title = `MusicBox Interactive ${process.env.VITE_APP_VERSION}`;
+  const title = `MusicBox ${process.env.VITE_APP_VERSION}`;
 
   return (
     <>
@@ -60,7 +62,13 @@ function Layout(props) {
           </Navbar.Brand>
         </Navbar>
         <div className={styles.content}>
-          <div className={styles.menu}>
+          <button
+            className={`${styles.asideBtn} ${menuIsOpen ? styles.active : ""}`}
+            onClick={() => setMenuIsOpen(!menuIsOpen)}
+          >
+            {menuIsOpen ? "<<" : ">>"}
+          </button>
+          <div className={`${styles.menu} ${menuIsOpen ? styles.active : ""}`}>
             <Nav className="flex-column pt-3">
               <small className="nav-section">SETUP</small>
               <NavLink
@@ -227,10 +235,8 @@ const mapStateToProps = (state) => {
     mechanism: mechanism,
     conditions: conditions,
     runStatus: getRunStatus(state),
-    cookieBannerVisible: state.cookies.cookieBannerVisible,
+    cookieBannerVisible: getShowCookieBanner(state),
   };
 };
 
-export default connect(mapStateToProps, { showCookieBanner, hideCookieBanner })(
-  Layout,
-);
+export default connect(mapStateToProps, { hideCookieBanner })(Layout);

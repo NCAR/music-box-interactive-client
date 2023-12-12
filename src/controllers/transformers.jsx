@@ -194,9 +194,6 @@ function extract_mechanism_from_example(config, state) {
         return {
           id: id++,
           data: { type: "UNKNOWN" },
-          shortName() {
-            return "";
-          },
         };
     }
   });
