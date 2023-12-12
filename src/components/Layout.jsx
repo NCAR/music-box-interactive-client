@@ -16,11 +16,16 @@ import {
 import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
 import { useNavigate } from "react-router-dom";
+import { useVeiwPort } from "../hooks/useVeiwPort";
 
 function Layout(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [menuIsOpen, setMenuIsOpen] = useState(true);
+
+  // you can change breakPoint aligned with your design
+  const { isOpen: menuIsOpen, setIsOpen: setMenuIsOpen } = useVeiwPort({
+    breakPoint: 836,
+  });
 
   const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
 
@@ -61,8 +66,13 @@ function Layout(props) {
           </Navbar.Brand>
         </Navbar>
         <div className={styles.content}>
-            <button className={`${styles.asideBtn} ${menuIsOpen ? styles.active : ''}`} onClick={() => setMenuIsOpen(!menuIsOpen)}>{menuIsOpen ? "<<" : ">>"}</button>
-          <div className={`${styles.menu} ${menuIsOpen ? styles.active : ''}`}>
+          <button
+            className={`${styles.asideBtn} ${menuIsOpen ? styles.active : ""}`}
+            onClick={() => setMenuIsOpen(!menuIsOpen)}
+          >
+            {menuIsOpen ? "<<" : ">>"}
+          </button>
+          <div className={`${styles.menu} ${menuIsOpen ? styles.active : ""}`}>
             <Nav className="flex-column pt-3">
               <small className="nav-section">SETUP</small>
               <NavLink
