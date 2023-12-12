@@ -1,0 +1,19 @@
+.species {
+  stroke:aqua;
+  fill:aqua;
+  r:5;
+}
+
+.species_primary {
+  stroke:dodgerblue;
+  fill:dodgerblue;
+  r:10;
+}
+
+.reaction {
+  stroke:black;
+}
+
+.reaction_highlighted {
+  stroke:darkorchid;
+}

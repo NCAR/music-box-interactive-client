@@ -1,9 +1,9 @@
 import * as d3 from "d3"
 import React, { useEffect, useMemo, useState } from "react"
 import { connect } from "react-redux"
-import { getNodes, getLinks } from "../../redux/selectors";
+import { getNodes, getLinks, getLinkStyle, getNodeStyle } from "../../redux/selectors";
 
-function FlowGraph({nodes, links}) {
+function FlowGraph({nodes, links, nodeStyles, linkStyles}) {
   const [animatedNodes, setAnimatedNodes] = useState([]);
   const [animatedLinks, setAnimatedLinks] = useState([]);
 
@@ -48,14 +48,12 @@ function FlowGraph({nodes, links}) {
 
   return (
     <g>
-      {animatedNodes.map((node) => (
+      {animatedNodes.map((node, index) => (
         <circle
           cx={node.x}
           cy={node.y}
-          r={5}
           key={"node_"+node.id}
-          stroke="black"
-          fill="transparent"
+          className={nodeStyles[index]}
         />
       ))}
       {animatedLinks.map((link, index) => (
@@ -65,7 +63,7 @@ function FlowGraph({nodes, links}) {
           x2={link.target.x}
           y2={link.target.y}
           key={"link_"+index}
-          stroke="black"
+          className={linkStyles[index]}
         />
       ))}
     </g>
@@ -76,6 +74,12 @@ const mapStateToProps = (state) => {
   return {
     nodes: getNodes(state),
     links: getLinks(state),
+    nodeStyles: getNodes(state).map((node) => {
+      return getNodeStyle(state, node.id);
+    }),
+    linkStyles: getLinks(state).map((link,index) => {
+      return getLinkStyle(state, index);
+    })
   }
 }
 

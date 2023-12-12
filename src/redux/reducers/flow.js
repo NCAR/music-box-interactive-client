@@ -54,11 +54,25 @@ const initialState = {
     { source: 4, target: 5 },
     { source: 4, target: 9 },
     { source: 5, target: 10 }
+  ],
+  nodeStyles: [
+    { id: 4, styleClass: "species_primary" },
+    { id: 6, styleClass: "species_primary" },
+  ],
+  linkStyles: [
+    { id: 1, styleClass: "reaction_highlighted" },
+    { id: 2, styleClass: "reaction_highlighted" },
+    { id: 3, styleClass: "reaction_highlighted" },
   ]
 }
 
 export const flowReducer = (state = initialState, action) => {
   switch (action.type) {
+    case utils.action_types.RESET_ALL: {
+      return {
+        ...initialState,
+      };
+    }
     default:
       return state;
   }
