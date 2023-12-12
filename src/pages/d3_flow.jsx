@@ -19,9 +19,7 @@ function D3Flow(props) {
               </Col>
               <Col>
                 <div style={{ height: `100%` }}>
-                <svg width="100%" height="100%">
                   <FlowGraph />
-                </svg>
                 </div>
               </Col>
             </Row>

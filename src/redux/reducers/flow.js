@@ -4,66 +4,67 @@ const initialState = {
   nodes: [
     {
       id: 1,
-      name: "A"
+      name: "A",
+      className: "species",
     },
     {
       id: 2,
-      name: "B"
+      name: "B",
+      className: "species_primary",
     },
     {
       id: 3,
-      name: "C"
+      name: "C",
+      className: "species",
     },
     {
       id: 4,
-      name: "D"
+      name: "D",
+      className: "species_primary",
     },
     {
       id: 5,
-      name: "E"
+      name: "E",
+      className: "species",
     },
     {
       id: 6,
-      name: "F"
+      name: "F",
+      className: "species",
     },
     {
       id: 7,
-      name: "G"
+      name: "G",
+      className: "species",
     },
     {
       id: 8,
-      name: "H"
+      name: "H",
+      className: "species",
     },
     {
       id: 9,
-      name: "I"
+      name: "I",
+      className: "species",
     },
     {
       id: 10,
-      name: "J"
+      name: "J",
+      className: "species",
     }
   ],
   links: [
-    { source: 1, target: 2 },
-    { source: 1, target: 5 },
-    { source: 1, target: 6 },
-    { source: 2, target: 3 },
-    { source: 2, target: 7 },
-    { source: 3, target: 4 },
-    { source: 8, target: 3 },
-    { source: 4, target: 5 },
-    { source: 4, target: 9 },
-    { source: 5, target: 10 }
+    { source: 1, target: 2, className: "reaction_highlighted" },
+    { source: 1, target: 5, className: "reaction_highlighted" },
+    { source: 1, target: 6, className: "reaction_highlighted" },
+    { source: 2, target: 3, className: "reaction" },
+    { source: 2, target: 7, className: "reaction" },
+    { source: 3, target: 4, className: "reaction" },
+    { source: 8, target: 3, className: "reaction" },
+    { source: 4, target: 5, className: "reaction" },
+    { source: 4, target: 9, className: "reaction" },
+    { source: 5, target: 10, className: "reaction" }
   ],
-  nodeStyles: [
-    { id: 4, styleClass: "species_primary" },
-    { id: 6, styleClass: "species_primary" },
-  ],
-  linkStyles: [
-    { id: 1, styleClass: "reaction_highlighted" },
-    { id: 2, styleClass: "reaction_highlighted" },
-    { id: 3, styleClass: "reaction_highlighted" },
-  ]
 }
 
 export const flowReducer = (state = initialState, action) => {
