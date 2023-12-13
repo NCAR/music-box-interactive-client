@@ -4,7 +4,7 @@ export const getConditions = (store, schema) => {
 
 export const getCondition = (store, schema, conditionId) => {
   return store.conditions[schema.classKey].find(
-    (condition) => condition.id === conditionId
+    (condition) => condition.id === conditionId,
   );
 };
 
