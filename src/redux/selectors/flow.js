@@ -1,3 +1,5 @@
 export const getNodes = (store) => store.flow.nodes;
 
 export const getLinks = (store) => store.flow.links;
+
+export const isSelectedSpecies = (store, speciesName) => store.flow.selected_species.includes(speciesName);

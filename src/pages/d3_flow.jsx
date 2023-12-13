@@ -14,7 +14,7 @@ function D3Flow(props) {
         {props.runStatus === RunStatus.DONE ? (
           <Container fluid style={{ maxWidth: `3000px`, height: `100%` }}>
             <Row style={{ height: `100%` }}>
-              <Col xs={4} md={3} lg={2} style={{ height: `100%` }}>
+              <Col xs={4} md={3} lg={3} style={{ height: `100%` }}>
                 <FlowPanel />
               </Col>
               <Col>

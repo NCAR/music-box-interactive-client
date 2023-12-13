@@ -65,6 +65,10 @@ const initialState = {
     { source: 4, target: 9, className: "reaction" },
     { source: 5, target: 10, className: "reaction" }
   ],
+  selected_species: [
+    "O1D",
+    "O"
+  ]
 }
 
 export const flowReducer = (state = initialState, action) => {
@@ -72,6 +76,20 @@ export const flowReducer = (state = initialState, action) => {
     case utils.action_types.RESET_ALL: {
       return {
         ...initialState,
+      };
+    }
+    case utils.action_types.SELECT_FLOW_SPECIES: {
+      const species = action.payload.content;
+      return {
+        ...state,
+        selected_species: [...state.selected_species.filter((elem) => elem !== species), species]
+      };
+    }
+    case utils.action_types.DESELECT_FLOW_SPECIES: {
+      const species = action.payload.content;
+      return {
+        ...state,
+        selected_species: state.selected_species.filter((elem) => elem !== species)
       };
     }
     default:
