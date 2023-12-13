@@ -63,23 +63,6 @@ export const getProducts = (store, reactionId, schema) => {
   return reaction[0].data[schema.key];
 };
 
-export const getUserDefinedRates = (store) => {
-  return getMechanism(store)
-    .reactions.filter((reaction) => {
-      return (
-        reaction.isUserDefined &&
-        reaction.data.musica_name &&
-        reaction.data.musica_name.length
-      );
-    })
-    .map((reaction) => {
-      return {
-        name: reaction.data.musica_name,
-        prefix: reaction.tablePrefix,
-      };
-    });
-};
-
 const reactionToLabel = (reaction) => {
   let name = "";
   switch (reaction.type) {

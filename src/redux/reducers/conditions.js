@@ -14,13 +14,13 @@ const initialState = {
   initial_species_concentrations: [],
   initial_environmental: [
     {
-      id: 0,
+      id: uuidv4(),
       name: "temperature",
       value: 298.15,
       units: "K",
     },
     {
-      id: 1,
+      id: uuidv4(),
       name: "pressure",
       value: 101325.0,
       units: "Pa",
@@ -45,8 +45,6 @@ const initialState = {
   ],
 };
 
-const compareId = (a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
-
 export const conditionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case utils.action_types.RESET_ALL: {
@@ -62,10 +60,7 @@ export const conditionsReducer = (state = initialState, action) => {
     }
     case utils.action_types.ADD_CONDITION: {
       const schema = action.payload.content.schema;
-      const condition =
-        action.payload.content.condition !== undefined
-          ? action.payload.content.condition
-          : { reactionId: undefined, value: undefined, units: undefined };
+      const condition = action.payload.content.condition || { reactionId: undefined, value: undefined, units: undefined }
       const conditionId = condition.id || uuidv4();
       const otherConditions = state[schema.classKey].filter((condition) => {
         return condition.id !== conditionId;
@@ -78,7 +73,7 @@ export const conditionsReducer = (state = initialState, action) => {
             ...condition,
             id: conditionId,
           },
-        ].sort(compareId),
+        ]
       };
     }
     case utils.action_types.REMOVE_CONDITION: {
@@ -89,7 +84,7 @@ export const conditionsReducer = (state = initialState, action) => {
       });
       return {
         ...state,
-        [schema.classKey]: [...otherConditions].sort(compareId),
+        [schema.classKey]: [...otherConditions]
       };
     }
     case utils.action_types.UPDATE_EVOLVING_CONDITIONS: {
