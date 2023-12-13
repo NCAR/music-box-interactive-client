@@ -168,17 +168,17 @@ function Layout(props) {
             <div className={styles.footer}>
               <div className="row justify-content-around">
                 <div className="col-md offset-md-1">
-                  <a className="footer-link" href="/home#behind-the-music">
+                  <a className="footer-link" href="/#behind-the-music">
                     <h5>About</h5>
                   </a>
                   <ul className="list-unstyled text-small">
-                    <a className="footer-link" href="/home#collaborators">
+                    <a className="footer-link" href="/#collaborators">
                       <li>Collaborators</li>
                     </a>
-                    <a className="footer-link" href="/home#sponsors">
+                    <a className="footer-link" href="/#sponsors">
                       <li>Sponsors</li>
                     </a>
-                    <a className="footer-link" href="/home#contact">
+                    <a className="footer-link" href="/#contact">
                       <li>Contact us</li>
                     </a>
                   </ul>

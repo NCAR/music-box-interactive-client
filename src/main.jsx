@@ -23,7 +23,6 @@ import {
 } from "react-router-dom";
 
 const RedirectToRoot = () => <Navigate to="/" />;
-
 const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
 
 let routes = [
@@ -33,7 +32,7 @@ let routes = [
   },
   {
     path: "/home",
-    element: <RedirectToRoot />,
+    element: <RedirectToRoot />
   },
   {
     path: "/getting_started",
