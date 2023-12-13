@@ -253,8 +253,18 @@ function extract_conditions_from_example(config) {
   }, {});
 
   let conditions = config.conditions["environmental conditions"];
-  let temperature = { id: uuidv4(), name: "temperature", value: 298.15, units: "K" };
-  let pressure = { id: uuidv4(), name: "pressure", value: 101325.0, units: "Pa" };
+  let temperature = {
+    id: uuidv4(),
+    name: "temperature",
+    value: 298.15,
+    units: "K",
+  };
+  let pressure = {
+    id: uuidv4(),
+    name: "pressure",
+    value: 101325.0,
+    units: "Pa",
+  };
 
   if ("temperature" in conditions) {
     Object.keys(conditions["temperature"]).forEach((key) => {
