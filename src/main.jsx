@@ -32,7 +32,7 @@ let routes = [
   },
   {
     path: "/home",
-    element: <RedirectToRoot />
+    element: <RedirectToRoot />,
   },
   {
     path: "/getting_started",
