@@ -11,20 +11,23 @@ function FlowGraph({ nodes, links }) {
 
   // re-create animation every time nodes change
   useEffect(() => {
+    const width = 200;
+    const height = 200;
     const svg = d3.select(ref.current)
+                  .attr("width", `100%`)
+                  .attr("height", `100%`)
+                  .attr("class", styles.flow_area)
+                  .attr("viewBox", [0, 0, width, height])
 
-    const width = svg.attr("width")
-    const height = svg.attr("height")
-
-    const g = svg.join("g")
+    const g = svg.select("g")
 
     // force simulation
     const simulation = d3
       .forceSimulation(nodes)
-      .force("x", d3.forceX(400))
-      .force("y", d3.forceY(300))
+      .force("x", d3.forceX(width/2))
+      .force("y", d3.forceY(height/2))
       .force("charge", d3.forceManyBody().strength(charge))
-      .force("center", d3.forceCenter(200, 200))
+      .force("center", d3.forceCenter(width/2, height/2))
       .force("collision", d3.forceCollide(5))
       .force("link", d3.forceLink()
         .id((d) => { return d.id; })
@@ -41,16 +44,32 @@ function FlowGraph({ nodes, links }) {
       .data(nodes)
       .join("circle")
       .attr("class", (d) => { return styles[d.className]; })
+      .call(d3.drag()
+        .on("start",(d) => {
+          if (!d.avtive) simulation.alphaTarget(0.3).restart();
+          d.subject.fx = d.subject.x;
+          d.subject.fy = d.subject.y;
+        })
+        .on("drag",(d) => {
+          d.subject.fx = d.x;
+          d.subject.fy = d.y;
+        })
+        .on("end", (d) => {
+          if (!d.active) simulation.alphaTarget(0);
+          d.subject.fx = null;
+          d.subject.fy = null;
+        }));
 
     node.append("title")
       .text((d) => { return d.name; })
 
-    svg.call(d3.zoom()
-      .extent([0, 0], [width, height])
-      .scaleExtent([1, 8])
-      .on("zoom", ({transform}) => {
-        g.attr("transform", `scale(${transform.k})`);
-      }));
+    const zoom = d3.zoom()
+      .scaleExtent([0.001, 1])
+      .on("zoom", ({ transform }) => {
+        g.attr("transform", transform)
+      });
+
+    svg.call(zoom).call(zoom.transform, d3.zoomIdentity);
 
     // update state on every frame
     simulation.on("tick", () => {
@@ -65,13 +84,13 @@ function FlowGraph({ nodes, links }) {
     });
 
     // slow down with a small alpha
-    simulation.alpha(0.1).restart();
+    simulation.alpha(0.3).restart();
 
     // stop simulation on unmount
     return () => simulation.stop();
   }, [nodes, links, charge]);
 
-  return <svg width="100%" height="100%" id="flow-diagram" ref={ref} />
+  return <svg id="flow-diagram" ref={ref}><g/></svg>
 }
 
 const mapStateToProps = (state) => {
