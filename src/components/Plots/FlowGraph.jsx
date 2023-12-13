@@ -12,9 +12,11 @@ function FlowGraph({ nodes, links }) {
   // re-create animation every time nodes change
   useEffect(() => {
     const svg = d3.select(ref.current)
-    
+
     const width = svg.attr("width")
     const height = svg.attr("height")
+
+    const g = svg.join("g")
 
     // force simulation
     const simulation = d3
@@ -28,37 +30,38 @@ function FlowGraph({ nodes, links }) {
         .id((d) => { return d.id; })
         .links(links)
       );
-    
-    const link = svg.append("g")
-                  .attr("class", "links")
-                  .selectAll("line")
-                  .data(links)
-                  .enter().append("line")
-                    .attr("class", (d) => { 
-                      console.log("class name" + d);
-                      return styles[d.className]; })
-                    .attr("marker-end", "url(#arrow)");
 
-    const node = svg.append("g")
-                  .attr("class", "nodes")
-                  .selectAll("circle")
-                  .data(nodes)
-                  .enter().append("circle")
-                    .attr("class", (d) => { return styles[d.className]; })
-    
+    const link = g.selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("class", (d) => { return styles[d.className]; })
+      .attr("marker-end", "url(#arrow)");
+
+    const node = g.selectAll("circle")
+      .data(nodes)
+      .join("circle")
+      .attr("class", (d) => { return styles[d.className]; })
+
     node.append("title")
-        .text((d) => { return d.name; })
+      .text((d) => { return d.name; })
+
+    svg.call(d3.zoom()
+      .extent([0, 0], [width, height])
+      .scaleExtent([1, 8])
+      .on("zoom", ({transform}) => {
+        g.attr("transform", `scale(${transform.k})`);
+      }));
 
     // update state on every frame
     simulation.on("tick", () => {
       link
-          .attr("x1", (d) => { return d.source.x; })
-          .attr("y1", (d) => { return d.source.y; })
-          .attr("x2", (d) => { return d.target.x; })
-          .attr("y2", (d) => { return d.target.y; });
+        .attr("x1", (d) => { return d.source.x; })
+        .attr("y1", (d) => { return d.source.y; })
+        .attr("x2", (d) => { return d.target.x; })
+        .attr("y2", (d) => { return d.target.y; });
       node
-          .attr("cx", (d) => { return d.x; })
-          .attr("cy", (d) => { return d.y; });
+        .attr("cx", (d) => { return d.x; })
+        .attr("cy", (d) => { return d.y; });
     });
 
     // slow down with a small alpha
@@ -68,7 +71,7 @@ function FlowGraph({ nodes, links }) {
     return () => simulation.stop();
   }, [nodes, links, charge]);
 
-  return <svg width="100%" height="100%" id="flow-diagram" ref={ref}/>
+  return <svg width="100%" height="100%" id="flow-diagram" ref={ref} />
 }
 
 const mapStateToProps = (state) => {
