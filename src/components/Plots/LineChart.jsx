@@ -37,8 +37,8 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
       .style('font-size', `${tickFontSize}px`)
       .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
       .call(g => g.append('text')
-        .attr('x', width/2)
-        .attr('y', 2.5*tickFontSize)
+        .attr('x', width / 2)
+        .attr('y', 2.5 * tickFontSize)
         .attr('fill', 'currentColor')
         .attr('text-anchor', 'middle')
         .style('font-size', `${labelFontSize}px`)
@@ -55,7 +55,7 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
         .attr('stroke-opacity', 0.1))
       .call(g => g.append('text')
         .attr('x', marginLeft)
-        .attr('y', labelFontSize )
+        .attr('y', labelFontSize)
         .attr('fill', 'currentColor')
         .attr('text-anchor', 'middle')
         .style('font-size', `${labelFontSize}px`)
@@ -76,18 +76,13 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
       .style('stroke-width', '1px')
       .style('opacity', 0.0);
 
-    const tooltip = d3.select(tooltipRef.current)
-      .style('position', 'absolute')
+    const tooltipGroup = svg.append('g')
+      .style('opacity', 1);
+
+    const tooltipText = tooltipGroup.append('text')
       .style('font-size', `${toolTipFontSize}px`)
-      .style('text-align', 'center')
-      .style('width', '100%')
-      .style('bottom', '15px')
-      .style('left', '25px')
-      .style('opacity', 0)
-      .style('background', 'white')
-      .style('text-align', 'left')
-      .style('pointer-events', 'none')
-      .style('border', 'none');
+      .style('dominant-baseline', 'hanging');
+
 
     // Create a transparent overlay covering the entire chart area
     svg.append('rect')
@@ -97,11 +92,11 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
       .style('pointer-events', 'all')
       .on('mouseover', () => {
         verticalLine.style('opacity', 0.3);
-        tooltip.style('opacity', 1);
+        tooltipGroup.style('opacity', 1);
       })
       .on('mouseout', () => {
         verticalLine.style('opacity', 0);
-        tooltip.style('opacity', 0);
+        tooltipGroup.style('opacity', 0);
       })
       .on('mousemove', (event) => {
         const mouseX = d3.pointer(event)[0];
@@ -118,11 +113,17 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
         verticalLine
           .attr('x1', x(activeData.time))
           .attr('x2', x(activeData.time))
-          .attr('y1', 2*marginTop)
+          .attr('y1', 2 * marginTop)
           .attr('y2', height - marginBottom + marginTop);
 
-        tooltip
-          .html(`<strong>Time:</strong> ${activeData.time} (s)<br/><strong>Temperature:</strong> ${Math.round(activeData.value, 3)}`);
+        tooltipText
+          .text(`Time: ${activeData.time} (s) Temperature: ${Math.round(activeData.value, 3)}`);
+
+        const textBBox = tooltipText.node().getBBox();
+
+        const bg_width = textBBox.width;
+        const bg_height = textBBox.height;
+        tooltipGroup.attr('transform', `translate(${width - bg_width - 3}, ${height - bg_height - 3})`);
       });
   }, [data]);
   return (
