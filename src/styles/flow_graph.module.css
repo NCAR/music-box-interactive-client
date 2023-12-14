@@ -1,27 +1,30 @@
+@import "./global.css";
+
 .flow_area {
   background-color: white;
   text-shadow: -3px -3px 5px white, 3px -3px 5px white, -3px 3px 5px white, 3px 3px 5px white;
 }
 
 .species {
-  stroke:aqua;
-  fill:aqua;
+  stroke:var(--ncar-color-primary-dark-blue);
+  fill:var(--ncar-color-primary-dark-blue);
   r:5;
 }
 
 .reaction {
-  stroke:aquamarine;
-  fill:aquamarine;
+  stroke:var(--ncar-color-primary-light-green);
+  fill:var(--ncar-color-primary-light-green);
   r:5;
 }
 
 .flux {
-  stroke: black;
-  fill: black;
+  stroke:var(--ncar-color-primary-dark-green);
+  fill:var(--ncar-color-primary-dark-green);
 }
 
 .reaction_highlighted {
-  stroke:darkorchid;
+  stroke:var(--ncar-color-text-highlight-green);
+  fill:var(--ncar-color-text-highlight-green);
 }
 
 text {

@@ -26,15 +26,15 @@ function FlowGraph({ nodes, links }) {
        .enter().append("svg:marker")
        .attr("id", String)
        .attr("viewBox", "0 -5 10 10")
-       .attr("refX", 17)
+       .attr("refX", 19)
        .attr("refY", 0.0)
-       .attr("markerWidth", 7)
-       .attr("markerHeight", 7)
+       .attr("markerWidth", 6)
+       .attr("markerHeight", 6)
        .attr("orient", "auto")
        .attr("xoverflow", "visible")
        .append("svg:path")
-         .attr("d", "M0,-5L10,0L0,5")
-         .attr("class","flux")
+       .attr("class",styles.flux)
+       .attr("d", "M0,-5L10,0L0,5")
 
     const g = svg.select("g");
     g.selectAll("*").remove();
