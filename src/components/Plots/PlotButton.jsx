@@ -10,26 +10,32 @@ const PlotButton = (props) => {
     if (props.active) {
       props.removePlot({ type: props.type, id: props.plot.id });
     } else {
-      const doGetPlot = async () => {
-        try {
-          const response = await getPlot({
-            ...props.plot,
-            tolerance: props.tolerance,
-          });
-          props.addPlot({
-            type: props.type,
-            plot: {
-              ...props.plot,
-              srcValue:
-                "data:image/png;base64," +
-                Buffer.from(response.data, "binary").toString("base64"),
-            },
-          });
-        } catch (error) {
-          console.error(`Error retrieving plot: ${error}`);
-        }
-      };
-      doGetPlot();
+      props.addPlot({
+        type: props.type,
+        plot: {
+          ...props.plot,
+        },
+      });
+      // const doGetPlot = async () => {
+      //   try {
+      //     const response = await getPlot({
+      //       ...props.plot,
+      //       tolerance: props.tolerance,
+      //     });
+      //     props.addPlot({
+      //       type: props.type,
+      //       plot: {
+      //         ...props.plot,
+      //         srcValue:
+      //           "data:image/png;base64," +
+      //           Buffer.from(response.data, "binary").toString("base64"),
+      //       },
+      //     });
+      //   } catch (error) {
+      //     console.error(`Error retrieving plot: ${error}`);
+      //   }
+      // };
+      // doGetPlot();
     }
   };
 

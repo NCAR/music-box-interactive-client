@@ -4,7 +4,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import PlotButton from "./PlotButton";
 
 const PlotSelector = (props) => {
-  const [units, setUnits] = useState(props.units || undefined);
+  const [units, setUnits] = useState(
+    props.units && props.units.length ? props.units[0] : undefined,
+  );
 
   const handleChangeUnits = (newUnits) => {
     setUnits(newUnits);
