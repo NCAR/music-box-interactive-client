@@ -67,8 +67,6 @@ const initialState = {
     { source: 5, target: 10, className: "reaction" }
   ],
   selected_species: [
-    "O1D",
-    "O"
   ]
 }
 
