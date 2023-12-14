@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFontSize }) => {
+const ScatterPlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFontSize, height }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
 
   useEffect(() => {
     // Declare the chart dimensions and margins.
-    const width = 928;
-    const height = 500;
+    const width = height * 1.618;
     const marginTop = 20;
     const marginRight = 30;
     const marginBottom = 60;
@@ -18,11 +17,6 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
     const x = d3.scaleLinear().domain(d3.extent(data, d => d.time)).range([marginLeft, width - marginRight]);
     const y = d3.scaleLinear().domain([0, 1.1 * d3.max(data, (d) => d.value)]).range([height - marginBottom, marginTop]);
 
-    // Declare the line generator.
-    const lineGenerator = d3.line()
-      .x(d => x(d.time))
-      .y(d => y(d.value));
-
     // Create the SVG container using react-d3-library.
     const svg = d3.select(svgRef.current)
       .attr('width', width)
@@ -30,6 +24,16 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
       .attr('viewBox', [0, 0, width, height])
       .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
       .style('background', 'white');
+
+    // Add circles for each data point.
+    svg.selectAll('circle')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('cx', d => x(d.time))
+      .attr('cy', d => y(d.value))
+      .attr('r', 5) // radius of the circle
+      .attr('fill', 'steelblue');
 
     // Add the x-axis.
     svg.append('g')
@@ -61,14 +65,6 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
         .style('font-size', `${labelFontSize}px`)
         .text(`${label} (${units})`));
 
-    // Append a path for the line.
-    svg.append('path')
-      .attr('fill', 'none')
-      .attr('stroke', 'steelblue')
-      .attr('stroke-width', 1.5)
-      .attr('d', lineGenerator(data));
-
-
     // Add the transparent vertical line.
     const verticalLine = svg.append('line')
       .attr('class', 'vertical-line')
@@ -82,7 +78,6 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
     const tooltipText = tooltipGroup.append('text')
       .style('font-size', `${toolTipFontSize}px`)
       .style('dominant-baseline', 'hanging');
-
 
     // Create a transparent overlay covering the entire chart area
     svg.append('rect')
@@ -126,6 +121,7 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
         tooltipGroup.attr('transform', `translate(${width - bg_width - 3}, ${height - bg_height - 3})`);
       });
   }, [data]);
+
   return (
     <div style={{ position: 'relative' }}>
       <svg ref={svgRef} />
@@ -134,13 +130,13 @@ const LineChart = ({ data, label, units, labelFontSize, tickFontSize, toolTipFon
   );
 };
 
-LineChart.defaultProps = {
+ScatterPlot.defaultProps = {
   label: '',
   units: '',
   labelFontSize: 18,
   tickFontSize: 14,
-  toolTipFontSize: 20,
+  toolTipFontSize: 18,
+  height: 400
 };
 
-
-export default LineChart;
+export default ScatterPlot;
