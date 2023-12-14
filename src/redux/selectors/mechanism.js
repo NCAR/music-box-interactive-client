@@ -80,23 +80,6 @@ export const getProducts = (store, reactionId) => {
   return ReactionTypes.products(reaction[0]);
 };
 
-export const getUserDefinedRates = (store) => {
-  return getMechanism(store)
-    .reactions.filter((reaction) => {
-      return (
-        reaction.isUserDefined &&
-        reaction.data.musica_name &&
-        reaction.data.musica_name.length
-      );
-    })
-    .map((reaction) => {
-      return {
-        name: reaction.data.musica_name,
-        prefix: reaction.tablePrefix,
-      };
-    });
-};
-
 const reactionToLabel = (reaction) => {
   return ReactionTypes.shortName(reaction);
 };

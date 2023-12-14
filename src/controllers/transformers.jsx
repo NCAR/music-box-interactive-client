@@ -1,5 +1,6 @@
 import { reactionSchema } from "../redux/schemas";
 import { ReactionTypes } from "./models";
+import { v4 as uuidv4 } from "uuid";
 
 function extract_mechanism_from_example(config, state) {
   const campReactantsToRedux = (reaction) =>
@@ -18,7 +19,6 @@ function extract_mechanism_from_example(config, state) {
       yield: props.yield || 1,
     }));
   const campNitrateProductsToRedux = campAlkoxyProductsToRedux;
-  let id = 0;
   let camp_reactions = config.mechanism.reactions["camp-data"] || [];
   let camp_species = config.mechanism.species["camp-data"] || [];
 
@@ -67,7 +67,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.ARRHENIUS: {
         return {
           ...reactionSchema.arrhenius,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.arrhenius.data,
             A: reaction.A || reactionSchema.arrhenius.data.A,
@@ -83,7 +83,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.PHOTOLYSIS: {
         return {
           ...reactionSchema.photolysis,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.photolysis.data,
             reactant: campReactantsToRedux(reaction)[0].name,
@@ -96,7 +96,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.EMISSION: {
         return {
           ...reactionSchema.emission,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.emission.data,
             scaling_factor: reaction["scaling factor"] || 1.0,
@@ -108,7 +108,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.FIRST_ORDER_LOSS: {
         return {
           ...reactionSchema.firstOrderLoss,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.firstOrderLoss.data,
             species: reaction["species"],
@@ -120,7 +120,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
         return {
           ...reactionSchema.ternaryChemicalActivation,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.ternaryChemicalActivation.data,
             k0_A: reaction["k0_A"] || 1.0,
@@ -139,7 +139,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.TROE: {
         return {
           ...reactionSchema.troe,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.troe.data,
             k0_A: reaction["k0_A"] || 1.0,
@@ -158,7 +158,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.WENNBERG_NO_RO2: {
         return {
           ...reactionSchema.branched,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.branched.data,
             X: reaction["X"] || 1.0,
@@ -178,7 +178,7 @@ function extract_mechanism_from_example(config, state) {
       case ReactionTypes.WENNBERG_TUNNELING: {
         return {
           ...reactionSchema.tunneling,
-          id: id++,
+          id: uuidv4(),
           data: {
             ...reactionSchema.tunneling.data,
             A: reaction["A"] || 1.0,
@@ -192,7 +192,7 @@ function extract_mechanism_from_example(config, state) {
       default:
         console.error(`Unknown reaction type: ${reaction.type}`);
         return {
-          id: id++,
+          id: uuidv4(),
           data: { type: "UNKNOWN" },
         };
     }
@@ -253,8 +253,18 @@ function extract_conditions_from_example(config) {
   }, {});
 
   let conditions = config.conditions["environmental conditions"];
-  let temperature = { id: 0, name: "temperature", value: 298.15, units: "K" };
-  let pressure = { id: 1, name: "pressure", value: 101325.0, units: "Pa" };
+  let temperature = {
+    id: uuidv4(),
+    name: "temperature",
+    value: 298.15,
+    units: "K",
+  };
+  let pressure = {
+    id: uuidv4(),
+    name: "pressure",
+    value: 101325.0,
+    units: "Pa",
+  };
 
   if ("temperature" in conditions) {
     Object.keys(conditions["temperature"]).forEach((key) => {
@@ -293,19 +303,17 @@ function extract_conditions_from_example(config) {
   }
 
   let species = config.conditions["chemical species"];
-  let id = 0;
   let initial_species_concentrations = Object.keys(species).map((spec) => {
     const concentration_units = Object.keys(species[spec])[0];
     const matches = units_re.exec(concentration_units);
     return {
-      id: id++,
+      id: uuidv4(),
       name: spec,
       units: matches[1],
       value: species[spec][concentration_units],
     };
   });
 
-  id = 0;
   let initial_conditions = config.conditions["initial conditions"];
   let reaction_conditions = [];
   if (initial_conditions) {
@@ -322,7 +330,7 @@ function extract_conditions_from_example(config) {
         default_units = "s-1";
       }
       return {
-        id: id++,
+        id: uuidv4(),
         name: reaction,
         value: initial_conditions[key]["0"],
         type: type,
@@ -331,7 +339,6 @@ function extract_conditions_from_example(config) {
     });
   }
 
-  id = 0;
   let evolving_conditions = config.conditions["evolving conditions"];
   let evolving = {
     times: [],

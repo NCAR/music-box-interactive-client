@@ -183,12 +183,7 @@ export const mechanismReducer = (state = initialState, action) => {
       const updatedReaction = state.reactions.filter((reaction) => {
         return reaction.id === reactionId;
       })[0];
-      const reactantId =
-        "id" in reactant
-          ? reactant.id
-          : updatedReaction.data.reactants.length > 0
-            ? Math.max(...updatedReaction.data.reactants.map((r) => r.id)) + 1
-            : 0;
+      const reactantId = reactant.id || uuidv4();
       const otherReactants = updatedReaction.data.reactants.filter((other) => {
         return other.id !== reactantId;
       });
@@ -248,12 +243,7 @@ export const mechanismReducer = (state = initialState, action) => {
       const updatedReaction = state.reactions.filter((reaction) => {
         return reaction.id === reactionId;
       })[0];
-      const productId =
-        "id" in product
-          ? product.id
-          : updatedReaction.data[schema.key].length > 0
-            ? Math.max(...updatedReaction.data[schema.key].map((r) => r.id)) + 1
-            : 0;
+      const productId = product.id || uuidv4();
       const otherReactants = updatedReaction.data[schema.key].filter(
         (other) => {
           return other.id !== productId;
