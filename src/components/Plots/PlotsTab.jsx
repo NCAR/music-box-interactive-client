@@ -2,12 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import PlotSelector from "./PlotSelector";
 import Plot from "./Plot";
-import { getPlotsByType } from "../../redux/selectors";
+import { getPlotsByType, getTemperatureData } from "../../redux/selectors";
+import LineChart from "./LineChart"
+import ScatterChart from "./ScatterChart"
 
 const PlotsTab = (props) => {
   return (
     <div className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
-      <div className="row flex-grow-1 overflow-hidden">
+      <LineChart data={props.temperature.slice(0, 20)} label="Temperature" units="K"/>
+      {/* <ScatterChart data={props.temperature.slice(0, 20)} label="Temperature" units="K"/> */}
+      {/* <div className="row flex-grow-1 overflow-hidden">
         <div className="col-md-4 col-lg-3 mh-100 overflow-auto">
           <div className="row flex-shrink-0">
             <div className="col">
@@ -24,13 +28,14 @@ const PlotsTab = (props) => {
             return <Plot plot={plot} key={`plot-${index}`} />;
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    temperature: getTemperatureData(state),
     plots: getPlotsByType(state, ownProps.plotType),
   };
 };

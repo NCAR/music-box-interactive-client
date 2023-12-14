@@ -22,56 +22,54 @@ const Plots = (props) => {
 
   return (
     <Layout title={"Plots"}>
-      <main role="main">
-        <div className="container text-center">
-          {props.runStatus === RunStatus.DONE ? (
-            <>
-              <div className="navbox pt-2">
-                <button
-                  className={tab === SPECIES ? tabSelected : tabNotSelected}
-                  onClick={() => setTab(SPECIES)}
-                >
-                  Chemical species
-                </button>
-                <button
-                  className={tab === REACTIONS ? tabSelected : tabNotSelected}
-                  onClick={() => setTab(REACTIONS)}
-                >
-                  Reaction rates
-                </button>
-                <button
-                  className={tab === ENVIRONMENT ? tabSelected : tabNotSelected}
-                  onClick={() => setTab(ENVIRONMENT)}
-                >
-                  Environmental conditions
-                </button>
-              </div>
-              {tab === SPECIES ? (
-                <PlotsTab
-                  plotType="species"
-                  availablePlots={props.speciesPlots}
-                  units={plotSpeciesUnits}
-                />
-              ) : null}
-              {tab === REACTIONS ? (
-                <PlotsTab
-                  plotType="reactions"
-                  availablePlots={props.reactionPlots}
-                  units={plotSpeciesUnits}
-                />
-              ) : null}
-              {tab === ENVIRONMENT ? (
-                <PlotsTab
-                  plotType="environment"
-                  availablePlots={props.environmentPlots}
-                />
-              ) : null}
-            </>
-          ) : (
-            <p> Plots will be available once a model run has been completed </p>
-          )}
-        </div>
-      </main>
+      <div className="container text-center">
+        {props.runStatus === RunStatus.DONE ? (
+          <>
+            <div className="navbox pt-2">
+              <button
+                className={tab === SPECIES ? tabSelected : tabNotSelected}
+                onClick={() => setTab(SPECIES)}
+              >
+                Chemical species
+              </button>
+              <button
+                className={tab === REACTIONS ? tabSelected : tabNotSelected}
+                onClick={() => setTab(REACTIONS)}
+              >
+                Reaction rates
+              </button>
+              <button
+                className={tab === ENVIRONMENT ? tabSelected : tabNotSelected}
+                onClick={() => setTab(ENVIRONMENT)}
+              >
+                Environmental conditions
+              </button>
+            </div>
+            {tab === SPECIES ? (
+              <PlotsTab
+                plotType="species"
+                availablePlots={props.speciesPlots}
+                units={plotSpeciesUnits}
+              />
+            ) : null}
+            {tab === REACTIONS ? (
+              <PlotsTab
+                plotType="reactions"
+                availablePlots={props.reactionPlots}
+                units={plotSpeciesUnits}
+              />
+            ) : null}
+            {tab === ENVIRONMENT ? (
+              <PlotsTab
+                plotType="environment"
+                availablePlots={props.environmentPlots}
+              />
+            ) : null}
+          </>
+        ) : (
+          <p> Plots will be available once a model run has been completed </p>
+        )}
+      </div>
     </Layout>
   );
 };
