@@ -81,6 +81,13 @@ function FlowGraph({ nodes, links }) {
     node.append("title")
       .text((d) => { return d.name; })
 
+    const text = g.selectAll("g")
+       .data(nodes)
+       .join("g")
+
+    text.append("svg:text")
+        .text((d) => { return d.name; });
+
     const zoom = d3.zoom()
       .scaleExtent([0.001, 2])
       .on("zoom", ({ transform }) => {
@@ -99,6 +106,9 @@ function FlowGraph({ nodes, links }) {
       node
         .attr("cx", (d) => { return d.x; })
         .attr("cy", (d) => { return d.y; });
+      text.selectAll("text")
+        .attr("x", (d) => { return d.x; })
+        .attr("y", (d) => { return d.y; });
     });
 
     // slow down with a small alpha
