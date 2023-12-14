@@ -1,5 +1,5 @@
 import utils from "../utils";
-import { checkRunStatus } from "../../controllers/api";
+import { checkRunStatus, loadResults } from "../../controllers/api";
 import { RunStatus } from "../../controllers/models";
 
 const pollingMiddleware =
@@ -28,6 +28,13 @@ const pollingMiddleware =
             content.status === RunStatus.WAITING
           ) {
             setTimeout(poll, 1000); // Poll every second
+          }
+          else if (content.status === RunStatus.DONE) {
+            const results = await loadResults();
+            dispatch({
+              type: utils.action_types.RESULTS_LOADED,
+              payload: {content: results.data},
+            });
           }
         } catch (error) {
           // Handle errors here
