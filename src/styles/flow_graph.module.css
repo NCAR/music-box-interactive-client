@@ -8,14 +8,14 @@
   r:5;
 }
 
-.species_primary {
-  stroke:dodgerblue;
-  fill:dodgerblue;
-  r:10;
+.reaction {
+  stroke:aquamarine;
+  fill:aquamarine;
+  r:5;
 }
 
-.reaction {
-  stroke:black;
+.flux {
+  stroke: black;
 }
 
 .reaction_highlighted {

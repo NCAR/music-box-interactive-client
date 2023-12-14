@@ -19,7 +19,8 @@ function FlowGraph({ nodes, links }) {
                   .attr("class", styles.flow_area)
                   .attr("viewBox", [0, 0, width, height])
 
-    const g = svg.select("g")
+    const g = svg.select("g");
+    g.selectAll("*").remove();
 
     // force simulation
     const simulation = d3

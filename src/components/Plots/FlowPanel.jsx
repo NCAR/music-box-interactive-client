@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { ListGroup } from "react-bootstrap"
-import { getMechanism, isSelectedSpecies } from "../../redux/selectors";
+import { getMechanism, getReactionDependencies, isSelectedSpecies } from "../../redux/selectors";
 import { selectFlowSpecies, deselectFlowSpecies } from "../../redux/actions";
 
 function FlowPanel(props) {
+
   return (
     <ListGroup className="bg-ncar-menu-secondary p-2" style={{ height: `100%` }}>
       <ListGroup.Item>
@@ -19,7 +20,7 @@ function FlowPanel(props) {
               value={elem.name}
               id={elem.name}
               onClick={(e) => {
-                elem.isSelected ? props.deselectSpecies(elem.name) : props.selectSpecies(elem.name);
+                elem.isSelected ? props.deselectSpecies(elem.name, props.reactions) : props.selectSpecies(elem.name, props.reactions);
               }}
             >
               <span className="species-select-list-item">
@@ -39,15 +40,16 @@ const mapStateToProps = (state) => {
       return {
         ...species,
         isSelected: isSelectedSpecies(state, species.name),
-      }
-    })
+      };
+    }),
+    reactions: getReactionDependencies(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    selectSpecies: (species) => dispatch(selectFlowSpecies(species)),
-    deselectSpecies: (species) => dispatch(deselectFlowSpecies(species)),
+    selectSpecies: (species, dependencies) => dispatch(selectFlowSpecies({ species, dependencies })),
+    deselectSpecies: (species, dependencies) => dispatch(deselectFlowSpecies({ species, dependencies })),
   }
 };
 
