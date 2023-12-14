@@ -19,6 +19,23 @@ function FlowGraph({ nodes, links }) {
                   .attr("class", styles.flow_area)
                   .attr("viewBox", [0, 0, width, height])
 
+    // link formatting
+    svg.selectAll("defs").remove();
+    svg.append("svg:defs").selectAll("marker")
+       .data(["arrow"])
+       .enter().append("svg:marker")
+       .attr("id", String)
+       .attr("viewBox", "0 -5 10 10")
+       .attr("refX", 17)
+       .attr("refY", 0.0)
+       .attr("markerWidth", 7)
+       .attr("markerHeight", 7)
+       .attr("orient", "auto")
+       .attr("xoverflow", "visible")
+       .append("svg:path")
+         .attr("d", "M0,-5L10,0L0,5")
+         .attr("class","flux")
+
     const g = svg.select("g");
     g.selectAll("*").remove();
 
@@ -65,7 +82,7 @@ function FlowGraph({ nodes, links }) {
       .text((d) => { return d.name; })
 
     const zoom = d3.zoom()
-      .scaleExtent([0.001, 1])
+      .scaleExtent([0.001, 2])
       .on("zoom", ({ transform }) => {
         g.attr("transform", transform)
       });
