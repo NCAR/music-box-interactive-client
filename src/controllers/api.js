@@ -93,6 +93,16 @@ async function checkRunStatus() {
   }
 }
 
+async function loadResults() {
+  try {
+    const response = await axios.get(`${apiUrl}/api/load-results`);
+    return response;
+  } catch (error) {
+    console.error(`Error checking run status: ${error.message}`);
+    throw error;
+  }
+}
+
 async function getPlot(plot) {
   try {
     const params = {
@@ -121,4 +131,5 @@ export {
   fetchFlowDiagram,
   getPlot,
   run,
+  loadResults,
 };
