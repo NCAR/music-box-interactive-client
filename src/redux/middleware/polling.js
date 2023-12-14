@@ -28,12 +28,11 @@ const pollingMiddleware =
             content.status === RunStatus.WAITING
           ) {
             setTimeout(poll, 1000); // Poll every second
-          }
-          else if (content.status === RunStatus.DONE) {
+          } else if (content.status === RunStatus.DONE) {
             const results = await loadResults();
             dispatch({
               type: utils.action_types.RESULTS_LOADED,
-              payload: {content: results.data},
+              payload: { content: results.data },
             });
           }
         } catch (error) {

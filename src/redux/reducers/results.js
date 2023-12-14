@@ -12,11 +12,9 @@ const initialState = {
     temperature: [],
     pressure: [],
     air_density: [],
-    species: [
-    ],
-    integrated_rates: {
-    }
-  }
+    species: [],
+    integrated_rates: {},
+  },
 };
 
 export const resultsReducer = (state = initialState, action) => {
@@ -37,22 +35,22 @@ export const resultsReducer = (state = initialState, action) => {
       const data = action.payload.content;
 
       // get the integrated reaction rates
-      const irr_keys = Object.keys(data).filter(key => key.includes("irr__"));
+      const irr_keys = Object.keys(data).filter((key) => key.includes("irr__"));
       const irr_data = {};
-      irr_keys.forEach(key => {
+      irr_keys.forEach((key) => {
         irr_data[key.substring(5)] = data[key];
       });
 
       // get the species concentrations
-      const concentration_keys = Object.keys(data).filter(key => key.includes("CONC.") && !key.includes("irr__"));
-      const concentrations = []
-      concentration_keys.forEach(key => {
-        concentrations.push(
-          {
-            name: key.substring(5),
-            concentration: data[key]
-          }
-        )
+      const concentration_keys = Object.keys(data).filter(
+        (key) => key.includes("CONC.") && !key.includes("irr__"),
+      );
+      const concentrations = [];
+      concentration_keys.forEach((key) => {
+        concentrations.push({
+          name: key.substring(5),
+          concentration: data[key],
+        });
       });
 
       return {
@@ -63,8 +61,8 @@ export const resultsReducer = (state = initialState, action) => {
           temperature: data["ENV.temperature"],
           air_density: data["ENV.number_density_air"],
           integrated_rates: irr_data,
-          species: concentrations
-        }
+          species: concentrations,
+        },
       };
     }
     default:
