@@ -88,9 +88,14 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
     const tooltipGroup = svg.append('g')
       .style('opacity', 0);
 
-    const tooltipText = tooltipGroup.append('text')
+    const tooltipTextTime = tooltipGroup.append('text')
       .style('font-size', `${toolTipFontSize}px`)
       .style('dominant-baseline', 'hanging');
+
+    const tooltipTextValue = tooltipGroup.append('text')
+      .style('font-size', `${toolTipFontSize}px`)
+      .style('dominant-baseline', 'hanging')
+      .attr('dy', '1em');
 
     const dot = svg.append('circle')
       .attr('r', 4)
@@ -126,18 +131,16 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
           .attr('y1', marginTop)
           .attr('y2', height - marginBottom + marginTop);
 
-        tooltipText
-          .text(`Time: ${activeData.time} (s) ${label}: ${activeData.value.toExponential(precision)} ${units}`);
-
-        const textBBox = tooltipText.node().getBBox();
+        tooltipTextTime
+          .text(`${activeData.time} (s)`);
+        tooltipTextValue
+          .text(`${activeData.value.toExponential(precision)} (${units})`);
 
         dot
           .attr('cx', x(activeData.time))
           .attr('cy', y(activeData.value));
 
-        const bg_width = textBBox.width;
-        const bg_height = textBBox.height;
-        tooltipGroup.attr('transform', `translate(5, ${height - bg_height - 3})`);
+        tooltipGroup.attr('transform', `translate(5, ${height - 2 * toolTipFontSize})`);
       });
 
   }, [data]);
