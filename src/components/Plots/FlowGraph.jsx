@@ -1,7 +1,7 @@
 import * as d3 from "d3"
 import React, { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
-import { getNodes, getLinks, getIsFlowPlotLogScale } from "../../redux/selectors";
+import { getNodes, getLinks, getIsFlowPlotLogScale, getFlowMaxArrowWidth } from "../../redux/selectors";
 import * as styles from "../../styles/flow_graph.module.css"
 
 function FlowGraph({ nodes, links, fluxRange }) {
@@ -59,9 +59,9 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .attr("marker-end", "url(#arrow)")
       .style("stroke-width", (d) => { 
         if (fluxRange.isLogScale) {
-          return (Math.log(d.flux) - Math.log(fluxRange.min)) / (Math.log(fluxRange.max) - Math.log(fluxRange.min)) * 3.0 + 0.5;
+          return (Math.log(d.flux) - Math.log(fluxRange.min)) / (Math.log(fluxRange.max) - Math.log(fluxRange.min)) * fluxRange.maxArrowWidth + 0.5;
         } else{
-          return (d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min) * 3.0 + 0.5;
+          return (d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min) * fluxRange.maxArrowWidth + 0.5;
         }});
 
     link.append("title").text((d) => {
@@ -140,6 +140,7 @@ const mapStateToProps = (state) => {
       max: Math.max(...links.map((link) => link.flux)),
       min: Math.min(...links.map((link) => link.flux)),
       isLogScale: getIsFlowPlotLogScale(state),
+      maxArrowWidth: getFlowMaxArrowWidth(state),
     }
   }
 }

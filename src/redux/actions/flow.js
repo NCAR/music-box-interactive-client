@@ -20,3 +20,10 @@ export const setIsFlowPlotLogScale = (content) => {
     payload: { content },
   };
 };
+
+export const setFlowMaxArrowWidth = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_MAX_ARROW_WIDTH,
+    payload: { content },
+  };
+};

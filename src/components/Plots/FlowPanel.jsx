@@ -7,11 +7,13 @@ import {
   isSelectedSpecies,
   getResults,
   getIsFlowPlotLogScale,
+  getFlowMaxArrowWidth,
 } from "../../redux/selectors";
 import {
   selectFlowSpecies,
   deselectFlowSpecies,
-  setIsFlowPlotLogScale
+  setIsFlowPlotLogScale,
+  setFlowMaxArrowWidth,
 } from "../../redux/actions";
 
 function FlowPanel(props) {
@@ -33,6 +35,19 @@ function FlowPanel(props) {
               <option value="log">Log</option>
               <option value="linear">Linear</option>
             </Form.Select>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Form.Label htmlFor="flow-arrow-width-range">
+              Max Arrow Width: {props.maxArrowWidth}
+            </Form.Label>
+            <Form.Range
+              min="1"
+              max="15"
+              value={props.maxArrowWidth}
+              onChange={(e) => {
+                props.setMaxArrowWidth(e.target.value, props.reactions, props.results);
+              }}
+              />
           </ListGroup.Item>
           <ListGroup.Item>
             Select species:
@@ -73,6 +88,7 @@ const mapStateToProps = (state) => {
     reactions: getReactionDependencies(state),
     results: getResults(state),
     isLogScale: getIsFlowPlotLogScale(state),
+    maxArrowWidth: getFlowMaxArrowWidth(state),
   };
 };
 
@@ -81,6 +97,7 @@ const mapDispatchToProps = (dispatch) => {
     selectSpecies: (species, dependencies, results) => dispatch(selectFlowSpecies({ species, dependencies, results })),
     deselectSpecies: (species, dependencies, results) => dispatch(deselectFlowSpecies({ species, dependencies, results })),
     setIsLogScale: (isLogScale, dependencies, results) => dispatch(setIsFlowPlotLogScale({ isLogScale, dependencies, results })),
+    setMaxArrowWidth: (maxArrowWidth, dependencies, results) => dispatch(setFlowMaxArrowWidth({ maxArrowWidth, dependencies, results })),
   }
 };
 

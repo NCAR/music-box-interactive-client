@@ -8,13 +8,13 @@
 .species {
   stroke:var(--ncar-color-primary-dark-blue);
   fill:var(--ncar-color-primary-dark-blue);
-  r:5;
+  r:8;
 }
 
 .reaction {
   stroke:var(--ncar-color-primary-light-green);
   fill:var(--ncar-color-primary-light-green);
-  r:5;
+  r:8;
 }
 
 .flux {

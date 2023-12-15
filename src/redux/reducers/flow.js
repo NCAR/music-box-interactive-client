@@ -6,6 +6,7 @@ const initialState = {
   links: [],
   selected_species: [],
   is_log_scale: true,
+  max_arrow_width: 3,
 };
 
 // Redefines the nodes and links that make up the flow diagram based
@@ -107,6 +108,15 @@ export const flowReducer = (state = initialState, action) => {
       return UpdateGraph({
         ...state,
         is_log_scale: isLogScale,
+      }, dependencies, results);
+    }
+    case utils.action_types.SET_FLOW_MAX_ARROW_WIDTH: {
+      const maxArrowWidth = action.payload.content.maxArrowWidth;
+      const dependencies = action.payload.content.dependencies;
+      const results = action.payload.content.results;
+      return UpdateGraph({
+        ...state,
+        max_arrow_width: maxArrowWidth,
       }, dependencies, results);
     }
     default:
