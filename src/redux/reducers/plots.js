@@ -56,7 +56,7 @@ export const plotsReducer = (state = initialState, action) => {
             ...state,
             [type]: {
               ...state[type],
-              plots: state.reactions.plots.map((a) => ({ ...a, units: units })),
+              plots: state[type].plots.map((a) => ({ ...a, units: units })),
             },
           };
         }
