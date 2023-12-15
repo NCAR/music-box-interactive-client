@@ -1,3 +1,5 @@
+import { ReactionTypes } from "../../controllers/models"
+
 export const getMechanism = (store) => store.mechanism;
 
 export const getMechanismAsObject = (store) => ({ mechanism: store.mechanism });
@@ -42,6 +44,21 @@ export const getProperty = (store, speciesName) => {
   return { properties: species.length > 0 ? species[0].properties : [] };
 };
 
+export const getReactionIds = (store) => {
+  return store.mechanism.reactions.map((elem) => elem.id);
+};
+
+export const getReactionDependencies = (store) => {
+  return store.mechanism.reactions.map((elem) => {
+    return {
+      id: elem.id,
+      name: ReactionTypes.shortName(elem),
+      reactants: ReactionTypes.reactants(elem),
+      products: ReactionTypes.products(elem),
+    };
+  });
+};
+
 export const getReaction = (store, reactionId) => {
   const reaction = getMechanism(store).reactions.filter((reaction) => {
     return reaction.id === reactionId;
@@ -53,35 +70,18 @@ export const getReactants = (store, reactionId) => {
   const reaction = getMechanism(store).reactions.filter((reaction) => {
     return reaction.id === reactionId;
   });
-  return reaction[0].data.reactants;
+  return ReactionTypes.reactants(reaction[0]);
 };
 
-export const getProducts = (store, reactionId, schema) => {
+export const getProducts = (store, reactionId) => {
   const reaction = getMechanism(store).reactions.filter((reaction) => {
     return reaction.id === reactionId;
   });
-  return reaction[0].data[schema.key];
+  return ReactionTypes.products(reaction[0]);
 };
 
 const reactionToLabel = (reaction) => {
-  let name = "";
-  switch (reaction.type) {
-    case "PHOTOLYSIS":
-      name = reaction.reactant + "->";
-      name += reaction.products.map((item) => item.name).join("+");
-      break;
-    case "EMISSION":
-      name = "->" + reaction.species;
-      break;
-    case "FIRST_ORDER_LOSS":
-      name = reaction.species + "->";
-      break;
-    default:
-      name = reaction.reactants.map((item) => item.name).join("+") + "->";
-      name += reaction.products.map((item) => item.name).join("+");
-      break;
-  }
-  return name;
+  return ReactionTypes.shortName(reaction);
 };
 
 export const getUserDefinedRatesIds = (store) => {
