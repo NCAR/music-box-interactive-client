@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import * as d3 from 'd3';
+import React, { useEffect, useRef } from "react";
+import * as d3 from "d3";
 
 const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFontSize, height, precision }) => {
   const svgRef = useRef();
@@ -12,13 +12,20 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
     const marginLeft = width * .15;
 
     // x and y scales
-    const x = d3.scaleLinear().domain(d3.extent(data, d => d.time)).range([marginLeft, width - marginRight]);
-    const y = d3.scaleLinear().domain([0, 1.1 * d3.max(data, (d) => d.value)]).range([height - marginBottom, marginTop]);
+    const x = d3
+      .scaleLinear()
+      .domain(d3.extent(data, (d) => d.time))
+      .range([marginLeft, width - marginRight]);
+    const y = d3
+      .scaleLinear()
+      .domain([0, 1.1 * d3.max(data, (d) => d.value)])
+      .range([height - marginBottom, marginTop]);
 
     // Declare the line generator.
-    const lineGenerator = d3.line()
-      .x(d => x(d.time))
-      .y(d => y(d.value));
+    const lineGenerator = d3
+      .line()
+      .x((d) => x(d.time))
+      .y((d) => y(d.value));
 
     const svg = d3.select(svgRef.current);
     // remove old elements
@@ -35,17 +42,26 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
       .style('pointer-events', 'all');
 
     // Add the x-axis.
-    svg.append('g')
-      .attr('transform', `translate(0,${height - marginBottom})`)
-      .style('font-size', `${tickFontSize}px`)
-      .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
-      .call(g => g.append('text')
-        .attr('x', width / 2)
-        .attr('y', 2.5 * tickFontSize)
-        .attr('fill', 'currentColor')
-        .attr('text-anchor', 'middle')
-        .style('font-size', `${labelFontSize}px`)
-        .text(`time (s)`));
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .style("font-size", `${tickFontSize}px`)
+      .call(
+        d3
+          .axisBottom(x)
+          .ticks(width / 80)
+          .tickSizeOuter(0),
+      )
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", width / 2)
+          .attr("y", 2.5 * tickFontSize)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "middle")
+          .style("font-size", `${labelFontSize}px`)
+          .text(`time (s)`),
+      );
 
     // Add the y-axis, remove the domain line, add grid lines and a label.
     svg.append('g')
@@ -71,19 +87,20 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
         .text(`${label} (${units})`));
 
     // Append a path for the line.
-    svg.append('path')
-      .attr('fill', 'none')
-      .attr('stroke', 'steelblue')
-      .attr('stroke-width', 1.5)
-      .attr('d', lineGenerator(data));
-
+    svg
+      .append("path")
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", lineGenerator(data));
 
     // Add the transparent vertical line.
-    const verticalLine = svg.append('line')
-      .attr('class', 'vertical-line')
-      .style('stroke', 'black')
-      .style('stroke-width', '1px')
-      .style('opacity', 0.0);
+    const verticalLine = svg
+      .append("line")
+      .attr("class", "vertical-line")
+      .style("stroke", "black")
+      .style("stroke-width", "1px")
+      .style("opacity", 0.0);
 
     const tooltipGroup = svg.append('g')
       .style('opacity', 0);
@@ -113,7 +130,7 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
         tooltipGroup.style('opacity', 0);
         dot.style('opacity', 0);
       })
-      .on('mousemove', (event) => {
+      .on("mousemove", (event) => {
         const mouseX = d3.pointer(event)[0];
         const invertedX = x.invert(mouseX);
         const bisect = d3.bisector((d) => d.time).right;
@@ -145,25 +162,24 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
 
   }, [data]);
   return (
-    <div style={
-      {
+    <div
+      style={{
         padding: `4px`,
-      }
-    }>
+      }}
+    >
       <svg ref={svgRef} />
     </div>
   );
 };
 
 LinePlot.defaultProps = {
-  label: '',
-  units: '',
+  label: "",
+  units: "",
   labelFontSize: 16,
   tickFontSize: 14,
   toolTipFontSize: 18,
   height: 400,
   precision: 3
 };
-
 
 export default LinePlot;

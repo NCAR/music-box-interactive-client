@@ -25,26 +25,26 @@ export const getPlotDataByType = (store, plot) => {
   else if (plot.id.startsWith("ENV.")) {
     let which = plot.id.substring(4)
     switch (which) {
-      case 'temperature':
+      case "temperature":
         return {
           data: store.results.data.times.map((elem, idx) => {
-            return { "time": elem, value: store.results.data.temperature[idx] }
+            return { time: elem, value: store.results.data.temperature[idx] };
           }),
           label: "Temperature",
-          units: "K"
-        }
-      case 'pressure':
+          units: "K",
+        };
+      case "pressure":
         return {
           data: store.results.data.times.map((elem, idx) => {
-            return { "time": elem, value: store.results.data.pressure[idx] }
+            return { time: elem, value: store.results.data.pressure[idx] };
           }),
           label: "Pressure",
-          units: "Pa"
-        }
+          units: "Pa",
+        };
     }
     console.log("Environment", plot.id.substring(4));
   }
-}
+};
 
 export const getResultTimes = (store) => store.results.data.times;
 
