@@ -6,7 +6,7 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
 
   useEffect(() => {
     const width = height * 1.618; // golden ratio determins width based off of the height
-    const marginTop = 20;
+    const marginTop = 30;
     const marginRight = 10;
     const marginBottom = 80;
     const marginLeft = width * .15;
@@ -123,7 +123,7 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
         verticalLine
           .attr('x1', x(activeData.time))
           .attr('x2', x(activeData.time))
-          .attr('y1', 2 * marginTop)
+          .attr('y1', marginTop)
           .attr('y2', height - marginBottom + marginTop);
 
         tooltipText
