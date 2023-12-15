@@ -9,7 +9,6 @@ export const getPlotDataByType = (store, plot) => {
     if (plot.id.includes("irr__")) {
       let which = plot.id.substring(10)
       let data = convert('mol m-3', plot.units, getResultIntegratedReactionRate(store, which), store.results.data.air_density)
-      console.log(plot.units)
       return {
         data: store.results.data.times.map((elem, idx) => {
           return { "time": elem, value: data[idx] }
@@ -20,6 +19,15 @@ export const getPlotDataByType = (store, plot) => {
     }
     else {
       console.log("concentration")
+      let which = plot.id.substring(5)
+      let data = convert('mol m-3', plot.units, getResultSpeciesConcentration(store, which), store.results.data.air_density)
+      return {
+        data: store.results.data.times.map((elem, idx) => {
+          return { "time": elem, value: data[idx] }
+        }),
+        label: plot.label,
+        units: plot.units
+      }
     }
   }
   else if (plot.id.startsWith("ENV.")) {
