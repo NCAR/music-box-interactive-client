@@ -23,7 +23,18 @@ export const getPlotDataByType = (store, plot) => {
         units: plot.units,
       };
     } else {
-      console.log("concentration");
+      console.log("concentration")
+      let which = plot.id.substring(5)
+      let conc = getResultSpeciesConcentration(store, which);
+      console.log(conc)
+      let data = convert('mol m-3', plot.units, conc , store.results.data.air_density)
+      return {
+        data: store.results.data.times.map((elem, idx) => {
+          return { "time": elem, value: data[idx] }
+        }),
+        label: plot.label,
+        units: plot.units
+      }
     }
   } else if (plot.id.startsWith("ENV.")) {
     let which = plot.id.substring(4);

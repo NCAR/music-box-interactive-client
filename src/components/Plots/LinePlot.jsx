@@ -173,7 +173,7 @@ const LinePlot = ({
 
         tooltipTextTime.text(`${activeData.time} (s)`);
         tooltipTextValue.text(
-          `${activeData.value.toExponential(precision)} (${units})`,
+          `${activeData.value} (${units})`,
         );
 
         dot.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
