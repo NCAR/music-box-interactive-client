@@ -1,10 +1,10 @@
 import * as d3 from "d3"
 import React, { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
-import { getNodes, getLinks } from "../../redux/selectors";
+import { getNodes, getLinks, getIsFlowPlotLogScale } from "../../redux/selectors";
 import * as styles from "../../styles/flow_graph.module.css"
 
-function FlowGraph({ nodes, links }) {
+function FlowGraph({ nodes, links, fluxRange }) {
   const ref = useRef();
 
   const [charge, setCharge] = useState(-300);
@@ -56,7 +56,17 @@ function FlowGraph({ nodes, links }) {
       .data(links)
       .join("line")
       .attr("class", (d) => { return styles[d.className]; })
-      .attr("marker-end", "url(#arrow)");
+      .attr("marker-end", "url(#arrow)")
+      .style("stroke-width", (d) => { 
+        if (fluxRange.isLogScale) {
+          return (Math.log(d.flux) - Math.log(fluxRange.min)) / (Math.log(fluxRange.max) - Math.log(fluxRange.min)) * 3.0 + 0.5;
+        } else{
+          return (d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min) * 3.0 + 0.5;
+        }});
+
+    link.append("title").text((d) => {
+      return `Flux: ${d.flux} mol m-3`;
+    })
 
     const node = g.selectAll("circle")
       .data(nodes)
@@ -116,15 +126,21 @@ function FlowGraph({ nodes, links }) {
 
     // stop simulation on unmount
     return () => simulation.stop();
-  }, [nodes, links, charge]);
+  }, [nodes, links, fluxRange, charge]);
 
   return <svg id="flow-diagram" ref={ref}><g/></svg>
 }
 
 const mapStateToProps = (state) => {
+  let links = getLinks(state);
   return {
     nodes: getNodes(state),
-    links: getLinks(state),
+    links: links,
+    fluxRange: {
+      max: Math.max(...links.map((link) => link.flux)),
+      min: Math.min(...links.map((link) => link.flux)),
+      isLogScale: getIsFlowPlotLogScale(state),
+    }
   }
 }
 

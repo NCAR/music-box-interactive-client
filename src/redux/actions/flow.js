@@ -13,3 +13,10 @@ export const deselectFlowSpecies = (content) => {
     payload: { content },
   };
 };
+
+export const setIsFlowPlotLogScale = (content) => {
+  return {
+    type: utils.action_types.SET_IS_FLOW_PLOT_LOG_SCALE,
+    payload: { content },
+  };
+};
