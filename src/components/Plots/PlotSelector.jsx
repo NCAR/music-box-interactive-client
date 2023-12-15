@@ -64,4 +64,4 @@ const PlotSelector = (props) => {
   );
 };
 
-export default connect(null, {updatePlotUnits})(PlotSelector);
+export default connect(null, { updatePlotUnits })(PlotSelector);

@@ -50,17 +50,17 @@ export const plotsReducer = (state = initialState, action) => {
       const type = action.payload.content.type;
       const units = action.payload.content.units;
       switch (type) {
-        case 'species': 
-        case 'reactions': {
+        case "species":
+        case "reactions": {
           return {
             ...state,
             [type]: {
               ...state[type],
-              plots: state.reactions.plots.map((a) => ({ ...a, units: units }))
-            }
-          }
+              plots: state.reactions.plots.map((a) => ({ ...a, units: units })),
+            },
+          };
         }
-        case 'environment': {
+        case "environment": {
           return state;
         }
       }
