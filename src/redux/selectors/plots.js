@@ -2,7 +2,7 @@ import { getMechanism, getSpeciesNames } from "./mechanism";
 import { ReactionTypes } from "../../controllers/models";
 
 export const getPlotsByType = (store, plotType) => {
-  return store.plots[plotType].plots
+  return store.plots[plotType].plots;
 };
 
 export const getSpeciesPlots = (store) => {
@@ -43,7 +43,7 @@ export const getReactionPlots = (store) => {
 
 export const getEnvironmentPlots = (store) => {
   return [
-    { label: "temperature", id: "ENV.temperature"},
-    { label: "pressure", id: "ENV.pressure"},
+    { label: "temperature", id: "ENV.temperature" },
+    { label: "pressure", id: "ENV.pressure" },
   ];
 };
