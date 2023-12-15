@@ -8,9 +8,9 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
     // Declare the chart dimensions and margins.
     const width = height * 1.618;
     const marginTop = 20;
-    const marginRight = 30;
-    const marginBottom = 60;
-    const marginLeft = 40;
+    const marginRight = 10;
+    const marginBottom = 80;
+    const marginLeft = 60;
 
     // x and y scales
     const x = d3.scaleLinear().domain(d3.extent(data, d => d.time)).range([marginLeft, width - marginRight]);

@@ -43,7 +43,7 @@ export const getReactionPlots = (store) => {
 
 export const getEnvironmentPlots = (store) => {
   return [
-    { label: "temperature", id: "ENV.temperature" },
-    { label: "pressure", id: "ENV.pressure" },
+    { label: "temperature", id: "ENV.temperature"},
+    { label: "pressure", id: "ENV.pressure"},
   ];
 };

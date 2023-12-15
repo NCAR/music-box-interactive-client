@@ -103,25 +103,6 @@ async function loadResults() {
   }
 }
 
-async function getPlot(plot) {
-  try {
-    const params = {
-      type: plot.id,
-      unit: plot.units && plot.units.length ? plot.units : "n/a",
-      tolerance: plot.tolerance,
-      label: plot.label,
-    };
-    const response = await axios.get(`${apiUrl}/plots/get/`, {
-      params: params,
-      responseType: "arraybuffer",
-    });
-    return response;
-  } catch (error) {
-    console.error(`Error getting plot ${plot}: ${error.message}`);
-    throw error;
-  }
-}
-
 export {
   fetchConfiguration,
   fetchCompressedConfiguration,
@@ -129,7 +110,6 @@ export {
   checkRunStatus,
   fetchExample,
   fetchFlowDiagram,
-  getPlot,
   run,
   loadResults,
 };
