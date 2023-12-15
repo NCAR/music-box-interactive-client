@@ -1,3 +1,5 @@
+import { convert } from "../../controllers/unit_conversion";
+
 export const getRunStatus = (store) => store.results.runStatus;
 
 export const getLastError = (store) => store.results.error;
@@ -6,8 +8,8 @@ export const getPlotDataByType = (store, plot) => {
   if (plot.id.startsWith("CONC.")) {
     if (plot.id.includes("irr__")) {
       let which = plot.id.substring(10)
-      let data = getResultIntegratedReactionRate(store, which)
-      console.log(plot)
+      let data = convert('mol m-3', plot.units, getResultIntegratedReactionRate(store, which), store.results.data.air_density)
+      console.log(plot.units)
       return {
         data: store.results.data.times.map((elem, idx) => {
           return { "time": elem, value: data[idx] }

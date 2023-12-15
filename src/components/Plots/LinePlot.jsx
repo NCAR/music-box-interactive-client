@@ -127,7 +127,7 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
           .attr('y2', height - marginBottom + marginTop);
 
         tooltipText
-          .text(`Time: ${activeData.time} (s) ${label}: ${activeData.value.toExponential(precision)}`);
+          .text(`Time: ${activeData.time} (s) ${label}: ${activeData.value.toExponential(precision)} ${units}`);
 
         const textBBox = tooltipText.node().getBBox();
 
@@ -137,7 +137,7 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
 
         const bg_width = textBBox.width;
         const bg_height = textBBox.height;
-        tooltipGroup.attr('transform', `translate(${marginLeft}, ${height - bg_height - 3})`);
+        tooltipGroup.attr('transform', `translate(5, ${height - bg_height - 3})`);
       });
 
   }, [data]);
