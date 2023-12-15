@@ -397,8 +397,8 @@ function translate_reactions_to_camp_config(config) {
         }, {});
   };
 
-  let reactions = config.reactions.map((reaction, reactionId) => {
-    const irrSpecies = `irr__${reactionId}`;
+  let reactions = config.reactions.map((reaction) => {
+    const irrSpecies = `irr__${reaction.id}`;
     let camp_reaction = {
       type: reaction.data.type,
     };
@@ -555,8 +555,8 @@ function translate_to_camp_config(config) {
       });
       return camp_species;
     }),
-    ...config.reactions.reduce((irrList, reaction, reactionId) => {
-      const irrSpecies = `irr__${reactionId}`;
+    ...config.reactions.reduce((irrList, reaction) => {
+      const irrSpecies = `irr__${reaction.id}`;
       if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
         irrList.push({
           name: `${irrSpecies}a`,

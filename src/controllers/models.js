@@ -31,6 +31,23 @@ const stringifyReaction = (reactants, products) => {
   return str.length > 40 ? str.slice(0, 37) + "..." : str;
 };
 
+const countReactants = (reactants) => {
+  let counter = {};
+  reactants.forEach(({ name }) => {
+    if (counter[name]) {
+      counter[name] += 1;
+    } else {
+      counter[name] = 1;
+    }
+  });
+  return Object.keys(counter).map((species) => {
+    return {
+      name: species,
+      coefficient: counter[species],
+    };
+  });
+};
+
 const RunStatus = Object.freeze({
   RUNNING: "RUNNING",
   WAITING: "WAITING",
@@ -84,6 +101,62 @@ const ReactionTypes = Object.freeze({
           reaction.data.reactants,
           reaction.data.primary_products,
         );
+    }
+  },
+  reactants(reaction) {
+    switch (reaction.data.type) {
+      case this.ARRHENIUS:
+      case this.TERNARY_CHEMICAL_ACTIVATION:
+      case this.TROE:
+      case this.WENNBERG_TUNNELING:
+      case this.WENNBERG_NO_RO2:
+        return countReactants(reaction.data.reactants);
+      case this.EMISSION:
+        return [];
+      case this.FIRST_ORDER_LOSS:
+        return reaction.data.species !== undefined
+          ? [
+              {
+                name: reaction.data.species,
+                coefficient: 1.0,
+              },
+            ]
+          : [];
+      case this.PHOTOLYSIS:
+        return reaction.data.reactant !== undefined
+          ? [
+              {
+                name: reaction.data.reactant,
+                coefficient: 1.0,
+              },
+            ]
+          : [];
+    }
+  },
+  products(reaction) {
+    switch (reaction.data.type) {
+      case this.ARRHENIUS:
+      case this.TERNARY_CHEMICAL_ACTIVATION:
+      case this.TROE:
+      case this.WENNBERG_TUNNELING:
+      case this.PHOTOLYSIS:
+        return reaction.data.products;
+      case this.EMISSION:
+        return reaction.data.species !== undefined
+          ? [
+              {
+                name: reaction.data.species,
+                yield: 1.0,
+              },
+            ]
+          : [];
+      case this.FIRST_ORDER_LOSS:
+        return [];
+      case this.WENNBERG_NO_RO2:
+        return [
+          ...reaction.data.primary_products,
+          ...reaction.data.secondary_products,
+        ];
     }
   },
 });
