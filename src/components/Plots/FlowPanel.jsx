@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { connect } from "react-redux"
-import { ListGroup } from "react-bootstrap"
+import { Form, ListGroup } from "react-bootstrap"
 import {
   getMechanism,
   getReactionDependencies,
@@ -17,42 +17,48 @@ import {
 function FlowPanel(props) {
 
   return (
-    <ListGroup className="bg-ncar-menu-secondary p-2" style={{ height: `100%` }}>
-      <ListGroup.Item>
-        <label>
-          Log Scale
-          <input
-            type="checkbox"
-            checked={props.isLogScale}
-            onChange={(e) => {
-              props.setIsLogScale(!props.isLogScale, props.reactions, props.results);
-            }}
-          />
-        </label>
-      </ListGroup.Item>
-      <ListGroup.Item>
-        Select species:
-        <ListGroup className="species-list" key="species-select-list-group">
-          {props.species?.map((elem, index) => (
-            <ListGroup.Item
-              className="modal-bg"
-              key={index}
-              active={elem.isSelected}
-              name={elem.name}
-              value={elem.name}
-              id={elem.name}
-              onClick={(e) => {
-                elem.isSelected ? props.deselectSpecies(elem.name, props.reactions, props.results) : props.selectSpecies(elem.name, props.reactions, props.results);
+    <nav>
+      <ListGroup className="bg-ncar-menu-secondary p-2 text-center" style={{ height: `100%` }}>
+        <Form onSubmit={(e) => { e.disableDefault(); }} id="flow-graph-config-panel">
+          <ListGroup.Item>
+            <Form.Label htmlFor="flow-scale-select">
+              Arrow Width Scaling:
+            </Form.Label>
+            <Form.Select
+              value={props.isLogScale ? "log" : "linear"}
+              onChange={(e) => {
+                props.setIsLogScale(!props.isLogScale, props.reactions, props.results);
               }}
             >
-              <span className="species-select-list-item">
-                {elem.name}
-              </span>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </ListGroup.Item>
-    </ListGroup>
+              <option value="log">Log</option>
+              <option value="linear">Linear</option>
+            </Form.Select>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            Select species:
+            <ListGroup className="species-list" key="species-select-list-group">
+              {props.species?.map((elem, index) => (
+                <ListGroup.Item
+                  className="modal-bg"
+                  key={index}
+                  active={elem.isSelected}
+                  name={elem.name}
+                  value={elem.name}
+                  id={elem.name}
+                  onClick={(e) => {
+                    elem.isSelected ? props.deselectSpecies(elem.name, props.reactions, props.results) : props.selectSpecies(elem.name, props.reactions, props.results);
+                  }}
+                >
+                  <span className="species-select-list-item">
+                    {elem.name}
+                  </span>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </ListGroup.Item>
+        </Form>
+      </ListGroup>
+    </nav>
   )
 }
 
