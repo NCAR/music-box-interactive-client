@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { connect } from "react-redux"
-import { Form, ListGroup } from "react-bootstrap"
+import { Form, ListGroup, Col, Row } from "react-bootstrap"
 import {
   getMechanism,
   getReactionDependencies,
@@ -8,12 +8,21 @@ import {
   getResults,
   getIsFlowPlotLogScale,
   getFlowMaxArrowWidth,
+  getFlowTimeRangeStartIndex,
+  getFlowTimeRangeEndIndex,
+  getResultTimes,
+  getFlowLocalTimeRangeStart,
+  getFlowLocalTimeRangeEnd,
 } from "../../redux/selectors";
 import {
   selectFlowSpecies,
   deselectFlowSpecies,
   setIsFlowPlotLogScale,
   setFlowMaxArrowWidth,
+  setFlowTimeRangeStartIndex,
+  setFlowTimeRangeEndIndex,
+  setFlowLocalTimeRangeStart,
+  setFlowLocalTimeRangeEnd,
 } from "../../redux/actions";
 
 function FlowPanel(props) {
@@ -47,7 +56,51 @@ function FlowPanel(props) {
               onChange={(e) => {
                 props.setMaxArrowWidth(e.target.value, props.reactions, props.results);
               }}
-              />
+            />
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Form.Label htmlFor="flow-time-range">
+              Time Range (s):
+            </Form.Label>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="text"
+                  step="any"
+                  value={props.localTimeRangeStart}
+                  onChange={(e) => { props.setLocalTimeRangeStart(e.target.value) }}
+                  onBlur={(e) => {
+                    const startIndex = props.timeSteps.reduce((result, val, idx, arr) => {
+                      return (Math.abs(val - props.localTimeRangeStart) < Math.abs(arr[result] - props.localTimeRangeStart) ? idx : result);
+                    });
+                    if (startIndex > props.timeRangeEndIndex) {
+                      props.setTimeRangeEndIndex(startIndex, props.reactions, props.results);
+                    }
+                    props.setTimeRangeStartIndex(startIndex, props.reactions, props.results);
+                  }}
+                />
+              </Col>
+              <Col xs={2}>to</Col>
+              <Col>
+                <Form.Control
+                  type="text"
+                  step="any"
+                  value={props.localTimeRangeEnd}
+                  onChange={(e) => { props.setLocalTimeRangeEnd(e.target.value) }}
+                  onBlur={(e) => {
+                    const endIndex = props.timeSteps.reduce((result, val, idx, arr) => {
+                      return (Math.abs(val - props.localTimeRangeEnd) < Math.abs(arr[result] - props.localTimeRangeEnd) ? idx : result);
+                    });
+                    if (endIndex < props.timeRangeStartIndex) {
+                      props.setTimeRangeStartIndex(endIndex, props.reactions, props.results);
+                    }
+                    props.setTimeRangeEndIndex(endIndex, props.reactions, props.results);
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+            </Row>
           </ListGroup.Item>
           <ListGroup.Item>
             Select species:
@@ -78,6 +131,13 @@ function FlowPanel(props) {
 }
 
 const mapStateToProps = (state) => {
+  const timeSteps = getResultTimes(state);
+  const localStart = getFlowLocalTimeRangeStart(state);
+  const localEnd = getFlowLocalTimeRangeEnd(state);
+  const startTimeIndex = getFlowTimeRangeStartIndex(state);
+  const endTimeIndex = getFlowTimeRangeEndIndex(state);
+  const startTime = timeSteps[startTimeIndex];
+  const endTime = timeSteps[endTimeIndex];
   return {
     species: getMechanism(state).gasSpecies.map((species) => {
       return {
@@ -89,6 +149,11 @@ const mapStateToProps = (state) => {
     results: getResults(state),
     isLogScale: getIsFlowPlotLogScale(state),
     maxArrowWidth: getFlowMaxArrowWidth(state),
+    timeSteps: timeSteps,
+    timeRangeStartIndex: startTimeIndex,
+    timeRangeEndIndex: endTimeIndex,
+    localTimeRangeStart: localStart ? localStart : startTime ? startTime : 0,
+    localTimeRangeEnd: localEnd ? localEnd : endTime ? endTime : 0,
   };
 };
 
@@ -98,6 +163,10 @@ const mapDispatchToProps = (dispatch) => {
     deselectSpecies: (species, dependencies, results) => dispatch(deselectFlowSpecies({ species, dependencies, results })),
     setIsLogScale: (isLogScale, dependencies, results) => dispatch(setIsFlowPlotLogScale({ isLogScale, dependencies, results })),
     setMaxArrowWidth: (maxArrowWidth, dependencies, results) => dispatch(setFlowMaxArrowWidth({ maxArrowWidth, dependencies, results })),
+    setTimeRangeStartIndex: (timeIndex, dependencies, results) => dispatch(setFlowTimeRangeStartIndex({ timeIndex, dependencies, results })),
+    setTimeRangeEndIndex: (timeIndex, dependencies, results) => dispatch(setFlowTimeRangeEndIndex({ timeIndex, dependencies, results })),
+    setLocalTimeRangeStart: (time) => dispatch(setFlowLocalTimeRangeStart({ time })),
+    setLocalTimeRangeEnd: (time) => dispatch(setFlowLocalTimeRangeEnd({ time })),
   }
 };
 

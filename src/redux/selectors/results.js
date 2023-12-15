@@ -18,6 +18,7 @@ export const getResultIntegratedReactionRate = (store, reactionIndex) =>
 
 export const getResults = (store) => {
   return {
+    times: store.results.data.times,
     species_concentrations: store.results.data.species,
     integrated_reaction_rates: store.results.data.integrated_rates,
   };
