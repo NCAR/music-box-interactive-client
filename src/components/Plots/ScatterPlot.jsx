@@ -90,9 +90,11 @@ const ScatterPlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipF
     svg.append('g')
       .attr('transform', `translate(${marginLeft},0)`)
       .style('font-size', `${tickFontSize}px`)
-      .call(d3.axisLeft(y).ticks(height / 40))
-      .call(g => g.select('.domain').remove())
-      .call(g => g.selectAll('.tick line').clone()
+      .call(d3.axisLeft(y).ticks(height / 40)) // add grid lines
+      .call(g => g.select('.domain').remove()) // remove the y axis spine
+      .call(g => g.selectAll('.tick line') // set the tick color
+        .attr('stroke-opacity', 0.1))
+      .call(g => g.selectAll('.tick line').clone() // copy the ticks and stretch them to make horizontal grid lines
         .attr('x2', width - marginLeft - marginRight)
         .attr('stroke-opacity', 0.1))
       .call(g => g.append('text')
