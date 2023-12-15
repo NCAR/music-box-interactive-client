@@ -129,7 +129,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
       return d.name;
     });
 
-    text.style("font-size", "5px")
+    text.style("font-size", "5px");
 
     const zoom = d3
       .zoom()

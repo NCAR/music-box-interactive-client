@@ -5,7 +5,8 @@ import PlotButton from "./PlotButton";
 import { updatePlotUnits } from "../../redux/actions";
 
 const PlotSelector = (props) => {
-  let initialUnits = props.units && props.units.length ? props.units[0] : undefined;
+  let initialUnits =
+    props.units && props.units.length ? props.units[0] : undefined;
   const [units, setUnits] = useState(initialUnits);
 
   const handleChangeUnits = (newUnits) => {
@@ -63,4 +64,4 @@ const PlotSelector = (props) => {
   );
 };
 
-export default connect(null, {updatePlotUnits})(PlotSelector);
+export default connect(null, { updatePlotUnits })(PlotSelector);
