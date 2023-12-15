@@ -9,10 +9,10 @@ function convert(units_in, units_out, data, air_density) {
       return data;
     }
     case "ppm": {
-      return data.map((e, idx) => e * air_density[idx] * 1e6);
+      return data.map((e, idx) => e * air_density[idx] / 1e6);
     }
     case "ppb": {
-      return data.map((e, idx) => e * air_density[idx] * 1e9);
+      return data.map((e, idx) => e * air_density[idx] / 1e9);
     }
     case "mol mol-1": {
       return data.map((e, idx) => e / air_density[idx]);
