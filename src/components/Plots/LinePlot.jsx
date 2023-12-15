@@ -1,16 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFontSize, height }) => {
+const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFontSize, height, precision }) => {
   const svgRef = useRef();
 
   useEffect(() => {
-    // Declare the chart dimensions and margins.
-    const width = height * 1.618;
+    const width = height * 1.618; // golden ratio determins width based off of the height
     const marginTop = 20;
     const marginRight = 10;
     const marginBottom = 80;
-    const marginLeft = 60;
+    const marginLeft = width*.15;
 
     // x and y scales
     const x = d3.scaleLinear().domain(d3.extent(data, d => d.time)).range([marginLeft, width - marginRight]);
@@ -21,8 +20,11 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
       .x(d => x(d.time))
       .y(d => y(d.value));
 
-    // Create the SVG container using react-d3-library.
-    const svg = d3.select(svgRef.current)
+    const svg = d3.select(svgRef.current);
+    // remove old elements
+    svg.selectAll('*').remove();
+
+    svg
       .attr('width', width)
       .attr('height', height)
       .attr('viewBox', [0, 0, width, height])
@@ -58,13 +60,13 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
           .attr('y2', height - marginBottom + marginTop);
 
         tooltipText
-          .text(`Time: ${activeData.time} (s) Temperature: ${Math.round(activeData.value, 3)}`);
+          .text(`Time: ${activeData.time} (s) ${label}: ${activeData.value.toExponential(precision)}`);
 
         const textBBox = tooltipText.node().getBBox();
 
         const bg_width = textBBox.width;
         const bg_height = textBBox.height;
-        tooltipGroup.attr('transform', `translate(${width - bg_width - 3}, ${height - bg_height - 3})`);
+        tooltipGroup.attr('transform', `translate(${marginLeft}, ${height - bg_height - 3})`);
       });
       ;
 
@@ -85,7 +87,11 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
     svg.append('g')
       .attr('transform', `translate(${marginLeft},0)`)
       .style('font-size', `${tickFontSize}px`)
-      .call(d3.axisLeft(y).ticks(height / 40)) // add grid lines
+      .call(
+        d3.axisLeft(y)
+          .ticks(height / 40)  // add grid lines
+          .tickFormat(value => value.toExponential(precision))
+        )
       .call(g => g.select('.domain').remove()) // remove the y axis spine
       .call(g => g.selectAll('.tick line') // set the tick color
         .attr('stroke-opacity', 0.1))
@@ -93,10 +99,10 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
         .attr('x2', width - marginLeft - marginRight)
         .attr('stroke-opacity', 0.1))
       .call(g => g.append('text')
-        .attr('x', marginLeft)
+        .attr('x', -marginLeft+5)
         .attr('y', labelFontSize)
         .attr('fill', 'currentColor')
-        .attr('text-anchor', 'middle')
+        .attr("text-anchor", "start")
         .style('font-size', `${labelFontSize}px`)
         .text(`${label} (${units})`));
 
@@ -141,7 +147,8 @@ LinePlot.defaultProps = {
   labelFontSize: 16,
   tickFontSize: 14,
   toolTipFontSize: 18,
-  height: 400
+  height: 400, 
+  precision:3
 };
 
 

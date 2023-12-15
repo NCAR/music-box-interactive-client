@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 
 const ScatterPlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFontSize, height }) => {
   const svgRef = useRef();
-  const tooltipRef = useRef();
 
   useEffect(() => {
     // Declare the chart dimensions and margins.
@@ -18,7 +17,10 @@ const ScatterPlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipF
     const y = d3.scaleLinear().domain([0, 1.1 * d3.max(data, (d) => d.value)]).range([height - marginBottom, marginTop]);
 
     // Create the SVG container using react-d3-library.
-    const svg = d3.select(svgRef.current)
+    const svg = d3.select(svgRef.current);
+    svg.selectAll('*').remove();
+
+    svg
       .attr('width', width)
       .attr('height', height)
       .attr('viewBox', [0, 0, width, height])
