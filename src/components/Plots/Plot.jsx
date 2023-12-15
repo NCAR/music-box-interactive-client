@@ -4,7 +4,6 @@ import { getPlotDataByType } from "../../redux/selectors";
 import LinePlot from "./LinePlot";
 
 const Plot = (props) => {
-  console.log(props);
   return (
     <>
       {props.contents && (
