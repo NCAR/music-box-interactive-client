@@ -30,6 +30,42 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
       .style('background', 'white')
       .style('border-radius', '8px')
       .style('box-shadow', '0px 0px 10px #c6c6c6')
+      .style('pointer-events', 'all')
+      .on('mouseover', () => {
+        verticalLine.style('opacity', 0.3);
+        tooltipGroup.style('opacity', 1);
+      })
+      .on('mouseout', () => {
+        verticalLine.style('opacity', 0);
+        tooltipGroup.style('opacity', 0);
+      })
+      .on('mousemove', (event) => {
+        const mouseX = d3.pointer(event)[0];
+        const invertedX = x.invert(mouseX);
+        const bisect = d3.bisector((d) => d.time).right;
+        let index = bisect(data, invertedX);
+
+        if (index >= data.length) {
+          index = data.length - 1;
+        }
+
+        const activeData = data[index];
+
+        verticalLine
+          .attr('x1', x(activeData.time))
+          .attr('x2', x(activeData.time))
+          .attr('y1', 2 * marginTop)
+          .attr('y2', height - marginBottom + marginTop);
+
+        tooltipText
+          .text(`Time: ${activeData.time} (s) Temperature: ${Math.round(activeData.value, 3)}`);
+
+        const textBBox = tooltipText.node().getBBox();
+
+        const bg_width = textBBox.width;
+        const bg_height = textBBox.height;
+        tooltipGroup.attr('transform', `translate(${width - bg_width - 3}, ${height - bg_height - 3})`);
+      });
       ;
 
     // Add the x-axis.
@@ -85,47 +121,6 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
       .style('dominant-baseline', 'hanging');
 
 
-    // Create a transparent overlay covering the entire chart area
-    svg.append('rect')
-      .attr('width', width)
-      .attr('height', height)
-      .style('fill', 'none')
-      .style('pointer-events', 'all')
-      .on('mouseover', () => {
-        verticalLine.style('opacity', 0.3);
-        tooltipGroup.style('opacity', 1);
-      })
-      .on('mouseout', () => {
-        verticalLine.style('opacity', 0);
-        tooltipGroup.style('opacity', 0);
-      })
-      .on('mousemove', (event) => {
-        const mouseX = d3.pointer(event)[0];
-        const invertedX = x.invert(mouseX);
-        const bisect = d3.bisector((d) => d.time).right;
-        let index = bisect(data, invertedX);
-
-        if (index >= data.length) {
-          index = data.length - 1;
-        }
-
-        const activeData = data[index];
-
-        verticalLine
-          .attr('x1', x(activeData.time))
-          .attr('x2', x(activeData.time))
-          .attr('y1', 2 * marginTop)
-          .attr('y2', height - marginBottom + marginTop);
-
-        tooltipText
-          .text(`Time: ${activeData.time} (s) Temperature: ${Math.round(activeData.value, 3)}`);
-
-        const textBBox = tooltipText.node().getBBox();
-
-        const bg_width = textBBox.width;
-        const bg_height = textBBox.height;
-        tooltipGroup.attr('transform', `translate(${width - bg_width - 3}, ${height - bg_height - 3})`);
-      });
   }, [data]);
   return (
     <div style={
