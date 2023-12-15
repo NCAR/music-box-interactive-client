@@ -27,7 +27,10 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
       .attr('height', height)
       .attr('viewBox', [0, 0, width, height])
       .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
-      .style('background', 'white');
+      .style('background', 'white')
+      .style('border-radius', '8px')
+      .style('box-shadow', '0px 0px 10px #c6c6c6')
+      ;
 
     // Add the x-axis.
     svg.append('g')
@@ -125,7 +128,11 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
       });
   }, [data]);
   return (
-    <div style={{ position: 'relative', padding: `2px` }}>
+    <div style={
+      {
+        padding: `4px`,
+      }
+    }>
       <svg ref={svgRef} />
     </div>
   );
@@ -134,7 +141,7 @@ const LinePlot = ({ data, label, units, labelFontSize, tickFontSize, toolTipFont
 LinePlot.defaultProps = {
   label: '',
   units: '',
-  labelFontSize: 18,
+  labelFontSize: 16,
   tickFontSize: 14,
   toolTipFontSize: 18,
   height: 400
