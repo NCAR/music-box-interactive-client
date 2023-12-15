@@ -1,4 +1,4 @@
-import { ReactionTypes } from "../../controllers/models"
+import { ReactionTypes } from "../../controllers/models";
 
 export const getMechanism = (store) => store.mechanism;
 
