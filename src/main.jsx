@@ -62,7 +62,7 @@ let routes = [
 if (featureFlags.FLOW_DIAGRAM) {
   routes.push(
     {
-      path: "/d3_flow",
+      path: "/flow_diagram",
       element: <NetworkGraph />,
     }
   );
