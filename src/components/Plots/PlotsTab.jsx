@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PlotSelector from "./PlotSelector";
 import { getPlotsByType, getPlotDataByType } from "../../redux/selectors";
@@ -31,7 +31,7 @@ const PlotsTab = (props) => {
                 activeIndex={activeIndex}
                 setActiveIndex={setActiveIndex}
               />
-            )
+            );
           })}
         </div>
       </div>
