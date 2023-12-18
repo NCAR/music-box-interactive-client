@@ -18,7 +18,7 @@ const LinePlot = ({
   useEffect(() => {
     const width = height * 1.618; // golden ratio determins width based off of the height
     const marginTop = 30;
-    const marginRight = 10;
+    const marginRight = 20;
     const marginBottom = 80;
     const marginLeft = width * 0.15;
 
@@ -125,7 +125,13 @@ const LinePlot = ({
       .style("stroke-width", "1px")
       .style("opacity", 0);
 
-    const tooltipGroup = svg.append("g").style("opacity", 0);
+    const tooltipGroup = svg
+      .append("g")
+      .style("opacity", 0)
+      .attr(
+        "transform",
+        `translate(5, ${height - 2 * toolTipFontSize})`,
+      );
 
     const tooltipTextTime = tooltipGroup
       .append("text")
@@ -144,9 +150,16 @@ const LinePlot = ({
       .style("fill", "steelblue")
       .style("opacity", 0);
 
+    const showToolTip = () => {
+      verticalLine.style("opacity", 0.3);
+      tooltipGroup.style("opacity", 1);
+      dot.style("opacity", 1);
+    }
+
     const updateTooltip = (index) => {
       // allows tooltips to be synchronized across plots
       const activeData = data[index];
+
       verticalLine
         .attr("x1", x(activeData.time))
         .attr("x2", x(activeData.time))
@@ -159,25 +172,16 @@ const LinePlot = ({
       );
 
       dot.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
-
-      tooltipGroup.attr(
-        "transform",
-        `translate(5, ${height - 2 * toolTipFontSize})`,
-      );
     }
 
     if (activeIndex !== null) {
-      verticalLine.style("opacity", 0.3);
-      tooltipGroup.style("opacity", 1);
-      dot.style("opacity", 1);
+      showToolTip()
       updateTooltip(activeIndex)
     }
 
     svg
       .on("mouseover", () => {
-        verticalLine.style("opacity", 0.3);
-        tooltipGroup.style("opacity", 1);
-        dot.style("opacity", 1);
+        showToolTip()
       })
       .on("mouseleave", () => {
         verticalLine.style("opacity", 0);
