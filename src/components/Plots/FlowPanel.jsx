@@ -24,6 +24,7 @@ import {
   setFlowLocalTimeRangeStart,
   setFlowLocalTimeRangeEnd,
 } from "../../redux/actions";
+import MultiRangeSlider from "./MultiRangeSlider";
 
 function FlowPanel(props) {
 
@@ -100,6 +101,26 @@ function FlowPanel(props) {
               </Col>
             </Row>
             <Row>
+              <MultiRangeSlider
+                min={props.timeSteps[0] ? props.timeSteps[0]: 0}
+                max={props.timeSteps[props.timeSteps.length-1] ? props.timeSteps[props.timeSteps.length-1] : 0}
+                minVal={props.localTimeRangeStart}
+                maxVal={props.localTimeRangeEnd}
+                onChange={({min, max}) => {
+                  const startIndex = props.timeSteps.reduce((result, val, idx, arr) => {
+                    return Math.abs(val - min) < Math.abs(arr[result] - min) ? idx : result;
+                  });
+                  const endIndex = props.timeSteps.reduce((result, val, idx, arr) => {
+                    return Math.abs(val - max) < Math.abs(arr[result] - max) ? idx : result;
+                  });
+                  if (startIndex != props.timeRangeStartIndex) {
+                    props.setTimeRangeStartIndex(startIndex, props.reactions, props.results);
+                  }
+                  if (endIndex != props.timeRangeEndIndex) {
+                    props.setTimeRangeEndIndex(endIndex, props.reactions, props.results);
+                  }
+                }}
+              />
             </Row>
           </ListGroup.Item>
           <ListGroup.Item>
