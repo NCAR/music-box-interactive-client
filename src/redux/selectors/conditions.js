@@ -2,6 +2,12 @@ export const getConditions = (store, schema) => {
   return store.conditions[schema.classKey];
 };
 
+export const getCondition = (store, schema, conditionId) => {
+  return store.conditions[schema.classKey].find(
+    (condition) => condition.id === conditionId,
+  );
+};
+
 export const getEvolvingConditions = (store) => store.conditions.evolving;
 
 export const getPossibleConditions = (store) => {

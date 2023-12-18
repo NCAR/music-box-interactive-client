@@ -93,21 +93,12 @@ async function checkRunStatus() {
   }
 }
 
-async function getPlot(plot) {
+async function loadResults() {
   try {
-    const params = {
-      type: plot.id,
-      unit: plot.units && plot.units.length ? plot.units : "n/a",
-      tolerance: plot.tolerance,
-      label: plot.label,
-    };
-    const response = await axios.get(`${apiUrl}/plots/get/`, {
-      params: params,
-      responseType: "arraybuffer",
-    });
+    const response = await axios.get(`${apiUrl}/api/load-results`);
     return response;
   } catch (error) {
-    console.error(`Error getting plot ${plot}: ${error.message}`);
+    console.error(`Error checking run status: ${error.message}`);
     throw error;
   }
 }
@@ -119,6 +110,6 @@ export {
   checkRunStatus,
   fetchExample,
   fetchFlowDiagram,
-  getPlot,
   run,
+  loadResults,
 };

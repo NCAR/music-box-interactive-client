@@ -1,0 +1,37 @@
+@import "./global.css";
+
+.flow_area {
+  background-color: white;
+  text-shadow: -3px -3px 5px white, 3px -3px 5px white, -3px 3px 5px white, 3px 3px 5px white;
+}
+
+.species {
+  stroke:var(--ncar-color-primary-dark-blue);
+  fill:var(--ncar-color-primary-dark-blue);
+  r:5;
+}
+
+.reaction {
+  stroke:var(--ncar-color-primary-light-green);
+  fill:var(--ncar-color-primary-light-green);
+  r:5;
+}
+
+.flux {
+  stroke:var(--ncar-color-primary-dark-green);
+  fill:var(--ncar-color-primary-dark-green);
+}
+
+.reaction_highlighted {
+  stroke:var(--ncar-color-text-highlight-green);
+  fill:var(--ncar-color-text-highlight-green);
+}
+
+.tooltip {
+  opacity: 0;
+  background-color: white;
+  border: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  padding: 5px;
+}

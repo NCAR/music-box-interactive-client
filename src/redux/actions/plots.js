@@ -13,3 +13,10 @@ export const removePlot = (content) => {
     payload: { content },
   };
 };
+
+export const updatePlotUnits = (content) => {
+  return {
+    type: utils.action_types.UPDATE_PLOT_UNITS,
+    payload: { content },
+  };
+};

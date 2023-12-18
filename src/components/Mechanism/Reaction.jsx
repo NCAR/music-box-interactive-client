@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeReaction } from "../../redux/actions";
+import { ReactionTypes } from "../../controllers/models";
 
 const Reaction = ({ item: reaction, details, setDetails, removeReaction }) => {
   const handleDetailClick = (e) => {
@@ -26,7 +27,9 @@ const Reaction = ({ item: reaction, details, setDetails, removeReaction }) => {
         onClick={handleDetailClick}
         onKeyDown={handleDetailClick}
       >
-        <span className="reaction-detail-link">{reaction.shortName()}</span>
+        <span className="reaction-detail-link">
+          {ReactionTypes.shortName(reaction)}
+        </span>
       </button>
       <button
         type="button"
@@ -39,7 +42,7 @@ const Reaction = ({ item: reaction, details, setDetails, removeReaction }) => {
             className="oi oi-x"
             toggle="tooltip"
             aria-hidden="true"
-            title={`remove ${reaction.shortName()}`}
+            title={`remove ${ReactionTypes.shortName(reaction)}`}
           ></span>
         </span>
       </button>

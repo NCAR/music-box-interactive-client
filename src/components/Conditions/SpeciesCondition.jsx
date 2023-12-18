@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import { addCondition } from "../../redux/actions";
 import RemoveCondition from "./RemoveCondition";
-import { getConditions, getVariableSpeciesNames } from "../../redux/selectors";
+import { getCondition, getVariableSpeciesNames } from "../../redux/selectors";
 
 const SpeciesCondition = (props) => {
   const condition = props.condition;
@@ -24,9 +24,7 @@ const SpeciesCondition = (props) => {
       <div className="col-5">
         <Dropdown>
           <Dropdown.Toggle variant="success" className="btn btn-light">
-            {condition.name && condition.name.length
-              ? condition.name
-              : "<select>"}
+            {condition.name || "<select>"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {schema.allowAddRemove
@@ -92,7 +90,7 @@ const SpeciesCondition = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    condition: getConditions(state, ownProps.schema)[ownProps.conditionId],
+    condition: getCondition(state, ownProps.schema, ownProps.conditionId),
     speciesNames: getVariableSpeciesNames(state),
   };
 };

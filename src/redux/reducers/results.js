@@ -7,6 +7,14 @@ const initialState = {
     message:
       "Your ship has sunk. If you try to get help from the dolphin, go to page 34.",
   },
+  data: {
+    times: [],
+    temperature: [],
+    pressure: [],
+    air_density: [],
+    species: [],
+    integrated_rates: {},
+  },
 };
 
 export const resultsReducer = (state = initialState, action) => {
@@ -21,6 +29,40 @@ export const resultsReducer = (state = initialState, action) => {
         ...state,
         runStatus: action.payload.content.status,
         error: action.payload.content.error,
+      };
+    }
+    case utils.action_types.RESULTS_LOADED: {
+      const data = action.payload.content;
+
+      // get the integrated reaction rates
+      const irr_keys = Object.keys(data).filter((key) => key.includes("irr__"));
+      const irr_data = {};
+      irr_keys.forEach((key) => {
+        irr_data[key.substring(10)] = data[key]; // trims `CONC.irr__`
+      });
+
+      // get the species concentrations
+      const concentration_keys = Object.keys(data).filter(
+        (key) => key.includes("CONC.") && !key.includes("irr__"),
+      );
+      const concentrations = [];
+      concentration_keys.forEach((key) => {
+        concentrations.push({
+          name: key.substring(5),
+          concentration: data[key],
+        });
+      });
+
+      return {
+        ...state,
+        data: {
+          times: data.time,
+          pressure: data["ENV.pressure"],
+          temperature: data["ENV.temperature"],
+          air_density: data["ENV.number_density_air"],
+          integrated_rates: irr_data,
+          species: concentrations,
+        },
       };
     }
     default:

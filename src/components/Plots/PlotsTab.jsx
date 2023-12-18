@@ -20,8 +20,8 @@ const PlotsTab = (props) => {
           </div>
         </div>
         <div className="col mh-100 overflow-auto">
-          {props.plots.map((plot, index) => {
-            return <Plot plot={plot} key={`plot-${index}`} />;
+          {props.plots.map((plot) => {
+            return <Plot plot={plot} key={`plot-${plot.id}`} />;
           })}
         </div>
       </div>

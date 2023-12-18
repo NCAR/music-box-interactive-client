@@ -6,12 +6,13 @@ import { Helmet } from "react-helmet-async";
 import { useDispatch, connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { doRun, resetPlots } from "../redux/actions";
-import { showCookieBanner, hideCookieBanner } from "../redux/actions";
+import { hideCookieBanner } from "../redux/actions";
 import {
   getMechanism,
   getAllConditions,
   getEvolvingTable,
   getRunStatus,
+  getShowCookieBanner,
 } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
@@ -21,6 +22,7 @@ import { useVeiwPort } from "../hooks/useVeiwPort";
 function Layout(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [menuIsOpen, setMenuIsOpen] = useState(true);
 
   // you can change breakPoint aligned with your design
   const { isOpen: menuIsOpen, setIsOpen: setMenuIsOpen } = useVeiwPort({
@@ -45,7 +47,7 @@ function Layout(props) {
     }
   };
 
-  const title = `MusicBox Interactive ${process.env.VITE_APP_VERSION}`;
+  const title = `MusicBox ${process.env.VITE_APP_VERSION}`;
 
   return (
     <>
@@ -172,17 +174,17 @@ function Layout(props) {
             <div className={styles.footer}>
               <div className="row justify-content-around">
                 <div className="col-md offset-md-1">
-                  <a className="footer-link" href="/home#behind-the-music">
+                  <a className="footer-link" href="/#behind-the-music">
                     <h5>About</h5>
                   </a>
                   <ul className="list-unstyled text-small">
-                    <a className="footer-link" href="/home#collaborators">
+                    <a className="footer-link" href="/#collaborators">
                       <li>Collaborators</li>
                     </a>
-                    <a className="footer-link" href="/home#sponsors">
+                    <a className="footer-link" href="/#sponsors">
                       <li>Sponsors</li>
                     </a>
-                    <a className="footer-link" href="/home#contact">
+                    <a className="footer-link" href="/#contact">
                       <li>Contact us</li>
                     </a>
                   </ul>
@@ -239,10 +241,8 @@ const mapStateToProps = (state) => {
     mechanism: mechanism,
     conditions: conditions,
     runStatus: getRunStatus(state),
-    cookieBannerVisible: state.cookies.cookieBannerVisible,
+    cookieBannerVisible: getShowCookieBanner(state),
   };
 };
 
-export default connect(mapStateToProps, { showCookieBanner, hideCookieBanner })(
-  Layout,
-);
+export default connect(mapStateToProps, { hideCookieBanner })(Layout);

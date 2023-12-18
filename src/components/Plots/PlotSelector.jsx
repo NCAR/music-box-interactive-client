@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import PlotButton from "./PlotButton";
+import { updatePlotUnits } from "../../redux/actions";
 
 const PlotSelector = (props) => {
-  const [units, setUnits] = useState(
-    props.units && props.units.length ? props.units[0] : undefined,
-  );
+  let initialUnits =
+    props.units && props.units.length ? props.units[0] : undefined;
+  const [units, setUnits] = useState(initialUnits);
 
   const handleChangeUnits = (newUnits) => {
     setUnits(newUnits);
+    props.updatePlotUnits({ type: props.type, units: newUnits });
   };
 
   return (
@@ -62,4 +64,4 @@ const PlotSelector = (props) => {
   );
 };
 
-export default connect()(PlotSelector);
+export default connect(null, { updatePlotUnits })(PlotSelector);

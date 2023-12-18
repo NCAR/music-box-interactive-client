@@ -1,16 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
+import { getPlotDataByType } from "../../redux/selectors";
+import LinePlot from "./LinePlot";
 
 const Plot = (props) => {
   return (
-    <div>
-      {props.plot.srcValue ? (
-        <img alt={props.plot.label} src={props.plot.srcValue} />
-      ) : (
-        <>Plot for {props.plot.label}</>
+    <>
+      {props.contents && (
+        <LinePlot
+          data={props.contents.data}
+          label={props.contents.label}
+          units={props.contents.units}
+        />
       )}
-    </div>
+    </>
   );
 };
 
-export default connect()(Plot);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    contents: getPlotDataByType(state, ownProps.plot),
+  };
+};
+
+export default connect(mapStateToProps)(Plot);

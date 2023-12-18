@@ -4,9 +4,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { addCondition } from "../../redux/actions";
 import RemoveCondition from "./RemoveCondition";
 import {
-  getConditions,
-  getUserDefinedRates,
-  getReaction,
+  getCondition,
   getUserDefinedRatesIds,
   getPossibleUnits,
 } from "../../redux/selectors";
@@ -103,9 +101,7 @@ const ReactionCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const condition = getConditions(state, ownProps.schema).find(
-    (condition) => condition.id === ownProps.conditionId,
-  );
+  const condition = getCondition(state, ownProps.schema, ownProps.conditionId);
   return {
     condition: condition,
     reactionNames: getUserDefinedRatesIds(state),
