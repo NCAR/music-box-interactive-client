@@ -28,11 +28,6 @@
   fill:var(--ncar-color-text-highlight-green);
 }
 
-text {
-  font: 5px sans-sarif;
-  pointer-events: none;
-}
-
 .tooltip {
   opacity: 0;
   background-color: white;

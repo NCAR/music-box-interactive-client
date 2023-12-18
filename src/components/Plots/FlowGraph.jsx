@@ -135,9 +135,14 @@ function FlowGraph({ nodes, links, fluxRange }) {
 
     const text = g.selectAll("g").data(nodes).join("g");
 
-    text.append("svg:text").text((d) => {
-      return d.name;
-    });
+    text
+      .append("svg:text")
+      .text((d) => {
+        return d.name;
+      })
+      .style("font-size", `4px`)
+      .attr("font-family", "sans-serif")
+      ;
 
     const zoom = d3
       .zoom()

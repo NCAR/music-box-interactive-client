@@ -135,7 +135,7 @@ function Layout(props) {
               {featureFlags.FLOW_DIAGRAM && (
                 <>
                   <NavLink
-                    to="/d3_flow"
+                    to="/flow_diagram"
                     className={({ isActive }) =>
                       ["nav-link", isActive ? "active" : ""].join(" ")
                     }
