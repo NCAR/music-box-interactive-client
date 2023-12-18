@@ -1,7 +1,9 @@
 import { getMechanism, getSpeciesNames } from "./mechanism";
 import { ReactionTypes } from "../../controllers/models";
 
-export const getPlotsByType = (store, plotType) => store.plots[plotType].plots;
+export const getPlotsByType = (store, plotType) => {
+  return store.plots[plotType].plots;
+};
 
 export const getSpeciesPlots = (store) => {
   const speciesNames = getSpeciesNames(store);
@@ -20,18 +22,18 @@ export const getReactionPlots = (store) => {
     if (reaction.data.type === ReactionTypes.WENNBERG_NO_RO2) {
       list.push({
         label: strLabel + " primary",
-        id: `CONC.irr__${index}a`,
+        id: `CONC.irr__${reaction.id}a`,
         index: index,
       });
       list.push({
         label: strLabel + " secondary",
-        id: `CONC.irr__${index}b`,
+        id: `CONC.irr__${reaction.id}b`,
         index: index,
       });
     } else {
       list.push({
         label: strLabel,
-        id: `CONC.irr__${index}`,
+        id: `CONC.irr__${reaction.id}`,
         index: index,
       });
     }

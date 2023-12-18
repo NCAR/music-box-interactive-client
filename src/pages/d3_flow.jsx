@@ -1,11 +1,11 @@
-import { connect } from "react-redux"
-import React from "react"
-import { Container, Row, Col } from "react-bootstrap"
-import Layout from "../components/Layout"
-import FlowPanel from "../components/Plots/FlowPanel"
-import FlowGraph from "../components/Plots/FlowGraph"
-import { getRunStatus } from "../redux/selectors"
-import { RunStatus } from "../controllers/models"
+import { connect } from "react-redux";
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import Layout from "../components/Layout";
+import FlowPanel from "../components/Plots/FlowPanel";
+import FlowGraph from "../components/Plots/FlowGraph";
+import { getRunStatus } from "../redux/selectors";
+import { RunStatus } from "../controllers/models";
 
 function D3Flow(props) {
   return (
@@ -26,7 +26,9 @@ function D3Flow(props) {
           </Container>
         ) : (
           <p>
-            {" "} The flow diagram will be available once a model run has been completed.{" "}
+            {" "}
+            The flow diagram will be available once a model run has been
+            completed.{" "}
           </p>
         )}
       </main>
@@ -37,7 +39,7 @@ function D3Flow(props) {
 const mapStateToProps = (state) => {
   return {
     runStatus: getRunStatus(state),
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(D3Flow);

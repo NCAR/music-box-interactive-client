@@ -46,6 +46,25 @@ export const plotsReducer = (state = initialState, action) => {
         },
       };
     }
+    case utils.action_types.UPDATE_PLOT_UNITS: {
+      const type = action.payload.content.type;
+      const units = action.payload.content.units;
+      switch (type) {
+        case "species":
+        case "reactions": {
+          return {
+            ...state,
+            [type]: {
+              ...state[type],
+              plots: state[type].plots.map((a) => ({ ...a, units: units })),
+            },
+          };
+        }
+        case "environment": {
+          return state;
+        }
+      }
+    }
     default:
       return state;
   }

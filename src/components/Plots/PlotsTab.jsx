@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PlotSelector from "./PlotSelector";
-import Plot from "./Plot";
-import { getPlotsByType } from "../../redux/selectors";
+import { getPlotsByType, getPlotDataByType } from "../../redux/selectors";
+import LinePlot from "./LinePlot";
 
 const PlotsTab = (props) => {
+  const [activeIndex, setActiveIndex] = useState(null);
   return (
     <div className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
       <div className="row flex-grow-1 overflow-hidden">
@@ -20,8 +21,17 @@ const PlotsTab = (props) => {
           </div>
         </div>
         <div className="col mh-100 overflow-auto">
-          {props.plots.map((plot, index) => {
-            return <Plot plot={plot} key={`plot-${index}`} />;
+          {props.plots.map((plot) => {
+            return (
+              <LinePlot
+                key={plot.label}
+                data={plot.data}
+                label={plot.label}
+                units={plot.units}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+              />
+            );
           })}
         </div>
       </div>
@@ -30,8 +40,10 @@ const PlotsTab = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  const avilablePlots = getPlotsByType(state, ownProps.plotType);
+  const plotData = avilablePlots.map((plot) => getPlotDataByType(state, plot));
   return {
-    plots: getPlotsByType(state, ownProps.plotType),
+    plots: plotData,
   };
 };
 

@@ -114,17 +114,23 @@ const ReactionTypes = Object.freeze({
       case this.EMISSION:
         return [];
       case this.FIRST_ORDER_LOSS:
-        return reaction.data.species !== undefined ?
-        [{
-          name: reaction.data.species,
-          coefficient: 1.0
-        }] : [];
+        return reaction.data.species !== undefined
+          ? [
+              {
+                name: reaction.data.species,
+                coefficient: 1.0,
+              },
+            ]
+          : [];
       case this.PHOTOLYSIS:
-        return reaction.data.reactant !== undefined ?
-        [{
-          name: reaction.data.reactant,
-          coefficient: 1.0
-        }] : [];
+        return reaction.data.reactant !== undefined
+          ? [
+              {
+                name: reaction.data.reactant,
+                coefficient: 1.0,
+              },
+            ]
+          : [];
     }
   },
   products(reaction) {
@@ -136,11 +142,14 @@ const ReactionTypes = Object.freeze({
       case this.PHOTOLYSIS:
         return reaction.data.products;
       case this.EMISSION:
-        return reaction.data.species !== undefined ?
-        [{
-          name: reaction.data.species,
-          yield: 1.0
-        }] : [];
+        return reaction.data.species !== undefined
+          ? [
+              {
+                name: reaction.data.species,
+                yield: 1.0,
+              },
+            ]
+          : [];
       case this.FIRST_ORDER_LOSS:
         return [];
       case this.WENNBERG_NO_RO2:
@@ -149,7 +158,7 @@ const ReactionTypes = Object.freeze({
           ...reaction.data.secondary_products,
         ];
     }
-  }
+  },
 });
 
 export { ReactionTypes, RunStatus };
