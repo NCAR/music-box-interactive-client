@@ -11,7 +11,7 @@ const MultiRangeSlider = ({ min, max, minVal, maxVal, onChange }) => {
   // Convert to percentage
   const getPercent = useCallback(
     (value) => Math.round(((value - min) / (max - min)) * 100),
-    [min, max]
+    [min, max],
   );
 
   // Set width of the range to decrease from the left side
@@ -56,7 +56,7 @@ const MultiRangeSlider = ({ min, max, minVal, maxVal, onChange }) => {
           onChange({ min: +event.target.value, max: maxVal });
         }}
         className={classnames("thumb thumb--zindex-3", {
-          "thumb--zindex-5": minVal > max - 100
+          "thumb--zindex-5": minVal > max - 100,
         })}
       />
       <input
@@ -86,7 +86,7 @@ MultiRangeSlider.propTypes = {
   max: PropTypes.number.isRequired,
   minVal: PropTypes.number.isRequired,
   maxVal: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default MultiRangeSlider;

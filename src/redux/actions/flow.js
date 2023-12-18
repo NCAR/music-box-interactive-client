@@ -50,7 +50,7 @@ export const setFlowLocalTimeRangeStart = (content) => {
 };
 
 export const setFlowLocalTimeRangeEnd = (content) => {
-  return { 
+  return {
     type: utils.action_types.SET_FLOW_LOCAL_TIME_RANGE_END,
     payload: { content },
   };
