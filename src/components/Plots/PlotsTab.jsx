@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
 import PlotSelector from "./PlotSelector";
 import { getPlotsByType, getPlotDataByType } from "../../redux/selectors";
 import LinePlot from "./LinePlot";
 
 const PlotsTab = (props) => {
+  const [activeIndex, setActiveIndex] = useState(null);
   return (
     <div className="container-fluid p-2 d-flex flex-column vh-100 overflow-hidden">
       <div className="row flex-grow-1 overflow-hidden">
@@ -27,6 +28,8 @@ const PlotsTab = (props) => {
                 data={plot.data}
                 label={plot.label}
                 units={plot.units}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
               />
             )
           })}

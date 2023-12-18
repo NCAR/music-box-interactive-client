@@ -10,6 +10,8 @@ const LinePlot = ({
   toolTipFontSize,
   height,
   precision,
+  setActiveIndex,
+  activeIndex
 }) => {
   const svgRef = useRef();
 
@@ -121,8 +123,7 @@ const LinePlot = ({
       .attr("class", "vertical-line")
       .style("stroke", "black")
       .style("stroke-width", "1px")
-      .style("opacity", 0.0)
-      ;
+      .style("opacity", 0);
 
     const tooltipGroup = svg.append("g").style("opacity", 0);
 
@@ -143,57 +144,62 @@ const LinePlot = ({
       .style("fill", "steelblue")
       .style("opacity", 0);
 
+    const updateTooltip = (index) => {
+      // allows tooltips to be synchronized across plots
+      const activeData = data[index];
+      verticalLine
+        .attr("x1", x(activeData.time))
+        .attr("x2", x(activeData.time))
+        .attr("y1", marginTop)
+        .attr("y2", height - marginBottom + marginTop);
+
+      tooltipTextTime.text(`${activeData.time} (s)`);
+      tooltipTextValue.text(
+        `${activeData.value} (${units})`,
+      );
+
+      dot.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
+
+      tooltipGroup.attr(
+        "transform",
+        `translate(5, ${height - 2 * toolTipFontSize})`,
+      );
+    }
+
+    if (activeIndex !== null) {
+      verticalLine.style("opacity", 0.3);
+      tooltipGroup.style("opacity", 1);
+      dot.style("opacity", 1);
+      updateTooltip(activeIndex)
+    }
+
     svg
       .on("mouseover", () => {
         verticalLine.style("opacity", 0.3);
         tooltipGroup.style("opacity", 1);
         dot.style("opacity", 1);
       })
-      .on("mouseout", () => {
+      .on("mouseleave", () => {
         verticalLine.style("opacity", 0);
         tooltipGroup.style("opacity", 0);
         dot.style("opacity", 0);
+        setActiveIndex(null);
       })
       .on("mousemove", (event) => {
-        const mouseX = d3.pointer(event)[0];
-        const invertedX = x.invert(mouseX);
-        const bisect = d3.bisector((d) => d.time).right;
-        let index = bisect(data, invertedX);
-
-        if (index >= data.length) {
-          index = data.length - 1;
-        }
-
-        const activeData = data[index];
-
-        verticalLine
-          .attr("x1", x(activeData.time))
-          .attr("x2", x(activeData.time))
-          .attr("y1", marginTop)
-          .attr("y2", height - marginBottom + marginTop);
-
-        tooltipTextTime.text(`${activeData.time} (s)`);
-        tooltipTextValue.text(
-          `${activeData.value} (${units})`,
-        );
-
-        dot.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
-
-        tooltipGroup.attr(
-          "transform",
-          `translate(5, ${height - 2 * toolTipFontSize})`,
-        );
+        const bisect = d3.bisector((d) => d.time).center;
+        const index = bisect(data, x.invert(d3.pointer(event)[0]));
+        updateTooltip(index)
+        setActiveIndex(index)
       });
 
-  }, [data]);
+  }, [data, activeIndex]);
   return (
     <div
       style={{
         padding: `4px`,
       }}
     >
-      <svg ref={svgRef} >
-      </svg>
+      <svg ref={svgRef} />
     </div>
   );
 };
