@@ -1,13 +1,4 @@
-FROM fedora:37
-
-# install packages
-RUN dnf -y update \
-    && dnf -y install \
-        gcc \
-        g++ \
-        make \
-        nodejs \
-    && dnf clean all
+FROM node:19-bullseye
 
 RUN npm install -g vite
 
