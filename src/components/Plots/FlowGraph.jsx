@@ -26,7 +26,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
        .enter().append("svg:marker")
        .attr("id", String)
        .attr("viewBox", "0 -5 10 10")
-       .attr("refX", 19)
+       .attr("refX", 23)
        .attr("refY", 0.0)
        .attr("markerWidth", 6)
        .attr("markerHeight", 6)
@@ -52,17 +52,22 @@ function FlowGraph({ nodes, links, fluxRange }) {
         .links(links)
       );
 
-    const link = g.selectAll("line")
+    const link = g.selectAll("line.edge")
       .data(links)
       .join("line")
       .attr("class", (d) => { return styles[d.className]; })
-      .attr("marker-end", "url(#arrow)")
       .style("stroke-width", (d) => { 
         if (fluxRange.isLogScale) {
           return (Math.log(d.flux) - Math.log(fluxRange.min)) / (Math.log(fluxRange.max) - Math.log(fluxRange.min)) * fluxRange.maxArrowWidth + 0.5;
         } else{
           return (d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min) * fluxRange.maxArrowWidth + 0.5;
         }});
+
+    const linkArrow = g.selectAll("line.arrow")
+      .data(links)
+      .join("line")
+      .attr("class", (d) => { return styles[d.className]; })
+      .attr("marker-end", "url(#arrow)");
 
     link.append("title").text((d) => {
       return `Flux: ${d.flux} mol m-3`;
@@ -113,6 +118,13 @@ function FlowGraph({ nodes, links, fluxRange }) {
         .attr("y1", (d) => { return d.source.y; })
         .attr("x2", (d) => { return d.target.x; })
         .attr("y2", (d) => { return d.target.y; });
+      
+      linkArrow
+        .attr("x1", (d) => { return d.source.x; })
+        .attr("y1", (d) => { return d.source.y; })
+        .attr("x2", (d) => { return d.target.x; })
+        .attr("y2", (d) => { return d.target.y; });
+         
       node
         .attr("cx", (d) => { return d.x; })
         .attr("cy", (d) => { return d.y; });

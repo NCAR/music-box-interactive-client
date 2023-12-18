@@ -20,6 +20,7 @@
 .flux {
   stroke:var(--ncar-color-primary-dark-green);
   fill:var(--ncar-color-primary-dark-green);
+  stroke-width: 1px;
 }
 
 .reaction_highlighted {
