@@ -25,11 +25,11 @@ const LinePlot = ({
     // x and y scales
     const x = d3
       .scaleLinear()
-      .domain(d3.extent(data, (d) => d.time))
+      .domain([0, 1.02 * d3.max(data, (d) => d.time)])
       .range([marginLeft, width - marginRight]);
     const y = d3
       .scaleLinear()
-      .domain([0, 1.1 * d3.max(data, (d) => d.value)])
+      .domain([0, 1.02 * d3.max(data, (d) => d.value)])
       .range([height - marginBottom, marginTop]);
 
     // Declare the line generator.
