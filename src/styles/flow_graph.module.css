@@ -8,23 +8,29 @@
 .species {
   stroke:var(--ncar-color-primary-dark-blue);
   fill:var(--ncar-color-primary-dark-blue);
-  r:5;
+  r:8;
 }
 
 .reaction {
   stroke:var(--ncar-color-primary-light-green);
   fill:var(--ncar-color-primary-light-green);
-  r:5;
+  r:8;
 }
 
 .flux {
   stroke:var(--ncar-color-primary-dark-green);
   fill:var(--ncar-color-primary-dark-green);
+  stroke-width: 1px;
 }
 
 .reaction_highlighted {
   stroke:var(--ncar-color-text-highlight-green);
   fill:var(--ncar-color-text-highlight-green);
+}
+
+text {
+  font: 5px sans-sarif;
+  pointer-events: none;
 }
 
 .tooltip {

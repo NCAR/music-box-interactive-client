@@ -20,3 +20,38 @@ export const setIsFlowPlotLogScale = (content) => {
     payload: { content },
   };
 };
+
+export const setFlowMaxArrowWidth = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_MAX_ARROW_WIDTH,
+    payload: { content },
+  };
+};
+
+export const setFlowTimeRangeStartIndex = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_TIME_RANGE_START_INDEX,
+    payload: { content },
+  };
+};
+
+export const setFlowTimeRangeEndIndex = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_TIME_RANGE_END_INDEX,
+    payload: { content },
+  };
+};
+
+export const setFlowLocalTimeRangeStart = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_LOCAL_TIME_RANGE_START,
+    payload: { content },
+  };
+};
+
+export const setFlowLocalTimeRangeEnd = (content) => {
+  return { 
+    type: utils.action_types.SET_FLOW_LOCAL_TIME_RANGE_END,
+    payload: { content },
+  };
+};
