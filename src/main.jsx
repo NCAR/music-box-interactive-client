@@ -7,7 +7,6 @@ import Conditions from "./pages/conditions";
 import Results from "./pages/results";
 import Plots from "./pages/plots";
 import NetworkGraph from "./pages/d3_flow";
-import FlowDiagram from "./pages/flow_diagram";
 import Download from "./pages/downloads";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store/createStore";
@@ -65,11 +64,7 @@ if (featureFlags.FLOW_DIAGRAM) {
     {
       path: "/d3_flow",
       element: <NetworkGraph />,
-    },
-    {
-      path: "/flow_diagram",
-      element: <FlowDiagram />,
-    },
+    }
   );
 }
 
