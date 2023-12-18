@@ -60,12 +60,10 @@ let routes = [
 ];
 
 if (featureFlags.FLOW_DIAGRAM) {
-  routes.push(
-    {
-      path: "/flow_diagram",
-      element: <NetworkGraph />,
-    }
-  );
+  routes.push({
+    path: "/flow_diagram",
+    element: <NetworkGraph />,
+  });
 }
 
 const router = createBrowserRouter(routes);
