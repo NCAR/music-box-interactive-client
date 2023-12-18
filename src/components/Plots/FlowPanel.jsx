@@ -27,6 +27,12 @@ import {
 import MultiRangeSlider from "./MultiRangeSlider";
 
 function FlowPanel(props) {
+
+  useEffect(() => {
+    props.setTimeRangeStartIndex(0, props.reactions, props.results);
+    props.setTimeRangeEndIndex(props.timeSteps.length-1, props.reactions, props.results);
+  }, [ props.timeSteps ]);
+
   return (
     <nav>
       <ListGroup
