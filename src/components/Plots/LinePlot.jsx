@@ -121,7 +121,8 @@ const LinePlot = ({
       .attr("class", "vertical-line")
       .style("stroke", "black")
       .style("stroke-width", "1px")
-      .style("opacity", 0.0);
+      .style("opacity", 0.0)
+      ;
 
     const tooltipGroup = svg.append("g").style("opacity", 0);
 
@@ -191,7 +192,8 @@ const LinePlot = ({
         padding: `4px`,
       }}
     >
-      <svg ref={svgRef} />
+      <svg ref={svgRef} >
+      </svg>
     </div>
   );
 };

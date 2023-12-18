@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import PlotSelector from "./PlotSelector";
-import Plot from "./Plot";
-import { getPlotsByType } from "../../redux/selectors";
+import { getPlotsByType, getPlotDataByType } from "../../redux/selectors";
+import LinePlot from "./LinePlot";
 
 const PlotsTab = (props) => {
   return (
@@ -21,7 +21,14 @@ const PlotsTab = (props) => {
         </div>
         <div className="col mh-100 overflow-auto">
           {props.plots.map((plot) => {
-            return <Plot plot={plot} key={`plot-${plot.id}`} />;
+            return (
+              <LinePlot
+                key={plot.label}
+                data={plot.data}
+                label={plot.label}
+                units={plot.units}
+              />
+            )
           })}
         </div>
       </div>
@@ -30,8 +37,10 @@ const PlotsTab = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  const avilablePlots = getPlotsByType(state, ownProps.plotType);
+  const plotData = avilablePlots.map((plot) => getPlotDataByType(state, plot));
   return {
-    plots: getPlotsByType(state, ownProps.plotType),
+    plots: plotData,
   };
 };
 
