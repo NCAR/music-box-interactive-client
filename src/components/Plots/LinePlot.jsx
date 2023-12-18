@@ -11,7 +11,7 @@ const LinePlot = ({
   height,
   precision,
   setActiveIndex,
-  activeIndex
+  activeIndex,
 }) => {
   const svgRef = useRef();
 
@@ -128,10 +128,7 @@ const LinePlot = ({
     const tooltipGroup = svg
       .append("g")
       .style("opacity", 0)
-      .attr(
-        "transform",
-        `translate(5, ${height - 2 * toolTipFontSize})`,
-      );
+      .attr("transform", `translate(5, ${height - 2 * toolTipFontSize})`);
 
     const tooltipTextTime = tooltipGroup
       .append("text")
@@ -154,7 +151,7 @@ const LinePlot = ({
       verticalLine.style("opacity", 0.3);
       tooltipGroup.style("opacity", 1);
       dot.style("opacity", 1);
-    }
+    };
 
     const updateTooltip = (index) => {
       // allows tooltips to be synchronized across plots
@@ -167,21 +164,19 @@ const LinePlot = ({
         .attr("y2", height - marginBottom + marginTop);
 
       tooltipTextTime.text(`${activeData.time} (s)`);
-      tooltipTextValue.text(
-        `${activeData.value} (${units})`,
-      );
+      tooltipTextValue.text(`${activeData.value} (${units})`);
 
       dot.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
-    }
+    };
 
     if (activeIndex !== null) {
-      showToolTip()
-      updateTooltip(activeIndex)
+      showToolTip();
+      updateTooltip(activeIndex);
     }
 
     svg
       .on("mouseover", () => {
-        showToolTip()
+        showToolTip();
       })
       .on("mouseleave", () => {
         verticalLine.style("opacity", 0);
@@ -192,10 +187,9 @@ const LinePlot = ({
       .on("mousemove", (event) => {
         const bisect = d3.bisector((d) => d.time).center;
         const index = bisect(data, x.invert(d3.pointer(event)[0]));
-        updateTooltip(index)
-        setActiveIndex(index)
+        updateTooltip(index);
+        setActiveIndex(index);
       });
-
   }, [data, activeIndex]);
   return (
     <div

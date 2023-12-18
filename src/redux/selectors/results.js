@@ -22,16 +22,21 @@ export const getPlotDataByType = (store, plot) => {
         units: plot.units,
       };
     } else {
-      let which = plot.id.substring(5)
+      let which = plot.id.substring(5);
       let conc = getResultSpeciesConcentration(store, which);
-      let data = convert('mol m-3', plot.units, conc , store.results.data.air_density)
+      let data = convert(
+        "mol m-3",
+        plot.units,
+        conc,
+        store.results.data.air_density,
+      );
       return {
         data: store.results.data.times.map((elem, idx) => {
-          return { "time": elem, value: data[idx] }
+          return { time: elem, value: data[idx] };
         }),
         label: plot.label,
-        units: plot.units
-      }
+        units: plot.units,
+      };
     }
   } else if (plot.id.startsWith("ENV.")) {
     let which = plot.id.substring(4);
