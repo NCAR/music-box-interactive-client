@@ -17,11 +17,17 @@ import {
 import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
 import { useNavigate } from "react-router-dom";
+import { useVeiwPort } from "../hooks/useVeiwPort";
 
 function Layout(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [menuIsOpen, setMenuIsOpen] = useState(true);
+
+  // you can change breakPoint aligned with your design
+  const { isOpen: menuIsOpen, setIsOpen: setMenuIsOpen } = useVeiwPort({
+    breakPoint: 836,
+  });
 
   const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
 
