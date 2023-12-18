@@ -141,8 +141,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
         return d.name;
       })
       .style("font-size", `4px`)
-      .attr("font-family", "sans-serif")
-      ;
+      .attr("font-family", "sans-serif");
 
     const zoom = d3
       .zoom()
