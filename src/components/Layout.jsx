@@ -135,22 +135,13 @@ function Layout(props) {
               {featureFlags.FLOW_DIAGRAM && (
                 <>
                   <NavLink
-                    to="/flow_diagram"
-                    className={({ isActive }) =>
-                      ["nav-link", isActive ? "active" : ""].join(" ")
-                    }
-                  >
-                    <span className="oi oi-fork oi-prefix"></span>
-                    Flow Diagram
-                  </NavLink>
-                  <NavLink
                     to="/d3_flow"
                     className={({ isActive }) =>
                       ["nav-link", isActive ? "active" : ""].join(" ")
                     }
                   >
                     <span className="oi oi-fork oi-prefix"></span>
-                    d3_flow
+                    Flow Diagram
                   </NavLink>
                 </>
               )}
