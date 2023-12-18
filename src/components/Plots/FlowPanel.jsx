@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
-import { connect } from "react-redux"
-import { Form, ListGroup, Col, Row } from "react-bootstrap"
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Form, ListGroup, Col, Row } from "react-bootstrap";
 import {
   getMechanism,
   getReactionDependencies,
@@ -27,11 +27,18 @@ import {
 import MultiRangeSlider from "./MultiRangeSlider";
 
 function FlowPanel(props) {
-
   return (
     <nav>
-      <ListGroup className="bg-ncar-menu-secondary p-2 text-center" style={{ height: `100%` }}>
-        <Form onSubmit={(e) => { e.disableDefault(); }} id="flow-graph-config-panel">
+      <ListGroup
+        className="bg-ncar-menu-secondary p-2 text-center"
+        style={{ height: `100%` }}
+      >
+        <Form
+          onSubmit={(e) => {
+            e.disableDefault();
+          }}
+          id="flow-graph-config-panel"
+        >
           <ListGroup.Item>
             <Form.Label htmlFor="flow-scale-select">
               Arrow Width Scaling:
@@ -39,7 +46,11 @@ function FlowPanel(props) {
             <Form.Select
               value={props.isLogScale ? "log" : "linear"}
               onChange={(e) => {
-                props.setIsLogScale(!props.isLogScale, props.reactions, props.results);
+                props.setIsLogScale(
+                  !props.isLogScale,
+                  props.reactions,
+                  props.results,
+                );
               }}
             >
               <option value="log">Log</option>
@@ -55,29 +66,46 @@ function FlowPanel(props) {
               max="15"
               value={props.maxArrowWidth}
               onChange={(e) => {
-                props.setMaxArrowWidth(e.target.value, props.reactions, props.results);
+                props.setMaxArrowWidth(
+                  e.target.value,
+                  props.reactions,
+                  props.results,
+                );
               }}
             />
           </ListGroup.Item>
           <ListGroup.Item>
-            <Form.Label htmlFor="flow-time-range">
-              Time Range (s):
-            </Form.Label>
+            <Form.Label htmlFor="flow-time-range">Time Range (s):</Form.Label>
             <Row>
               <Col>
                 <Form.Control
                   type="text"
                   step="any"
                   value={props.localTimeRangeStart}
-                  onChange={(e) => { props.setLocalTimeRangeStart(e.target.value) }}
+                  onChange={(e) => {
+                    props.setLocalTimeRangeStart(e.target.value);
+                  }}
                   onBlur={(e) => {
-                    const startIndex = props.timeSteps.reduce((result, val, idx, arr) => {
-                      return (Math.abs(val - props.localTimeRangeStart) < Math.abs(arr[result] - props.localTimeRangeStart) ? idx : result);
-                    });
+                    const startIndex = props.timeSteps.reduce(
+                      (result, val, idx, arr) => {
+                        return Math.abs(val - props.localTimeRangeStart) <
+                          Math.abs(arr[result] - props.localTimeRangeStart)
+                          ? idx
+                          : result;
+                      },
+                    );
                     if (startIndex > props.timeRangeEndIndex) {
-                      props.setTimeRangeEndIndex(startIndex, props.reactions, props.results);
+                      props.setTimeRangeEndIndex(
+                        startIndex,
+                        props.reactions,
+                        props.results,
+                      );
                     }
-                    props.setTimeRangeStartIndex(startIndex, props.reactions, props.results);
+                    props.setTimeRangeStartIndex(
+                      startIndex,
+                      props.reactions,
+                      props.results,
+                    );
                   }}
                 />
               </Col>
@@ -87,37 +115,72 @@ function FlowPanel(props) {
                   type="text"
                   step="any"
                   value={props.localTimeRangeEnd}
-                  onChange={(e) => { props.setLocalTimeRangeEnd(e.target.value) }}
+                  onChange={(e) => {
+                    props.setLocalTimeRangeEnd(e.target.value);
+                  }}
                   onBlur={(e) => {
-                    const endIndex = props.timeSteps.reduce((result, val, idx, arr) => {
-                      return (Math.abs(val - props.localTimeRangeEnd) < Math.abs(arr[result] - props.localTimeRangeEnd) ? idx : result);
-                    });
+                    const endIndex = props.timeSteps.reduce(
+                      (result, val, idx, arr) => {
+                        return Math.abs(val - props.localTimeRangeEnd) <
+                          Math.abs(arr[result] - props.localTimeRangeEnd)
+                          ? idx
+                          : result;
+                      },
+                    );
                     if (endIndex < props.timeRangeStartIndex) {
-                      props.setTimeRangeStartIndex(endIndex, props.reactions, props.results);
+                      props.setTimeRangeStartIndex(
+                        endIndex,
+                        props.reactions,
+                        props.results,
+                      );
                     }
-                    props.setTimeRangeEndIndex(endIndex, props.reactions, props.results);
+                    props.setTimeRangeEndIndex(
+                      endIndex,
+                      props.reactions,
+                      props.results,
+                    );
                   }}
                 />
               </Col>
             </Row>
             <Row>
               <MultiRangeSlider
-                min={props.timeSteps[0] ? props.timeSteps[0]: 0}
-                max={props.timeSteps[props.timeSteps.length-1] ? props.timeSteps[props.timeSteps.length-1] : 0}
+                min={props.timeSteps[0] ? props.timeSteps[0] : 0}
+                max={
+                  props.timeSteps[props.timeSteps.length - 1]
+                    ? props.timeSteps[props.timeSteps.length - 1]
+                    : 0
+                }
                 minVal={props.localTimeRangeStart}
                 maxVal={props.localTimeRangeEnd}
-                onChange={({min, max}) => {
-                  const startIndex = props.timeSteps.reduce((result, val, idx, arr) => {
-                    return Math.abs(val - min) < Math.abs(arr[result] - min) ? idx : result;
-                  });
-                  const endIndex = props.timeSteps.reduce((result, val, idx, arr) => {
-                    return Math.abs(val - max) < Math.abs(arr[result] - max) ? idx : result;
-                  });
+                onChange={({ min, max }) => {
+                  const startIndex = props.timeSteps.reduce(
+                    (result, val, idx, arr) => {
+                      return Math.abs(val - min) < Math.abs(arr[result] - min)
+                        ? idx
+                        : result;
+                    },
+                  );
+                  const endIndex = props.timeSteps.reduce(
+                    (result, val, idx, arr) => {
+                      return Math.abs(val - max) < Math.abs(arr[result] - max)
+                        ? idx
+                        : result;
+                    },
+                  );
                   if (startIndex != props.timeRangeStartIndex) {
-                    props.setTimeRangeStartIndex(startIndex, props.reactions, props.results);
+                    props.setTimeRangeStartIndex(
+                      startIndex,
+                      props.reactions,
+                      props.results,
+                    );
                   }
                   if (endIndex != props.timeRangeEndIndex) {
-                    props.setTimeRangeEndIndex(endIndex, props.reactions, props.results);
+                    props.setTimeRangeEndIndex(
+                      endIndex,
+                      props.reactions,
+                      props.results,
+                    );
                   }
                 }}
               />
@@ -135,12 +198,20 @@ function FlowPanel(props) {
                   value={elem.name}
                   id={elem.name}
                   onClick={(e) => {
-                    elem.isSelected ? props.deselectSpecies(elem.name, props.reactions, props.results) : props.selectSpecies(elem.name, props.reactions, props.results);
+                    elem.isSelected
+                      ? props.deselectSpecies(
+                          elem.name,
+                          props.reactions,
+                          props.results,
+                        )
+                      : props.selectSpecies(
+                          elem.name,
+                          props.reactions,
+                          props.results,
+                        );
                   }}
                 >
-                  <span className="species-select-list-item">
-                    {elem.name}
-                  </span>
+                  <span className="species-select-list-item">{elem.name}</span>
                 </ListGroup.Item>
               ))}
             </ListGroup>
@@ -148,7 +219,7 @@ function FlowPanel(props) {
         </Form>
       </ListGroup>
     </nav>
-  )
+  );
 }
 
 const mapStateToProps = (state) => {
@@ -180,15 +251,25 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    selectSpecies: (species, dependencies, results) => dispatch(selectFlowSpecies({ species, dependencies, results })),
-    deselectSpecies: (species, dependencies, results) => dispatch(deselectFlowSpecies({ species, dependencies, results })),
-    setIsLogScale: (isLogScale, dependencies, results) => dispatch(setIsFlowPlotLogScale({ isLogScale, dependencies, results })),
-    setMaxArrowWidth: (maxArrowWidth, dependencies, results) => dispatch(setFlowMaxArrowWidth({ maxArrowWidth, dependencies, results })),
-    setTimeRangeStartIndex: (timeIndex, dependencies, results) => dispatch(setFlowTimeRangeStartIndex({ timeIndex, dependencies, results })),
-    setTimeRangeEndIndex: (timeIndex, dependencies, results) => dispatch(setFlowTimeRangeEndIndex({ timeIndex, dependencies, results })),
-    setLocalTimeRangeStart: (time) => dispatch(setFlowLocalTimeRangeStart({ time })),
-    setLocalTimeRangeEnd: (time) => dispatch(setFlowLocalTimeRangeEnd({ time })),
-  }
+    selectSpecies: (species, dependencies, results) =>
+      dispatch(selectFlowSpecies({ species, dependencies, results })),
+    deselectSpecies: (species, dependencies, results) =>
+      dispatch(deselectFlowSpecies({ species, dependencies, results })),
+    setIsLogScale: (isLogScale, dependencies, results) =>
+      dispatch(setIsFlowPlotLogScale({ isLogScale, dependencies, results })),
+    setMaxArrowWidth: (maxArrowWidth, dependencies, results) =>
+      dispatch(setFlowMaxArrowWidth({ maxArrowWidth, dependencies, results })),
+    setTimeRangeStartIndex: (timeIndex, dependencies, results) =>
+      dispatch(
+        setFlowTimeRangeStartIndex({ timeIndex, dependencies, results }),
+      ),
+    setTimeRangeEndIndex: (timeIndex, dependencies, results) =>
+      dispatch(setFlowTimeRangeEndIndex({ timeIndex, dependencies, results })),
+    setLocalTimeRangeStart: (time) =>
+      dispatch(setFlowLocalTimeRangeStart({ time })),
+    setLocalTimeRangeEnd: (time) =>
+      dispatch(setFlowLocalTimeRangeEnd({ time })),
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlowPanel)
+export default connect(mapStateToProps, mapDispatchToProps)(FlowPanel);
