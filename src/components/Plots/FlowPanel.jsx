@@ -18,6 +18,7 @@ import {
   getFlowFluxRangeEnd,
   getFlowLocalFluxRangeStart,
   getFlowLocalFluxRangeEnd,
+  getNodes,
 } from "../../redux/selectors";
 import {
   selectFlowSpecies,
@@ -32,6 +33,7 @@ import {
   setFlowFluxRangeEnd,
   setFlowLocalFluxRangeStart,
   setFlowLocalFluxRangeEnd,
+  setFlowIgnoredSpecies,
 } from "../../redux/actions";
 import MultiRangeSlider from "./MultiRangeSlider";
 
@@ -247,31 +249,65 @@ function FlowPanel(props) {
           <ListGroup.Item>
             Select species:
             <ListGroup className="species-list" key="species-select-list-group">
-              {props.species?.map((elem, index) => (
-                <ListGroup.Item
-                  className="modal-bg"
-                  key={index}
-                  active={elem.isSelected}
-                  name={elem.name}
-                  value={elem.name}
-                  id={elem.name}
-                  onClick={(e) => {
-                    elem.isSelected
-                      ? props.deselectSpecies(
+              {props.species?.map((elem, index) => {
+                const spec = props.activeUnselectedSpecies.find((e) => e.name == elem.name);
+                const variant = spec ? "primary" : null
+                return (
+                  <ListGroup.Item
+                    as="button"
+                    action
+                    variant={variant}
+                    // style={{backgroundColor: "azure"}}
+                    className="modal-bg"
+                    key={index}
+                    active={elem.isSelected}
+                    name={elem.name}
+                    value={elem.name}
+                    id={elem.name}
+                    onClick={(e) => {
+                      e.preventDefault(); // prevents this list item from changing the URL to add a query parameter with this element's name which would cause a re-render
+                      elem.isSelected
+                        ? props.deselectSpecies(
                           elem.name,
                           props.reactions,
                           props.results,
                         )
-                      : props.selectSpecies(
+                        : props.selectSpecies(
                           elem.name,
                           props.reactions,
                           props.results,
                         );
-                  }}
-                >
-                  <span className="species-select-list-item">{elem.name}</span>
-                </ListGroup.Item>
-              ))}
+                    }}
+                  >
+                    <span className="species-select-list-item">{elem.name}</span>
+                    {spec &&
+                      <span
+                        style={{
+                          position: "absolute",
+                          right: "5%",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          fontSize: "0.80rem",
+                          color: "red"
+                        }}
+                        className="oi oi-x"
+                        toggle="tooltip"
+                        aria-hidden="true"
+                        onClick={(e) => {
+                          e.stopPropagation(); // prevents the click handler defined above from firing
+                          e.preventDefault(); // prevents the x from triggering the action that adds the element to the url as a query parameter
+                          props.setFlowIgnoredSpecies(
+                            elem.name,
+                            props.reactions,
+                            props.results,
+                          );
+                        }}
+                        title="Remove species from flow diagram" />
+                    }
+                  </ListGroup.Item>
+                )
+              }
+              )}
             </ListGroup>
           </ListGroup.Item>
         </Form>
@@ -290,6 +326,15 @@ const mapStateToProps = (state) => {
   const startTime = timeSteps[startTimeIndex];
   const endTime = timeSteps[endTimeIndex];
   const links = getLinks(state);
+  const species = getMechanism(state).gasSpecies.map((species) => {
+    return {
+      ...species,
+      isSelected: isSelectedSpecies(state, species.name),
+    };
+  });
+  const activeUnselectedSpecies = getNodes(state)
+    .filter((elem) => elem.className === 'species')
+    .filter((elem) => !species.find((e) => e.name === elem.name).isSelected);
   const fluxMin = Math.min(...links.map((link) => link.flux ));
   const fluxMax = Math.max(...links.map((link) => link.flux ));
   let fluxValues = isLogScale ? 
@@ -303,12 +348,8 @@ const mapStateToProps = (state) => {
   let fluxRangeEnd = getFlowFluxRangeEnd(state);
   fluxRangeEnd = fluxRangeEnd ? fluxRangeEnd < fluxRangeStart ? fluxRangeStart : fluxRangeEnd > fluxMax ? fluxMax : fluxRangeEnd : fluxMax;
   return {
-    species: getMechanism(state).gasSpecies.map((species) => {
-      return {
-        ...species,
-        isSelected: isSelectedSpecies(state, species.name),
-      };
-    }),
+    species: species,
+    activeUnselectedSpecies: activeUnselectedSpecies,
     reactions: getReactionDependencies(state),
     results: getResults(state),
     isLogScale: isLogScale,
@@ -358,6 +399,7 @@ const mapDispatchToProps = (dispatch) => {
     setFluxRangeEnd: (flux) => dispatch(setFlowFluxRangeEnd({ flux })),
     setLocalFluxRangeStart: (flux) => dispatch(setFlowLocalFluxRangeStart({ flux })),
     setLocalFluxRangeEnd: (flux) => dispatch(setFlowLocalFluxRangeEnd({ flux })),
+    setFlowIgnoredSpecies: (species, dependencies, results) => dispatch(setFlowIgnoredSpecies({ species, dependencies, results }))
   };
 };
 
