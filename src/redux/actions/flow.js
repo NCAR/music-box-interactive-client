@@ -83,3 +83,10 @@ export const setFlowLocalFluxRangeEnd = (content) => {
     payload: { content },
   };
 };
+
+export const setFlowIgnoredSpecies = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_IGNORED_SPECIES,
+    payload: { content },
+  };
+};
