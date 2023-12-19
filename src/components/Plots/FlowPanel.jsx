@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Form, ListGroup, Col, Row } from "react-bootstrap";
 import {
+  getLinks,
   getMechanism,
   getReactionDependencies,
   isSelectedSpecies,
@@ -13,6 +14,10 @@ import {
   getResultTimes,
   getFlowLocalTimeRangeStart,
   getFlowLocalTimeRangeEnd,
+  getFlowFluxRangeStart,
+  getFlowFluxRangeEnd,
+  getFlowLocalFluxRangeStart,
+  getFlowLocalFluxRangeEnd,
 } from "../../redux/selectors";
 import {
   selectFlowSpecies,
@@ -23,15 +28,26 @@ import {
   setFlowTimeRangeEndIndex,
   setFlowLocalTimeRangeStart,
   setFlowLocalTimeRangeEnd,
+  setFlowFluxRangeStart,
+  setFlowFluxRangeEnd,
+  setFlowLocalFluxRangeStart,
+  setFlowLocalFluxRangeEnd,
 } from "../../redux/actions";
 import MultiRangeSlider from "./MultiRangeSlider";
 
 function FlowPanel(props) {
 
+  const kFluxRangePoints = 10000;
+
   useEffect(() => {
     props.setTimeRangeStartIndex(0, props.reactions, props.results);
     props.setTimeRangeEndIndex(props.timeSteps.length-1, props.reactions, props.results);
   }, [ props.timeSteps ]);
+
+  useEffect(() => {
+    props.setFluxRangeStart(props.fluxMin);
+    props.setFluxRangeEnd(props.fluxMax);
+  }, [ props.fluxMin, props.fluxMax ]);
 
   return (
     <nav>
@@ -81,7 +97,7 @@ function FlowPanel(props) {
             />
           </ListGroup.Item>
           <ListGroup.Item>
-            <Form.Label htmlFor="flow-time-range">Time Range (s):</Form.Label>
+            <Form.Label htmlFor="flow-time-range">Time Range [s]</Form.Label>
             <Row>
               <Col>
                 <Form.Control
@@ -193,6 +209,44 @@ function FlowPanel(props) {
             </Row>
           </ListGroup.Item>
           <ListGroup.Item>
+            <Form.Label htmlFor="flow-flux-range">Flux Range [mol m-3]</Form.Label>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="text"
+                  step="any"
+                  value={props.localFluxRangeStart}
+                  onChange={(e) => {
+                    props.setLocalFluxRangeStart(e.target.value);
+                  }}
+                  onBlur={(e) => {
+                    if (props.fluxRangeStart != props.localFluxRangeStart) {
+                      props.setFluxRangeStart(props.localFluxRangeStart);
+                    }
+                  }}
+                />
+              </Col>
+              <Col xs={2}>to</Col>
+              <Col>
+                <Form.Control
+                  type="text"
+                  step="any"
+                  value={props.localFluxRangeEnd}
+                  onChange={(e) => {
+                      props.setLocalFluxRangeEnd(e.target.value);
+                  }}
+                  onBlur={(e) => {
+                    if (props.fluxRangeEnd != props.localFluxRangeEnd) {
+                      props.setFluxRangeEnd(props.localFluxRangeEnd);
+                    }
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item>
             Select species:
             <ListGroup className="species-list" key="species-select-list-group">
               {props.species?.map((elem, index) => (
@@ -236,6 +290,7 @@ const mapStateToProps = (state) => {
   const endTimeIndex = getFlowTimeRangeEndIndex(state);
   const startTime = timeSteps[startTimeIndex];
   const endTime = timeSteps[endTimeIndex];
+  const links = getLinks(state);
   return {
     species: getMechanism(state).gasSpecies.map((species) => {
       return {
@@ -252,6 +307,12 @@ const mapStateToProps = (state) => {
     timeRangeEndIndex: endTimeIndex,
     localTimeRangeStart: localStart ? localStart : startTime ? startTime : 0,
     localTimeRangeEnd: localEnd ? localEnd : endTime ? endTime : 0,
+    fluxMin: Math.min(...links.map((link) => link.flux)),
+    fluxMax: Math.max(...links.map((link) => link.flux)),
+    fluxRangeStart: getFlowFluxRangeStart(state),
+    fluxRangeEnd: getFlowFluxRangeEnd(state),
+    localFluxRangeStart: getFlowLocalFluxRangeStart(state),
+    localFluxRangeEnd: getFlowLocalFluxRangeEnd(state),
   };
 };
 
@@ -275,6 +336,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setFlowLocalTimeRangeStart({ time })),
     setLocalTimeRangeEnd: (time) =>
       dispatch(setFlowLocalTimeRangeEnd({ time })),
+    setFluxRangeStart: (flux) => dispatch(setFlowFluxRangeStart({ flux })),
+    setFluxRangeEnd: (flux) => dispatch(setFlowFluxRangeEnd({ flux })),
+    setLocalFluxRangeStart: (flux) => dispatch(setFlowLocalFluxRangeStart({ flux })),
+    setLocalFluxRangeEnd: (flux) => dispatch(setFlowLocalFluxRangeEnd({ flux })),
   };
 };
 

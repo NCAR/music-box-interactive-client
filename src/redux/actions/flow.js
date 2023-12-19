@@ -55,3 +55,31 @@ export const setFlowLocalTimeRangeEnd = (content) => {
     payload: { content },
   };
 };
+
+export const setFlowFluxRangeStart = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_FLUX_RANGE_START,
+    payload: { content },
+  };
+};
+
+export const setFlowFluxRangeEnd = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_FLUX_RANGE_END,
+    payload: { content },
+  };
+};
+
+export const setFlowLocalFluxRangeStart = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_LOCAL_FLUX_RANGE_START,
+    payload: { content },
+  };
+};
+
+export const setFlowLocalFluxRangeEnd = (content) => {
+  return {
+    type: utils.action_types.SET_FLOW_LOCAL_FLUX_RANGE_END,
+    payload: { content },
+  };
+};

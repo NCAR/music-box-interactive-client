@@ -11,6 +11,10 @@ const initialState = {
   time_range_end_index: Number.MAX_SAFE_INTEGER,
   local_time_range_start: undefined,
   local_time_range_end: undefined,
+  flux_range_start: 0.0,
+  flux_range_end: Number.MAX_VALUE,
+  local_flux_range_start: undefined,
+  local_flux_range_end: undefined,
 };
 
 // Redefines the nodes and links that make up the flow diagram based
@@ -208,6 +212,32 @@ export const flowReducer = (state = initialState, action) => {
       return {
         ...state,
         local_time_range_end: action.payload.content.time,
+      };
+    }
+    case utils.action_types.SET_FLOW_FLUX_RANGE_START: {
+      return {
+        ...state,
+        flux_range_start: action.payload.content.flux,
+        local_flux_range_start: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_FLUX_RANGE_END: {
+      return {
+        ...state,
+        flux_range_end: action.payload.content.flux,
+        local_flux_range_end: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_LOCAL_FLUX_RANGE_START: {
+      return {
+        ...state,
+        local_flux_range_start: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_LOCAL_FLUX_RANGE_END: {
+      return {
+        ...state,
+        local_flux_range_end: action.payload.content.flux,
       };
     }
     default:
