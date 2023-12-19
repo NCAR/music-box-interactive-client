@@ -16,12 +16,12 @@ function FlowGraph({ nodes, links, fluxRange }) {
 
   // re-create animation every time nodes change
   useEffect(() => {
-    const width = 200;
-    const height = 200;
+    const width = 900;
+    const height = 800;
     const svg = d3
       .select(ref.current)
-      .attr("width", `100%`)
-      .attr("height", `100%`)
+      .attr("width", width)
+      .attr("height", height)
       .attr("class", styles.flow_area)
       .attr("viewBox", [0, 0, width, height]);
 
@@ -145,7 +145,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([0.001, 2])
+      .scaleExtent([0.001, 3])
       .on("zoom", ({ transform }) => {
         g.attr("transform", transform);
       });
