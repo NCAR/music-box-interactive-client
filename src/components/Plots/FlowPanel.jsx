@@ -167,39 +167,20 @@ function FlowPanel(props) {
             </Row>
             <Row>
               <MultiRangeSlider
-                min={props.timeSteps[0] ? props.timeSteps[0] : 0}
-                max={
-                  props.timeSteps[props.timeSteps.length - 1]
-                    ? props.timeSteps[props.timeSteps.length - 1]
-                    : 0
-                }
-                minVal={props.localTimeRangeStart}
-                maxVal={props.localTimeRangeEnd}
-                onChange={({ min, max }) => {
-                  const startIndex = props.timeSteps.reduce(
-                    (result, val, idx, arr) => {
-                      return Math.abs(val - min) < Math.abs(arr[result] - min)
-                        ? idx
-                        : result;
-                    },
-                  );
-                  const endIndex = props.timeSteps.reduce(
-                    (result, val, idx, arr) => {
-                      return Math.abs(val - max) < Math.abs(arr[result] - max)
-                        ? idx
-                        : result;
-                    },
-                  );
-                  if (startIndex != props.timeRangeStartIndex) {
+                values={props.timeSteps}
+                minIndex={props.timeRangeStartIndex}
+                maxIndex={props.timeRangeEndIndex}
+                onChange={({ minIndex, maxIndex }) => {
+                  if (minIndex != props.timeRangeStartIndex) {
                     props.setTimeRangeStartIndex(
-                      startIndex,
+                      minIndex,
                       props.reactions,
                       props.results,
                     );
                   }
-                  if (endIndex != props.timeRangeEndIndex) {
+                  if (maxIndex != props.timeRangeEndIndex) {
                     props.setTimeRangeEndIndex(
-                      endIndex,
+                      maxIndex,
                       props.reactions,
                       props.results,
                     );
@@ -244,6 +225,23 @@ function FlowPanel(props) {
               </Col>
             </Row>
             <Row>
+              <MultiRangeSlider
+                values={props.fluxValues}
+                minIndex={props.fluxRangeStartIndex}
+                maxIndex={props.fluxRangeEndIndex}
+                onChange={({ minIndex, maxIndex }) => {
+                  if (minIndex != props.fluxRangeStartIndex) {
+                    props.setFluxRangeStart(
+                      props.fluxValues[minIndex]
+                    );
+                  }
+                  if (maxIndex != props.fluxRangeEndIndex) {
+                    props.setFluxRangeEnd(
+                      props.fluxValues[maxIndex]
+                    );
+                  }
+                }}
+              />
             </Row>
           </ListGroup.Item>
           <ListGroup.Item>
@@ -283,14 +281,27 @@ function FlowPanel(props) {
 }
 
 const mapStateToProps = (state) => {
+  const isLogScale = getIsFlowPlotLogScale(state);
   const timeSteps = getResultTimes(state);
-  const localStart = getFlowLocalTimeRangeStart(state);
-  const localEnd = getFlowLocalTimeRangeEnd(state);
+  const localTimeStart = getFlowLocalTimeRangeStart(state);
+  const localTimeEnd = getFlowLocalTimeRangeEnd(state);
   const startTimeIndex = getFlowTimeRangeStartIndex(state);
   const endTimeIndex = getFlowTimeRangeEndIndex(state);
   const startTime = timeSteps[startTimeIndex];
   const endTime = timeSteps[endTimeIndex];
   const links = getLinks(state);
+  const fluxMin = Math.min(...links.map((link) => link.flux ));
+  const fluxMax = Math.max(...links.map((link) => link.flux ));
+  let fluxValues = isLogScale ? 
+    Array.from({ length: 1000 }, (val, idx) => 
+      Math.exp((Math.log(fluxMax) - Math.log(fluxMin)) / 1000 * idx + Math.log(fluxMin))) :
+    Array.from({ length: 1000 }, (val, idx) => fluxMin + (fluxMax - fluxMin) / 1000 * idx);
+  fluxValues[0] = fluxMin;
+  fluxValues[fluxValues.length-1] = fluxMax;
+  let fluxRangeStart = getFlowFluxRangeStart(state);
+  fluxRangeStart = fluxRangeStart ? fluxRangeStart < fluxMin ? fluxMin : fluxRangeStart > fluxMax ? fluxMax : fluxRangeStart : fluxMin;
+  let fluxRangeEnd = getFlowFluxRangeEnd(state);
+  fluxRangeEnd = fluxRangeEnd ? fluxRangeEnd < fluxRangeStart ? fluxRangeStart : fluxRangeEnd > fluxMax ? fluxMax : fluxRangeEnd : fluxMax;
   return {
     species: getMechanism(state).gasSpecies.map((species) => {
       return {
@@ -300,17 +311,24 @@ const mapStateToProps = (state) => {
     }),
     reactions: getReactionDependencies(state),
     results: getResults(state),
-    isLogScale: getIsFlowPlotLogScale(state),
+    isLogScale: isLogScale,
     maxArrowWidth: getFlowMaxArrowWidth(state),
     timeSteps: timeSteps,
     timeRangeStartIndex: startTimeIndex,
     timeRangeEndIndex: endTimeIndex,
-    localTimeRangeStart: localStart ? localStart : startTime ? startTime : 0,
-    localTimeRangeEnd: localEnd ? localEnd : endTime ? endTime : 0,
-    fluxMin: Math.min(...links.map((link) => link.flux)),
-    fluxMax: Math.max(...links.map((link) => link.flux)),
-    fluxRangeStart: getFlowFluxRangeStart(state),
-    fluxRangeEnd: getFlowFluxRangeEnd(state),
+    localTimeRangeStart: localTimeStart ? localTimeStart : startTime ? startTime : 0,
+    localTimeRangeEnd: localTimeEnd ? localTimeEnd : endTime ? endTime : 0,
+    fluxMin: fluxValues[0],
+    fluxMax: fluxValues[fluxValues.length-1],
+    fluxValues: fluxValues,
+    fluxRangeStartIndex: fluxValues.reduce((result, val, idx, arr) => {
+      return Math.abs(val - fluxRangeStart) < Math.abs(arr[result] - fluxRangeStart) ? idx : result; 
+    }, 0),
+    fluxRangeEndIndex: fluxValues.reduce((result, val, idx, arr) => {
+      return Math.abs(val - fluxRangeEnd) < Math.abs(arr[result] - fluxRangeEnd) ? idx : result; 
+    }, 0),
+    fluxRangeStart: fluxRangeStart,
+    fluxRangeEnd: fluxRangeEnd,
     localFluxRangeStart: getFlowLocalFluxRangeStart(state),
     localFluxRangeEnd: getFlowLocalFluxRangeEnd(state),
   };
