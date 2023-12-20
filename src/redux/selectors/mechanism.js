@@ -92,7 +92,7 @@ export const getUserDefinedRatesIds = (store) => {
     .map((reaction) => {
       return {
         id: reaction.id,
-        name: reaction.data.musica_name || reactionToLabel(reaction.data),
+        name: reaction.data.musica_name || reactionToLabel(reaction),
         prefix: reaction.tablePrefix,
       };
     });
