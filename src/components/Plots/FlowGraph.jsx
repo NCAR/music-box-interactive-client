@@ -70,10 +70,8 @@ function FlowGraph({ nodes, links, fluxRange }) {
           .links(links),
       );
 
-    const tooltipGroup = svg
-      .select("g.info");
-    tooltipGroup
-      .selectAll("*").remove();
+    const tooltipGroup = svg.select("g.info");
+    tooltipGroup.selectAll("*").remove();
 
     tooltipGroup
       .style("opacity", 0)
@@ -100,18 +98,18 @@ function FlowGraph({ nodes, links, fluxRange }) {
           return (
             ((Math.log(d.flux) - Math.log(fluxRange.start)) /
               (Math.log(fluxRange.end) - Math.log(fluxRange.start))) *
-            fluxRange.maxArrowWidth +
+              fluxRange.maxArrowWidth +
             0.5
           );
         } else {
           return (
             ((d.flux - fluxRange.start) / (fluxRange.end - fluxRange.start)) *
-            fluxRange.maxArrowWidth +
+              fluxRange.maxArrowWidth +
             0.5
           );
         }
-      })
-      
+      });
+
     const linkArrow = g
       .selectAll("line.arrow")
       .data(links)
@@ -132,7 +130,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .data(links)
       .join("line")
       .attr("class", (d) => {
-        return styles["link-tooltip"]
+        return styles["link-tooltip"];
       })
       .on("mouseenter", (event, d) => {
         tooltipText.text(`Flux: ${d.flux} mol m-3`);
@@ -144,9 +142,9 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .style("stroke-width", 10)
       .style("stroke", "white")
       .style("opacity", 0);
-      linkToolTip.append("title").text((d) => {
-        return `Flux: ${d.flux} mol m-3`;
-      });
+    linkToolTip.append("title").text((d) => {
+      return `Flux: ${d.flux} mol m-3`;
+    });
 
     const node = g
       .selectAll("circle")
@@ -213,7 +211,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
         .attr("y2", (d) => {
           return d.target.y;
         });
-      
+
       linkArrow
         .attr("x1", (d) => {
           return d.source.x;
@@ -268,8 +266,8 @@ function FlowGraph({ nodes, links, fluxRange }) {
 
   return (
     <svg id="flow-diagram" ref={ref}>
-      <g class="graph"/>
-      <g class="info"/>
+      <g class="graph" />
+      <g class="info" />
     </svg>
   );
 }
