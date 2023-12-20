@@ -127,14 +127,14 @@ function FlowGraph({ nodes, links, fluxRange }) {
         if (d.flux > fluxRange.end) return fluxRange.maxArrowWidth + 0.5;
         if (fluxRange.isLogScale) {
           return (
-            ((Math.log(d.flux) - Math.log(fluxRange.min)) /
-              (Math.log(fluxRange.max) - Math.log(fluxRange.min))) *
+            ((Math.log(d.flux) - Math.log(fluxRange.start)) /
+              (Math.log(fluxRange.end) - Math.log(fluxRange.start))) *
             fluxRange.maxArrowWidth +
             0.5
           );
         } else {
           return (
-            ((d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min)) *
+            ((d.flux - fluxRange.start) / (fluxRange.end - fluxRange.start)) *
             fluxRange.maxArrowWidth +
             0.5
           );
@@ -152,15 +152,11 @@ function FlowGraph({ nodes, links, fluxRange }) {
     svg.on("mousemove", (event) => {
       const pointer = d3.pointer(event);
       const [x, y] = zoomTransform.invert(pointer);
-        console.log(`(${pointer}) -> (${x},${y})`)
-
+        
       // Filter out lines that are not within 5 pixels of the mouse position
       const nearbyLines = links.filter((d) => {
         const [x1, y1, x2, y2] = getLineCoordinates(d); // Define a function to get line coordinates
         const distance = pointToLineDistance(x, y, x1, y1, x2, y2);
-        if (distance < 5) {
-          console.log(`(${x},${y}) -> [(${x1},${y1}) (${x2},${y2})]: ${distance} | ${d.flux}`)
-        }
         return distance < 5;
       });
 
