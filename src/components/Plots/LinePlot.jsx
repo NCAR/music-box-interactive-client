@@ -14,14 +14,20 @@ const LinePlot = ({
   activeIndex,
 }) => {
   const svgRef = useRef();
+  const tooltipGroupRef = useRef();
+  const verticalLineRef = useRef();
+  const tooltipTextTimeRef = useRef();
+  const tooltipTextValueRef = useRef();
+  const dotRef = useRef();
+  const xRef = useRef();
+  const yRef = useRef();
+  const width = height * 1.618; // golden ratio determins width based off of the height
+  const marginTop = 30;
+  const marginRight = 20;
+  const marginBottom = 80;
+  const marginLeft = width * 0.15;
 
   useEffect(() => {
-    const width = height * 1.618; // golden ratio determins width based off of the height
-    const marginTop = 30;
-    const marginRight = 20;
-    const marginBottom = 80;
-    const marginLeft = width * 0.15;
-
     // x and y scales
     const x = d3
       .scaleLinear()
@@ -34,6 +40,8 @@ const LinePlot = ({
         1.02 * d3.max(data, (d) => d.value),
       ])
       .range([height - marginBottom, marginTop]);
+    xRef.current = x;
+    yRef.current = y;
 
     // Declare the line generator.
     const lineGenerator = d3
@@ -43,7 +51,8 @@ const LinePlot = ({
 
     const svg = d3.select(svgRef.current);
     // remove old elements
-    svg.selectAll("*").remove();
+    svg.selectAll("g").remove();
+    svg.selectAll("path").remove();
 
     svg
       .attr("width", width)
@@ -121,70 +130,71 @@ const LinePlot = ({
       .attr("d", lineGenerator(data));
 
     // Add the transparent vertical line.
-    const verticalLine = svg
+    verticalLineRef.current = svg
       .append("line")
       .attr("class", "vertical-line")
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("opacity", 0);
 
-    const tooltipGroup = svg
+    tooltipGroupRef.current = svg
       .append("g")
       .style("opacity", 0)
       .attr("transform", `translate(5, ${height - 2 * toolTipFontSize})`);
 
-    const tooltipTextTime = tooltipGroup
+    tooltipTextTimeRef.current = tooltipGroupRef.current
       .append("text")
       .style("font-size", `${toolTipFontSize}px`)
       .style("dominant-baseline", "hanging");
 
-    const tooltipTextValue = tooltipGroup
+    tooltipTextValueRef.current = tooltipGroupRef.current
       .append("text")
       .style("font-size", `${toolTipFontSize}px`)
       .style("dominant-baseline", "hanging")
       .attr("dy", "1em");
 
-    const dot = svg
+    dotRef.current = svg
       .append("circle")
       .attr("r", 4)
       .style("fill", "steelblue")
       .style("opacity", 0);
+  }, [data]);
 
+  // syncrhonizing tooltips across the plots
+  useEffect(() => {
+    const x = xRef.current;
+    const y = yRef.current;
     const showToolTip = () => {
-      verticalLine.style("opacity", 0.3);
-      tooltipGroup.style("opacity", 1);
-      dot.style("opacity", 1);
+      verticalLineRef.current.style("opacity", 0.3);
+      tooltipGroupRef.current.style("opacity", 1);
+      dotRef.current.style("opacity", 1);
     };
 
     const updateTooltip = (index) => {
-      // allows tooltips to be synchronized across plots
       const activeData = data[index];
 
-      verticalLine
+      verticalLineRef.current
         .attr("x1", x(activeData.time))
         .attr("x2", x(activeData.time))
         .attr("y1", marginTop)
         .attr("y2", height - marginBottom + marginTop);
 
-      tooltipTextTime.text(`${activeData.time} (s)`);
-      tooltipTextValue.text(`${activeData.value} (${units})`);
+      tooltipTextTimeRef.current.text(`${activeData.time} (s)`);
+      tooltipTextValueRef.current.text(`${activeData.value} (${units})`);
 
-      dot.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
+      dotRef.current.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
     };
 
-    if (activeIndex !== null) {
-      showToolTip();
-      updateTooltip(activeIndex);
-    }
+    const svg = d3.select(svgRef.current);
 
     svg
       .on("mouseover", () => {
         showToolTip();
       })
       .on("mouseleave", () => {
-        verticalLine.style("opacity", 0);
-        tooltipGroup.style("opacity", 0);
-        dot.style("opacity", 0);
+        verticalLineRef.current.style("opacity", 0);
+        tooltipGroupRef.current.style("opacity", 0);
+        dotRef.current.style("opacity", 0);
         setActiveIndex(null);
       })
       .on("mousemove", (event) => {
@@ -193,7 +203,13 @@ const LinePlot = ({
         updateTooltip(index);
         setActiveIndex(index);
       });
+
+    if (activeIndex !== null) {
+      showToolTip();
+      updateTooltip(activeIndex);
+    }
   }, [data, activeIndex]);
+
   return (
     <div
       style={{
