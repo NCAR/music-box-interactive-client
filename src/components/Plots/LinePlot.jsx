@@ -173,7 +173,7 @@ const LinePlot = ({
       verticalLineRef.current.style("opacity", 0);
       tooltipGroupRef.current.style("opacity", 0);
       dotRef.current.style("opacity", 0);
-    }
+    };
 
     const updateTooltip = (index) => {
       const activeData = data[index];
@@ -187,7 +187,9 @@ const LinePlot = ({
       tooltipTextTimeRef.current.text(`${activeData.time} (s)`);
       tooltipTextValueRef.current.text(`${activeData.value} (${units})`);
 
-      dotRef.current.attr("cx", x(activeData.time)).attr("cy", y(activeData.value));
+      dotRef.current
+        .attr("cx", x(activeData.time))
+        .attr("cy", y(activeData.value));
     };
 
     const svg = d3.select(svgRef.current);
@@ -210,8 +212,7 @@ const LinePlot = ({
     if (activeIndex !== null) {
       showToolTip();
       updateTooltip(activeIndex);
-    }
-    else {
+    } else {
       hideToolTip();
     }
   }, [data, activeIndex]);
