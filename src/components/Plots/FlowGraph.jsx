@@ -46,7 +46,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .attr("orient", "auto")
       .attr("xoverflow", "visible")
       .append("svg:path")
-      .attr("class", (d) => d === "arrow" ? styles.flux : styles.muted)
+      .attr("class", (d) => (d === "arrow" ? styles.flux : styles.muted))
       .attr("d", "M0,-5L10,0L0,5");
 
     const g = svg.select("g");
@@ -85,7 +85,9 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .data(links)
       .join("line")
       .attr("class", (d) => {
-        return (d.flux < fluxRange.start || d.flux > fluxRange.end) ? styles["muted"] : styles[d.className];
+        return d.flux < fluxRange.start || d.flux > fluxRange.end
+          ? styles["muted"]
+          : styles[d.className];
       })
       .style("stroke-width", (d) => {
         if (d.flux < fluxRange.start) return 0.5;
@@ -111,19 +113,21 @@ function FlowGraph({ nodes, links, fluxRange }) {
       })
       .on("mouseleave", () => {
         tooltipGroup.style("opacity", 0);
-      })
-      ;
-
+      });
     const linkArrow = g
       .selectAll("line.arrow")
       .data(links)
       .join("line")
       .attr("class", (d) => {
-        return (d.flux < fluxRange.start || d.flux > fluxRange.end) ? styles["muted"] : styles[d.className];
+        return d.flux < fluxRange.start || d.flux > fluxRange.end
+          ? styles["muted"]
+          : styles[d.className];
       })
       .attr("marker-end", (d) => {
-        return (d.flux < fluxRange.start || d.flux > fluxRange.end) ? "url(#arrow-muted)" : "url(#arrow)";
-      })
+        return d.flux < fluxRange.start || d.flux > fluxRange.end
+          ? "url(#arrow-muted)"
+          : "url(#arrow)";
+      });
     link.append("title").text((d) => {
       return `Flux: ${d.flux} mol m-3`;
     });
@@ -249,7 +253,6 @@ const mapStateToProps = (state) => {
       end: getFlowFluxRangeEnd(state),
       isLogScale: getIsFlowPlotLogScale(state),
       maxArrowWidth: getFlowMaxArrowWidth(state),
-
     },
   };
 };
