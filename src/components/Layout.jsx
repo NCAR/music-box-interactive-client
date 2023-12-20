@@ -177,6 +177,9 @@ function Layout(props) {
                     <a className="footer-link" href="/#contact">
                       <li>Contact us</li>
                     </a>
+                    <a className="footer-link" href="https://www.ucar.edu/accessibility">
+                      <li>Accessibility</li>
+                    </a>
                   </ul>
                 </div>
                 <div className="col-md">
