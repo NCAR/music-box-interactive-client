@@ -3,70 +3,70 @@ import classnames from "classnames";
 import PropTypes from "prop-types";
 import "./multiRangeSlider.css";
 
-const MultiRangeSlider = ({ min, max, minVal, maxVal, onChange }) => {
-  const minValRef = useRef(null);
-  const maxValRef = useRef(null);
+const MultiRangeSlider = ({ values, minIndex, maxIndex, onChange }) => {
+  const minIndexRef = useRef(null);
+  const maxIndexRef = useRef(null);
   const range = useRef(null);
 
   // Convert to percentage
   const getPercent = useCallback(
-    (value) => Math.round(((value - min) / (max - min)) * 100),
-    [min, max],
+    (index) => Math.round((index / values.length) * 100),
+    [values.length],
   );
 
   // Set width of the range to decrease from the left side
   useEffect(() => {
-    if (maxValRef.current) {
-      const minPercent = getPercent(minVal);
-      const maxPercent = getPercent(+maxValRef.current.value); // Preceding with '+' converts the value from type string to type number
+    if (maxIndexRef.current) {
+      const minPercent = getPercent(minIndex);
+      const maxPercent = getPercent(+maxIndexRef.current.value); // Preceding with '+' converts the value from type string to type number
 
       if (range.current) {
         range.current.style.left = `${minPercent}%`;
         range.current.style.width = `${maxPercent - minPercent}%`;
       }
     }
-  }, [minVal, getPercent]);
+  }, [minIndex, getPercent]);
 
   // Set width of the range to decrease from the right side
   useEffect(() => {
-    if (minValRef.current) {
-      const minPercent = getPercent(+minValRef.current.value);
-      const maxPercent = getPercent(maxVal);
+    if (minIndexRef.current) {
+      const minPercent = getPercent(+minIndexRef.current.value);
+      const maxPercent = getPercent(maxIndex);
 
       if (range.current) {
         range.current.style.width = `${maxPercent - minPercent}%`;
       }
     }
-  }, [maxVal, getPercent]);
+  }, [maxIndex, getPercent]);
 
   // Get min and max values when their state changes
   useEffect(() => {
-    onChange({ min: minVal, max: maxVal });
-  }, [minVal, maxVal, onChange]);
+    onChange({ minIndex: minIndex, maxIndex: maxIndex });
+  }, [minIndex, maxIndex, onChange]);
 
   return (
     <div className="container slider-container">
       <input
         type="range"
-        min={min}
-        max={max}
-        value={minVal}
-        ref={minValRef}
+        min={0}
+        max={values.length-1}
+        value={minIndex}
+        ref={minIndexRef}
         onChange={(event) => {
-          onChange({ min: +event.target.value, max: maxVal });
+          onChange({ minIndex: +event.target.value, maxIndex: maxIndex });
         }}
         className={classnames("thumb thumb--zindex-3", {
-          "thumb--zindex-5": minVal > max - 100,
+          "thumb--zindex-5": minIndex > values - 100,
         })}
       />
       <input
         type="range"
-        min={min}
-        max={max}
-        value={maxVal}
-        ref={maxValRef}
+        min={0}
+        max={values.length-1}
+        value={maxIndex}
+        ref={maxIndexRef}
         onChange={(event) => {
-          onChange({ min: minVal, max: +event.target.value });
+          onChange({ minIndex: minIndex, maxIndex: +event.target.value });
         }}
         className="thumb thumb--zindex-4"
       />
@@ -74,18 +74,17 @@ const MultiRangeSlider = ({ min, max, minVal, maxVal, onChange }) => {
       <div className="slider">
         <div className="slider__track" />
         <div ref={range} className="slider__range" />
-        <div className="slider__left-value">{minVal}</div>
-        <div className="slider__right-value">{maxVal}</div>
+        <div className="slider__left-value">{(Math.abs(values[minIndex]) > 0.001 && Math.abs(values[minIndex]) < 1.0e6) || values[minIndex] == 0.0 ? values[minIndex].toPrecision(3) : values[minIndex]?.toExponential(3)}</div>
+        <div className="slider__right-value">{(Math.abs(values[maxIndex]) > 0.001 && Math.abs(values[maxIndex]) < 1.0e6) || values[maxIndex] == 0.0 ? values[maxIndex].toPrecision(3) : values[maxIndex]?.toExponential(3)}</div>
       </div>
     </div>
   );
 };
 
 MultiRangeSlider.propTypes = {
-  min: PropTypes.number.isRequired,
-  max: PropTypes.number.isRequired,
-  minVal: PropTypes.number.isRequired,
-  maxVal: PropTypes.number.isRequired,
+  values: PropTypes.arrayOf(PropTypes.number).isRequired,
+  minIndex: PropTypes.number.isRequired,
+  maxIndex: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

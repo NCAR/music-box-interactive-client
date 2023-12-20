@@ -5,12 +5,17 @@ const initialState = {
   nodes: [],
   links: [],
   selected_species: [],
+  ignored_species: [],
   is_log_scale: true,
   max_arrow_width: 3,
   time_range_start_index: 0,
   time_range_end_index: Number.MAX_SAFE_INTEGER,
   local_time_range_start: undefined,
   local_time_range_end: undefined,
+  flux_range_start: 0.0,
+  flux_range_end: Number.MAX_VALUE,
+  local_flux_range_start: undefined,
+  local_flux_range_end: undefined,
 };
 
 // Redefines the nodes and links that make up the flow diagram based
@@ -31,20 +36,25 @@ const UpdateGraph = (state, dependencies, results) => {
       }).length > 0
     );
   });
+
   var includedSpecies = {};
   rxns.forEach((reaction) => {
-    reaction.reactants.forEach((species) => {
-      includedSpecies[species.name] = {
-        name: species.name,
-        className: "species",
-      };
-    });
-    reaction.products.forEach((species) => {
-      includedSpecies[species.name] = {
-        name: species.name,
-        className: "species",
-      };
-    });
+    reaction.reactants
+      .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+      .forEach((species) => {
+        includedSpecies[species.name] = {
+          name: species.name,
+          className: "species",
+        };
+      });
+    reaction.products
+      .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+      .forEach((species) => {
+        includedSpecies[species.name] = {
+          name: species.name,
+          className: "species",
+        };
+      });
   });
   state.nodes = [
     ...rxns.map((reaction, index) => {
@@ -64,7 +74,9 @@ const UpdateGraph = (state, dependencies, results) => {
   ];
   state.links = rxns.flatMap((reaction, index) => {
     return [
-      ...reaction.reactants.map((species) => {
+      ...reaction.reactants
+        .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+        .map((species) => {
         return {
           source: state.nodes.findIndex((node) => node.name === species.name),
           target: index,
@@ -80,7 +92,9 @@ const UpdateGraph = (state, dependencies, results) => {
               .reduce((total, elem) => total + elem, 0),
         };
       }),
-      ...reaction.products.map((species) => {
+      ...reaction.products
+        .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+        .map((species) => {
         return {
           source: index,
           target: state.nodes.findIndex((node) => node.name === species.name),
@@ -123,6 +137,9 @@ export const flowReducer = (state = initialState, action) => {
           selected_species: [
             ...state.selected_species.filter((elem) => elem !== species),
             species,
+          ],
+          ignored_species: [
+            ...state.ignored_species.filter((elem) => elem !== species),
           ],
         },
         dependencies,
@@ -209,6 +226,48 @@ export const flowReducer = (state = initialState, action) => {
         ...state,
         local_time_range_end: action.payload.content.time,
       };
+    }
+    case utils.action_types.SET_FLOW_FLUX_RANGE_START: {
+      return {
+        ...state,
+        flux_range_start: action.payload.content.flux,
+        local_flux_range_start: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_FLUX_RANGE_END: {
+      return {
+        ...state,
+        flux_range_end: action.payload.content.flux,
+        local_flux_range_end: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_LOCAL_FLUX_RANGE_START: {
+      return {
+        ...state,
+        local_flux_range_start: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_LOCAL_FLUX_RANGE_END: {
+      return {
+        ...state,
+        local_flux_range_end: action.payload.content.flux,
+      };
+    }
+    case utils.action_types.SET_FLOW_IGNORED_SPECIES: {
+      const species = action.payload.content.species;
+      const dependencies = action.payload.content.dependencies;
+      const results = action.payload.content.results;
+      return UpdateGraph(
+        {
+          ...state,
+          ignored_species: [
+            ...state.ignored_species.filter((elem) => elem !== species),
+            species,
+          ],
+        },
+        dependencies,
+        results,
+      );
     }
     default:
       return state;

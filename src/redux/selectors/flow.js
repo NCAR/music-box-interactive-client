@@ -20,3 +20,15 @@ export const getFlowLocalTimeRangeStart = (store) =>
 
 export const getFlowLocalTimeRangeEnd = (store) =>
   store.flow.local_time_range_end;
+
+export const getFlowFluxRangeStart = (store) => 
+  store.flow.flux_range_start;
+
+export const getFlowFluxRangeEnd = (store) =>
+  store.flow.flux_range_end;
+
+export const getFlowLocalFluxRangeStart = (store) =>
+  store.flow.local_flux_range_start;
+
+export const getFlowLocalFluxRangeEnd = (store) =>
+  store.flow.local_flux_range_end;
