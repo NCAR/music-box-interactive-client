@@ -13,8 +13,10 @@ import * as styles from "../../styles/flow_graph.module.css";
 
 function FlowGraph({ nodes, links, fluxRange }) {
   const ref = useRef();
+  const toolTipFontSize = 12;
 
   const [charge, setCharge] = useState(-300);
+  const [zoomTransform, setZoomTransform] = useState(d3.zoomIdentity);
 
   // re-create animation every time nodes change
   useEffect(() => {
@@ -68,6 +70,16 @@ function FlowGraph({ nodes, links, fluxRange }) {
           .links(links),
       );
 
+    const tooltipGroup = svg
+      .append("g")
+      .style("opacity", 0)
+      .attr("transform", `translate(5, ${height - 2 * toolTipFontSize})`);
+
+    const tooltipText = tooltipGroup
+      .append("text")
+      .style("font-size", `${toolTipFontSize}px`)
+      .style("dominant-baseline", "hanging");
+
     const link = g
       .selectAll("line.edge")
       .data(links)
@@ -92,7 +104,15 @@ function FlowGraph({ nodes, links, fluxRange }) {
             0.5
           );
         }
-      });
+      })
+      .on("mouseover", (event, d) => {
+        tooltipText.text(`Flux: ${d.flux} mol m-3`);
+        tooltipGroup.style("opacity", 1);
+      })
+      .on("mouseleave", () => {
+        tooltipGroup.style("opacity", 0);
+      })
+      ;
 
     const linkArrow = g
       .selectAll("line.arrow")
@@ -150,12 +170,13 @@ function FlowGraph({ nodes, links, fluxRange }) {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([0.001, 3])
+      .scaleExtent([0.0001, 3])
       .on("zoom", ({ transform }) => {
         g.attr("transform", transform);
+        setZoomTransform(transform);
       });
 
-    svg.call(zoom).call(zoom.transform, d3.zoomIdentity);
+    svg.call(zoom).call(zoom.transform, zoomTransform);
 
     // update state on every frame
     simulation.on("tick", () => {

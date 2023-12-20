@@ -248,7 +248,11 @@ function FlowPanel(props) {
           </ListGroup.Item>
           <ListGroup.Item>
             Select species:
-            <ListGroup className="species-list" key="species-select-list-group">
+            <ListGroup className="species-list" key="species-select-list-group"
+            style={{
+              overflowY: "auto",
+              maxHeight: "300px"
+            }}>
               {props.species?.map((elem, index) => {
                 const spec = props.activeUnselectedSpecies.find((e) => e.name == elem.name);
                 const variant = spec ? "primary" : null
