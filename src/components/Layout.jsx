@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import logo from "../assets/ncarucar-seal-final-gray.png";
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css";
@@ -18,6 +18,7 @@ import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
 import { useNavigate } from "react-router-dom";
 import { useVeiwPort } from "../hooks/useVeiwPort";
+import ScrollToAnchor from "./ScrollToAnchor"
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ function Layout(props) {
       <Helmet>
         <title>{props.title || title}</title>
       </Helmet>
+      <ScrollToAnchor />
       <div className={styles.dashboard}>
         <Navbar
           className="shadow p-0 sticky-top flex-md-nowrap"
