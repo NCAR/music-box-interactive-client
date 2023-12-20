@@ -40,7 +40,10 @@ const UpdateGraph = (state, dependencies, results) => {
   var includedSpecies = {};
   rxns.forEach((reaction) => {
     reaction.reactants
-      .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+      .filter(
+        (species) =>
+          !state.ignored_species.find((ignored) => ignored === species.name),
+      )
       .forEach((species) => {
         includedSpecies[species.name] = {
           name: species.name,
@@ -48,7 +51,10 @@ const UpdateGraph = (state, dependencies, results) => {
         };
       });
     reaction.products
-      .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+      .filter(
+        (species) =>
+          !state.ignored_species.find((ignored) => ignored === species.name),
+      )
       .forEach((species) => {
         includedSpecies[species.name] = {
           name: species.name,
@@ -75,41 +81,47 @@ const UpdateGraph = (state, dependencies, results) => {
   state.links = rxns.flatMap((reaction, index) => {
     return [
       ...reaction.reactants
-        .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+        .filter(
+          (species) =>
+            !state.ignored_species.find((ignored) => ignored === species.name),
+        )
         .map((species) => {
-        return {
-          source: state.nodes.findIndex((node) => node.name === species.name),
-          target: index,
-          className: "flux",
-          reactionId: reaction.id,
-          flux:
-            species.coefficient *
-            results.integrated_reaction_rates[reaction.id]
-              .slice(
-                state.time_range_start_index,
-                state.time_range_end_index + 1,
-              )
-              .reduce((total, elem) => total + elem, 0),
-        };
-      }),
+          return {
+            source: state.nodes.findIndex((node) => node.name === species.name),
+            target: index,
+            className: "flux",
+            reactionId: reaction.id,
+            flux:
+              species.coefficient *
+              results.integrated_reaction_rates[reaction.id]
+                .slice(
+                  state.time_range_start_index,
+                  state.time_range_end_index + 1,
+                )
+                .reduce((total, elem) => total + elem, 0),
+          };
+        }),
       ...reaction.products
-        .filter((species) => !state.ignored_species.find((ignored) => ignored === species.name))
+        .filter(
+          (species) =>
+            !state.ignored_species.find((ignored) => ignored === species.name),
+        )
         .map((species) => {
-        return {
-          source: index,
-          target: state.nodes.findIndex((node) => node.name === species.name),
-          className: "flux",
-          reactionId: reaction.id,
-          flux:
-            species.yield *
-            results.integrated_reaction_rates[reaction.id]
-              .slice(
-                state.time_range_start_index,
-                state.time_range_end_index + 1,
-              )
-              .reduce((total, elem) => total + elem, 0),
-        };
-      }),
+          return {
+            source: index,
+            target: state.nodes.findIndex((node) => node.name === species.name),
+            className: "flux",
+            reactionId: reaction.id,
+            flux:
+              species.yield *
+              results.integrated_reaction_rates[reaction.id]
+                .slice(
+                  state.time_range_start_index,
+                  state.time_range_end_index + 1,
+                )
+                .reduce((total, elem) => total + elem, 0),
+          };
+        }),
     ];
   });
   return state;
