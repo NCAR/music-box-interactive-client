@@ -11,6 +11,39 @@ import {
 } from "../../redux/selectors";
 import * as styles from "../../styles/flow_graph.module.css";
 
+function pointToLineDistance(px, py, x1, y1, x2, y2) {
+  // Ax+By+C=0, describing the line
+  const A = y2 - y1;
+  const B = x1 - x2;
+  const C = y1 * (x2 - x1) - (y2 - y1) * x1;
+  // the distance the cursor is to the line
+  // in points? idk. We have zoom so it's unzoomed points? zoomed points? are all x and y values in zoomed values?
+  return Math.abs(A * px + B * py + C) / Math.sqrt(A * A + B * B);
+}
+
+// Define a function to get line coordinates
+function getLineCoordinates(d) {
+  return [d.source.x, d.source.y, d.target.x, d.target.y];
+}
+
+// Define a function to find the closest line among nearby lines
+function findClosestLine(px, py, lines) {
+  let closestLine = null;
+  let minDistance = Infinity;
+
+  lines.forEach((line) => {
+    const [x1, y1, x2, y2] = getLineCoordinates(line);
+    const distance = pointToLineDistance(px, py, x1, y1, x2, y2);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestLine = line;
+    }
+  });
+
+  return closestLine;
+}
+
 function FlowGraph({ nodes, links, fluxRange }) {
   const ref = useRef();
   const toolTipFontSize = 12;
@@ -92,15 +125,15 @@ function FlowGraph({ nodes, links, fluxRange }) {
         if (d.flux > fluxRange.end) return fluxRange.maxArrowWidth + 0.5;
         if (fluxRange.isLogScale) {
           return (
-            ((Math.log(d.flux) - Math.log(fluxRange.start)) /
-              (Math.log(fluxRange.end) - Math.log(fluxRange.start))) *
-              fluxRange.maxArrowWidth +
+            ((Math.log(d.flux) - Math.log(fluxRange.min)) /
+              (Math.log(fluxRange.max) - Math.log(fluxRange.min))) *
+            fluxRange.maxArrowWidth +
             0.5
           );
         } else {
           return (
-            ((d.flux - fluxRange.start) / (fluxRange.end - fluxRange.start)) *
-              fluxRange.maxArrowWidth +
+            ((d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min)) *
+            fluxRange.maxArrowWidth +
             0.5
           );
         }
@@ -113,6 +146,37 @@ function FlowGraph({ nodes, links, fluxRange }) {
         tooltipGroup.style("opacity", 0);
       })
       ;
+
+    svg.on("mousemove", (event) => {
+      const pointer = d3.pointer(event);
+      const [x, y] = zoomTransform.invert(pointer);
+        console.log(`(${pointer}) -> (${x},${y})`)
+
+      // Filter out lines that are not within 5 pixels of the mouse position
+      const nearbyLines = links.filter((d) => {
+        const [x1, y1, x2, y2] = getLineCoordinates(d); // Define a function to get line coordinates
+        const distance = pointToLineDistance(x, y, x1, y1, x2, y2);
+        if (distance < 5) {
+          console.log(`(${x},${y}) -> [(${x1},${y1}) (${x2},${y2})]: ${distance} | ${d.flux}`)
+        }
+        return distance < 5;
+      });
+
+      // Find the closest line among nearby lines
+      let closestLine = findClosestLine(x, y, nearbyLines);
+
+      // Highlight or do something with the closest line
+      // ...
+
+      // Log the closest line data
+      if (closestLine) {
+        tooltipText.text(`Flux: ${closestLine.flux} mol m-3`);
+        tooltipGroup.style("opacity", 1);
+      }
+      else {
+        tooltipGroup.style("opacity", 0);
+      }
+    });
 
     const linkArrow = g
       .selectAll("line.arrow")
