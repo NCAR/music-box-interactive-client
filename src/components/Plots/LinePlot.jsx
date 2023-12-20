@@ -169,6 +169,11 @@ const LinePlot = ({
       tooltipGroupRef.current.style("opacity", 1);
       dotRef.current.style("opacity", 1);
     };
+    const hideToolTip = () => {
+      verticalLineRef.current.style("opacity", 0);
+      tooltipGroupRef.current.style("opacity", 0);
+      dotRef.current.style("opacity", 0);
+    }
 
     const updateTooltip = (index) => {
       const activeData = data[index];
@@ -192,9 +197,7 @@ const LinePlot = ({
         showToolTip();
       })
       .on("mouseleave", () => {
-        verticalLineRef.current.style("opacity", 0);
-        tooltipGroupRef.current.style("opacity", 0);
-        dotRef.current.style("opacity", 0);
+        hideToolTip();
         setActiveIndex(null);
       })
       .on("mousemove", (event) => {
@@ -207,6 +210,9 @@ const LinePlot = ({
     if (activeIndex !== null) {
       showToolTip();
       updateTooltip(activeIndex);
+    }
+    else {
+      hideToolTip();
     }
   }, [data, activeIndex]);
 
