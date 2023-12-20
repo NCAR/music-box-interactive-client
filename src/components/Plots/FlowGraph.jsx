@@ -6,6 +6,8 @@ import {
   getLinks,
   getIsFlowPlotLogScale,
   getFlowMaxArrowWidth,
+  getFlowFluxRangeStart,
+  getFlowFluxRangeEnd,
 } from "../../redux/selectors";
 import * as styles from "../../styles/flow_graph.module.css";
 
@@ -30,7 +32,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
     svg
       .append("svg:defs")
       .selectAll("marker")
-      .data(["arrow"])
+      .data(["arrow", "arrow-muted"])
       .enter()
       .append("svg:marker")
       .attr("id", String)
@@ -42,7 +44,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .attr("orient", "auto")
       .attr("xoverflow", "visible")
       .append("svg:path")
-      .attr("class", styles.flux)
+      .attr("class", (d) => d === "arrow" ? styles.flux : styles.muted)
       .attr("d", "M0,-5L10,0L0,5");
 
     const g = svg.select("g");
@@ -71,19 +73,21 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .data(links)
       .join("line")
       .attr("class", (d) => {
-        return styles[d.className];
+        return (d.flux < fluxRange.start || d.flux > fluxRange.end) ? styles["muted"] : styles[d.className];
       })
       .style("stroke-width", (d) => {
+        if (d.flux < fluxRange.start) return 0.5;
+        if (d.flux > fluxRange.end) return fluxRange.maxArrowWidth + 0.5;
         if (fluxRange.isLogScale) {
           return (
-            ((Math.log(d.flux) - Math.log(fluxRange.min)) /
-              (Math.log(fluxRange.max) - Math.log(fluxRange.min))) *
+            ((Math.log(d.flux) - Math.log(fluxRange.start)) /
+              (Math.log(fluxRange.end) - Math.log(fluxRange.start))) *
               fluxRange.maxArrowWidth +
             0.5
           );
         } else {
           return (
-            ((d.flux - fluxRange.min) / (fluxRange.max - fluxRange.min)) *
+            ((d.flux - fluxRange.start) / (fluxRange.end - fluxRange.start)) *
               fluxRange.maxArrowWidth +
             0.5
           );
@@ -95,10 +99,11 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .data(links)
       .join("line")
       .attr("class", (d) => {
-        return styles[d.className];
+        return (d.flux < fluxRange.start || d.flux > fluxRange.end) ? styles["muted"] : styles[d.className];
       })
-      .attr("marker-end", "url(#arrow)");
-
+      .attr("marker-end", (d) => {
+        return (d.flux < fluxRange.start || d.flux > fluxRange.end) ? "url(#arrow-muted)" : "url(#arrow)";
+      })
     link.append("title").text((d) => {
       return `Flux: ${d.flux} mol m-3`;
     });
@@ -219,10 +224,11 @@ const mapStateToProps = (state) => {
     nodes: getNodes(state),
     links: links,
     fluxRange: {
-      max: Math.max(...links.map((link) => link.flux)),
-      min: Math.min(...links.map((link) => link.flux)),
+      start: getFlowFluxRangeStart(state),
+      end: getFlowFluxRangeEnd(state),
       isLogScale: getIsFlowPlotLogScale(state),
       maxArrowWidth: getFlowMaxArrowWidth(state),
+
     },
   };
 };

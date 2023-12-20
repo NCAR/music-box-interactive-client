@@ -25,6 +25,12 @@
   stroke-width: 1px;
 }
 
+.muted {
+  stroke:var(--ncar-color-text-light);
+  fill:var(--ncar-color-text-light);
+  stroke-width: 1px;
+}
+
 .reaction_highlighted {
   stroke:var(--ncar-color-text-highlight-green);
   fill:var(--ncar-color-text-highlight-green);
