@@ -14,6 +14,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
   const toolTipFontSize = 12;
 
   const [charge, setCharge] = useState(-300);
+  const [zoomTransform, setZoomTransform] = useState(d3.zoomIdentity);
 
   // re-create animation every time nodes change
   useEffect(() => {
@@ -167,9 +168,10 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .scaleExtent([0.0001, 3])
       .on("zoom", ({ transform }) => {
         g.attr("transform", transform);
+        setZoomTransform(transform);
       });
 
-    svg.call(zoom).call(zoom.transform, d3.zoomIdentity);
+    svg.call(zoom).call(zoom.transform, zoomTransform);
 
     // update state on every frame
     simulation.on("tick", () => {
