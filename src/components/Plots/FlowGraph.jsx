@@ -11,39 +11,6 @@ import {
 } from "../../redux/selectors";
 import * as styles from "../../styles/flow_graph.module.css";
 
-function pointToLineDistance(px, py, x1, y1, x2, y2) {
-  // Ax+By+C=0, describing the line
-  const A = y2 - y1;
-  const B = x1 - x2;
-  const C = y1 * (x2 - x1) - (y2 - y1) * x1;
-  // the distance the cursor is to the line
-  // in points? idk. We have zoom so it's unzoomed points? zoomed points? are all x and y values in zoomed values?
-  return Math.abs(A * px + B * py + C) / Math.sqrt(A * A + B * B);
-}
-
-// Define a function to get line coordinates
-function getLineCoordinates(d) {
-  return [d.source.x, d.source.y, d.target.x, d.target.y];
-}
-
-// Define a function to find the closest line among nearby lines
-function findClosestLine(px, py, lines) {
-  let closestLine = null;
-  let minDistance = Infinity;
-
-  lines.forEach((line) => {
-    const [x1, y1, x2, y2] = getLineCoordinates(line);
-    const distance = pointToLineDistance(px, py, x1, y1, x2, y2);
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestLine = line;
-    }
-  });
-
-  return closestLine;
-}
-
 function FlowGraph({ nodes, links, fluxRange }) {
   const ref = useRef();
   const toolTipFontSize = 12;
@@ -82,7 +49,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
       .attr("class", (d) => (d === "arrow" ? styles.flux : styles.muted))
       .attr("d", "M0,-5L10,0L0,5");
 
-    const g = svg.select("g");
+    const g = svg.select("g.graph");
     g.selectAll("*").remove();
 
     // force simulation
@@ -104,7 +71,11 @@ function FlowGraph({ nodes, links, fluxRange }) {
       );
 
     const tooltipGroup = svg
-      .append("g")
+      .select("g.info");
+    tooltipGroup
+      .selectAll("*").remove();
+
+    tooltipGroup
       .style("opacity", 0)
       .attr("transform", `translate(5, ${height - 2 * toolTipFontSize})`);
 
@@ -140,42 +111,7 @@ function FlowGraph({ nodes, links, fluxRange }) {
           );
         }
       })
-      .on("mouseover", (event, d) => {
-        tooltipText.text(`Flux: ${d.flux} mol m-3`);
-        tooltipGroup.style("opacity", 1);
-      })
-      .on("mouseleave", () => {
-        tooltipGroup.style("opacity", 0);
-      })
-      ;
-
-    svg.on("mousemove", (event) => {
-      const pointer = d3.pointer(event);
-      const [x, y] = zoomTransform.invert(pointer);
-        
-      // Filter out lines that are not within 5 pixels of the mouse position
-      const nearbyLines = links.filter((d) => {
-        const [x1, y1, x2, y2] = getLineCoordinates(d); // Define a function to get line coordinates
-        const distance = pointToLineDistance(x, y, x1, y1, x2, y2);
-        return distance < 5;
-      });
-
-      // Find the closest line among nearby lines
-      let closestLine = findClosestLine(x, y, nearbyLines);
-
-      // Highlight or do something with the closest line
-      // ...
-
-      // Log the closest line data
-      if (closestLine) {
-        tooltipText.text(`Flux: ${closestLine.flux} mol m-3`);
-        tooltipGroup.style("opacity", 1);
-      }
-      else {
-        tooltipGroup.style("opacity", 0);
-      }
-    });
-
+      
     const linkArrow = g
       .selectAll("line.arrow")
       .data(links)
@@ -190,9 +126,27 @@ function FlowGraph({ nodes, links, fluxRange }) {
           ? "url(#arrow-muted)"
           : "url(#arrow)";
       });
-    link.append("title").text((d) => {
-      return `Flux: ${d.flux} mol m-3`;
-    });
+
+    const linkToolTip = g
+      .selectAll("line.tooltip")
+      .data(links)
+      .join("line")
+      .attr("class", (d) => {
+        return styles["link-tooltip"]
+      })
+      .on("mouseenter", (event, d) => {
+        tooltipText.text(`Flux: ${d.flux} mol m-3`);
+        tooltipGroup.style("opacity", 1);
+      })
+      .on("mouseleave", () => {
+        tooltipGroup.style("opacity", 0);
+      })
+      .style("stroke-width", 10)
+      .style("stroke", "white")
+      .style("opacity", 0);
+      linkToolTip.append("title").text((d) => {
+        return `Flux: ${d.flux} mol m-3`;
+      });
 
     const node = g
       .selectAll("circle")
@@ -259,8 +213,22 @@ function FlowGraph({ nodes, links, fluxRange }) {
         .attr("y2", (d) => {
           return d.target.y;
         });
-
+      
       linkArrow
+        .attr("x1", (d) => {
+          return d.source.x;
+        })
+        .attr("y1", (d) => {
+          return d.source.y;
+        })
+        .attr("x2", (d) => {
+          return d.target.x;
+        })
+        .attr("y2", (d) => {
+          return d.target.y;
+        });
+
+      linkToolTip
         .attr("x1", (d) => {
           return d.source.x;
         })
@@ -300,7 +268,8 @@ function FlowGraph({ nodes, links, fluxRange }) {
 
   return (
     <svg id="flow-diagram" ref={ref}>
-      <g />
+      <g class="graph"/>
+      <g class="info"/>
     </svg>
   );
 }
