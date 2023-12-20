@@ -49,7 +49,7 @@ const MultiRangeSlider = ({ values, minIndex, maxIndex, onChange }) => {
       <input
         type="range"
         min={0}
-        max={values.length-1}
+        max={values.length - 1}
         value={minIndex}
         ref={minIndexRef}
         onChange={(event) => {
@@ -62,7 +62,7 @@ const MultiRangeSlider = ({ values, minIndex, maxIndex, onChange }) => {
       <input
         type="range"
         min={0}
-        max={values.length-1}
+        max={values.length - 1}
         value={maxIndex}
         ref={maxIndexRef}
         onChange={(event) => {
@@ -74,8 +74,20 @@ const MultiRangeSlider = ({ values, minIndex, maxIndex, onChange }) => {
       <div className="slider">
         <div className="slider__track" />
         <div ref={range} className="slider__range" />
-        <div className="slider__left-value">{(Math.abs(values[minIndex]) > 0.001 && Math.abs(values[minIndex]) < 1.0e6) || values[minIndex] == 0.0 ? values[minIndex].toPrecision(3) : values[minIndex]?.toExponential(3)}</div>
-        <div className="slider__right-value">{(Math.abs(values[maxIndex]) > 0.001 && Math.abs(values[maxIndex]) < 1.0e6) || values[maxIndex] == 0.0 ? values[maxIndex].toPrecision(3) : values[maxIndex]?.toExponential(3)}</div>
+        <div className="slider__left-value">
+          {(Math.abs(values[minIndex]) > 0.001 &&
+            Math.abs(values[minIndex]) < 1.0e6) ||
+          values[minIndex] == 0.0
+            ? values[minIndex].toPrecision(3)
+            : values[minIndex]?.toExponential(3)}
+        </div>
+        <div className="slider__right-value">
+          {(Math.abs(values[maxIndex]) > 0.001 &&
+            Math.abs(values[maxIndex]) < 1.0e6) ||
+          values[maxIndex] == 0.0
+            ? values[maxIndex].toPrecision(3)
+            : values[maxIndex]?.toExponential(3)}
+        </div>
       </div>
     </div>
   );
