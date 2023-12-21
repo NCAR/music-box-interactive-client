@@ -39,8 +39,8 @@ export const initialConditionsSchema = [
     nameLabel: "Species name",
     classKey: "initial_species_concentrations",
     allowAddRemove: true,
-    getComponent(id, schema) {
-      return <SpeciesCondition conditionId={id} schema={schema} />;
+    getComponent(condition, schema) {
+      return <SpeciesCondition condition={condition} schema={schema} />;
     },
     units: ["mol m-3", "mol cm-3", "molec m-3", "molec cm-3"],
   },
@@ -49,8 +49,8 @@ export const initialConditionsSchema = [
     nameLabel: "Property",
     classKey: "initial_environmental",
     allowAddRemove: false,
-    getComponent(id, schema) {
-      return <EnvironmentalCondition conditionId={id} schema={schema} />;
+    getComponent(condition, schema) {
+      return <EnvironmentalCondition condition={condition} schema={schema} />;
     },
     units: {
       temperature: ["K", "C", "F"],
@@ -62,8 +62,8 @@ export const initialConditionsSchema = [
     nameLabel: "Reaction label",
     classKey: "initial_reactions",
     allowAddRemove: true,
-    getComponent(id, schema) {
-      return <ReactionCondition conditionId={id} schema={schema} />;
+    getComponent(condition, schema) {
+      return <ReactionCondition condition={condition} schema={schema} />;
     },
   },
 ];

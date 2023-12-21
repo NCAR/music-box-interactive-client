@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import { addCondition } from "../../redux/actions";
-import { getCondition } from "../../redux/selectors";
 
 const EnvironmentalCondition = (props) => {
   const condition = props.condition;
@@ -66,11 +65,6 @@ const EnvironmentalCondition = (props) => {
   );
 };
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    condition: getCondition(state, ownProps.schema, ownProps.conditionId),
-  };
-};
-export default connect(mapStateToProps, { addCondition })(
+export default connect(null, { addCondition })(
   EnvironmentalCondition,
 );

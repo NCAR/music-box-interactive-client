@@ -19,24 +19,25 @@ const ConditionsList = (props) => {
             <div className="col-3">Initial value</div>
             <div className="col-3">Units</div>
           </div>
-          {props.conditions && props.conditions.length
-            ? props.conditions.map((condition) => {
-                return (
-                  <div key={`condition-${condition.id}`} className="row my-1 row-data">
-                    {props.schema.getComponent(condition.id, props.schema)}
-                  </div>
-                );
-              })
-            : null}
+          {props?.conditions?.map((condition) => {
+            return (
+              <div key={`condition-${condition.id}`} className="row my-1 row-data">
+                {props.schema.getComponent(condition, props.schema)}
+              </div>
+            );
+          })
+          }
         </div>
       </div>
     </div>
   );
 };
 
+
 const mapStateToProps = (state, ownProps) => {
   const { schema } = ownProps;
   const conditions = getConditions(state, schema);
+  console.log(conditions)
   return { conditions };
 };
 
