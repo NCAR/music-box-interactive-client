@@ -18,7 +18,7 @@ import { RunStatus } from "../controllers/models";
 import utils from "../redux/utils";
 import { useNavigate } from "react-router-dom";
 import { useVeiwPort } from "../hooks/useVeiwPort";
-import ScrollToAnchor from "./ScrollToAnchor"
+import ScrollToAnchor from "./ScrollToAnchor";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -179,7 +179,10 @@ function Layout(props) {
                     <a className="footer-link" href="/#contact">
                       <li>Contact us</li>
                     </a>
-                    <a className="footer-link" href="https://www.ucar.edu/accessibility">
+                    <a
+                      className="footer-link"
+                      href="https://www.ucar.edu/accessibility"
+                    >
                       <li>Accessibility</li>
                     </a>
                   </ul>
