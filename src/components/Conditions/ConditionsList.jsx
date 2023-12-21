@@ -20,9 +20,9 @@ const ConditionsList = (props) => {
             <div className="col-3">Units</div>
           </div>
           {props.conditions && props.conditions.length
-            ? props.conditions.map((condition, index) => {
+            ? props.conditions.map((condition) => {
                 return (
-                  <div key={`condition-${index}`} className="row my-1 row-data">
+                  <div key={`condition-${condition.id}`} className="row my-1 row-data">
                     {props.schema.getComponent(condition.id, props.schema)}
                   </div>
                 );

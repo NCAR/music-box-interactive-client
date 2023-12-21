@@ -17,6 +17,7 @@ const ReactionCondition = (props) => {
         (reaction) => reaction.id === condition.reactionId,
       ).name
     : null;
+    console.log(condition)
 
   const handleUpdate = (newProps) => {
     props.addCondition({
