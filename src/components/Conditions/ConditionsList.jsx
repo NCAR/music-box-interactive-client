@@ -1,14 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import AddCondition from "./AddCondition";
-import { getConditions } from "../../redux/selectors";
+import { getConditions, getUserDefinedRatesIds } from "../../redux/selectors";
 
 const ConditionsList = (props) => {
+  console.log(props.possibleReactions)
   return (
     <div className="card mb-4 p-0 shadow-sm">
       <div className="card-header d-flex justify-content-between">
         <h4 className="my-0">{props.schema.label}</h4>
-        {props.schema.allowAddRemove ? (
+        {props.schema.allowAddRemove && props.possibleReactions.length > 0 ? (
           <AddCondition schema={props.schema} />
         ) : null}
       </div>
@@ -37,8 +38,9 @@ const ConditionsList = (props) => {
 const mapStateToProps = (state, ownProps) => {
   const { schema } = ownProps;
   const conditions = getConditions(state, schema);
-  console.log(conditions)
-  return { conditions };
+  const reactionIds = conditions.map((condition) => condition.reactionId)
+  const possibleReactions = getUserDefinedRatesIds(state).filter((reaction) => !reactionIds.includes(reaction.id));
+  return { conditions, possibleReactions };
 };
 
 export default connect(mapStateToProps)(ConditionsList);

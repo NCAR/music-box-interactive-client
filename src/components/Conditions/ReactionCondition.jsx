@@ -104,7 +104,6 @@ const ReactionCondition = (props) => {
 const mapStateToProps = (state, ownProps) => {
   const existingConditions = getConditions(state, ownProps.schema).map((condition) => condition.reactionId);
   const possibleReactions = getUserDefinedRatesIds(state).filter((reaction) => !existingConditions.includes(reaction.id));
-  console.log(possibleReactions)
   return {
     possibleReactions: possibleReactions,
     reactionNames: getUserDefinedRatesIds(state),
