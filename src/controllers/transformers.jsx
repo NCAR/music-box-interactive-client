@@ -319,20 +319,36 @@ function extract_conditions_from_example(config, mechanism) {
   if (initial_conditions) {
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
       let [type, identifier, units] = key.split(".");
+      identifier = identifier.replace(/EMIS_/, "").replace(/LOSS_/, "");
       const reaction = reactions
-        .filter((reaction) => {
-          return reaction.data.type.includes(type);
-        })
         .find((reaction) => {
           return reaction.data.musica_name == identifier;
         });
       let default_units = "";
-      if (type === "LOSS") {
-        default_units = "mol m-3 s-1";
-      } else if (type === "EMIS") {
-        default_units = "mol m-3 s-1";
-      } else if (type === "PHOT") {
-        default_units = "s-1";
+      /*
+       * Emissions and loss are modelled as photolysis reactions in musicbox. This is because
+       * their types don't allow a specified set of reactants and products, only a single species.
+       * We need the reactants/products to collect the integrated reaction rates. To do this
+       * they are serialized to the server as a photolysis reaction. When we read them off of disk,
+       * we need to translate their type and units back to what's proper.
+       */
+      switch(reaction.data.type) {
+        case ReactionTypes.PHOTOLYSIS: {
+          default_units = "s-1";
+          break;
+        }
+        case ReactionTypes.EMISSION:{
+          default_units = "mol m-3 s-1";
+          units = "mol m-3 s-1";
+          type = "EMIS";
+          break;
+        }
+        case ReactionTypes.FIRST_ORDER_LOSS: {
+          default_units = "s-1";
+          units = "s-1";
+          type = "LOSS";
+          break;
+        }
       }
       return {
         id: uuidv4(),

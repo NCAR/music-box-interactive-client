@@ -4,7 +4,6 @@ import AddCondition from "./AddCondition";
 import { getConditions, getUserDefinedRatesIds } from "../../redux/selectors";
 
 const ConditionsList = (props) => {
-  console.log(props.possibleReactions);
   return (
     <div className="card mb-4 p-0 shadow-sm">
       <div className="card-header d-flex justify-content-between">
