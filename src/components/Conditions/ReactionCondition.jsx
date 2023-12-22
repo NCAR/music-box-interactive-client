@@ -14,8 +14,8 @@ const ReactionCondition = (props) => {
   const schema = props.schema;
   const name = condition.reactionId
     ? props.reactionNames.find(
-      (reaction) => reaction.id === condition.reactionId,
-    ).name
+        (reaction) => reaction.id === condition.reactionId,
+      ).name
     : null;
   // console.log(condition)
 
@@ -39,21 +39,21 @@ const ReactionCondition = (props) => {
           <Dropdown.Menu>
             {schema.allowAddRemove
               ? props.possibleReactions.map((value, index) => {
-                return (
-                  <Dropdown.Item
-                    href="#"
-                    key={index}
-                    onClick={() => {
-                      handleUpdate({
-                        reactionId: value.id,
-                        type: value.prefix,
-                      });
-                    }}
-                  >
-                    {value.name}
-                  </Dropdown.Item>
-                );
-              })
+                  return (
+                    <Dropdown.Item
+                      href="#"
+                      key={index}
+                      onClick={() => {
+                        handleUpdate({
+                          reactionId: value.id,
+                          type: value.prefix,
+                        });
+                      }}
+                    >
+                      {value.name}
+                    </Dropdown.Item>
+                  );
+                })
               : name}
           </Dropdown.Menu>
         </Dropdown>
@@ -76,18 +76,18 @@ const ReactionCondition = (props) => {
           <Dropdown.Menu>
             {props.possibleUnits && props.possibleUnits.length
               ? props.possibleUnits.map((value) => {
-                return (
-                  <Dropdown.Item
-                    href="#"
-                    key={value}
-                    onClick={(e) => {
-                      handleUpdate({ units: e.target.innerHTML });
-                    }}
-                  >
-                    {value}
-                  </Dropdown.Item>
-                );
-              })
+                  return (
+                    <Dropdown.Item
+                      href="#"
+                      key={value}
+                      onClick={(e) => {
+                        handleUpdate({ units: e.target.innerHTML });
+                      }}
+                    >
+                      {value}
+                    </Dropdown.Item>
+                  );
+                })
               : null}
           </Dropdown.Menu>
         </Dropdown>
@@ -102,8 +102,12 @@ const ReactionCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const existingConditions = getConditions(state, ownProps.schema).map((condition) => condition.reactionId);
-  const possibleReactions = getUserDefinedRatesIds(state).filter((reaction) => !existingConditions.includes(reaction.id));
+  const existingConditions = getConditions(state, ownProps.schema).map(
+    (condition) => condition.reactionId,
+  );
+  const possibleReactions = getUserDefinedRatesIds(state).filter(
+    (reaction) => !existingConditions.includes(reaction.id),
+  );
   return {
     possibleReactions: possibleReactions,
     reactionNames: getUserDefinedRatesIds(state),

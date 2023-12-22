@@ -15,9 +15,12 @@ import {
 export const getExample = (example) => async (dispatch) => {
   try {
     const data = await fetchExample(example);
-    const mechanism = extract_mechanism_from_example(data)
-    const conditions = extract_conditions_from_example(data, mechanism)
-    dispatch({ type: utils.action_types.EXAMPLE_FETCHED, payload: {mechanism: mechanism, conditions: conditions} });
+    const mechanism = extract_mechanism_from_example(data);
+    const conditions = extract_conditions_from_example(data, mechanism);
+    dispatch({
+      type: utils.action_types.EXAMPLE_FETCHED,
+      payload: { mechanism: mechanism, conditions: conditions },
+    });
   } catch (error) {
     console.error(`Error getting example: ${error.message}`);
   }
@@ -38,7 +41,10 @@ export const downloadConfiguration =
   (mechanism, conditions) => async (dispatch) => {
     try {
       const camp_mechanism = translate_to_camp_config(mechanism);
-      const musicbox_conditions = translate_to_musicbox_conditions(conditions, mechanism);
+      const musicbox_conditions = translate_to_musicbox_conditions(
+        conditions,
+        mechanism,
+      );
       const url = await fetchCompressedConfiguration({
         mechanism: camp_mechanism,
         conditions: musicbox_conditions,
