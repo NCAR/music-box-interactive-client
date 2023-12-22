@@ -320,10 +320,9 @@ function extract_conditions_from_example(config, mechanism) {
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
       let [type, identifier, units] = key.split(".");
       identifier = identifier.replace(/EMIS_/, "").replace(/LOSS_/, "");
-      const reaction = reactions
-        .find((reaction) => {
-          return reaction.data.musica_name == identifier;
-        });
+      const reaction = reactions.find((reaction) => {
+        return reaction.data.musica_name == identifier;
+      });
       let default_units = "";
       /*
        * Emissions and loss are modelled as photolysis reactions in musicbox. This is because
@@ -332,12 +331,12 @@ function extract_conditions_from_example(config, mechanism) {
        * they are serialized to the server as a photolysis reaction. When we read them off of disk,
        * we need to translate their type and units back to what's proper.
        */
-      switch(reaction.data.type) {
+      switch (reaction.data.type) {
         case ReactionTypes.PHOTOLYSIS: {
           default_units = "s-1";
           break;
         }
-        case ReactionTypes.EMISSION:{
+        case ReactionTypes.EMISSION: {
           default_units = "mol m-3 s-1";
           units = "mol m-3 s-1";
           type = "EMIS";
