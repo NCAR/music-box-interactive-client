@@ -44,7 +44,6 @@ const initialState = {
   ],
 };
 
-
 const sortConditionsById = (a, b) => {
   if (a.id < b.id) {
     return -1;
@@ -53,7 +52,7 @@ const sortConditionsById = (a, b) => {
   } else {
     return 0;
   }
-}
+};
 
 export const conditionsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -272,7 +271,7 @@ export const conditionsReducer = (state = initialState, action) => {
     case utils.action_types.EXAMPLE_FETCHED: {
       return {
         ...state,
-        ...action.payload.conditions
+        ...action.payload.conditions,
       };
     }
     default:

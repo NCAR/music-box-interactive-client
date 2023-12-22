@@ -4,7 +4,7 @@ import AddCondition from "./AddCondition";
 import { getConditions, getUserDefinedRatesIds } from "../../redux/selectors";
 
 const ConditionsList = (props) => {
-  console.log(props.possibleReactions)
+  console.log(props.possibleReactions);
   return (
     <div className="card mb-4 p-0 shadow-sm">
       <div className="card-header d-flex justify-content-between">
@@ -22,24 +22,27 @@ const ConditionsList = (props) => {
           </div>
           {props?.conditions?.map((condition) => {
             return (
-              <div key={`condition-${condition.id}`} className="row my-1 row-data">
+              <div
+                key={`condition-${condition.id}`}
+                className="row my-1 row-data"
+              >
                 {props.schema.getComponent(condition, props.schema)}
               </div>
             );
-          })
-          }
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-
 const mapStateToProps = (state, ownProps) => {
   const { schema } = ownProps;
   const conditions = getConditions(state, schema);
-  const reactionIds = conditions.map((condition) => condition.reactionId)
-  const possibleReactions = getUserDefinedRatesIds(state).filter((reaction) => !reactionIds.includes(reaction.id));
+  const reactionIds = conditions.map((condition) => condition.reactionId);
+  const possibleReactions = getUserDefinedRatesIds(state).filter(
+    (reaction) => !reactionIds.includes(reaction.id),
+  );
   return { conditions, possibleReactions };
 };
 

@@ -321,11 +321,11 @@ function extract_conditions_from_example(config, mechanism) {
       let [type, identifier, units] = key.split(".");
       const reaction = reactions
         .filter((reaction) => {
-          return reaction.data.type.includes(type)
+          return reaction.data.type.includes(type);
         })
         .find((reaction) => {
-          return reaction.data.musica_name == identifier
-        })
+          return reaction.data.musica_name == identifier;
+        });
       let default_units = "";
       if (type === "LOSS") {
         default_units = "mol m-3 s-1";
@@ -422,7 +422,8 @@ function translate_reactions_to_camp_config(config) {
       }
       case ReactionTypes.PHOTOLYSIS: {
         let { type, products, reactant, musica_name, ...data } = reaction.data;
-        musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
+        musica_name =
+          reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -437,7 +438,8 @@ function translate_reactions_to_camp_config(config) {
       case ReactionTypes.EMISSION: {
         let { type, species, scaling_factor, musica_name, ...data } =
           reaction.data;
-        musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
+        musica_name =
+          reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -457,7 +459,8 @@ function translate_reactions_to_camp_config(config) {
       case ReactionTypes.FIRST_ORDER_LOSS: {
         let { type, species, scaling_factor, musica_name, ...data } =
           reaction.data;
-        musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
+        musica_name =
+          reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -621,9 +624,10 @@ function translate_to_musicbox_conditions(conditions, mechanism) {
     "evolving conditions": conditions.evolving,
     "initial conditions": {
       ...conditions.initial_reactions.reduce((acc, curr) => {
-        let reaction = mechanism.reactions.find((r) => r.id == curr.reactionId)
+        let reaction = mechanism.reactions.find((r) => r.id == curr.reactionId);
         let type = curr.type;
-        let musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
+        let musica_name =
+          reaction.data.musica_name || ReactionTypes.shortName(reaction);
         let units = curr.units;
         // use the photolysis type to handle these conditions for both loss and emission
         if (curr.type == "LOSS") {

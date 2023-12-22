@@ -65,6 +65,4 @@ const EnvironmentalCondition = (props) => {
   );
 };
 
-export default connect(null, { addCondition })(
-  EnvironmentalCondition,
-);
+export default connect(null, { addCondition })(EnvironmentalCondition);
