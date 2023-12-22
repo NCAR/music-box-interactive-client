@@ -302,7 +302,11 @@ export const mechanismReducer = (state = initialState, action) => {
       };
     }
     case utils.action_types.EXAMPLE_FETCHED: {
-      return extract_mechanism_from_example(action.payload, state);
+      return {
+        ...state,
+        gasSpecies: action.payload.mechanism.gasSpecies,
+        reactions: action.payload.mechanism.reactions,
+      };
     }
     default:
       return state;

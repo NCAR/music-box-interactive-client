@@ -2,7 +2,7 @@ import { reactionSchema } from "../redux/schemas";
 import { ReactionTypes } from "./models";
 import { v4 as uuidv4 } from "uuid";
 
-function extract_mechanism_from_example(config, state) {
+function extract_mechanism_from_example(config) {
   const campReactantsToRedux = (reaction) =>
     Object.entries(reaction.reactants).map(([name, props]) => ({
       name: name,
@@ -198,13 +198,12 @@ function extract_mechanism_from_example(config, state) {
     }
   });
   return {
-    ...state,
     gasSpecies: species,
     reactions: reactions,
   };
 }
 
-function extract_conditions_from_example(config) {
+function extract_conditions_from_example(config, mechanism) {
   const units_re = /\[(.*?)\]/;
 
   let box_options = config.conditions["box model options"];
@@ -315,23 +314,29 @@ function extract_conditions_from_example(config) {
   });
 
   let initial_conditions = config.conditions["initial conditions"];
+  let reactions = mechanism.reactions || [];
   let reaction_conditions = [];
   if (initial_conditions) {
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
-      let [type, reaction, units] = key.split(".");
+      let [type, identifier, units] = key.split(".");
+      const reaction = reactions
+        .filter((reaction) => {
+          return reaction.data.type.includes(type)
+        })
+        .find((reaction) => {
+          return reaction.data.musica_name == identifier
+        })
       let default_units = "";
       if (type === "LOSS") {
-        reaction = reaction.replace(/LOSS_/, "");
         default_units = "mol m-3 s-1";
       } else if (type === "EMIS") {
-        reaction = reaction.replace(/EMIS_/, "");
         default_units = "mol m-3 s-1";
       } else if (type === "PHOT") {
         default_units = "s-1";
       }
       return {
         id: uuidv4(),
-        name: reaction,
+        reactionId: reaction.id,
         value: initial_conditions[key]["0"],
         type: type,
         units: units || default_units,
@@ -417,6 +422,7 @@ function translate_reactions_to_camp_config(config) {
       }
       case ReactionTypes.PHOTOLYSIS: {
         let { type, products, reactant, musica_name, ...data } = reaction.data;
+        musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -431,6 +437,7 @@ function translate_reactions_to_camp_config(config) {
       case ReactionTypes.EMISSION: {
         let { type, species, scaling_factor, musica_name, ...data } =
           reaction.data;
+        musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -450,6 +457,7 @@ function translate_reactions_to_camp_config(config) {
       case ReactionTypes.FIRST_ORDER_LOSS: {
         let { type, species, scaling_factor, musica_name, ...data } =
           reaction.data;
+        musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
@@ -583,7 +591,7 @@ function translate_to_camp_config(config) {
   return { species: camp_species_config, reactions: camp_reactions_config };
 }
 
-function translate_to_musicbox_conditions(conditions) {
+function translate_to_musicbox_conditions(conditions, mechanism) {
   let intial_value_reducer = (acc, curr) => {
     acc[curr.name] = {
       [`initial value [${curr.units}]`]: parseFloat(curr.value),
@@ -613,16 +621,18 @@ function translate_to_musicbox_conditions(conditions) {
     "evolving conditions": conditions.evolving,
     "initial conditions": {
       ...conditions.initial_reactions.reduce((acc, curr) => {
+        let reaction = mechanism.reactions.find((r) => r.id == curr.reactionId)
         let type = curr.type;
-        let musica_name = curr.name;
+        let musica_name = reaction.data.musica_name || ReactionTypes.shortName(reaction);
         let units = curr.units;
+        // use the photolysis type to handle these conditions for both loss and emission
         if (curr.type == "LOSS") {
           type = "PHOT";
-          musica_name = "LOSS_" + curr.name;
+          musica_name = "LOSS_" + musica_name;
           units = curr.units;
         } else if (curr.type == "EMIS") {
           type = "PHOT";
-          musica_name = "EMIS_" + curr.name;
+          musica_name = "EMIS_" + musica_name;
           units = "s-1";
         }
         let key = `${type}.${musica_name}.${units}`;

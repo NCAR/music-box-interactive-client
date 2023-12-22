@@ -90,7 +90,6 @@ const SpeciesCondition = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    condition: getCondition(state, ownProps.schema, ownProps.conditionId),
     speciesNames: getVariableSpeciesNames(state),
   };
 };

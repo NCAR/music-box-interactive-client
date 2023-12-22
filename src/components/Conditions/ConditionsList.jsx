@@ -1,14 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import AddCondition from "./AddCondition";
-import { getConditions } from "../../redux/selectors";
+import { getConditions, getUserDefinedRatesIds } from "../../redux/selectors";
 
 const ConditionsList = (props) => {
+  console.log(props.possibleReactions)
   return (
     <div className="card mb-4 p-0 shadow-sm">
       <div className="card-header d-flex justify-content-between">
         <h4 className="my-0">{props.schema.label}</h4>
-        {props.schema.allowAddRemove ? (
+        {props.schema.allowAddRemove && props.possibleReactions.length > 0 ? (
           <AddCondition schema={props.schema} />
         ) : null}
       </div>
@@ -19,25 +20,27 @@ const ConditionsList = (props) => {
             <div className="col-3">Initial value</div>
             <div className="col-3">Units</div>
           </div>
-          {props.conditions && props.conditions.length
-            ? props.conditions.map((condition, index) => {
-                return (
-                  <div key={`condition-${index}`} className="row my-1 row-data">
-                    {props.schema.getComponent(condition.id, props.schema)}
-                  </div>
-                );
-              })
-            : null}
+          {props?.conditions?.map((condition) => {
+            return (
+              <div key={`condition-${condition.id}`} className="row my-1 row-data">
+                {props.schema.getComponent(condition, props.schema)}
+              </div>
+            );
+          })
+          }
         </div>
       </div>
     </div>
   );
 };
 
+
 const mapStateToProps = (state, ownProps) => {
   const { schema } = ownProps;
   const conditions = getConditions(state, schema);
-  return { conditions };
+  const reactionIds = conditions.map((condition) => condition.reactionId)
+  const possibleReactions = getUserDefinedRatesIds(state).filter((reaction) => !reactionIds.includes(reaction.id));
+  return { conditions, possibleReactions };
 };
 
 export default connect(mapStateToProps)(ConditionsList);

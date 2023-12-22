@@ -1,5 +1,4 @@
 import utils from "../utils";
-import { extract_conditions_from_example } from "../../controllers/transformers";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
@@ -45,6 +44,17 @@ const initialState = {
   ],
 };
 
+
+const sortConditionsById = (a, b) => {
+  if (a.id < b.id) {
+    return -1;
+  } else if (a.id > b.id) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 export const conditionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case utils.action_types.RESET_ALL: {
@@ -77,7 +87,7 @@ export const conditionsReducer = (state = initialState, action) => {
             ...condition,
             id: conditionId,
           },
-        ],
+        ].sort(sortConditionsById),
       };
     }
     case utils.action_types.REMOVE_CONDITION: {
@@ -262,7 +272,7 @@ export const conditionsReducer = (state = initialState, action) => {
     case utils.action_types.EXAMPLE_FETCHED: {
       return {
         ...state,
-        ...extract_conditions_from_example(action.payload),
+        ...action.payload.conditions
       };
     }
     default:
