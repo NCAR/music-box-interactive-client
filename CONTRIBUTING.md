@@ -13,6 +13,6 @@ We are happy to accept feature enchancements, however MusicBox Interactive has t
 
 1. This project, the client user-interface,
 2. A server API, this provides the interface to start model simulations, upload/download configuration files, and retrieve results
-3. And finally, [MusicBox](https://github.com/NCAR/music-box), which runs the actual model. 
+3. And finally, [MusicBox](https://github.com/NCAR/music-box), which runs the actual model.
 
 Each project can evolve independently of the other, but in some cases may require new functionality in more than one project. A conversation about what is desired will help the development team create the appropriate design and ease implementation.
