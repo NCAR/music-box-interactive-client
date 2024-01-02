@@ -11,7 +11,7 @@ with enough context to understand and recreate the bug.
 
 We are happy to accept feature enchancements, however MusicBox Interactive has three key components:
 
-1. This project, the user-facing UI,
+1. This project, the client user-interface,
 2. A server API, this provides the interface to start model simulations, upload/download configuration files, and retrieve results
 3. And finally, [MusicBox](https://github.com/NCAR/music-box), which runs the actual model. 
 
