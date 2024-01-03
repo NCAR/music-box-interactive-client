@@ -41,7 +41,7 @@ export default function QuickStart() {
             href="https://github.com/NCAR/musicbox_curriculum_exercises"
             rel="noreferrer"
           >
-            this respository
+            this repository
           </a>
         </p>
         <p>
