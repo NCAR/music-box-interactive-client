@@ -6,19 +6,18 @@ import FlowPanel from "../components/Plots/FlowPanel";
 import FlowGraph from "../components/Plots/FlowGraph";
 import { getRunStatus } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
-
 function D3Flow(props) {
   return (
     <Layout>
-      <main role="main" style={{ padding: `1em`, height: `100%` }}>
+      <main role="main" style={{ padding: `1em` }}>
         {props.runStatus === RunStatus.DONE ? (
           <Container fluid style={{ maxWidth: `3000px`, height: `100%` }}>
             <Row style={{ height: `100%` }}>
-              <Col xs={4} md={3} lg={3} style={{ height: `100%` }}>
+              <Col   xs={12} md={12} lg={4} style={{margin:'1.25rem 0', height:'100%' }}>
                 <FlowPanel />
               </Col>
-              <Col>
-                <div style={{ height: `100%` }}>
+              <Col xs={12} md={12} lg={8} style={{height:'100%'}}>
+                <div style={{height:'100%' }}>
                   <FlowGraph />
                 </div>
               </Col>
