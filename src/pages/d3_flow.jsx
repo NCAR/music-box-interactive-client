@@ -13,11 +13,16 @@ function D3Flow(props) {
         {props.runStatus === RunStatus.DONE ? (
           <Container fluid style={{ maxWidth: `3000px`, height: `100%` }}>
             <Row style={{ height: `100%` }}>
-              <Col   xs={12} md={12} lg={4} style={{margin:'1.25rem 0', height:'100%' }}>
+              <Col
+                xs={12}
+                md={12}
+                lg={4}
+                style={{ margin: "1.25rem 0", height: "100%" }}
+              >
                 <FlowPanel />
               </Col>
-              <Col xs={12} md={12} lg={8} style={{height:'100%'}}>
-                <div style={{height:'100%' }}>
+              <Col xs={12} md={12} lg={8} style={{ height: "100%" }}>
+                <div style={{ height: "100%" }}>
                   <FlowGraph />
                 </div>
               </Col>
