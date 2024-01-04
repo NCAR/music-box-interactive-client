@@ -55,7 +55,7 @@ function FlowPanel(props) {
   }, [props.fluxMin, props.fluxMax]);
 
   return (
-    <nav>
+    <nav >
       <ListGroup
         className="bg-ncar-menu-secondary p-2 text-center"
         style={{ height: `100%` }}
