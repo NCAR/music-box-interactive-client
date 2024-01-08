@@ -92,10 +92,10 @@ const EvolvingConditionsDetail = (props) => {
                         <input
                           type="text"
                           className="form-control"
-                          value={values[timeIndex]}
+                          value={values[startIndex + timeIndex]}
                           onChange={(e) =>
                             handleUpdateConditionValue(
-                              timeIndex,
+                              startIndex + timeIndex,
                               name,
                               e.target.value,
                             )
