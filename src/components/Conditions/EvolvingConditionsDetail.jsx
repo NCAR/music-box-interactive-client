@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
 import { Table, Container, Row, Col, Card } from "react-bootstrap";
 import { getEvolvingConditions } from "../../redux/selectors";
@@ -34,6 +34,11 @@ const EvolvingConditionsDetail = (props) => {
     });
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
   return (
     <>
       <Container>
@@ -67,7 +72,7 @@ const EvolvingConditionsDetail = (props) => {
               </tr>
             </thead>
             <tbody>
-              {props.conditions.times.map((time, timeIndex) => (
+              {props.conditions.times.slice(startIndex, endIndex).map((time, timeIndex) => (
                 <tr key={`condition-time-${timeIndex}`}>
                   <td>
                     <div onBlur={handleRefresh}>
