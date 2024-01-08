@@ -67,6 +67,22 @@ const EvolvingConditionsDetail = (props) => {
             <UploadEvolvingConditions />
           </Col>
         </Row>
+        <Row>
+          <Col>
+           <label className="my-4">
+            Items Per Page: 
+            <select
+              className="mx-2"
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+            >
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </select>
+           </label>
+          </Col>
+        </Row>
       </Container>
       <Card className="mb-4 conditions-card shadow-sm">
         <Card.Header className="d-flex justify-content-between">
