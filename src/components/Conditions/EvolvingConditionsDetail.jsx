@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
 import { Table, Container, Row, Col, Card } from "react-bootstrap";
 import { getEvolvingConditions } from "../../redux/selectors";
@@ -33,6 +33,28 @@ const EvolvingConditionsDetail = (props) => {
       value: value,
     });
   };
+  
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage) => {   
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
+  }
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const totalItems = props.conditions.times.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const pageRange = 3;
+  const leftBound = Math.max(1, currentPage - pageRange);
+  const rightBound = Math.min(totalPages, currentPage + pageRange);
 
   return (
     <>
@@ -43,6 +65,22 @@ const EvolvingConditionsDetail = (props) => {
           </Col>
           <Col xs={7}>
             <UploadEvolvingConditions />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+           <label className="my-4">
+            Items Per Page: 
+            <select
+              className="mx-2"
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+            >
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </select>
+           </label>
           </Col>
         </Row>
       </Container>
@@ -67,7 +105,7 @@ const EvolvingConditionsDetail = (props) => {
               </tr>
             </thead>
             <tbody>
-              {props.conditions.times.map((time, timeIndex) => (
+              {props.conditions.times.slice(startIndex, endIndex).map((time, timeIndex) => (
                 <tr key={`condition-time-${timeIndex}`}>
                   <td>
                     <div onBlur={handleRefresh}>
@@ -87,10 +125,10 @@ const EvolvingConditionsDetail = (props) => {
                         <input
                           type="text"
                           className="form-control"
-                          value={values[timeIndex]}
+                          value={values[startIndex + timeIndex]}
                           onChange={(e) =>
                             handleUpdateConditionValue(
-                              timeIndex,
+                              startIndex + timeIndex,
                               name,
                               e.target.value,
                             )
@@ -106,6 +144,38 @@ const EvolvingConditionsDetail = (props) => {
               ))}
             </tbody>
           </Table>
+          <div className="d-flex justify-content-center mt-3">
+            <ul className="pagination"> 
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                  Previous
+                </button>
+              </li>
+              {[...Array(totalPages).keys()].map((page) => {
+            if (page + 1 === 1 || page + 1 === totalPages || (page + 1 >= leftBound && page + 1 <= rightBound)) {
+              return (
+                <li key={page + 1} className={`page-item ${currentPage === page + 1 ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(page + 1)}>
+                    {page + 1}
+                  </button>
+                </li>
+              );
+            } else if (page + 1 === leftBound - 1 || page + 1 === rightBound + 1) {
+              return (
+                <li key={page + 1} className="page-item disabled">
+                  <span className="page-link">...</span>
+                </li>
+              );
+            }
+            return null;
+          })}
+          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+              Next
+            </button>
+          </li>
+        </ul>
+      </div>
           <div className="m-2">
             <AddEvolvingTime />
           </div>
