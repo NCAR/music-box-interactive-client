@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Table, Container, Row, Col, Card } from "react-bootstrap";
 import { getEvolvingConditions } from "../../redux/selectors";
@@ -33,16 +33,16 @@ const EvolvingConditionsDetail = (props) => {
       value: value,
     });
   };
-  
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
-  const handleItemsPerPageChange = (newItemsPerPage) => {   
+  const handleItemsPerPageChange = (newItemsPerPage) => {
     setItemsPerPage(newItemsPerPage);
     setCurrentPage(1);
-  }
-  
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(50);
 
@@ -69,18 +69,20 @@ const EvolvingConditionsDetail = (props) => {
         </Row>
         <Row>
           <Col>
-           <label className="my-4">
-            Items Per Page: 
-            <select
-              className="mx-2"
-              value={itemsPerPage}
-              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-            >
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-              <option value={200}>200</option>
-            </select>
-           </label>
+            <label className="my-4">
+              Items Per Page:
+              <select
+                className="mx-2"
+                value={itemsPerPage}
+                onChange={(e) =>
+                  handleItemsPerPageChange(Number(e.target.value))
+                }
+              >
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+                <option value={200}>200</option>
+              </select>
+            </label>
           </Col>
         </Row>
       </Container>
@@ -105,77 +107,106 @@ const EvolvingConditionsDetail = (props) => {
               </tr>
             </thead>
             <tbody>
-              {props.conditions.times.slice(startIndex, endIndex).map((time, timeIndex) => (
-                <tr key={`condition-time-${timeIndex}`}>
-                  <td>
-                    <div onBlur={handleRefresh}>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={time}
-                        onChange={(e) =>
-                          handleUpdateTime(timeIndex, e.target.value)
-                        }
-                      ></input>
-                    </div>
-                  </td>
-                  {props.conditions.values.map(({ name, values }, index) => (
-                    <td key={`condition-${timeIndex}-${index}`}>
+              {props.conditions.times
+                .slice(startIndex, endIndex)
+                .map((time, timeIndex) => (
+                  <tr key={`condition-time-${timeIndex}`}>
+                    <td>
                       <div onBlur={handleRefresh}>
                         <input
                           type="text"
                           className="form-control"
-                          value={values[startIndex + timeIndex]}
+                          value={time}
                           onChange={(e) =>
-                            handleUpdateConditionValue(
-                              startIndex + timeIndex,
-                              name,
-                              e.target.value,
-                            )
+                            handleUpdateTime(timeIndex, e.target.value)
                           }
                         ></input>
                       </div>
                     </td>
-                  ))}
-                  <td>
-                    <RemoveEvolvingTime timeIndex={timeIndex} />
-                  </td>
-                </tr>
-              ))}
+                    {props.conditions.values.map(({ name, values }, index) => (
+                      <td key={`condition-${timeIndex}-${index}`}>
+                        <div onBlur={handleRefresh}>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={values[startIndex + timeIndex]}
+                            onChange={(e) =>
+                              handleUpdateConditionValue(
+                                startIndex + timeIndex,
+                                name,
+                                e.target.value,
+                              )
+                            }
+                          ></input>
+                        </div>
+                      </td>
+                    ))}
+                    <td>
+                      <RemoveEvolvingTime timeIndex={timeIndex} />
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
           <div className="d-flex justify-content-center mt-3">
-            <ul className="pagination"> 
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+            <ul className="pagination">
+              <li
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
                   Previous
                 </button>
               </li>
               {[...Array(totalPages).keys()].map((page) => {
-            if (page + 1 === 1 || page + 1 === totalPages || (page + 1 >= leftBound && page + 1 <= rightBound)) {
-              return (
-                <li key={page + 1} className={`page-item ${currentPage === page + 1 ? 'active' : ''}`}>
-                  <button className="page-link" onClick={() => handlePageChange(page + 1)}>
-                    {page + 1}
-                  </button>
-                </li>
-              );
-            } else if (page + 1 === leftBound - 1 || page + 1 === rightBound + 1) {
-              return (
-                <li key={page + 1} className="page-item disabled">
-                  <span className="page-link">...</span>
-                </li>
-              );
-            }
-            return null;
-          })}
-          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
-              Next
-            </button>
-          </li>
-        </ul>
-      </div>
+                if (
+                  page + 1 === 1 ||
+                  page + 1 === totalPages ||
+                  (page + 1 >= leftBound && page + 1 <= rightBound)
+                ) {
+                  return (
+                    <li
+                      key={page + 1}
+                      className={`page-item ${
+                        currentPage === page + 1 ? "active" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(page + 1)}
+                      >
+                        {page + 1}
+                      </button>
+                    </li>
+                  );
+                } else if (
+                  page + 1 === leftBound - 1 ||
+                  page + 1 === rightBound + 1
+                ) {
+                  return (
+                    <li key={page + 1} className="page-item disabled">
+                      <span className="page-link">...</span>
+                    </li>
+                  );
+                }
+                return null;
+              })}
+              <li
+                className={`page-item ${
+                  currentPage === totalPages ? "disabled" : ""
+                }`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </div>
           <div className="m-2">
             <AddEvolvingTime />
           </div>
