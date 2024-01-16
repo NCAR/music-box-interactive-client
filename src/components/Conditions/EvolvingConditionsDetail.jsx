@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Table, Container, Row, Col, Card } from "react-bootstrap";
+import { Table, Container, Row, Col, Card, Form, Pagination } from "react-bootstrap";
 import { getEvolvingConditions } from "../../redux/selectors";
 import {
   resortEvolvingConditions,
@@ -69,20 +69,19 @@ const EvolvingConditionsDetail = (props) => {
         </Row>
         <Row>
           <Col>
-            <label className="my-4">
-              Items Per Page:
-              <select
-                className="mx-2"
-                value={itemsPerPage}
-                onChange={(e) =>
-                  handleItemsPerPageChange(Number(e.target.value))
-                }
-              >
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-                <option value={200}>200</option>
-              </select>
-            </label>
+           <Form.Group controlId="itemsPerPageSelect" className="my-4">
+            <Form.Label className="fw-bold">Items Per Page :</Form.Label>
+            <Form.Select
+              className="mx-2"
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+              aria-label="Select Items Per Page"
+            >
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </Form.Select>
+           </Form.Group>
           </Col>
         </Row>
       </Container>
@@ -149,63 +148,36 @@ const EvolvingConditionsDetail = (props) => {
             </tbody>
           </Table>
           <div className="d-flex justify-content-center mt-3">
-            <ul className="pagination">
-              <li
-                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                >
-                  Previous
-                </button>
-              </li>
-              {[...Array(totalPages).keys()].map((page) => {
-                if (
-                  page + 1 === 1 ||
-                  page + 1 === totalPages ||
-                  (page + 1 >= leftBound && page + 1 <= rightBound)
-                ) {
-                  return (
-                    <li
-                      key={page + 1}
-                      className={`page-item ${
-                        currentPage === page + 1 ? "active" : ""
-                      }`}
-                    >
-                      <button
-                        className="page-link"
-                        onClick={() => handlePageChange(page + 1)}
-                      >
-                        {page + 1}
-                      </button>
-                    </li>
-                  );
-                } else if (
-                  page + 1 === leftBound - 1 ||
-                  page + 1 === rightBound + 1
-                ) {
-                  return (
-                    <li key={page + 1} className="page-item disabled">
-                      <span className="page-link">...</span>
-                    </li>
-                  );
-                }
-                return null;
-              })}
-              <li
-                className={`page-item ${
-                  currentPage === totalPages ? "disabled" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
+          <Pagination>
+            <Pagination.Prev
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
+            {[...Array(totalPages).keys()].map((page) => {
+              if (
+                page + 1 === 1 ||
+                page + 1 === totalPages ||
+                (page + 1 >= leftBound && page + 1 <= rightBound)
+              ) {
+                return (
+                  <Pagination.Item
+                    key={page + 1}
+                    onClick={() => handlePageChange(page + 1)}
+                    active={currentPage === page + 1}
+                  >
+                    {page + 1}
+                  </Pagination.Item>
+                );
+              } else if (page + 1 === leftBound - 1 || page + 1 === rightBound + 1) {
+                return <Pagination.Ellipsis key={page + 1} />;
+              }
+              return null;
+            })}
+            <Pagination.Next
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            />
+          </Pagination>
           </div>
           <div className="m-2">
             <AddEvolvingTime />
