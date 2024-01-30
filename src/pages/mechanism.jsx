@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import TabbedLayout from "../components/TabbedLayout";
-import { MechanismTab } from "../components/Mechanism";
+import { MechanismTab, AerosolMechanismTab } from "../components/Mechanism";
+
 
 // default to false
 const { PART_MC = false } = JSON.parse(
@@ -14,8 +15,8 @@ const tabDefinitions = {
     component: (props) => <MechanismTab type="gas" {...props} />,
   },
   aerosol: {
-    label: "Aerosol Species",
-    component: (props) => <MechanismTab type="aerosol" {...props} />,
+    label: "Aerosol",
+    component: (props) => <AerosolMechanismTab type="aerosol" {...props} />,
   },
   reactions: {
     label: "Reactions",

@@ -8,9 +8,10 @@ import Species from "./Species/Species";
 import Reaction from "./Reaction";
 import { getMechanism } from "../../redux/selectors";
 
-const AddItemComponent = ({ type }) => {
-  return type === "reactions" ? <AddReaction /> : <AddSpecies type={type} />;
-};
+const AddItemComponent = ({ type, subType }) => {
+    return type === "reactions" ? <AddReaction /> : <AddSpecies type = {type} subType = {subType}/>;
+  } 
+  
 
 const ItemComponent = ({ type, ...otherprops }) => {
   return type === "reactions" ? (
@@ -20,15 +21,16 @@ const ItemComponent = ({ type, ...otherprops }) => {
   );
 };
 
-function List({ type, objects, details, setDetails }) {
+function List({ type, subType, objects, details, setDetails }) {
   return (
     <Container fluid className="bg-ncar-menu-secondary p-2">
-      <AddItemComponent type={type} />
+      <AddItemComponent type={type} subType = {subType} />
       <ListGroup className="species-list">
         {objects?.map((elem, index) => (
           <ItemComponent
             type={type}
             key={index}
+            subType = {subType}
             item={elem}
             details={details}
             setDetails={setDetails}

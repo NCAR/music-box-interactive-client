@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],
   aerosolSpecies: [],
+  aerosolPhase: [],
+  aerosolRepresentation: [],
   reactions: [],
 };
 
@@ -38,6 +40,50 @@ export const mechanismReducer = (state = initialState, action) => {
       return {
         ...state,
         aerosolSpecies: [...newAerosolSpecies].sort(compareName),
+      };
+    }
+    case utils.action_types.ADD_AEROSOL_PHASE: {
+      const species = action.payload.content;
+      const otherSpecies = state.aerosolPhase.filter((other) => {
+        return other.name !== species.name;
+      });
+      return species.name === ""
+        ? state
+        : {
+            ...state,
+            aerosolPhase: [...otherSpecies, species].sort(compareName),
+          };
+    }
+    case utils.action_types.REMOVE_AEROSOL_PHASE: {
+      const speciesName = action.payload.content;
+      const newAerosolSpecies = state.aerosolPhase.filter((species) => {
+        return species.name !== speciesName;
+      });
+      return {
+        ...state,
+        aerosolPhase: [...newAerosolSpecies].sort(compareName),
+      };
+    }
+    case utils.action_types.ADD_AEROSOL_REPRESENTATION: {
+      const species = action.payload.content;
+      const otherSpecies = state.aerosolRepresentation.filter((other) => {
+        return other.name !== species.name;
+      });
+      return species.name === ""
+        ? state
+        : {
+            ...state,
+            aerosolRepresentation: [...otherSpecies, species].sort(compareName),
+          };
+    }
+    case utils.action_types.REMOVE_AEROSOL_REPRESENTATION: {
+      const speciesName = action.payload.content;
+      const newAerosolSpecies = state.aerosolRepresentation.filter((species) => {
+        return species.name !== speciesName;
+      });
+      return {
+        ...state,
+        aerosolRepresentation: [...newAerosolSpecies].sort(compareName),
       };
     }
     case utils.action_types.ADD_GAS_SPECIES: {
