@@ -42,6 +42,13 @@ export const removeAerosolRepresentation = (content) => {
   };
 };
 
+export const SetAerosolRepresentation = (content) => {
+  return {
+    type: utils.action_types.SET_AEROSOL_REPRESENTATION,
+    payload: content
+  };
+};
+
 export const addGasSpecies = (content) => {
   return {
     type: utils.action_types.ADD_GAS_SPECIES,

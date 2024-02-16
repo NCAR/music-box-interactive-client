@@ -41,7 +41,7 @@ function List({ type, subType, objects, details, setDetails }) {
   );
 }
 
-const mapStateToProps = (state, { type }) => {
+const mapStateToProps = (state, { type, subType }) => {
   const mechanism = getMechanism(state);
 
   let objects = [];
@@ -50,7 +50,17 @@ const mapStateToProps = (state, { type }) => {
       objects = mechanism.gasSpecies;
       break;
     case "aerosol":
-      objects = mechanism.aerosolSpecies;
+      switch (subType) {
+        case "Phases":
+          objects = mechanism.aerosolPhase;
+          break;
+        case "Representations":
+          objects = mechanism.aerosolRepresentation;
+          break;
+        case "Species":
+          objects = mechanism.aerosolSpecies;
+          break;
+      }
       break;
     case "reactions":
       objects = mechanism.reactions;

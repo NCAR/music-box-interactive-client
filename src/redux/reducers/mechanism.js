@@ -6,6 +6,7 @@ const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],
   aerosolSpecies: [],
   aerosolPhase: [],
+  aerosolRepresentationConfig: "Modal",
   aerosolRepresentation: [],
   reactions: [],
 };
@@ -62,6 +63,14 @@ export const mechanismReducer = (state = initialState, action) => {
       return {
         ...state,
         aerosolPhase: [...newAerosolSpecies].sort(compareName),
+      };
+    }
+  
+    case utils.action_types.SET_AEROSOL_REPRESENTATION: { 
+      const representationName = action.payload;
+      return {
+        ...state,
+        aerosolRepresentationConfig: representationName,
       };
     }
     case utils.action_types.ADD_AEROSOL_REPRESENTATION: {

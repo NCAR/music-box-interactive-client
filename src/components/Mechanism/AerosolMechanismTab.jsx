@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import List from "./List";
 import Detail from "./Detail";
+import SetRepresentation from "./AerosolConfigurations/SetRepresentation";
 
 const InstructionsComponent = ({ tabIndexMap, setActiveTab }) => {
     return (
@@ -68,7 +69,10 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
           <Col md={4} lg={4} className="mh-100 overflow-auto">
             <Row className="flex-shrink-0">
               <Col>
+                {subTabMap.get(activeSubTab) === "Representations" ?
+                <SetRepresentation/> :
                 <List type={type} subType={subTabMap.get(activeSubTab)} details={details} setDetails={setDetails} />
+            }
               </Col>
             </Row>
           </Col>
