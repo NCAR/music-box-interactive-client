@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { addAerosolSpecies, addGasSpecies } from "../../../redux/actions";
+import { addAerosolSpecies, addGasSpecies , addAerosolRepresentation, addAerosolPhase } from "../../../redux/actions";
 
 function AddSpecies(props) {
-  const { type, addAction } = props;
+  const { type, subType, addAction } = props;
 
   const [state, setState] = useState("");
 
@@ -36,20 +36,30 @@ function AddSpecies(props) {
         className="btn btn-primary mb-2 add-gas-species"
         onClick={handleAddSpecies}
       >
-        Add {type.charAt(0).toUpperCase() + type.slice(1)} Species
+       {subType === undefined ? `Add ${type.charAt(0).toUpperCase() + type.slice(1)} Species` : `Add ${subType.charAt(0).toUpperCase() + subType.slice(1)}`}
       </button>
     </div>
   );
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { type } = ownProps;
+  const { type, subType } = ownProps;
 
   let action = null;
 
   switch (type) {
     case "aerosol":
-      action = (species) => dispatch(addAerosolSpecies(species));
+      switch (subType) {
+        case "Phases":
+          action = (Phase) => dispatch(addAerosolPhase(Phase));
+          break;
+        case "Representations":
+          action = (Representation) => dispatch(addAerosolRepresentation(Representation));
+          break;
+        case "Species":
+          action = (species) => dispatch(addAerosolSpecies(species));
+          break;
+      }
       break;
     case "gas":
       action = (species) => dispatch(addGasSpecies(species));

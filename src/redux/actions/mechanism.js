@@ -14,6 +14,41 @@ export const removeAerosolSpecies = (content) => {
   };
 };
 
+export const addAerosolPhase = (content) => {
+  return {
+    type: utils.action_types.ADD_AEROSOL_PHASE,
+    payload: { content },
+  };
+};
+
+export const removeAerosolPhase = (content) => {
+  return {
+    type: utils.action_types.REMOVE_AEROSOL_PHASE,
+    payload: { content },
+  };
+};
+
+export const addAerosolRepresentation = (content) => {
+  return {
+    type: utils.action_types.ADD_AEROSOL_REPRESENTATION,
+    payload: { content },
+  };
+};
+
+export const removeAerosolRepresentation = (content) => {
+  return {
+    type: utils.action_types.REMOVE_AEROSOL_REPRESENTATION,
+    payload: { content },
+  };
+};
+
+export const SetAerosolRepresentation = (content) => {
+  return {
+    type: utils.action_types.SET_AEROSOL_REPRESENTATION,
+    payload: content
+  };
+};
+
 export const addGasSpecies = (content) => {
   return {
     type: utils.action_types.ADD_GAS_SPECIES,
