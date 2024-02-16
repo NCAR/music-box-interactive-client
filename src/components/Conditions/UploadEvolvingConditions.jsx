@@ -59,7 +59,8 @@ const UploadEvolvingConditions = (props) => {
         }
       };
       fileReader.readAsText(file);
-      setFile();
+      setFile(null);
+      document.querySelector('input[id="evolving-conditions-file"]').value = "";
     }
   };
 
@@ -68,6 +69,7 @@ const UploadEvolvingConditions = (props) => {
       <div className="row">
         <div className="col-8">
           <input
+            id="evolving-conditions-file"
             className="form-control"
             type="file"
             accept=".csv"
