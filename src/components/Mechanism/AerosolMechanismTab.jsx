@@ -8,33 +8,36 @@ import Detail from "./Detail";
 import SetRepresentation from "./AerosolConfigurations/SetRepresentation";
 
 const InstructionsComponent = ({ tabIndexMap, setActiveTab }) => {
-    return (
-      <p className="lead-muted p-2">
-        Select a chemical species from the list to view/edit its properties, or
-        add a new chemical species to the mechanism. The chemical species you
-        add here will be available to participate in{" "}
-        <span
-          onClick={() => {
-            setActiveTab(tabIndexMap["Reactions"]);
-          }}
-          className="fake-link"
-        >
-          reactions
-        </span>
-        &nbsp;and can be include in the{" "}
-        <Link to="/conditions">model conditions</Link>.
-      </p>
-    );
+  return (
+    <p className="lead-muted p-2">
+      Select a chemical species from the list to view/edit its properties, or
+      add a new chemical species to the mechanism. The chemical species you add
+      here will be available to participate in{" "}
+      <span
+        onClick={() => {
+          setActiveTab(tabIndexMap["Reactions"]);
+        }}
+        className="fake-link"
+      >
+        reactions
+      </span>
+      &nbsp;and can be include in the{" "}
+      <Link to="/conditions">model conditions</Link>.
+    </p>
+  );
 };
 
 function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
   const [details, setDetails] = useState({});
-  const [activeSubTab, setActiveSubTab] = useState(0)
+  const [activeSubTab, setActiveSubTab] = useState(0);
 
-  const subTabs = ["Species", "Phases", "Representations"]
+  const subTabs = ["Species", "Phases", "Representations"];
 
-  const subTabMap = new Map([[0, "Species"],[1, "Phases"],[2, "Representations"]]);
-
+  const subTabMap = new Map([
+    [0, "Species"],
+    [1, "Phases"],
+    [2, "Representations"],
+  ]);
 
   return (
     <>
@@ -43,23 +46,22 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
         setActiveTab={setActiveTab}
       />
       <Container className="text-center">
-          <div
-            className="navbox pt-2"
-            style={{ display: "flex", justifyContent: "space-around" }}
-          >
-            {subTabs.map((subTab, index) => (
-              <Button
-                key={index}
-                variant={activeSubTab === index ? "primary" : "secondary"}
-                className="mr-2"
-                onClick={() => setActiveSubTab(index)}
-              >
-                {subTab}
-              </Button>
-            ))}
-          </div>
-        </Container>
-
+        <div
+          className="navbox pt-2"
+          style={{ display: "flex", justifyContent: "space-around" }}
+        >
+          {subTabs.map((subTab, index) => (
+            <Button
+              key={index}
+              variant={activeSubTab === index ? "primary" : "secondary"}
+              className="mr-2"
+              onClick={() => setActiveSubTab(index)}
+            >
+              {subTab}
+            </Button>
+          ))}
+        </div>
+      </Container>
 
       <Container
         fluid
@@ -69,10 +71,16 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
           <Col md={4} lg={4} className="mh-100 overflow-auto">
             <Row className="flex-shrink-0">
               <Col>
-                {subTabMap.get(activeSubTab) === "Representations" ?
-                <SetRepresentation/> :
-                <List type={type} subType={subTabMap.get(activeSubTab)} details={details} setDetails={setDetails} />
-            }
+                {subTabMap.get(activeSubTab) === "Representations" ? (
+                  <SetRepresentation />
+                ) : (
+                  <List
+                    type={type}
+                    subType={subTabMap.get(activeSubTab)}
+                    details={details}
+                    setDetails={setDetails}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

@@ -62,8 +62,8 @@ export const mechanismReducer = (state = initialState, action) => {
         aerosolPhase: [...newAerosolSpecies].sort(compareName),
       };
     }
-  
-    case utils.action_types.SET_AEROSOL_REPRESENTATION: { 
+
+    case utils.action_types.SET_AEROSOL_REPRESENTATION: {
       const representationName = action.payload;
       return {
         ...state,
@@ -84,9 +84,11 @@ export const mechanismReducer = (state = initialState, action) => {
     }
     case utils.action_types.REMOVE_AEROSOL_REPRESENTATION: {
       const speciesName = action.payload.content;
-      const newAerosolSpecies = state.aerosolRepresentation.filter((species) => {
-        return species.name !== speciesName;
-      });
+      const newAerosolSpecies = state.aerosolRepresentation.filter(
+        (species) => {
+          return species.name !== speciesName;
+        },
+      );
       return {
         ...state,
         aerosolRepresentation: [...newAerosolSpecies].sort(compareName),

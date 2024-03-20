@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import TabbedLayout from "../components/TabbedLayout";
 import { MechanismTab, AerosolMechanismTab } from "../components/Mechanism";
 
-
 // default to false
 const { PART_MC = false } = JSON.parse(
   import.meta.env.VITE_FEATURE_FLAGS || "{}",
