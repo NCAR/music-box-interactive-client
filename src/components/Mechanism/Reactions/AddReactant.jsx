@@ -12,8 +12,12 @@ const AddReactant = (props) => {
     <button
       type="button"
       className="btn btn-primary add-element"
-      onClick={() => handleAddReactant({ name: undefined, qty: 1, id: uuidv4() })}
-      onKeyDown={() => handleAddReactant({ name: undefined, qty: 1, id: uuidv4() })}
+      onClick={() =>
+        handleAddReactant({ name: undefined, qty: 1, id: uuidv4() })
+      }
+      onKeyDown={() =>
+        handleAddReactant({ name: undefined, qty: 1, id: uuidv4() })
+      }
     >
       <span
         className="oi oi-plus"

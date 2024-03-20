@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { addAerosolSpecies, addGasSpecies , addAerosolRepresentation, addAerosolPhase } from "../../../redux/actions";
+import {
+  addAerosolSpecies,
+  addGasSpecies,
+  addAerosolRepresentation,
+  addAerosolPhase,
+} from "../../../redux/actions";
 
 function AddSpecies(props) {
   const { type, subType, addAction } = props;
@@ -36,7 +41,9 @@ function AddSpecies(props) {
         className="btn btn-primary mb-2 add-gas-species"
         onClick={handleAddSpecies}
       >
-       {subType === undefined ? `Add ${type.charAt(0).toUpperCase() + type.slice(1)} Species` : `Add ${subType.charAt(0).toUpperCase() + subType.slice(1)}`}
+        {subType === undefined
+          ? `Add ${type.charAt(0).toUpperCase() + type.slice(1)} Species`
+          : `Add ${subType.charAt(0).toUpperCase() + subType.slice(1)}`}
       </button>
     </div>
   );
@@ -54,7 +61,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           action = (Phase) => dispatch(addAerosolPhase(Phase));
           break;
         case "Representations":
-          action = (Representation) => dispatch(addAerosolRepresentation(Representation));
+          action = (Representation) =>
+            dispatch(addAerosolRepresentation(Representation));
           break;
         case "Species":
           action = (species) => dispatch(addAerosolSpecies(species));

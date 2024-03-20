@@ -45,7 +45,7 @@ export const removeAerosolRepresentation = (content) => {
 export const SetAerosolRepresentation = (content) => {
   return {
     type: utils.action_types.SET_AEROSOL_REPRESENTATION,
-    payload: content
+    payload: content,
   };
 };
 
