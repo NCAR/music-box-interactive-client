@@ -1,22 +1,26 @@
 import { reactionSchema } from "../redux/schemas";
 import { ReactionTypes } from "./models";
 import { v4 as uuidv4 } from "uuid";
+import { compareName, compareId } from "../compare";
 
 function extract_mechanism_from_example(config) {
   const campReactantsToRedux = (reaction) =>
     Object.entries(reaction.reactants).map(([name, props]) => ({
       name: name,
       qty: props.qty || 1,
+      id: uuidv4(),
     }));
   const campProductsToRedux = (reaction) =>
     Object.entries(reaction.products).map(([name, props]) => ({
       name: name,
       yield: props.yield || 1,
+      id: uuidv4(),
     }));
   const campAlkoxyProductsToRedux = (products) =>
     Object.entries(products).map(([name, props]) => ({
       name: name,
       yield: props.yield || 1,
+      id: uuidv4(),
     }));
   const campNitrateProductsToRedux = campAlkoxyProductsToRedux;
   let camp_reactions = config.mechanism.reactions["camp-data"] || [];
@@ -199,7 +203,7 @@ function extract_mechanism_from_example(config) {
   });
   return {
     gasSpecies: species,
-    reactions: reactions,
+    reactions: reactions.sort(compareId),
   };
 }
 

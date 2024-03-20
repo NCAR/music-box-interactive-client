@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { addReactant } from "../../../redux/actions";
+import { v4 as uuidv4 } from "uuid";
 
 const AddReactant = (props) => {
   const handleAddReactant = (reactant) => {
@@ -11,8 +12,8 @@ const AddReactant = (props) => {
     <button
       type="button"
       className="btn btn-primary add-element"
-      onClick={() => handleAddReactant({ name: undefined, qty: 1 })}
-      onKeyDown={() => handleAddReactant({ name: undefined, qty: 1 })}
+      onClick={() => handleAddReactant({ name: undefined, qty: 1, id: uuidv4() })}
+      onKeyDown={() => handleAddReactant({ name: undefined, qty: 1, id: uuidv4() })}
     >
       <span
         className="oi oi-plus"

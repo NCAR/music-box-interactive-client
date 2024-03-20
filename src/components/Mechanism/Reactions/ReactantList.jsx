@@ -17,7 +17,7 @@ const ReactantList = (props) => {
             {props?.reactants?.map((reactant, index) => {
               return (
                 <div
-                  key={`reactant-${reactant.name}`}
+                  key={`reactant-${reactant.id}`}
                   className={`row flex-nowrap array-element array-element-${index}`}
                   array-element-index={index}
                 >
