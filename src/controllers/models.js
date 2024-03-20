@@ -31,23 +31,6 @@ const stringifyReaction = (reactants, products) => {
   return str.length > 40 ? str.slice(0, 37) + "..." : str;
 };
 
-const countReactants = (reactants) => {
-  let counter = {};
-  reactants.forEach(({ name }) => {
-    if (counter[name]) {
-      counter[name] += 1;
-    } else {
-      counter[name] = 1;
-    }
-  });
-  return Object.keys(counter).map((species) => {
-    return {
-      name: species,
-      coefficient: counter[species],
-    };
-  });
-};
-
 const RunStatus = Object.freeze({
   RUNNING: "RUNNING",
   WAITING: "WAITING",
@@ -110,7 +93,7 @@ const ReactionTypes = Object.freeze({
       case this.TROE:
       case this.WENNBERG_TUNNELING:
       case this.WENNBERG_NO_RO2:
-        return countReactants(reaction.data.reactants);
+        return reaction.data.reactants;
       case this.EMISSION:
         return [];
       case this.FIRST_ORDER_LOSS:

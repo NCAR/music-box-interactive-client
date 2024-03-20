@@ -1,6 +1,6 @@
 import utils from "../utils";
-import { extract_mechanism_from_example } from "../../controllers/transformers";
 import { v4 as uuidv4 } from "uuid";
+import { compareName, compareId } from "../../compare";
 
 const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],
@@ -10,9 +10,6 @@ const initialState = {
   aerosolRepresentation: [],
   reactions: [],
 };
-
-const compareName = (a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-const compareId = (a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 
 export const mechanismReducer = (state = initialState, action) => {
   switch (action.type) {

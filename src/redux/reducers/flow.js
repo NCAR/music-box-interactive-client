@@ -1,4 +1,3 @@
-import { getProducts, getReactants } from "../selectors";
 import utils from "../utils";
 
 const initialState = {
