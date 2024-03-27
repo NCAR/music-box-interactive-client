@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import { addCondition } from "../../redux/actions";
 import RemoveCondition from "./RemoveCondition";
-import { getCondition, getVariableSpeciesNames } from "../../redux/selectors";
+import { getConditions, getVariableSpeciesNames } from "../../redux/selectors";
 
 const SpeciesCondition = (props) => {
   const condition = props.condition;
@@ -29,18 +29,18 @@ const SpeciesCondition = (props) => {
           <Dropdown.Menu>
             {schema.allowAddRemove
               ? props.speciesNames.map((value) => {
-                  return (
-                    <Dropdown.Item
-                      href="#"
-                      key={value}
-                      onClick={(e) => {
-                        handleUpdate("name", e.target.innerHTML);
-                      }}
-                    >
-                      {value}
-                    </Dropdown.Item>
-                  );
-                })
+                return (
+                  <Dropdown.Item
+                    href="#"
+                    key={value}
+                    onClick={(e) => {
+                      handleUpdate("name", e.target.innerHTML);
+                    }}
+                  >
+                    {value}
+                  </Dropdown.Item>
+                );
+              })
               : condition.name}
           </Dropdown.Menu>
         </Dropdown>
@@ -89,8 +89,13 @@ const SpeciesCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  const existingConditions = getConditions(state, ownProps.schema);
+  const possibleNames = getVariableSpeciesNames(state);
+  const speciesNames = possibleNames.filter(
+    (name) => !existingConditions.find((condition) => condition.name === name)
+  );
   return {
-    speciesNames: getVariableSpeciesNames(state),
+    speciesNames: speciesNames,
   };
 };
 
