@@ -29,18 +29,18 @@ const SpeciesCondition = (props) => {
           <Dropdown.Menu>
             {schema.allowAddRemove
               ? props.speciesNames.map((value) => {
-                return (
-                  <Dropdown.Item
-                    href="#"
-                    key={value}
-                    onClick={(e) => {
-                      handleUpdate("name", e.target.innerHTML);
-                    }}
-                  >
-                    {value}
-                  </Dropdown.Item>
-                );
-              })
+                  return (
+                    <Dropdown.Item
+                      href="#"
+                      key={value}
+                      onClick={(e) => {
+                        handleUpdate("name", e.target.innerHTML);
+                      }}
+                    >
+                      {value}
+                    </Dropdown.Item>
+                  );
+                })
               : condition.name}
           </Dropdown.Menu>
         </Dropdown>
@@ -92,7 +92,7 @@ const mapStateToProps = (state, ownProps) => {
   const existingConditions = getConditions(state, ownProps.schema);
   const possibleNames = getVariableSpeciesNames(state);
   const speciesNames = possibleNames.filter(
-    (name) => !existingConditions.find((condition) => condition.name === name)
+    (name) => !existingConditions.find((condition) => condition.name === name),
   );
   return {
     speciesNames: speciesNames,

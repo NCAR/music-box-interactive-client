@@ -48,10 +48,9 @@ const mapStateToProps = (state, ownProps) => {
     // -1 below because M is always a species in the gas phase
     // but you cannot set its concentration
     remaining_unused = mechanism.gasSpecies.length - 1 - conditions.length;
-  }
-  else if (schema.classKey === "initial_reactions") {
+  } else if (schema.classKey === "initial_reactions") {
     const reactionIds = conditions.map((condition) => condition.reactionId);
-    const possibleReactions = getUserDefinedRatesIds(state)
+    const possibleReactions = getUserDefinedRatesIds(state);
     remaining_unused = possibleReactions.length - reactionIds.length;
   }
   return { conditions, remaining_unused };
