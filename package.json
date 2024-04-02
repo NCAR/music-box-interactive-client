@@ -5,7 +5,7 @@
   "main": "dist/main/main.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite serve src/renderer",
     "debug-dev": "vite --debug hmr",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
