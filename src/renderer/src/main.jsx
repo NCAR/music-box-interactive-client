@@ -13,12 +13,14 @@ import { store, persistor } from "./redux/store/createStore";
 import { MathJaxContext } from "better-react-mathjax";
 import { HelmetProvider } from "react-helmet-async";
 import { PersistGate } from "redux-persist/integration/react";
+import isElectron from "is-electron";
 import "./styles/global.css";
 
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
+  createHashRouter,
 } from "react-router-dom";
 
 const RedirectToRoot = () => <Navigate to="/" />;
@@ -66,7 +68,9 @@ if (featureFlags.FLOW_DIAGRAM) {
   });
 }
 
-const router = createBrowserRouter(routes);
+const router = isElectron()
+  ? createHashRouter(routes)
+  : createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
