@@ -2,6 +2,7 @@
   "name": "music-box-interactive-client",
   "private": true,
   "version": "2.3.6",
+  "main": "dist/main/main.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +10,12 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "e:start": "electron-vite preview --outDir=dist",
+    "e:dev": "electron-vite dev --outDir=dist",
+    "e:package": "electron-vite build --outDir=dist && electron-forge package",
+    "e:make": "electron-vite build --outDir=dist && electron-forge make",
+    "e:build": "electron-vite build --outDir=dist"
   },
   "dependencies": {
     "axios": "^1.6.2",
@@ -20,6 +26,7 @@
     "is-electron": "^2.2.2",
     "open-iconic": "^1.1.1",
     "prop-types": "^15.8.1",
+    "pyodide": "^0.25.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-csv": "^2.2.2",
