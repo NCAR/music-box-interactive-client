@@ -11,12 +11,12 @@ export default defineConfig({
       require("../../package.json").version
     ),
   },
-  // build: {
-  //   rollupOptions: {
-  //     input: {
-  //       main: "/src/renderer/index.html",
-  //     },
-  //   },
-  //   outDir: "dist",
-  // },
+  build: {
+    rollupOptions: {
+      input: {
+        main: "/index.html",
+      },
+    },
+    outDir: "dist",
+  },
 });

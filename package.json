@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite serve src/renderer",
-    "debug-dev": "vite --debug hmr",
-    "build": "vite build",
+    "debug-dev": "vite serve src/renderer --debug hmr",
+    "build": "vite build src/renderer",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "preview": "vite preview src/renderer",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "e:start": "electron-vite preview --outDir=dist",
     "e:dev": "electron-vite dev --outDir=dist",
