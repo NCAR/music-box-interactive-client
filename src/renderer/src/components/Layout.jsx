@@ -19,6 +19,7 @@ import utils from "../redux/utils";
 import { useNavigate } from "react-router-dom";
 import { useVeiwPort } from "../hooks/useVeiwPort";
 import ScrollToAnchor from "./ScrollToAnchor";
+import isElectron from "is-electron";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -47,7 +48,11 @@ function Layout(props) {
     }
   };
 
-  const title = `MusicBox ${process.env.VITE_APP_VERSION}`;
+  console.log(import.meta.env);
+
+  const title = isElectron()
+    ? `MusicBox ${import.meta.env.VITE_APP_VERSION}`
+    : `MusicBox ${process.env.VITE_APP_VERSION}`
 
   return (
     <>

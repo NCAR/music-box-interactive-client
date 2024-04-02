@@ -12,9 +12,9 @@ export default defineConfig({
     outDir: "dist/renderer",
     plugins: [react()],
   },
-  define: {
-    "process.env.VITE_APP_VERSION": JSON.stringify(
-      require("./package.json").version
-    ),
-  },
+  // define: {
+  //   "process.env.VITE_APP_VERSION": JSON.stringify(
+  //     require("./package.json").version
+  //   ),
+  // },
 });
