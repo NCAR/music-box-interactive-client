@@ -8,15 +8,15 @@ export default defineConfig({
   },
   define: {
     "process.env.VITE_APP_VERSION": JSON.stringify(
-      require("./package.json").version
+      require("../../package.json").version
     ),
   },
-  build: {
-    rollupOptions: {
-      input: {
-        main: "src/renderer/index.html", // Entry for the main page
-      },
-    },
-    outDir: "dist",
-  },
+  // build: {
+  //   rollupOptions: {
+  //     input: {
+  //       main: "/src/renderer/index.html",
+  //     },
+  //   },
+  //   outDir: "dist",
+  // },
 });
