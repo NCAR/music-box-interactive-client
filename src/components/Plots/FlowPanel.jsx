@@ -352,7 +352,8 @@ const mapStateToProps = (state) => {
   let fluxValues = isLogScale
     ? Array.from({ length: 1000 }, (val, idx) =>
         Math.exp(
-          ((Math.log(fluxMax) - Math.log(Math.max(fluxMin, 1.0e-60))) / 1000) * idx +
+          ((Math.log(fluxMax) - Math.log(Math.max(fluxMin, 1.0e-60))) / 1000) *
+            idx +
             Math.log(Math.max(fluxMin, 1.0e-60)),
         ),
       )
