@@ -91,13 +91,13 @@ const UpdateGraph = (state, dependencies, results) => {
             className: "flux",
             reactionId: reaction.id,
             flux:
-              species.coefficient *
+              Math.max(species.qty *
               results.integrated_reaction_rates[reaction.id]
                 .slice(
                   state.time_range_start_index,
                   state.time_range_end_index + 1,
                 )
-                .reduce((total, elem) => total + elem, 0),
+                .reduce((total, elem) => total + elem, 0), 0),
           };
         }),
       ...reaction.products
@@ -112,13 +112,13 @@ const UpdateGraph = (state, dependencies, results) => {
             className: "flux",
             reactionId: reaction.id,
             flux:
-              species.yield *
+              Math.max(species.yield *
               results.integrated_reaction_rates[reaction.id]
                 .slice(
                   state.time_range_start_index,
                   state.time_range_end_index + 1,
                 )
-                .reduce((total, elem) => total + elem, 0),
+                .reduce((total, elem) => total + elem, 0), 0),
           };
         }),
     ];
