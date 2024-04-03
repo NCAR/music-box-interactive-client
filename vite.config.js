@@ -8,7 +8,7 @@ export default defineConfig({
   },
   define: {
     "process.env.VITE_APP_VERSION": JSON.stringify(
-      require("../../package.json").version
+      require("./package.json").version
     ),
   },
   // build: {
