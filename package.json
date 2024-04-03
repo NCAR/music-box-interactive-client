@@ -1,7 +1,7 @@
 {
   "name": "music-box-interactive-client",
   "private": true,
-  "version": "2.3.6",
+  "version": "2.3.7",
   "type": "module",
   "scripts": {
     "dev": "vite",
