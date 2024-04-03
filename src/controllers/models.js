@@ -101,7 +101,7 @@ const ReactionTypes = Object.freeze({
           ? [
               {
                 name: reaction.data.species,
-                coefficient: 1.0,
+                qty: 1.0,
               },
             ]
           : [];
@@ -110,7 +110,7 @@ const ReactionTypes = Object.freeze({
           ? [
               {
                 name: reaction.data.reactant,
-                coefficient: 1.0,
+                qty: 1.0,
               },
             ]
           : [];
