@@ -90,14 +90,16 @@ const UpdateGraph = (state, dependencies, results) => {
             target: index,
             className: "flux",
             reactionId: reaction.id,
-            flux:
-              Math.max(species.qty *
-              results.integrated_reaction_rates[reaction.id]
-                .slice(
-                  state.time_range_start_index,
-                  state.time_range_end_index + 1,
-                )
-                .reduce((total, elem) => total + elem, 0), 0),
+            flux: Math.max(
+              species.qty *
+                results.integrated_reaction_rates[reaction.id]
+                  .slice(
+                    state.time_range_start_index,
+                    state.time_range_end_index + 1,
+                  )
+                  .reduce((total, elem) => total + elem, 0),
+              0,
+            ),
           };
         }),
       ...reaction.products
@@ -111,14 +113,16 @@ const UpdateGraph = (state, dependencies, results) => {
             target: state.nodes.findIndex((node) => node.name === species.name),
             className: "flux",
             reactionId: reaction.id,
-            flux:
-              Math.max(species.yield *
-              results.integrated_reaction_rates[reaction.id]
-                .slice(
-                  state.time_range_start_index,
-                  state.time_range_end_index + 1,
-                )
-                .reduce((total, elem) => total + elem, 0), 0),
+            flux: Math.max(
+              species.yield *
+                results.integrated_reaction_rates[reaction.id]
+                  .slice(
+                    state.time_range_start_index,
+                    state.time_range_end_index + 1,
+                  )
+                  .reduce((total, elem) => total + elem, 0),
+              0,
+            ),
           };
         }),
     ];
