@@ -50,7 +50,7 @@ function Layout(props) {
 
   const title = isElectron()
     ? `MusicBox ${import.meta.env.VITE_APP_VERSION}`
-    : `MusicBox ${process.env.VITE_APP_VERSION}`
+    : `MusicBox ${process.env.VITE_APP_VERSION}`;
 
   return (
     <>

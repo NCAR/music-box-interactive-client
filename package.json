@@ -11,7 +11,6 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    
     "e:start": "electron-vite preview --outDir=app/dist",
     "e:dev": "electron-vite dev --outDir=app/dist",
     "e:package": "electron-vite build --outDir=app/dist && electron-forge package",
