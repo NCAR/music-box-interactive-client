@@ -1,0 +1,84 @@
+{
+    "box model options": {
+        "grid": "box",
+        "chemistry time step [sec]": 60.0,
+        "output time step [sec]": 200.0,
+        "simulation length [sec]": 432000.0
+    },
+    "chemical species": {
+        "Ar": {
+            "initial value [mol m-3]": 0.0334
+        },
+        "CO2": {
+            "initial value [mol m-3]": 0.00146
+        },
+        "H2O": {
+            "initial value [mol m-3]": 1.19e-05
+        },
+        "O2": {
+            "initial value [mol m-3]": 0.75
+        },
+        "O3": {
+            "initial value [mol m-3]": 8.1e-06
+        },
+        "M": {
+            "initial value [mol m-3]": 0
+        },
+        "O1D": {
+            "initial value [mol m-3]": 0
+        },
+        "O": {
+            "initial value [mol m-3]": 0
+        },
+        "N2": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__809459c0-7050-4d10-8d31-77a5f147abe6": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__8a481859-c835-4d49-b9fc-1e32497d3817": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__a5dc8652-7724-4c95-91fa-d1bfb144c015": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__a668f2d3-9371-46e2-b9b9-b33c2422a193": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__b6d3412a-6295-4c80-af2f-2eb2f9a3bb33": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__c394c629-0474-42ee-a109-92443c85820e": {
+            "initial value [mol m-3]": 0
+        },
+        "irr__c453bfb4-8e77-4d41-b6ff-1bb4cc64c865": {
+            "initial value [mol m-3]": 0
+        }
+    },
+    "environmental conditions": {
+        "pressure": {
+            "initial value [Pa]": 6152.049805
+        },
+        "temperature": {
+            "initial value [K]": 206.6374207
+        }
+    },
+    "evolving conditions": {
+        "evolving_conditions.csv": {}
+    },
+    "initial conditions": {},
+    "model components": [
+        {
+            "type": "CAMP",
+            "configuration file": "camp_data/config.json",
+            "override species": {
+                "M": {
+                    "mixing ratio mol mol-1": 1
+                }
+            },
+            "suppress output": {
+                "M": {}
+            }
+        }
+    ]
+}

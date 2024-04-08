@@ -1,0 +1,76 @@
+{
+    "camp-data": [
+        {
+            "name": "M",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "Ar",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "CO2",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "H2O",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "O1D",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "O",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "O2",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "O3",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "N2",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+        },
+        {
+            "name": "irr__809459c0-7050-4d10-8d31-77a5f147abe6",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "irr__8a481859-c835-4d49-b9fc-1e32497d3817",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "irr__a5dc8652-7724-4c95-91fa-d1bfb144c015",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "irr__a668f2d3-9371-46e2-b9b9-b33c2422a193",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "irr__b6d3412a-6295-4c80-af2f-2eb2f9a3bb33",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "irr__c394c629-0474-42ee-a109-92443c85820e",
+            "type": "CHEM_SPEC"
+        },
+        {
+            "name": "irr__c453bfb4-8e77-4d41-b6ff-1bb4cc64c865",
+            "type": "CHEM_SPEC"
+        }
+    ]
+}
