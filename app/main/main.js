@@ -61,8 +61,10 @@ ipcMain.handle('run-python', async (event, script, args) => {
     return new Promise((resolve, reject) => {
       const python = spawn('python', [script, tempFilePath])
 
+      let output = '';
       python.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`)
+        output += data;
       })
 
       python.stderr.on('data', (data) => {
@@ -73,8 +75,26 @@ ipcMain.handle('run-python', async (event, script, args) => {
         if (code !== 0) {
           reject(new Error(`child process exited with code ${code}`))
         } else {
-          resolve()
-        }
+        // Parse the output into a 2D array
+        const outputArray = JSON.parse(output);
+        // Get the headers from the first row
+        const headers = outputArray[0];
+        // Get the rows from the rest of the array
+        const rows = outputArray.slice(1);
+        // Initialize the output object
+        const outputObject = {};
+        // Initialize an array for each header in the output object
+        headers.forEach(header => {
+          outputObject[header] = [];
+        });
+        // Add the values to the corresponding arrays in the output object
+        rows.forEach(row => {
+          headers.forEach((header, i) => {
+            outputObject[header].push(row[i]);
+          });
+        });
+        resolve(outputObject)
+          }
       })
     })
   } catch (error) {

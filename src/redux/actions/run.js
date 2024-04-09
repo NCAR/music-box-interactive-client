@@ -13,13 +13,16 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
     // run python script
     const script = './src/scripts/print_config.py';
     const args = [JSON.stringify({ mechanism: camp_mechanism, conditions: musicbox_conditions })];
+    
+    //output from python solver
+    const boxModelOutput = await window.electron.doRun(script, args);
+   
 
-    await window.electron.doRun(script, args);
 
     // api run
     await run({ mechanism: camp_mechanism, conditions: musicbox_conditions });
 
-    dispatch({ type: utils.action_types.START_POLLING, payload: {} });
+    dispatch({ type: utils.action_types.START_POLLING, payload: {boxModelOutput} });
   } catch (error) {
     console.error(`Error starting run: ${error.message}`);
   }

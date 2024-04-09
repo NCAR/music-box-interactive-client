@@ -9,6 +9,7 @@ const pollingMiddleware =
     next(action);
 
     if (action.type === utils.action_types.START_POLLING) {
+      
       const poll = async () => {
         try {
           // Make a new web request to check the status of the original request
@@ -32,7 +33,9 @@ const pollingMiddleware =
             const results = await loadResults();
             dispatch({
               type: utils.action_types.RESULTS_LOADED,
-              payload: { content: results.data },
+              //payload: { content: results.data },
+              //sends the boxModelOutput to the reducer as the payload
+              payload: { content: boxModelOutput},
             });
           }
         } catch (error) {
