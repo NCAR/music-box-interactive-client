@@ -5,21 +5,6 @@
             "type": "MECHANISM",
             "reactions": [
                 {
-                    "type": "PHOTOLYSIS",
-                    "reactants": {
-                        "O2": {}
-                    },
-                    "products": {
-                        "O": {
-                            "yield": 2
-                        },
-                        "irr__1638d22e-bc38-4393-bcb5-af10b85ee7ee": {
-                            "yield": 1
-                        }
-                    },
-                    "MUSICA name": "O2_1"
-                },
-                {
                     "type": "ARRHENIUS",
                     "reactants": {
                         "O": {
@@ -39,7 +24,7 @@
                         "M": {
                             "yield": 1
                         },
-                        "irr__1a280ab5-a19d-47e2-a18e-3a9137a57c9e": {
+                        "irr__114ae778-1497-4626-bdca-881ce8aff2d4": {
                             "yield": 1
                         }
                     },
@@ -48,6 +33,33 @@
                     "D": 300,
                     "E": 0,
                     "Ea": 0
+                },
+                {
+                    "type": "ARRHENIUS",
+                    "reactants": {
+                        "O1D": {
+                            "qty": 1
+                        },
+                        "O2": {
+                            "qty": 1
+                        }
+                    },
+                    "products": {
+                        "O": {
+                            "yield": 1
+                        },
+                        "O2": {
+                            "yield": 1
+                        },
+                        "irr__3f0eab8e-f065-4786-8542-6c5693adf5bb": {
+                            "yield": 1
+                        }
+                    },
+                    "A": 3.3e-11,
+                    "B": 0,
+                    "D": 300,
+                    "E": 0,
+                    "Ea": -7.59e-22
                 },
                 {
                     "type": "PHOTOLYSIS",
@@ -61,7 +73,7 @@
                         "O2": {
                             "yield": 1
                         },
-                        "irr__29ffbc30-7593-46e6-b469-d56e840e8d7a": {
+                        "irr__711d8994-1484-432c-b7a9-d5a53cf675ba": {
                             "yield": 1
                         }
                     },
@@ -84,7 +96,7 @@
                         "N2": {
                             "yield": 1
                         },
-                        "irr__6126a1f5-848f-4022-9e97-9d1d7e538707": {
+                        "irr__94568345-175c-4316-b091-3ac9130a8c6c": {
                             "yield": 1
                         }
                     },
@@ -93,33 +105,6 @@
                     "D": 300,
                     "E": 0,
                     "Ea": -1.518e-21
-                },
-                {
-                    "type": "ARRHENIUS",
-                    "reactants": {
-                        "O1D": {
-                            "qty": 1
-                        },
-                        "O2": {
-                            "qty": 1
-                        }
-                    },
-                    "products": {
-                        "O": {
-                            "yield": 1
-                        },
-                        "O2": {
-                            "yield": 1
-                        },
-                        "irr__a449882c-cdc1-4ae2-a79d-89ffb43701e7": {
-                            "yield": 1
-                        }
-                    },
-                    "A": 3.3e-11,
-                    "B": 0,
-                    "D": 300,
-                    "E": 0,
-                    "Ea": -7.59e-22
                 },
                 {
                     "type": "PHOTOLYSIS",
@@ -133,7 +118,7 @@
                         "O2": {
                             "yield": 1
                         },
-                        "irr__dc6a915f-310f-4e50-a196-06d35c26d997": {
+                        "irr__b579aae3-494e-497f-b6d5-e9d48b269346": {
                             "yield": 1
                         }
                     },
@@ -153,7 +138,7 @@
                         "O2": {
                             "yield": 2
                         },
-                        "irr__fdbb08a1-c17e-42b2-ac5b-ee86ad96ebb1": {
+                        "irr__ee10e531-ddbd-4602-abf2-f6fed7bf2f16": {
                             "yield": 1
                         }
                     },
@@ -162,6 +147,21 @@
                     "D": 300,
                     "E": 0,
                     "Ea": 2.8428e-20
+                },
+                {
+                    "type": "PHOTOLYSIS",
+                    "reactants": {
+                        "O2": {}
+                    },
+                    "products": {
+                        "O": {
+                            "yield": 2
+                        },
+                        "irr__fa748740-37a8-413b-9514-35790dae4153": {
+                            "yield": 1
+                        }
+                    },
+                    "MUSICA name": "O2_1"
                 }
             ]
         }

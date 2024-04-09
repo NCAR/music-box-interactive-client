@@ -1,6 +1,6 @@
 import sys
 import json
-from music_box import MusicBox
+from acom_music_box import MusicBox
 
 def main(args):
     # args[0] is the script name itself, so we skip that
