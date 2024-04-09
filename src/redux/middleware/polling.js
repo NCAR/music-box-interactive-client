@@ -9,6 +9,7 @@ const pollingMiddleware =
     next(action);
 
     if (action.type === utils.action_types.START_POLLING) {
+      const boxModelOutput = action.payload.boxModelOutput;
       
       const poll = async () => {
         try {
