@@ -13,11 +13,12 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
 
     if(isElectron()) {
       const script = 'print_config.py';
+      
       const args = [JSON.stringify({ mechanism: camp_mechanism, conditions: musicbox_conditions })];
       
       //output from python solver
       const boxModelOutput = await window.electron.doRun(script, args);
-      dispatch({type: utils.action_types.RESULTS_LOADED, payload: {boxModelOutput}})
+      dispatch({ type: utils.action_types.START_POLLING, payload: {boxModelOutput} });
 
     } else {
       await run({ mechanism: camp_mechanism, conditions: musicbox_conditions });
