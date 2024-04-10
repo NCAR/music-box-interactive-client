@@ -8,6 +8,7 @@ export default {
       /^\/src/,
       /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.cjs)|(tsconfig.*)/,
     ],
+    extraResource: ['./src/scripts/print_config.py'],
   },
   rebuildConfig: {},
   makers: [

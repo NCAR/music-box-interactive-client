@@ -11,7 +11,7 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
     const musicbox_conditions = translate_to_musicbox_conditions(conditions, mechanism);
 
     // run python script
-    const script = './src/scripts/print_config.py';
+    const script = 'print_config.py';
     const args = [JSON.stringify({ mechanism: camp_mechanism, conditions: musicbox_conditions })];
     
     //output from python solver

@@ -54,12 +54,20 @@ ipcMain.handle('run-python', async (event, script, args) => {
   // Write the args to the temp file
   await writeFile(tempFilePath, JSON.stringify(args));
 
-  const command = `python ${script} ${tempFilePath}`;
+  // Determine script file path
+  let scriptPath = path.join(process.resourcesPath, script);
+  if (fs.existsSync(scriptPath)){
+    ;
+  } else {
+    scriptPath = path.resolve(app.getAppPath(), "src", "scripts", "print_config.py");
+  }
+
+  const command = `python ${scriptPath} ${tempFilePath}`;
   console.log(`Full command: ${command}`);
 
   try {
     return new Promise((resolve, reject) => {
-      const python = spawn('python', [script, tempFilePath])
+      const python = spawn('python', [scriptPath, tempFilePath])
 
       let output = '';
       python.stdout.on('data', (data) => {
