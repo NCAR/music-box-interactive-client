@@ -51,6 +51,8 @@ ipcMain.handle('run-python', async (event, script, args) => {
   // Generate a unique file name in the OS's default temp directory
   const tempFilePath = path.join(os.tmpdir(), `config-${Date.now()}.json`);
 
+  console.log(tempFilePath)
+
   // Write the args to the temp file
   await writeFile(tempFilePath, JSON.stringify(args));
 
