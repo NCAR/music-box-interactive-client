@@ -1,5 +1,6 @@
 import React from "react";
 import aboutImg from "../../assets/image_calvin.jpg";
+import { Link } from 'react-router-dom';
 
 export default function About() {
   const aboutStyle = {
@@ -28,12 +29,9 @@ export default function About() {
           <a href="#collaborators"> participating model</a>.
         </p>
         <p>
-          <a
-            href="/getting_started"
-            className="btn btn-primary btn-lg btn-ncar-active"
-          >
+          <Link to="/getting_started" className="btn btn-primary btn-lg btn-ncar-active">
             Get started »
-          </a>
+          </Link>
         </p>
         <div className="warning-box">
           MusicBox is currently being tested. Please verify all simulation
