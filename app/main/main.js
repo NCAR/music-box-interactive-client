@@ -73,7 +73,6 @@ ipcMain.handle('run-python', async (event, script, args) => {
 
       let output = '';
       python.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`)
         output += data;
       })
 
@@ -110,4 +109,38 @@ ipcMain.handle('run-python', async (event, script, args) => {
   } catch (error) {
     console.error(`Error running python script: ${error.message}`)
   }
+})
+
+ipcMain.handle('load-example', async (event, example) => {
+
+  const exampleFile = `${example}.json`
+  let examplePath = path.join(process.resourcesPath, exampleFile);
+  if (fs.existsSync(examplePath)){
+    ;
+  } else {
+    examplePath = path.resolve(app.getAppPath(), "src", "examples", exampleFile);
+  }
+
+  console.log(`Full path: ${examplePath}`);
+
+  let jsonData = ""
+  try {
+    return new Promise((resolve,reject) => {
+      fs.readFile(examplePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error(`Error reading file: ${err}`);
+          return;
+        }
+      
+        // Parse the JSON data into a JavaScript object
+        jsonData = JSON.parse(data);
+      
+        // Now you can use the jsonData variable which holds the contents of the JSON file
+        resolve(jsonData);
+      });
+    });
+  } catch (error) {
+    console.error(`Error getting example: ${error.message}`)
+  }
+  return 
 })

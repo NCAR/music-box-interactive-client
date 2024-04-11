@@ -20,8 +20,6 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
       //output from python solver
       const boxModelOutput = await window.electron.doRun(script, args);
 
-      await run({ mechanism: camp_mechanism, conditions: musicbox_conditions })
-
       const content = {
         status: RunStatus['DONE'],
         error: {}
