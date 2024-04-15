@@ -48,10 +48,10 @@ export default function PreviousResults() {
 
   return (
     <Layout>
-      <main role="main" style={{ padding: `4em` }}>
+      <main role="main" style={{ display: `flex`, flexDirection: `column`, alignItems: `center`, padding: `4em` }}>
         <ListGroup
           className="bg-ncar-menu-secondary p-2 text-center"
-          style={{ height: `100%` }}
+          style={{ height: `100%`, maxWidth: `750px`, width: `100%`}}
         >
           <h2 className="p-3">Previous Results</h2>
           {files.map((file, index) => (
