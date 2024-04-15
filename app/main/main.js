@@ -144,3 +144,41 @@ ipcMain.handle('load-example', async (event, example) => {
   }
   return 
 })
+
+ipcMain.handle('get-prev-results', async (event) => {
+  const files = fs.readdirSync(path.resolve(app.getAppPath(), "src", "previous_results")).filter(file => file.endsWith('.json'));
+  return files;
+});
+
+ipcMain.handle('load-results-from-file', async (event, file) => {
+  return new Promise((resolve, reject) => {
+    let filePath = path.resolve(app.getAppPath(), "src", "previous_results", file);
+    if (fs.existsSync(filePath)) {
+      try {
+        const data = fs.readFileSync(filePath, 'utf8');
+        const jsonData = JSON.parse(data);
+        // Get the headers from the first row
+        const headers = jsonData[0];
+        // Get the rows from the rest of the array
+        const rows = jsonData.slice(1);
+        // Initialize the output object
+        const outputObject = {};
+        // Initialize an array for each header in the output object
+        headers.forEach(header => {
+          outputObject[header] = [];
+        });
+        // Add the values to the corresponding arrays in the output object
+        rows.forEach(row => {
+          headers.forEach((header, i) => {
+            outputObject[header].push(row[i]);
+          });
+        });
+        resolve(outputObject);
+      } catch (error) {
+        reject(`Error reading file: ${error.message}`);
+      }
+    } else {
+      reject(`File not found: ${filePath}`);
+    }
+  });
+});

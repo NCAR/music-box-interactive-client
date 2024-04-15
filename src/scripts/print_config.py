@@ -1,5 +1,6 @@
 import sys
 import json
+import datetime
 from acom_music_box import MusicBox
 
 def main(args):
@@ -17,6 +18,10 @@ def main(args):
     print( json.dumps(output))
     #return output
 
+    filename = f"results-{int(datetime.datetime.now().timestamp())}.json"
+
+    with open("./src/previous_results/" + filename, 'w') as f:
+        f.write(json.dumps(output, indent=4))
 
 if __name__ == '__main__':
     main(sys.argv)

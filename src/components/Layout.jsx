@@ -159,6 +159,15 @@ function Layout(props) {
                 <span className="oi oi-data-transfer-download oi-prefix"></span>
                 Download
               </NavLink>
+              {isElectron() && <NavLink
+                to="/previous_results"
+                className={({ isActive }) =>
+                  ["nav-link", isActive ? "active" : ""].join(" ")
+                }
+              >
+                <span className="oi oi-bar-chart oi-prefix"></span>
+                Previous Results
+              </NavLink>}
             </Nav>
             <div className="mt-auto mb-4">
               <img id="logo" className="img-fluid p-2" alt="" src={logo} />

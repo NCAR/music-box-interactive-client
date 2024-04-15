@@ -8,6 +8,7 @@ import Results from "./pages/results";
 import Plots from "./pages/plots";
 import NetworkGraph from "./pages/d3_flow";
 import Download from "./pages/downloads";
+import PreviousResults from "./pages/previous_results";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store/createStore";
 import { MathJaxContext } from "better-react-mathjax";
@@ -58,6 +59,10 @@ let routes = [
   {
     path: "/downloads",
     element: <Download />,
+  },
+  {
+    path: "/previous_results",
+    element: <PreviousResults />,
   },
 ];
 
