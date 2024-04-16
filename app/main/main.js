@@ -193,6 +193,28 @@ ipcMain.handle('load-previous-config', async (event, dir) => {
 
         removeKeysStartingWithIrr(config);
 
+        // Fix evolving conditions
+        let evolvingConditions = config["conditions"]["evolving conditions"];
+        let headers = evolvingConditions[0];
+
+        let newConditions = {}
+
+        headers.forEach((header, index) => {
+            if (header.startsWith("time")) {
+                header = "time"
+            }
+
+            newConditions[header] = {}
+
+            console.log(header)
+
+            for (let i = 0; i < evolvingConditions.length - 1; ++i) {
+                newConditions[header][`${i}`] = evolvingConditions[i + 1][index]
+            }
+        });
+
+        config["conditions"]["evolving conditions"] = newConditions;
+
         resolve(config)
       } catch (error) {
         console.error(`Error loading config: ${error.message}`);

@@ -26,6 +26,8 @@ export default function PreviousResults() {
   }, []);
 
   const handleCardClick = async (dir) => {
+    dispatch(resetAll());
+
     const config = await window.electron.loadPreviousConfig(dir);
 
     const mechanism = extract_mechanism_from_example(config);
