@@ -7,33 +7,45 @@ import utils from "../redux/utils";
 import { resetAll, resetPlots } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { RunStatus } from "../controllers/models";
+import {
+  extract_conditions_from_example,
+  extract_mechanism_from_example,
+} from "../controllers/transformers";
 
 export default function PreviousResults() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [files, setFiles] = useState([]);
+  const [dirs, setDirs] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const files = await window.electron.getPrevResults();
-      setFiles(files);
+      const dirs = await window.electron.getPrevResults();
+      setDirs(dirs);
     })();
   }, []);
 
-  const handleCardClick = async (file) => {
+  const handleCardClick = async (dir) => {
     const content = {
       status: "RUNNING",
       error: "",
     };
-    dispatch(resetPlots());
+    dispatch(resetAll());
     dispatch({
       type: utils.action_types.UPDATE_RUN_STATUS,
       payload: { content },
     });
 
-    // Load the results from the file
-    const boxModelOutput = await window.electron.loadResultsFromFile(file);
+    const config = await window.electron.loadPreviousConfig(dir);
+
+    const mechanism = extract_mechanism_from_example(config);
+    const conditions = extract_conditions_from_example(config, mechanism);
+    dispatch({
+      type: utils.action_types.EXAMPLE_FETCHED,
+      payload: { mechanism: mechanism, conditions: conditions },
+    });
+
+    const boxModelOutput = await window.electron.loadPreviousResults(dir);
 
     dispatch({
       type: utils.action_types.UPDATE_RUN_STATUS,
@@ -54,8 +66,8 @@ export default function PreviousResults() {
           style={{ height: `100%`, maxWidth: `750px`, width: `100%`}}
         >
           <h2 className="p-3">Previous Results</h2>
-          {files.map((file, index) => (
-            <Card key={index} title={file} onClick={() => handleCardClick(file)}/>
+          {dirs.map((dir, index) => (
+            <Card key={index} title={dir} onClick={() => handleCardClick(dir)}/>
           ))}
         </ListGroup>
       </main>

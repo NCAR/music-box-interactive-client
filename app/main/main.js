@@ -51,13 +51,17 @@ app.on("activate", () => {
 const writeFile = util.promisify(fs.writeFile);
 
 ipcMain.handle('run-python', async (event, script, args) => {
-  // Generate a unique file name in the OS's default temp directory
-  const tempFilePath = path.join(os.tmpdir(), `config-${Date.now()}.json`);
+  // Generate a unique file name in the OS's default data directory
+  const configFileDir = path.join(appDataPath, "previous_results", `mechanism-${Date.now()}`);
 
-  console.log(tempFilePath)
+  await fs.promises.mkdir(configFileDir, { recursive: true });
+
+  const configFilePath = path.join(configFileDir, `config-${Date.now()}.json`);
+
+  console.log(configFilePath)
 
   // Write the args to the temp file
-  await writeFile(tempFilePath, JSON.stringify(args));
+  await writeFile(configFilePath, JSON.stringify(args, null, 4));
 
   // Determine script file path
   let scriptPath = path.join(process.resourcesPath, script);
@@ -67,12 +71,12 @@ ipcMain.handle('run-python', async (event, script, args) => {
     scriptPath = path.resolve(app.getAppPath(), "src", "scripts", "print_config.py");
   }
 
-  const command = `python ${scriptPath} ${tempFilePath} ${appDataPath}`;
+  const command = `python ${scriptPath} ${configFilePath} ${configFileDir}`;
   console.log(`Full command: ${command}`);
 
   try {
     return new Promise((resolve, reject) => {
-      const python = spawn('python', [scriptPath, tempFilePath, appDataPath])
+      const python = spawn('python', [scriptPath, configFilePath, configFileDir])
 
       let output = '';
       python.stdout.on('data', (data) => {
@@ -149,16 +153,46 @@ ipcMain.handle('load-example', async (event, example) => {
 })
 
 ipcMain.handle('get-prev-results', async (event) => {
-  const files = fs.readdirSync(path.resolve(appDataPath, "previous_results")).filter(file => file.endsWith('.json'));
-  return files;
+  const directories = fs.readdirSync(path.resolve(appDataPath, "previous_results"), { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+  return directories;
 });
 
-ipcMain.handle('load-results-from-file', async (event, file) => {
+ipcMain.handle('load-previous-config', async (event, dir) => {
   return new Promise((resolve, reject) => {
-    let filePath = path.resolve(appDataPath, "previous_results", file);
+    let filePath = path.resolve(appDataPath, "previous_results", dir);
     if (fs.existsSync(filePath)) {
+      const files = fs.readdirSync(filePath);
+
+      const configFile = files.find((file) => file.startsWith("config"));
+
+      let mechanism, conditions;
+
+      // Load the configuration from the file
       try {
-        const data = fs.readFileSync(filePath, 'utf8');
+        const configFileContent = fs.readFileSync(path.join(filePath, configFile), 'utf-8');
+        const config = JSON.parse(configFileContent);
+        resolve(config)
+      } catch (error) {
+        console.error(`Error loading config: ${error.message}`);
+      }
+    } else {
+      reject(`File not found: ${filePath}`);
+    }
+  });
+});
+
+ipcMain.handle('load-previous-results', async (event, dir) => {
+  return new Promise((resolve, reject) => {
+    let filePath = path.resolve(appDataPath, "previous_results", dir);
+    if (fs.existsSync(filePath)) {
+      const files = fs.readdirSync(filePath);
+
+      const resultsFile = files.find((file) => file.startsWith("results"));
+      
+      try {
+        const data = fs.readFileSync(path.join(filePath, resultsFile), 'utf8');
         const jsonData = JSON.parse(data);
         // Get the headers from the first row
         const headers = jsonData[0];

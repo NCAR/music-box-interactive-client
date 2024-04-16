@@ -15,7 +15,7 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
     if(isElectron()) {
       const script = 'print_config.py';
       
-      const args = [JSON.stringify({ mechanism: camp_mechanism, conditions: musicbox_conditions })];
+      const args = { mechanism: camp_mechanism, conditions: musicbox_conditions };
       
       //output from python solver
       const boxModelOutput = await window.electron.doRun(script, args);
