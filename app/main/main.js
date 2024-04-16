@@ -6,6 +6,7 @@ import os from 'os';
 import util from 'util';
 
 let mainWindow;
+let appDataPath;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -29,6 +30,8 @@ function createWindow() {
 console.log("running app");
 
 app.whenReady().then(() => {
+  appDataPath = app.getPath("userData");
+
   createWindow();
 });
 
@@ -64,12 +67,12 @@ ipcMain.handle('run-python', async (event, script, args) => {
     scriptPath = path.resolve(app.getAppPath(), "src", "scripts", "print_config.py");
   }
 
-  const command = `python ${scriptPath} ${tempFilePath}`;
+  const command = `python ${scriptPath} ${tempFilePath} ${appDataPath}`;
   console.log(`Full command: ${command}`);
 
   try {
     return new Promise((resolve, reject) => {
-      const python = spawn('python', [scriptPath, tempFilePath])
+      const python = spawn('python', [scriptPath, tempFilePath, appDataPath])
 
       let output = '';
       python.stdout.on('data', (data) => {
@@ -146,13 +149,13 @@ ipcMain.handle('load-example', async (event, example) => {
 })
 
 ipcMain.handle('get-prev-results', async (event) => {
-  const files = fs.readdirSync(path.resolve(app.getAppPath(), "src", "previous_results")).filter(file => file.endsWith('.json'));
+  const files = fs.readdirSync(path.resolve(appDataPath, "previous_results")).filter(file => file.endsWith('.json'));
   return files;
 });
 
 ipcMain.handle('load-results-from-file', async (event, file) => {
   return new Promise((resolve, reject) => {
-    let filePath = path.resolve(app.getAppPath(), "src", "previous_results", file);
+    let filePath = path.resolve(appDataPath, "previous_results", file);
     if (fs.existsSync(filePath)) {
       try {
         const data = fs.readFileSync(filePath, 'utf8');
