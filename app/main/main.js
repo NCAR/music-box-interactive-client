@@ -159,6 +159,16 @@ ipcMain.handle('get-prev-results', async (event) => {
   return directories;
 });
 
+function removeKeysStartingWithIrr(obj) {
+  for (let key in obj) {
+    if (key.startsWith('irr_')) {
+      delete obj[key];
+    } else if (typeof obj[key] === 'object') {
+      removeKeysStartingWithIrr(obj[key]);
+    }
+  }
+}
+
 ipcMain.handle('load-previous-config', async (event, dir) => {
   return new Promise((resolve, reject) => {
     let filePath = path.resolve(appDataPath, "previous_results", dir);
@@ -167,12 +177,22 @@ ipcMain.handle('load-previous-config', async (event, dir) => {
 
       const configFile = files.find((file) => file.startsWith("config"));
 
-      let mechanism, conditions;
-
       // Load the configuration from the file
       try {
         const configFileContent = fs.readFileSync(path.join(filePath, configFile), 'utf-8');
-        const config = JSON.parse(configFileContent);
+        let config = JSON.parse(configFileContent);
+
+        // Get the 'camp-data' array
+        let campData = config["mechanism"]["species"]["camp-data"];
+
+        // Filter out the dictionaries where the 'name' key starts with 'irr'
+        campData = campData.filter(dict => !dict.name.startsWith('irr_'));
+
+        // Update the 'camp-data' array in the config object
+        config["mechanism"]["species"]["camp-data"] = campData;
+
+        removeKeysStartingWithIrr(config);
+
         resolve(config)
       } catch (error) {
         console.error(`Error loading config: ${error.message}`);

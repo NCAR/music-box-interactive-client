@@ -26,16 +26,6 @@ export default function PreviousResults() {
   }, []);
 
   const handleCardClick = async (dir) => {
-    const content = {
-      status: "RUNNING",
-      error: "",
-    };
-    dispatch(resetAll());
-    dispatch({
-      type: utils.action_types.UPDATE_RUN_STATUS,
-      payload: { content },
-    });
-
     const config = await window.electron.loadPreviousConfig(dir);
 
     const mechanism = extract_mechanism_from_example(config);
@@ -43,6 +33,16 @@ export default function PreviousResults() {
     dispatch({
       type: utils.action_types.EXAMPLE_FETCHED,
       payload: { mechanism: mechanism, conditions: conditions },
+    });
+
+    const content = {
+      status: "RUNNING",
+      error: "",
+    };
+    dispatch(resetPlots());
+    dispatch({
+      type: utils.action_types.UPDATE_RUN_STATUS,
+      payload: { content },
     });
 
     const boxModelOutput = await window.electron.loadPreviousResults(dir);
