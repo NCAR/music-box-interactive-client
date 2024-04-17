@@ -33,13 +33,16 @@ export const getPossibleConditions = (store) => {
       .map((reaction) => {
         return {
           name:
-            reaction.data.musica_name + " [" + reaction.possibleUnits[0] + "]",
-          tableName:
             reaction.tablePrefix +
             "." +
             reaction.data.musica_name +
-            "." +
-            reaction.possibleUnits[0],
+            " [" +
+            reaction.possibleUnits[0] +
+            "]",
+          tableName:
+            reaction.tablePrefix === "PHOT" ? "PHOT." : `PHOT.${reaction.tablePrefix}_` +
+            reaction.data.musica_name +
+            ".s-1",
         };
       }),
   ];

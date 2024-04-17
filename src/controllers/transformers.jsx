@@ -385,15 +385,20 @@ function extract_conditions_from_example(config, mechanism) {
         evolving.times = Object.values(evolving_conditions[key]);
       } else {
         let [type, name, units] = key.split(".");
-        if (!units) {
-          if (type === "PHOT") {
-            units = "mol m-3";
-          }
+        let table_name = "";
+        if (type === "LOSS" || name.substring(0, 5) === "LOSS_") {
+          table_name = `PHOT.LOSS_${name.replace(/LOSS_/, "")}.s-1`;
+        } else if (type === "EMIS" || name.substring(0, 5) === "EMIS_") {
+          table_name = `PHOT.EMIS_${name.replace(/EMIS_/, "")}.s-1`;
+        } else if (type === "PHOT") {
+          table_name = `PHOT.${name}.s-1`;
+        } else {
+          table_name = key;
         }
         evolving.values.push({
-          name: `${name} [${units}]`,
-          tableName: key,
-          values: evolving_conditions[key],
+          name: `${type}.${name} [${units}]`,
+          tableName: table_name,
+          values: Object.values(evolving_conditions[key]),
         });
       }
     });
