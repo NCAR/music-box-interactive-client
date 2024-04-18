@@ -335,7 +335,9 @@ function extract_conditions_from_example(config, mechanism) {
         identifier = identifier.replace(/LOSS_/, "");
       }
       const reaction = reactions.find((reaction) => {
-        return reaction.data.musica_name == identifier && reaction.data.type == type;
+        return (
+          reaction.data.musica_name == identifier && reaction.data.type == type
+        );
       });
       let default_units = "";
       /*
@@ -455,9 +457,11 @@ function translate_reactions_to_camp_config(config) {
         };
         if (camp_reaction.C !== undefined) {
           if (camp_reaction.Ea !== undefined) {
-            throw new Error("Both C and Ea are defined in an Arrhenius reaction. This is not allowed.");
+            throw new Error(
+              "Both C and Ea are defined in an Arrhenius reaction. This is not allowed.",
+            );
           }
-          camp_reaction.Ea = - camp_reaction.C * 1.380649e-23; // Convert from C (K) to Ea (J)
+          camp_reaction.Ea = -camp_reaction.C * 1.380649e-23; // Convert from C (K) to Ea (J)
           delete camp_reaction.C;
         }
         break;
