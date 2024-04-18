@@ -51,6 +51,7 @@ const mapStateToProps = (state, ownProps) => {
   } else if (schema.classKey === "initial_reactions") {
     const reactionIds = conditions.map((condition) => condition.reactionId);
     const possibleReactions = getUserDefinedRatesIds(state);
+
     remaining_unused = possibleReactions.length - reactionIds.length;
   }
   return { conditions, remaining_unused };
