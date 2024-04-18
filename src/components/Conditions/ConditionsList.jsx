@@ -38,7 +38,7 @@ const ConditionsList = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   const { schema } = ownProps;
-  const conditions = getConditions(state, schema);
+  let conditions = getConditions(state, schema);
 
   // keep track of how many conditions can still be added
   let remaining_unused = 0;
@@ -51,8 +51,19 @@ const mapStateToProps = (state, ownProps) => {
   } else if (schema.classKey === "initial_reactions") {
     const reactionIds = conditions.map((condition) => condition.reactionId);
     const possibleReactions = getUserDefinedRatesIds(state);
+
+    // join the possible reactions with the conditions so that the name value of possible reactions is also on conditions
+    conditions = conditions.map((condition) => {
+      const reaction = possibleReactions.find(
+        (reaction) => reaction.id === condition.reactionId
+      );
+      return { ...condition, name: reaction.name };
+    });
+
+
     remaining_unused = possibleReactions.length - reactionIds.length;
   }
+  conditions.sort((a, b) => a.name.localeCompare(b.name));
   return { conditions, remaining_unused };
 };
 

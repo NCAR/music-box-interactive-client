@@ -423,7 +423,7 @@ function extract_conditions_from_example(config, mechanism) {
   let schema = {
     basic: basic,
     initial_species_concentrations: initial_species_concentrations,
-    initial_environmental: [temperature, pressure],
+    initial_environmental: [pressure, temperature],
     initial_reactions: reaction_conditions,
     evolving: evolving,
     model_components: config.conditions["model components"],
