@@ -76,7 +76,7 @@ export const conditionsReducer = (state = initialState, action) => {
             ...condition,
             id: conditionId,
           },
-        ]
+        ],
       };
     }
     case utils.action_types.REMOVE_CONDITION: {
