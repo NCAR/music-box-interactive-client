@@ -4,11 +4,6 @@ import { initialConditionsSchema } from "../../redux/schemas";
 import ConditionsList from "./ConditionsList";
 
 function InitialConditionsTab(props) {
-  const [
-    speciesConditionSchema,
-    environmentalConditionSchema,
-    reactionConditionSchema,
-  ] = initialConditionsSchema;
   return (
     <>
       <p className="lead-muted p-2">
@@ -19,15 +14,13 @@ function InitialConditionsTab(props) {
         concentrations) or overwritten by evolving conditions you specify.
       </p>
       <div className="configbox container-fluid">
-        <div className="row m-2">
-          <ConditionsList schema={speciesConditionSchema} />
-        </div>
-        <div className="row m-2">
-          <ConditionsList schema={environmentalConditionSchema} />
-        </div>
-        <div className="row m-2">
-          <ConditionsList schema={reactionConditionSchema} />
-        </div>
+        {initialConditionsSchema.map((schema, index) => {
+          return (
+            <div className="row m-2" key={`conditions-list-${index}`}>
+              <ConditionsList schema={schema} />
+            </div>
+          );
+        })}
       </div>
     </>
   );
