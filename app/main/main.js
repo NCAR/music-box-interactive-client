@@ -159,14 +159,22 @@ ipcMain.handle('get-prev-results', async (event) => {
   return directories;
 });
 
-function removeKeysStartingWithIrr(obj) {
-  for (let key in obj) {
-    if (key.startsWith('irr_')) {
-      delete obj[key];
-    } else if (typeof obj[key] === 'object') {
-      removeKeysStartingWithIrr(obj[key]);
+function setReactionIds(config) {
+  let reactions = config["mechanism"]["reactions"]["camp-data"][0]["reactions"];
+  let reactionIds = reactions.map((reaction, index) => {
+    // Look for keys that start with "irr_"
+    for (let key in reaction["products"]) {
+      if (key.startsWith("irr_")) {
+        // Set the id as the substring of the key starting after the 5th character
+        reaction["id"] = key.substring(5);
+        // Delete the key
+        delete reaction["products"][key];
+        break;
+      }
     }
-  }
+    return reaction;
+  });
+  config["mechanism"]["reactions"]["camp-data"][0]["reactions"] = reactionIds;
 }
 
 ipcMain.handle('load-previous-config', async (event, dir) => {
@@ -191,31 +199,29 @@ ipcMain.handle('load-previous-config', async (event, dir) => {
         // Update the 'camp-data' array in the config object
         config["mechanism"]["species"]["camp-data"] = campData;
 
-        removeKeysStartingWithIrr(config);
+        setReactionIds(config);
 
         // Fix evolving conditions
         let evolvingConditions = config["conditions"]["evolving conditions"];
         let headers = evolvingConditions[0];
 
-        let newConditions = {}
+        let newConditions = {};
 
         headers.forEach((header, index) => {
             if (header.startsWith("time")) {
-                header = "time"
+                header = "time";
             }
 
-            newConditions[header] = {}
-
-            console.log(header)
+            newConditions[header] = {};
 
             for (let i = 0; i < evolvingConditions.length - 1; ++i) {
-                newConditions[header][`${i}`] = evolvingConditions[i + 1][index]
+                newConditions[header][`${i}`] = evolvingConditions[i + 1][index];
             }
         });
 
         config["conditions"]["evolving conditions"] = newConditions;
 
-        resolve(config)
+        resolve(config);
       } catch (error) {
         console.error(`Error loading config: ${error.message}`);
       }
