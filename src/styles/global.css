@@ -254,6 +254,10 @@ code {
     max-height: 100px;
 }
 
+.logo-medium {
+    max-height: 150px;
+}
+
 footer {
     background-color: var(--ncar-color-text-light);
     /* position: absolute;
