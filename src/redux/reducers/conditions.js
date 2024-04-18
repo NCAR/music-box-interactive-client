@@ -63,6 +63,7 @@ export const conditionsReducer = (state = initialState, action) => {
         reactionId: undefined,
         value: undefined,
         units: undefined,
+        name: "",
       };
       const conditionId = condition.id || uuidv4();
       const otherConditions = state[schema.classKey].filter((condition) => {
