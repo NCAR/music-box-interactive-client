@@ -60,10 +60,6 @@ let routes = [
     path: "/downloads",
     element: <Download />,
   },
-  {
-    path: "/previous_results",
-    element: <PreviousResults />,
-  },
 ];
 
 if (featureFlags.FLOW_DIAGRAM) {
@@ -71,6 +67,13 @@ if (featureFlags.FLOW_DIAGRAM) {
     path: "/flow_diagram",
     element: <NetworkGraph />,
   });
+}
+
+if (isElectron()) {
+  routes.push({
+    path: "/previous_results",
+    element: <PreviousResults />,
+  });  
 }
 
 const router = isElectron()
