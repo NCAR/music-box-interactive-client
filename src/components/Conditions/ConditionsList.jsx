@@ -55,11 +55,10 @@ const mapStateToProps = (state, ownProps) => {
     // join the possible reactions with the conditions so that the name value of possible reactions is also on conditions
     conditions = conditions.map((condition) => {
       const reaction = possibleReactions.find(
-        (reaction) => reaction.id === condition.reactionId
+        (reaction) => reaction.id === condition.reactionId,
       );
       return { ...condition, name: reaction.name };
     });
-
 
     remaining_unused = possibleReactions.length - reactionIds.length;
   }

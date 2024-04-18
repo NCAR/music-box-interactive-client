@@ -76,7 +76,6 @@ function extract_mechanism_from_example(config) {
                 throw new Error(
                   "Both C and Ea are defined in an Arrhenius reaction. This is not allowed.",
                 );
-              
               }
             }
             reaction.Ea = -reaction.C * 1.380649e-23; // Convert from C (K) to Ea (J)
