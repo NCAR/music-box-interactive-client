@@ -323,9 +323,19 @@ function extract_conditions_from_example(config, mechanism) {
   if (initial_conditions) {
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
       let [type, identifier, units] = key.split(".");
-      identifier = identifier.replace(/EMIS_/, "").replace(/LOSS_/, "");
+      if (type === "PHOT") {
+        type = ReactionTypes.PHOTOLYSIS;
+      }
+      if (type === "EMIS" || identifier.substring(0, 5) === "EMIS_") {
+        type = ReactionTypes.EMISSION;
+        identifier = identifier.replace(/EMIS_/, "");
+      }
+      if (type === "LOSS" || identifier.substring(0, 5) === "LOSS_") {
+        type = ReactionTypes.FIRST_ORDER_LOSS;
+        identifier = identifier.replace(/LOSS_/, "");
+      }
       const reaction = reactions.find((reaction) => {
-        return reaction.data.musica_name == identifier;
+        return reaction.data.musica_name == identifier && reaction.data.type == type;
       });
       let default_units = "";
       /*
@@ -338,6 +348,7 @@ function extract_conditions_from_example(config, mechanism) {
       switch (reaction.data.type) {
         case ReactionTypes.PHOTOLYSIS: {
           default_units = "s-1";
+          type = "PHOT";
           break;
         }
         case ReactionTypes.EMISSION: {
@@ -374,15 +385,20 @@ function extract_conditions_from_example(config, mechanism) {
         evolving.times = Object.values(evolving_conditions[key]);
       } else {
         let [type, name, units] = key.split(".");
-        if (!units) {
-          if (type === "PHOT") {
-            units = "mol m-3";
-          }
+        let table_name = "";
+        if (type === "LOSS" || name.substring(0, 5) === "LOSS_") {
+          table_name = `PHOT.LOSS_${name.replace(/LOSS_/, "")}.s-1`;
+        } else if (type === "EMIS" || name.substring(0, 5) === "EMIS_") {
+          table_name = `PHOT.EMIS_${name.replace(/EMIS_/, "")}.s-1`;
+        } else if (type === "PHOT") {
+          table_name = `PHOT.${name}.s-1`;
+        } else {
+          table_name = key;
         }
         evolving.values.push({
-          name: `${name} [${units}]`,
-          tableName: key,
-          values: evolving_conditions[key],
+          name: `${type}.${name} [${units}]`,
+          tableName: table_name,
+          values: Object.values(evolving_conditions[key]),
         });
       }
     });
@@ -437,6 +453,13 @@ function translate_reactions_to_camp_config(config) {
             ...reduxProductsToCamp([...products, { name: irrSpecies }]),
           },
         };
+        if (camp_reaction.C !== undefined) {
+          if (camp_reaction.Ea !== undefined) {
+            throw new Error("Both C and Ea are defined in an Arrhenius reaction. This is not allowed.");
+          }
+          camp_reaction.Ea = - camp_reaction.C * 1.380649e-23; // Convert from C (K) to Ea (J)
+          delete camp_reaction.C;
+        }
         break;
       }
       case ReactionTypes.PHOTOLYSIS: {
