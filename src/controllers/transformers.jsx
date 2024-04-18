@@ -69,6 +69,20 @@ function extract_mechanism_from_example(config) {
   const reactions = camp_reactions.map((reaction) => {
     switch (reaction.music_box_type ? reaction.music_box_type : reaction.type) {
       case ReactionTypes.ARRHENIUS: {
+        if (reaction.C !== undefined) {
+          if (reaction.C != 0.0) {
+            if (reaction.Ea !== undefined) {
+              if (reaction.Ea != 0.0) {
+                throw new Error(
+                  "Both C and Ea are defined in an Arrhenius reaction. This is not allowed.",
+                );
+              
+              }
+            }
+            reaction.Ea = -reaction.C * 1.380649e-23; // Convert from C (K) to Ea (J)
+            delete reaction.C;
+          }
+        }
         return {
           ...reactionSchema.arrhenius,
           id: uuidv4(),
