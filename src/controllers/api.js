@@ -3,6 +3,8 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
+import isElectron from "is-electron";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 async function fetchConfiguration(file) {
@@ -50,6 +52,9 @@ async function fetchResults() {
 }
 
 async function fetchExample(example) {
+  if(isElectron()){
+    return await window.electron.loadExample(example);
+  }
   try {
     const params = {
       example: example,

@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { useVeiwPort } from "../hooks/useVeiwPort";
 import ScrollToAnchor from "./ScrollToAnchor";
 import isElectron from "is-electron";
+import { Link } from 'react-router-dom';
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -64,11 +65,10 @@ function Layout(props) {
           bg="dark"
           variant="dark"
         >
-          <Navbar.Brand
-            className="navbar-brand col-md-3 col-lg-2 me-0 px-3"
-            href="/"
-          >
-            {title}
+          <Navbar.Brand className="navbar-brand col-md-3 col-lg-2 me-0 px-3">
+            <Link to="/" className="text-white text-decoration-none">
+              {title}
+            </Link>
           </Navbar.Brand>
         </Navbar>
         <div className={styles.content}>
@@ -159,6 +159,15 @@ function Layout(props) {
                 <span className="oi oi-data-transfer-download oi-prefix"></span>
                 Download
               </NavLink>
+              {isElectron() && <NavLink
+                to="/previous_results"
+                className={({ isActive }) =>
+                  ["nav-link", isActive ? "active" : ""].join(" ")
+                }
+              >
+                <span className="oi oi-bar-chart oi-prefix"></span>
+                Previous Results
+              </NavLink>}
             </Nav>
             <div className="mt-auto mb-4">
               <img id="logo" className="img-fluid p-2" alt="" src={logo} />
