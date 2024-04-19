@@ -73,7 +73,7 @@ if (isElectron()) {
   routes.push({
     path: "/previous_results",
     element: <PreviousResults />,
-  });  
+  });
 }
 
 const router = isElectron()

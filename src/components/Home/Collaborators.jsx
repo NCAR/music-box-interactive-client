@@ -158,10 +158,10 @@ export default function Collaborators() {
                   <p>
                     MusicBox Interactive Desktop was developed at Texas A&M
                     University by a group of seniors for their capstone project.
-                    The project was sponsored by the National Center for 
+                    The project was sponsored by the National Center for
                     Atmospheric Research. The goal of the project was to create
-                    a desktop version of the MusicBox web application and transition
-                    the Fortran box model to use Python and MICM.
+                    a desktop version of the MusicBox web application and
+                    transition the Fortran box model to use Python and MICM.
                   </p>
                 </div>
               </div>
