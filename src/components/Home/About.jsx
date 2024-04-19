@@ -1,6 +1,6 @@
 import React from "react";
 import aboutImg from "../../assets/image_calvin.jpg";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function About() {
   const aboutStyle = {
@@ -29,7 +29,10 @@ export default function About() {
           <a href="#collaborators"> participating model</a>.
         </p>
         <p>
-          <Link to="/getting_started" className="btn btn-primary btn-lg btn-ncar-active">
+          <Link
+            to="/getting_started"
+            className="btn btn-primary btn-lg btn-ncar-active"
+          >
             Get started »
           </Link>
         </p>

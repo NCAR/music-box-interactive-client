@@ -52,7 +52,7 @@ async function fetchResults() {
 }
 
 async function fetchExample(example) {
-  if(isElectron()){
+  if (isElectron()) {
     return await window.electron.loadExample(example);
   }
   try {

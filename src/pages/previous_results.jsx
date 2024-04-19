@@ -51,7 +51,7 @@ export default function PreviousResults() {
 
     dispatch({
       type: utils.action_types.UPDATE_RUN_STATUS,
-      payload: { content: { status: RunStatus['DONE'], error: {} } },
+      payload: { content: { status: RunStatus["DONE"], error: {} } },
     });
     dispatch({
       type: utils.action_types.RESULTS_LOADED,
@@ -62,14 +62,26 @@ export default function PreviousResults() {
 
   return (
     <Layout>
-      <main role="main" style={{ display: `flex`, flexDirection: `column`, alignItems: `center`, padding: `4em` }}>
+      <main
+        role="main"
+        style={{
+          display: `flex`,
+          flexDirection: `column`,
+          alignItems: `center`,
+          padding: `4em`,
+        }}
+      >
         <ListGroup
           className="bg-ncar-menu-secondary p-2 text-center"
-          style={{ height: `100%`, maxWidth: `750px`, width: `100%`}}
+          style={{ height: `100%`, maxWidth: `750px`, width: `100%` }}
         >
           <h2 className="p-3">Previous Results</h2>
           {dirs.map((dir, index) => (
-            <Card key={index} title={dir} onClick={() => handleCardClick(dir)}/>
+            <Card
+              key={index}
+              title={dir}
+              onClick={() => handleCardClick(dir)}
+            />
           ))}
         </ListGroup>
       </main>
