@@ -40,9 +40,9 @@ export const getPossibleConditions = (store) => {
             reaction.possibleUnits[0] +
             "]",
           tableName:
-            reaction.tablePrefix === "PHOT"
+            (reaction.tablePrefix === "PHOT"
               ? "PHOT."
-              : `PHOT.${reaction.tablePrefix}_` +
+              : `PHOT.${reaction.tablePrefix}_`) +
                 reaction.data.musica_name +
                 ".s-1",
         };
