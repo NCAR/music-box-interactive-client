@@ -48,10 +48,21 @@ const mapStateToProps = (state, ownProps) => {
     // -1 below because M is always a species in the gas phase
     // but you cannot set its concentration
     remaining_unused = mechanism.gasSpecies.length - 1 - conditions.length;
+    conditions.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (schema.classKey === "initial_environmental_conditions") {
+    conditions.sort((a, b) => a.name.localeCompare(b.name));
   } else if (schema.classKey === "initial_reactions") {
     const reactionIds = conditions.map((condition) => condition.reactionId);
     const possibleReactions = getUserDefinedRatesIds(state);
 
+    // join the possible reactions with the conditions so that the name value of possible reactions is also on conditions
+    conditions = conditions.map((condition) => {
+      const reaction = possibleReactions.find(
+        (reaction) => reaction.id === condition.reactionId
+      );
+      return { ...condition, name: reaction?.name || "" };
+    });
+    conditions.sort((a, b) => a.name.localeCompare(b.name));
     remaining_unused = possibleReactions.length - reactionIds.length;
   }
   return { conditions, remaining_unused };
