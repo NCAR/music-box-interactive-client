@@ -44,6 +44,16 @@ const initialState = {
   ],
 };
 
+const sortConditionsById = (a, b) => {
+  if (a.id < b.id) {
+    return -1;
+  } else if (a.id > b.id) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
+
 export const conditionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case utils.action_types.RESET_ALL: {
@@ -77,7 +87,7 @@ export const conditionsReducer = (state = initialState, action) => {
             ...condition,
             id: conditionId,
           },
-        ],
+        ].sort(sortConditionsById),
       };
     }
     case utils.action_types.REMOVE_CONDITION: {

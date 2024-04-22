@@ -4,6 +4,8 @@ import {
   translate_to_camp_config,
   translate_to_musicbox_conditions,
 } from "../../controllers/transformers";
+import isElectron from "is-electron";
+import { RunStatus } from "../../controllers/models";
 
 export const doRun = (mechanism, conditions) => async (dispatch) => {
   try {
@@ -12,8 +14,35 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
       conditions,
       mechanism,
     );
-    await run({ mechanism: camp_mechanism, conditions: musicbox_conditions });
-    dispatch({ type: utils.action_types.START_POLLING, payload: {} });
+
+    if (isElectron()) {
+      const script = "print_config.py";
+
+      const args = {
+        mechanism: camp_mechanism,
+        conditions: musicbox_conditions,
+      };
+
+      //output from python solver
+      const boxModelOutput = await window.electron.doRun(script, args);
+
+      const content = {
+        status: RunStatus["DONE"],
+        error: {},
+      };
+      dispatch({
+        type: utils.action_types.UPDATE_RUN_STATUS,
+        payload: { content },
+      });
+
+      dispatch({
+        type: utils.action_types.RESULTS_LOADED,
+        payload: { content: boxModelOutput },
+      });
+    } else {
+      await run({ mechanism: camp_mechanism, conditions: musicbox_conditions });
+      dispatch({ type: utils.action_types.START_POLLING, payload: {} });
+    }
   } catch (error) {
     console.error(`Error starting run: ${error.message}`);
   }

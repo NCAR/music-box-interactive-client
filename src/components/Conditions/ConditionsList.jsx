@@ -38,7 +38,7 @@ const ConditionsList = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   const { schema } = ownProps;
-  let conditions = getConditions(state, schema);
+  const conditions = getConditions(state, schema);
 
   // keep track of how many conditions can still be added
   let remaining_unused = 0;

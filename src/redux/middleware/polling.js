@@ -29,6 +29,7 @@ const pollingMiddleware =
           ) {
             setTimeout(poll, 1000); // Poll every second
           } else if (content.status === RunStatus.DONE) {
+            console.log(content);
             const results = await loadResults();
             dispatch({
               type: utils.action_types.RESULTS_LOADED,
