@@ -43,8 +43,8 @@ export const getPossibleConditions = (store) => {
             (reaction.tablePrefix === "PHOT"
               ? "PHOT."
               : `PHOT.${reaction.tablePrefix}_`) +
-                reaction.data.musica_name +
-                ".s-1",
+            reaction.data.musica_name +
+            ".s-1",
         };
       }),
   ];
