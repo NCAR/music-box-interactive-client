@@ -84,7 +84,7 @@ function extract_mechanism_from_example(config) {
         }
         return {
           ...reactionSchema.arrhenius,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.arrhenius.data,
             A: reaction.A || reactionSchema.arrhenius.data.A,
@@ -100,7 +100,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.PHOTOLYSIS: {
         return {
           ...reactionSchema.photolysis,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.photolysis.data,
             reactant: campReactantsToRedux(reaction)[0].name,
@@ -113,7 +113,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.EMISSION: {
         return {
           ...reactionSchema.emission,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.emission.data,
             scaling_factor: reaction["scaling factor"] || 1.0,
@@ -125,7 +125,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.FIRST_ORDER_LOSS: {
         return {
           ...reactionSchema.firstOrderLoss,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.firstOrderLoss.data,
             species: reaction["species"],
@@ -137,7 +137,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
         return {
           ...reactionSchema.ternaryChemicalActivation,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.ternaryChemicalActivation.data,
             k0_A: reaction["k0_A"] || 1.0,
@@ -156,7 +156,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.TROE: {
         return {
           ...reactionSchema.troe,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.troe.data,
             k0_A: reaction["k0_A"] || 1.0,
@@ -175,7 +175,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.WENNBERG_NO_RO2: {
         return {
           ...reactionSchema.branched,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.branched.data,
             X: reaction["X"] || 1.0,
@@ -195,7 +195,7 @@ function extract_mechanism_from_example(config) {
       case ReactionTypes.WENNBERG_TUNNELING: {
         return {
           ...reactionSchema.tunneling,
-          id: uuidv4(),
+          id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.tunneling.data,
             A: reaction["A"] || 1.0,

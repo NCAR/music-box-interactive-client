@@ -8,6 +8,7 @@ import Results from "./pages/results";
 import Plots from "./pages/plots";
 import NetworkGraph from "./pages/d3_flow";
 import Download from "./pages/downloads";
+import PreviousResults from "./pages/previous_results";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store/createStore";
 import { MathJaxContext } from "better-react-mathjax";
@@ -65,6 +66,13 @@ if (featureFlags.FLOW_DIAGRAM) {
   routes.push({
     path: "/flow_diagram",
     element: <NetworkGraph />,
+  });
+}
+
+if (isElectron()) {
+  routes.push({
+    path: "/previous_results",
+    element: <PreviousResults />,
   });
 }
 

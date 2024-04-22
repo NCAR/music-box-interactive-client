@@ -5,6 +5,7 @@ import mdc from "../../assets/MDC.png";
 import eu from "../../assets/EU.png";
 import ui_small from "../../assets/UI_small.png";
 import nsf from "../../assets/NSF.png";
+import tamu from "../../assets/TAM-Logo.png";
 
 export default function Collaborators() {
   return (
@@ -141,6 +142,27 @@ export default function Collaborators() {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-4 d-flex justify-content-center">
+                  <a href="https://tamu.edu/">
+                    <img
+                      src={tamu}
+                      className="logo-medium img-fluid"
+                      alt="Texas A&M University"
+                    />
+                  </a>
+                </div>
+                <div className="col-lg-8">
+                  <p>
+                    MusicBox Interactive Desktop was developed at Texas A&M
+                    University by a group of seniors for their capstone project.
+                    The project was sponsored by the National Center for
+                    Atmospheric Research. The goal of the project was to create
+                    a desktop version of the MusicBox web application and
+                    transition the Fortran box model to use Python and MICM.
+                  </p>
                 </div>
               </div>
             </div>
