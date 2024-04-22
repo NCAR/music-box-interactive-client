@@ -12,7 +12,8 @@ const UploadEvolvingConditions = (props) => {
     setFile(e.target.files[0]);
   };
 
-  const convertTextToTable = (text) => {
+  const convertTextToTable = (raw_text) => {
+    const text = raw_text.replace(/\r/g, "\n").replace(/\n+/g, "\n");
     const header = text.slice(0, text.indexOf("\n")).split(",");
     const rows = text.slice(text.indexOf("\n") + 1).split("\n");
     return [
