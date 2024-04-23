@@ -7,4 +7,9 @@ contextBridge.exposeInMainWorld("electron", {
   loadPreviousConfig: (dir) => ipcRenderer.invoke("load-previous-config", dir),
   loadPreviousResults: (dir) => ipcRenderer.invoke("load-previous-results", dir),
   saveResults: (results) => ipcRenderer.invoke("save-results", results),
+
+  getRecentResults: (results) => ipcRenderer.invoke("get-recent-results", results),
+  getDownloadPath: (path) => ipcRenderer.invoke("get-download-path", path),
+  downloadResults: (filePath, csvData) => ipcRenderer.invoke("download-results", filePath, csvData),
+
 });

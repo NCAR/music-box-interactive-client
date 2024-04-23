@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import * as path from "path";
 import { spawn } from "child_process";
 import fs from "fs";
@@ -307,3 +307,23 @@ ipcMain.handle("load-previous-results", async (event, dir) => {
     }
   });
 });
+
+ipcMain.handle("get-recent-results", async (event) => {
+  return recentResults;
+});
+
+ipcMain.handle("get-download-path", async (event) => {
+  const { filePath } = await dialog.showSaveDialog({
+    defaultPath: 'results.csv',
+  });
+  return filePath
+
+});
+
+ipcMain.handle("download-results", async (event, filePath, csvData) => {
+  // Write the CSV data to the selected file
+  await writeFile(filePath, csvData);
+  return
+});
+
+

@@ -12,6 +12,9 @@ import {
   translate_to_musicbox_conditions,
 } from "../../controllers/transformers";
 
+
+import isElectron from "is-electron";
+
 export const getExample = (example) => async (dispatch) => {
   try {
     const data = await fetchExample(example);
@@ -67,16 +70,40 @@ export const downloadConfiguration =
     }
   };
 
-export const downloadResults = () => async (dispatch) => {
-  try {
-    const url = await fetchResults();
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "results.csv";
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
-  } catch (error) {
-    console.error(`Error downloading results: ${error.message}`);
-  }
-};
+  function convertToCSV(arr) {
+    
+    const csvRows = arr.map(row => row.join(','));
+    return csvRows.join('\n');
+}
+
+  export const downloadResults = () => async (dispatch) => {
+    try {
+      //Downloads results to a CSV file
+      if(isElectron()){
+        let recentResults = await window.electron.getRecentResults();
+        const csvData = convertToCSV(JSON.parse(recentResults));
+        
+        const filePath  = await window.electron.getDownloadPath();
+        
+        if (filePath) {
+          await window.electron.downloadResults(filePath, csvData);
+
+        }
+  
+      }
+      else{
+        const url = await fetchResults();
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "results.csv";
+  
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+  
+      }
+  
+    } catch (error) {
+      console.error(`Error downloading results: ${error.message}`);
+    }
+  };
