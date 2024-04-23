@@ -312,7 +312,8 @@ ipcMain.handle("get-recent-results", async (event) => {
   return recentResults;
 });
 
-ipcMain.handle("get-download-path", async (event) => {
+
+ipcMain.handle("get-download-path", async (event, defaultPath) => {
   const { filePath } = await dialog.showSaveDialog({
     defaultPath: 'results.csv',
   });

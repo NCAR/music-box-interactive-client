@@ -83,7 +83,7 @@ export const downloadConfiguration =
         let recentResults = await window.electron.getRecentResults();
         const csvData = convertToCSV(JSON.parse(recentResults));
         
-        const filePath  = await window.electron.getDownloadPath();
+        const filePath  = await window.electron.getDownloadPath("results.csv");
         
         if (filePath) {
           await window.electron.downloadResults(filePath, csvData);
