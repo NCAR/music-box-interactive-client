@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/ncarucar-seal-final-gray.png";
+import logo from "../assets/NSF-NCAR_Lockup-UCAR-Light_102523.png";
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css";
 import { Helmet } from "react-helmet-async";
