@@ -211,6 +211,58 @@ function setReactionIds(config) {
   });
   config["mechanism"]["reactions"]["camp-data"][0]["reactions"] = reactionIds;
 }
+//loads config from uploaded filed
+ipcMain.handle("load-config", async (event, path) => {
+  return new Promise((resolve, reject) => {
+      
+    
+      // Load the configuration from the file
+      try {
+        const configFileContent = fs.readFileSync(
+          path, 'utf8'
+        );
+        
+        let config = JSON.parse(configFileContent);
+        
+        recentConfig = JSON.parse(configFileContent);
+
+        // Get the 'camp-data' array
+        let campData = config["mechanism"]["species"]["camp-data"];
+        // Filter out the dictionaries where the 'name' key starts with 'irr'
+        campData = campData.filter((dict) => !dict.name.startsWith("irr_"));
+
+        // Update the 'camp-data' array in the config object
+        config["mechanism"]["species"]["camp-data"] = campData;
+
+        setReactionIds(config);
+
+        // Fix evolving conditions
+        let evolvingConditions = config["conditions"]["evolving conditions"];
+        let headers = evolvingConditions[0];
+
+        let newConditions = {};
+
+        headers.forEach((header, index) => {
+          if (header.startsWith("time")) {
+            header = "time";
+          }
+
+          newConditions[header] = {};
+
+          for (let i = 0; i < evolvingConditions.length - 1; ++i) {
+            newConditions[header][`${i}`] = evolvingConditions[i + 1][index];
+          }
+        });
+
+        config["conditions"]["evolving conditions"] = newConditions;
+
+        resolve(config);
+      } catch (error) {
+        console.error(`Error loading config: ${error.message}`);
+      }
+ 
+  });
+});
 
 ipcMain.handle("load-previous-config", async (event, dir) => {
   return new Promise((resolve, reject) => {
@@ -325,7 +377,17 @@ ipcMain.handle("get-download-path", async (event, defaultPath) => {
 
 });
 
-ipcMain.handle("download-results", async (event, filePath, csvData) => {
+ipcMain.handle("get-upload-path", async (event) => {
+  const { filePaths } = await dialog.showOpenDialog({
+    properties: ['openFile']
+  });
+
+  // This will return the first selected file path
+  return filePaths[0];
+});
+
+
+ipcMain.handle("download-file", async (event, filePath, csvData) => {
   // Write the CSV data to the selected file
   await writeFile(filePath, csvData);
   return
