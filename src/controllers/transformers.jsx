@@ -403,13 +403,25 @@ function extract_conditions_from_example(config, mechanism) {
         let table_name = "";
         if (type === "LOSS" || name.substring(0, 5) === "LOSS_") {
           table_name = `PHOT.LOSS_${name.replace(/LOSS_/, "")}.s-1`;
+          units = units || "s-1";
         } else if (type === "EMIS" || name.substring(0, 5) === "EMIS_") {
           table_name = `PHOT.EMIS_${name.replace(/EMIS_/, "")}.s-1`;
+          units = units || "s-1";
         } else if (type === "PHOT") {
           table_name = `PHOT.${name}.s-1`;
+          units = units || "s-1";
         } else {
           table_name = key;
         }
+        if (type === "ENV" && units === undefined) {
+          if (name === "temperature") {
+            units = "K";
+          }
+          if (name === "pressure") {
+            units = "Pa";
+          }
+        }
+          
         evolving.values.push({
           name: `${type}.${name} [${units}]`,
           tableName: table_name,
