@@ -45,24 +45,47 @@ export const loadConfiguration = (file) => async (dispatch) => {
   }
 };
 
+function convertToCSV(arr) {
+    
+  const csvRows = arr.map(row => row.join(','));
+  return csvRows.join('\n');
+}
+
+
 export const downloadConfiguration =
   (mechanism, conditions) => async (dispatch) => {
     try {
-      const camp_mechanism = translate_to_camp_config(mechanism);
-      const musicbox_conditions = translate_to_musicbox_conditions(
-        conditions,
-        mechanism,
-      );
-      const url = await fetchCompressedConfiguration({
-        mechanism: camp_mechanism,
-        conditions: musicbox_conditions,
-      });
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "config.zip";
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
+
+      if(isElectron()){
+        let recentConfig = await window.electron.getRecentConfig();
+        console.log(recentConfig);
+        const jsonData = JSON.stringify(recentConfig);
+        
+        const filePath  = await window.electron.getDownloadPath("config.json");
+        
+        if (filePath) {
+          await window.electron.downloadResults(filePath, jsonData);
+
+        }
+      }
+      else{
+        const camp_mechanism = translate_to_camp_config(mechanism);
+        const musicbox_conditions = translate_to_musicbox_conditions(
+          conditions,
+          mechanism,
+        );
+        const url = await fetchCompressedConfiguration({
+          mechanism: camp_mechanism,
+          conditions: musicbox_conditions,
+        });
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "config.zip";
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      }
+
     } catch (error) {
       console.error(
         `Error fetching compressed configuration: ${error.message}`,
@@ -70,11 +93,6 @@ export const downloadConfiguration =
     }
   };
 
-  function convertToCSV(arr) {
-    
-    const csvRows = arr.map(row => row.join(','));
-    return csvRows.join('\n');
-}
 
   export const downloadResults = () => async (dispatch) => {
     try {

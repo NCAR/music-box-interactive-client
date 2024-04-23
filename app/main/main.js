@@ -312,10 +312,14 @@ ipcMain.handle("get-recent-results", async (event) => {
   return recentResults;
 });
 
+ipcMain.handle("get-recent-config", async (event) => {
+  return recentConfig;
+});
+
 
 ipcMain.handle("get-download-path", async (event, defaultPath) => {
   const { filePath } = await dialog.showSaveDialog({
-    defaultPath: 'results.csv',
+    defaultPath: defaultPath,
   });
   return filePath
 
