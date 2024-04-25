@@ -421,7 +421,7 @@ function extract_conditions_from_example(config, mechanism) {
             units = "Pa";
           }
         }
-          
+
         evolving.values.push({
           name: `${type}.${name} [${units}]`,
           tableName: table_name,
