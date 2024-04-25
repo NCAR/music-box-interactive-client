@@ -83,8 +83,10 @@ ipcMain.handle("run-python", async (event, script, args) => {
     const possibilities = [
       // In packaged app
       path.join(process.resourcesPath, "python", "bin", "python"),
+      path.join(process.resourcesPath, "python", "python.exe"),
       // In development
       path.join(__dirname, "python", "bin", "python"),
+      path.join(__dirname, "python", "python.exe"),
     ];
     for (const path of possibilities) {
       if (fs.existsSync(path)) {
