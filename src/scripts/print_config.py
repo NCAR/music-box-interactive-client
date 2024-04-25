@@ -19,13 +19,13 @@ def main(args):
     print(json.dumps(output))
     #return output
 
-    filename = f"results-{int(datetime.datetime.now().timestamp())}.json"
+    # filename = f"results-{int(datetime.datetime.now().timestamp())}.json"
 
-    # Define the directory
-    dir_path = args[2]
+    # # Define the directory
+    # dir_path = args[2]
 
-    with open(dir_path + "/" + filename, 'w') as f:
-        f.write(json.dumps(output, indent=4))
+    # with open(dir_path + "/" + filename, 'w') as f:
+    #     f.write(json.dumps(output, indent=4))
 
 if __name__ == '__main__':
     main(sys.argv)

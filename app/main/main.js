@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import * as path from "path";
 import { spawn } from "child_process";
 import fs from "fs";
@@ -7,6 +7,9 @@ import util from "util";
 
 let mainWindow;
 let appDataPath;
+
+let recentConfig;
+let recentResults;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -51,21 +54,13 @@ app.on("activate", () => {
 const writeFile = util.promisify(fs.writeFile);
 
 ipcMain.handle("run-python", async (event, script, args) => {
-  // Generate a unique file name in the OS's default data directory
-  const configFileDir = path.join(
-    appDataPath,
-    "previous_results",
-    `mechanism-${Date.now()}`,
-  );
+  // Generate a unique file name in the temp directory
+  const tempFilePath = path.join(os.tmpdir(), `temp-${Date.now()}.json`);
 
-  await fs.promises.mkdir(configFileDir, { recursive: true });
+  // Write the data to the temp file
+  await writeFile(tempFilePath, JSON.stringify(args, null, 4));
 
-  const configFilePath = path.join(configFileDir, `config-${Date.now()}.json`);
-
-  console.log(configFilePath);
-
-  // Write the args to the temp file
-  await writeFile(configFilePath, JSON.stringify(args, null, 4));
+  recentConfig = args;
 
   // Determine script file path
   let scriptPath = path.join(process.resourcesPath, script);
@@ -79,15 +74,14 @@ ipcMain.handle("run-python", async (event, script, args) => {
     );
   }
 
-  const command = `python ${scriptPath} ${configFilePath} ${configFileDir}`;
+  const command = `python ${scriptPath} ${tempFilePath}`;
   console.log(`Full command: ${command}`);
 
   try {
     return new Promise((resolve, reject) => {
       const python = spawn("python", [
         scriptPath,
-        configFilePath,
-        configFileDir,
+        tempFilePath,
       ]);
 
       let output = "";
@@ -103,6 +97,8 @@ ipcMain.handle("run-python", async (event, script, args) => {
         if (code !== 0) {
           reject(new Error(`child process exited with code ${code}`));
         } else {
+          recentResults = output;
+
           // Parse the output into a 2D array
           const outputArray = JSON.parse(output);
           // Get the headers from the first row
@@ -167,6 +163,27 @@ ipcMain.handle("load-example", async (event, example) => {
   return;
 });
 
+ipcMain.handle("save-results", async (event, name) => {
+  // Generate a unique file name in the OS's default data directory
+  const mechanismString = name && name.trim() !== "" ? name : `mechanism-${Date.now()}`;
+
+  const configFileDir = path.join(
+    appDataPath,
+    "previous_results",
+    mechanismString,
+  );
+
+  await fs.promises.mkdir(configFileDir, { recursive: true });
+
+  const configFilePath = path.join(configFileDir, `config-${Date.now()}.json`);
+
+  await writeFile(configFilePath, JSON.stringify(recentConfig, null, 4));
+
+  const resultsFilePath = path.join(configFileDir, `results-${Date.now()}.json`);
+
+  await writeFile(resultsFilePath, recentResults);
+});
+
 ipcMain.handle("get-prev-results", async (event) => {
   const directories = fs
     .readdirSync(path.resolve(appDataPath, "previous_results"), {
@@ -194,6 +211,58 @@ function setReactionIds(config) {
   });
   config["mechanism"]["reactions"]["camp-data"][0]["reactions"] = reactionIds;
 }
+//loads config from uploaded filed
+ipcMain.handle("load-config", async (event, path) => {
+  return new Promise((resolve, reject) => {
+      
+    
+      // Load the configuration from the file
+      try {
+        const configFileContent = fs.readFileSync(
+          path, 'utf8'
+        );
+        
+        let config = JSON.parse(configFileContent);
+        
+        recentConfig = JSON.parse(configFileContent);
+
+        // Get the 'camp-data' array
+        let campData = config["mechanism"]["species"]["camp-data"];
+        // Filter out the dictionaries where the 'name' key starts with 'irr'
+        campData = campData.filter((dict) => !dict.name.startsWith("irr_"));
+
+        // Update the 'camp-data' array in the config object
+        config["mechanism"]["species"]["camp-data"] = campData;
+
+        setReactionIds(config);
+
+        // Fix evolving conditions
+        let evolvingConditions = config["conditions"]["evolving conditions"];
+        let headers = evolvingConditions[0];
+
+        let newConditions = {};
+
+        headers.forEach((header, index) => {
+          if (header.startsWith("time")) {
+            header = "time";
+          }
+
+          newConditions[header] = {};
+
+          for (let i = 0; i < evolvingConditions.length - 1; ++i) {
+            newConditions[header][`${i}`] = evolvingConditions[i + 1][index];
+          }
+        });
+
+        config["conditions"]["evolving conditions"] = newConditions;
+
+        resolve(config);
+      } catch (error) {
+        console.error(`Error loading config: ${error.message}`);
+      }
+ 
+  });
+});
 
 ipcMain.handle("load-previous-config", async (event, dir) => {
   return new Promise((resolve, reject) => {
@@ -210,6 +279,7 @@ ipcMain.handle("load-previous-config", async (event, dir) => {
           "utf-8",
         );
         let config = JSON.parse(configFileContent);
+        recentConfig = JSON.parse(configFileContent);
 
         // Get the 'camp-data' array
         let campData = config["mechanism"]["species"]["camp-data"];
@@ -263,6 +333,7 @@ ipcMain.handle("load-previous-results", async (event, dir) => {
       try {
         const data = fs.readFileSync(path.join(filePath, resultsFile), "utf8");
         const jsonData = JSON.parse(data);
+        recentResults = data;
         // Get the headers from the first row
         const headers = jsonData[0];
         // Get the rows from the rest of the array
@@ -288,3 +359,38 @@ ipcMain.handle("load-previous-results", async (event, dir) => {
     }
   });
 });
+
+ipcMain.handle("get-recent-results", async (event) => {
+  return recentResults;
+});
+
+ipcMain.handle("get-recent-config", async (event) => {
+  return recentConfig;
+});
+
+
+ipcMain.handle("get-download-path", async (event, defaultPath) => {
+  const { filePath } = await dialog.showSaveDialog({
+    defaultPath: defaultPath,
+  });
+  return filePath
+
+});
+
+ipcMain.handle("get-upload-path", async (event) => {
+  const { filePaths } = await dialog.showOpenDialog({
+    properties: ['openFile']
+  });
+
+  // This will return the first selected file path
+  return filePaths[0];
+});
+
+
+ipcMain.handle("download-file", async (event, filePath, csvData) => {
+  // Write the CSV data to the selected file
+  await writeFile(filePath, csvData);
+  return
+});
+
+

@@ -180,31 +180,28 @@ function Layout(props) {
             <div className={styles.footer}>
               <div className="row justify-content-around">
                 <div className="col-md offset-md-1">
-                  <a className="footer-link" href="/#behind-the-music">
+                  <Link className="footer-link" to="/#behind-the-music">
                     <h5>About</h5>
-                  </a>
-                  <ul className="list-unstyled text-small">
-                    <a className="footer-link" href="/#collaborators">
-                      <li>Collaborators</li>
-                    </a>
-                    <a className="footer-link" href="/#sponsors">
-                      <li>Sponsors</li>
-                    </a>
-                    <a className="footer-link" href="/#contact">
-                      <li>Contact us</li>
-                    </a>
-                    <a
-                      className="footer-link"
-                      href="https://www.ucar.edu/accessibility"
-                    >
-                      <li>Accessibility</li>
-                    </a>
-                  </ul>
+                  </Link>
+                    <ul className="list-unstyled text-small">
+                      <Link className="footer-link" to="/#collaborators">
+                        <li>Collaborators</li>
+                      </Link>
+                      <Link className="footer-link" to="/#sponsors">
+                        <li>Sponsors</li>
+                      </Link>
+                      <Link className="footer-link" to="/#contact">
+                        <li>Contact us</li>
+                      </Link>
+                      <Link className="footer-link" to="https://www.ucar.edu/accessibility">
+                        <li>Accessibility</li>
+                      </Link>
+                    </ul>
                 </div>
                 <div className="col-md">
-                  <a className="footer-link" href="/getting_started#how-to-use">
+                  <Link className="footer-link" to="/getting_started#how-to-use">
                     <h5>How to use</h5>
-                  </a>
+                  </Link>
                 </div>
                 <div className="col-md">
                   <a
