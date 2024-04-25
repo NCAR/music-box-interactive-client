@@ -54,6 +54,7 @@ app.on("activate", () => {
 const writeFile = util.promisify(fs.writeFile);
 
 ipcMain.handle("run-python", async (event, script, args) => {
+
   // Generate a unique file name in the temp directory
   const tempFilePath = path.join(os.tmpdir(), `temp-${Date.now()}.json`);
 
@@ -70,16 +71,34 @@ ipcMain.handle("run-python", async (event, script, args) => {
       app.getAppPath(),
       "src",
       "scripts",
-      "print_config.py",
+      "print_config.py"
     );
   }
 
-  const command = `python ${scriptPath} ${tempFilePath}`;
+  function findPython() {
+    const possibilities = [
+      // In packaged app
+      path.join(process.resourcesPath, "python", "bin", "python"),
+      // In development
+      path.join(__dirname, "python", "bin", "python"),
+    ];
+    for (const path of possibilities) {
+      if (fs.existsSync(path)) {
+        return path;
+      }
+    }
+    console.log("Could not find python3, checked", possibilities);
+    app.quit();
+  }
+
+  const pythonPath = findPython();
+
+  const command = `${pythonPath} ${scriptPath} ${tempFilePath}`;
   console.log(`Full command: ${command}`);
 
   try {
     return new Promise((resolve, reject) => {
-      const python = spawn("python", [
+      const python = spawn(pythonPath, [
         scriptPath,
         tempFilePath,
       ]);
@@ -135,7 +154,7 @@ ipcMain.handle("load-example", async (event, example) => {
       app.getAppPath(),
       "src",
       "examples",
-      exampleFile,
+      exampleFile
     );
   }
 
@@ -276,7 +295,7 @@ ipcMain.handle("load-previous-config", async (event, dir) => {
       try {
         const configFileContent = fs.readFileSync(
           path.join(filePath, configFile),
-          "utf-8",
+          "utf-8"
         );
         let config = JSON.parse(configFileContent);
         recentConfig = JSON.parse(configFileContent);
