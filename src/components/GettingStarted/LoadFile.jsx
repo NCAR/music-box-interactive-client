@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { resetAll, loadConfiguration } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
+import isElectron from "is-electron";
 
 export default function LoadFile() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function LoadFile() {
       <div className="card card-body load-panel m-2">
         <div className="card card-body load-panel m-2 collapse show">
           <div>
-            <h3>Select configuration Zip file</h3>
+          <h3>{isElectron() ? 'Select configuration JSON file' : 'Select configuration Zip file'}</h3>
           </div>
           <form encType="multipart/form-data">
             <input
