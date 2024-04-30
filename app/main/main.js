@@ -93,7 +93,8 @@ ipcMain.handle("run-python", async (event, script, args) => {
     app.quit();
   }
 
-  const pythonPath = findPython();
+  // for dev, use python from system path
+  const pythonPath = app.isPackaged ? findPython() : "python";
 
   const command = `${pythonPath} ${scriptPath} ${tempFilePath}`;
   console.log(`Full command: ${command}`);
