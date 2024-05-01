@@ -1,38 +1,82 @@
-# Getting Started
+# MusicBox Interactive Client
 
-## Install required packages
+This repository contains the code for both the offline desktop application and the frontend web application.
 
-### MacOS
+> [!NOTE]  
+> The web app dev server is not able to run simulations. If you want to run simulations and plot results, you have **three** options.
+>   1. run the desktop application from this repository
+>   2. connect to the API server by [cloning and running the api server](https://github.com/NCAR/music-box-interactive-api), or
+>   3. change the `.env.development` files value of `VITE_API_URL` to `'https://musicbox.acom.ucar.edu/musicbox'` which will allow you to use the deployed version of the API server.
 
+## Getting Started
+
+### Clone the repo
+
+```bash
+git clone https://github.com/ncar/musicbox-interactive-client
 ```
+
+### Install node
+
+#### macOS
+
+```zsh
 brew install node
 ```
 
-### Windows
+#### Windows
 
-#### Install Node, binary download
+##### Install Node, binary download
 
 Go to [https://nodejs.org/en/download](https://nodejs.org/en/download) and install node and npm
 
-#### Install Node, winget
+##### Install Node, winget
 
 Open up a developer command prompt
 
-```
+```powershell
 winget install -e --id OpenJS.NodeJS
 ```
 
-Once that install, close and reopen the command prompt and then move to the directory where `music-box-interactive-client` was cloned to
+Once that installs, close and reopen the command prompt and then move to the directory where `music-box-interactive-client` was cloned to
 
-## The Dev Server
 
+### Verify node and npm installation
+
+```bash
+# verifies node is in the environment
+node -v
+
+# verifies npm is in the environment
+npm -v
 ```
+
+### Install dependencies
+
+Ensure you are located in the `musicbox-interactive-client` repo and run
+
+```bash
 npm install
+```
+
+This will take about 20 seconds.
+
+
+### Dev Server
+
+The electron desktop application and the web application each have their own dev server.
+
+#### To run the webapp's dev server
+
+```bash
 npm run dev
 ```
 
-> [!NOTE]  
-> This repository is only the front end for music box. If you want to run simulations and plot results, you have **two** options for connecting to the API server. You can [clone and run the api server](https://github.com/NCAR/music-box-interactive-api), or you can change the `.env.development` files value of `VITE_API_URL` to `'https://musicbox.acom.ucar.edu/musicbox'` which will allow you to use the deployed version of the API server.
+#### To run the desktop app's dev server
+
+```bash
+npm run e:dev
+```
 
 ## Testing a production build before deploying
 
@@ -40,9 +84,21 @@ We use feature flags to turn features on and off. You can change the values in t
 
 To do so, run
 
-```
+```bash
 npm run build
 npm run preview
 ```
 
 Vite will build the files and then serve them as if this were a production build
+
+## Building the desktop application
+
+The desktop application uses electron-forge (electron-packager, Squirrel.Windows) to build and package the app into distributable binaries.
+
+Run the following to both build the application for the current OS/arch and package into .zip files for distribution.
+
+```bash
+npm run e:package
+```
+
+The outputted binaries should be located in `./out/make/`.
