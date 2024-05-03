@@ -203,12 +203,23 @@ function Layout(props) {
                     <h5>How to use</h5>
                   </Link>
                 </div>
-                <div className="col-md">
+                <div className="col-md d-flex justify-content-center">
                   <a
                     className="footer-link"
+                    style={{ marginRight: "8px" }}
                     href="https://github.com/NCAR/music-box-interactive-client/issues/new?template=bug_report.md"
                   >
                     <h5>Report a bug</h5>
+                  </a>
+                  <a
+                    className="footer-link"
+                    href="https://github.com/NCAR/music-box-interactive-client"
+                  >
+                    <img
+                      src="https://assets.dryicons.com/uploads/icon/svg/8312/cc33248a-e56e-4e7f-93f4-0e16350e5768.svg"
+                      alt="GitHub Icon"
+                      style={{ width: "24px", height: "24px" }}
+                    />
                   </a>
                 </div>
               </div>
