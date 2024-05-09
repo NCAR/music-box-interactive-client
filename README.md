@@ -4,9 +4,10 @@ This repository contains the code for both the offline desktop application and t
 
 > [!NOTE]  
 > The web app dev server is not able to run simulations. If you want to run simulations and plot results, you have **three** options.
->   1. run the desktop application from this repository
->   2. connect to the API server by [cloning and running the api server](https://github.com/NCAR/music-box-interactive-api), or
->   3. change the `.env.development` files value of `VITE_API_URL` to `'https://musicbox.acom.ucar.edu/musicbox'` which will allow you to use the deployed version of the API server.
+>
+> 1. run the desktop application from this repository
+> 2. connect to the API server by [cloning and running the api server](https://github.com/NCAR/music-box-interactive-api), or
+> 3. change the `.env.development` files value of `VITE_API_URL` to `'https://musicbox.acom.ucar.edu/musicbox'` which will allow you to use the deployed version of the API server.
 
 ## Getting Started
 
@@ -40,7 +41,6 @@ winget install -e --id OpenJS.NodeJS
 
 Once that installs, close and reopen the command prompt and then move to the directory where `music-box-interactive-client` was cloned to
 
-
 ### Verify node and npm installation
 
 ```bash
@@ -60,7 +60,6 @@ npm install
 ```
 
 This will take about 20 seconds.
-
 
 ### Dev Server
 

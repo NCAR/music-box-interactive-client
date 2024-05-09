@@ -54,7 +54,6 @@ app.on("activate", () => {
 const writeFile = util.promisify(fs.writeFile);
 
 ipcMain.handle("run-python", async (event, script, args) => {
-
   // Generate a unique file name in the temp directory
   const tempFilePath = path.join(os.tmpdir(), `temp-${Date.now()}.json`);
 
@@ -71,7 +70,7 @@ ipcMain.handle("run-python", async (event, script, args) => {
       app.getAppPath(),
       "src",
       "scripts",
-      "print_config.py"
+      "print_config.py",
     );
   }
 
@@ -101,10 +100,7 @@ ipcMain.handle("run-python", async (event, script, args) => {
 
   try {
     return new Promise((resolve, reject) => {
-      const python = spawn(pythonPath, [
-        scriptPath,
-        tempFilePath,
-      ]);
+      const python = spawn(pythonPath, [scriptPath, tempFilePath]);
 
       let output = "";
       python.stdout.on("data", (data) => {
@@ -157,7 +153,7 @@ ipcMain.handle("load-example", async (event, example) => {
       app.getAppPath(),
       "src",
       "examples",
-      exampleFile
+      exampleFile,
     );
   }
 
@@ -187,7 +183,8 @@ ipcMain.handle("load-example", async (event, example) => {
 
 ipcMain.handle("save-results", async (event, name) => {
   // Generate a unique file name in the OS's default data directory
-  const mechanismString = name && name.trim() !== "" ? name : `mechanism-${Date.now()}`;
+  const mechanismString =
+    name && name.trim() !== "" ? name : `mechanism-${Date.now()}`;
 
   const configFileDir = path.join(
     appDataPath,
@@ -201,7 +198,10 @@ ipcMain.handle("save-results", async (event, name) => {
 
   await writeFile(configFilePath, JSON.stringify(recentConfig, null, 4));
 
-  const resultsFilePath = path.join(configFileDir, `results-${Date.now()}.json`);
+  const resultsFilePath = path.join(
+    configFileDir,
+    `results-${Date.now()}.json`,
+  );
 
   await writeFile(resultsFilePath, recentResults);
 });
@@ -236,53 +236,48 @@ function setReactionIds(config) {
 //loads config from uploaded filed
 ipcMain.handle("load-config", async (event, path) => {
   return new Promise((resolve, reject) => {
-      
-    
-      // Load the configuration from the file
-      try {
-        const configFileContent = fs.readFileSync(
-          path, 'utf8'
-        );
-        
-        let config = JSON.parse(configFileContent);
-        
-        recentConfig = JSON.parse(configFileContent);
+    // Load the configuration from the file
+    try {
+      const configFileContent = fs.readFileSync(path, "utf8");
 
-        // Get the 'camp-data' array
-        let campData = config["mechanism"]["species"]["camp-data"];
-        // Filter out the dictionaries where the 'name' key starts with 'irr'
-        campData = campData.filter((dict) => !dict.name.startsWith("irr_"));
+      let config = JSON.parse(configFileContent);
 
-        // Update the 'camp-data' array in the config object
-        config["mechanism"]["species"]["camp-data"] = campData;
+      recentConfig = JSON.parse(configFileContent);
 
-        setReactionIds(config);
+      // Get the 'camp-data' array
+      let campData = config["mechanism"]["species"]["camp-data"];
+      // Filter out the dictionaries where the 'name' key starts with 'irr'
+      campData = campData.filter((dict) => !dict.name.startsWith("irr_"));
 
-        // Fix evolving conditions
-        let evolvingConditions = config["conditions"]["evolving conditions"];
-        let headers = evolvingConditions[0];
+      // Update the 'camp-data' array in the config object
+      config["mechanism"]["species"]["camp-data"] = campData;
 
-        let newConditions = {};
+      setReactionIds(config);
 
-        headers.forEach((header, index) => {
-          if (header.startsWith("time")) {
-            header = "time";
-          }
+      // Fix evolving conditions
+      let evolvingConditions = config["conditions"]["evolving conditions"];
+      let headers = evolvingConditions[0];
 
-          newConditions[header] = {};
+      let newConditions = {};
 
-          for (let i = 0; i < evolvingConditions.length - 1; ++i) {
-            newConditions[header][`${i}`] = evolvingConditions[i + 1][index];
-          }
-        });
+      headers.forEach((header, index) => {
+        if (header.startsWith("time")) {
+          header = "time";
+        }
 
-        config["conditions"]["evolving conditions"] = newConditions;
+        newConditions[header] = {};
 
-        resolve(config);
-      } catch (error) {
-        console.error(`Error loading config: ${error.message}`);
-      }
- 
+        for (let i = 0; i < evolvingConditions.length - 1; ++i) {
+          newConditions[header][`${i}`] = evolvingConditions[i + 1][index];
+        }
+      });
+
+      config["conditions"]["evolving conditions"] = newConditions;
+
+      resolve(config);
+    } catch (error) {
+      console.error(`Error loading config: ${error.message}`);
+    }
   });
 });
 
@@ -298,7 +293,7 @@ ipcMain.handle("load-previous-config", async (event, dir) => {
       try {
         const configFileContent = fs.readFileSync(
           path.join(filePath, configFile),
-          "utf-8"
+          "utf-8",
         );
         let config = JSON.parse(configFileContent);
         recentConfig = JSON.parse(configFileContent);
@@ -390,29 +385,24 @@ ipcMain.handle("get-recent-config", async (event) => {
   return recentConfig;
 });
 
-
 ipcMain.handle("get-download-path", async (event, defaultPath) => {
   const { filePath } = await dialog.showSaveDialog({
     defaultPath: defaultPath,
   });
-  return filePath
-
+  return filePath;
 });
 
 ipcMain.handle("get-upload-path", async (event) => {
   const { filePaths } = await dialog.showOpenDialog({
-    properties: ['openFile']
+    properties: ["openFile"],
   });
 
   // This will return the first selected file path
   return filePaths[0];
 });
 
-
 ipcMain.handle("download-file", async (event, filePath, csvData) => {
   // Write the CSV data to the selected file
   await writeFile(filePath, csvData);
-  return
+  return;
 });
-
-

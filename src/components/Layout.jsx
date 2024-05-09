@@ -183,23 +183,29 @@ function Layout(props) {
                   <Link className="footer-link" to="/#behind-the-music">
                     <h5>About</h5>
                   </Link>
-                    <ul className="list-unstyled text-small">
-                      <Link className="footer-link" to="/#collaborators">
-                        <li>Collaborators</li>
-                      </Link>
-                      <Link className="footer-link" to="/#sponsors">
-                        <li>Sponsors</li>
-                      </Link>
-                      <Link className="footer-link" to="/#contact">
-                        <li>Contact us</li>
-                      </Link>
-                      <Link className="footer-link" to="https://www.ucar.edu/accessibility">
-                        <li>Accessibility</li>
-                      </Link>
-                    </ul>
+                  <ul className="list-unstyled text-small">
+                    <Link className="footer-link" to="/#collaborators">
+                      <li>Collaborators</li>
+                    </Link>
+                    <Link className="footer-link" to="/#sponsors">
+                      <li>Sponsors</li>
+                    </Link>
+                    <Link className="footer-link" to="/#contact">
+                      <li>Contact us</li>
+                    </Link>
+                    <Link
+                      className="footer-link"
+                      to="https://www.ucar.edu/accessibility"
+                    >
+                      <li>Accessibility</li>
+                    </Link>
+                  </ul>
                 </div>
                 <div className="col-md">
-                  <Link className="footer-link" to="/getting_started#how-to-use">
+                  <Link
+                    className="footer-link"
+                    to="/getting_started#how-to-use"
+                  >
                     <h5>How to use</h5>
                   </Link>
                 </div>
