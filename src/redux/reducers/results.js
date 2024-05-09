@@ -32,7 +32,6 @@ export const resultsReducer = (state = initialState, action) => {
       };
     }
     case utils.action_types.RESULTS_LOADED: {
-      console.log(action.payload.content);
       const data = action.payload.content;
 
       // get the integrated reaction rates
