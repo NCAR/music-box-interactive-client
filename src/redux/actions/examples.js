@@ -35,7 +35,6 @@ export const loadConfiguration = (file) => async (dispatch) => {
     if(isElectron()){
       
       let filePath = file.path;
-      console.log(filePath)
       const data = await window.electron.loadConfig(filePath);
       const mechanism = extract_mechanism_from_example(data);
       const conditions = extract_conditions_from_example(data, mechanism);
@@ -78,7 +77,6 @@ export const downloadConfiguration =
 
       if(isElectron()){
         let recentConfig = await window.electron.getRecentConfig();
-        console.log(recentConfig);
         const jsonData = JSON.stringify(recentConfig);
         
         const filePath  = await window.electron.getDownloadPath("config.json");
