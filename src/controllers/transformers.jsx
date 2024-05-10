@@ -447,24 +447,29 @@ function translate_reactions_to_camp_config(config) {
     return reactants === undefined
       ? {}
       : reactants.reduce((acc, reactant) => {
-        const existingReactant = acc[reactant.name];
-        const incomingQty = reactant.qty || 1;
-        const qty = existingReactant ? existingReactant.qty + incomingQty : incomingQty;
-        acc[reactant.name] = {
-          qty: qty,
-        };
-        return acc;
-      }, {});
+          const existingReactant = acc[reactant.name];
+          const incomingQty = reactant.qty || 1;
+          const qty = existingReactant
+            ? existingReactant.qty + incomingQty
+            : incomingQty;
+          acc[reactant.name] = {
+            qty: qty,
+          };
+          return acc;
+        }, {});
   };
   const reduxProductsToCamp = (products) => {
     return products === undefined
       ? {}
       : products.reduce((acc, product) => {
           const existingProduct = acc[product.name];
-          const incomingYield = product.yield === undefined ? 1.0 : product.yield;
-          const product_yield = existingProduct ? existingProduct.yield + incomingYield : incomingYield;
+          const incomingYield =
+            product.yield === undefined ? 1.0 : product.yield;
+          const product_yield = existingProduct
+            ? existingProduct.yield + incomingYield
+            : incomingYield;
           acc[product.name] = {
-            yield: product_yield
+            yield: product_yield,
           };
           return acc;
         }, {});

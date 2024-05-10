@@ -39,16 +39,16 @@ const ResultsDone = () => {
 
   const handleSave = async (name) => {
     if (!name.trim()) {
-      setModalMessage('Please enter a simulation name');
+      setModalMessage("Please enter a simulation name");
       setModalOpen(true);
       return;
     }
 
     try {
       await window.electron.saveResults(name);
-      setModalMessage('Results saved successfully!');
+      setModalMessage("Results saved successfully!");
     } catch (error) {
-      setModalMessage('An error occurred while saving the results');
+      setModalMessage("An error occurred while saving the results");
     }
     setModalOpen(true);
   };
@@ -107,21 +107,21 @@ const ResultsDone = () => {
         </button>
       </div>
       {isElectron() && (
-        <div 
+        <div
           style={{
             display: `flex`,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             gap: `1em`,
             paddingTop: `2em`,
           }}
         >
-          <input 
-            type="text" 
-            placeholder="Enter simulation name" 
+          <input
+            type="text"
+            placeholder="Enter simulation name"
             value={name}
-            onChange={e => setName(e.target.value)}
-            style={{ 
+            onChange={(e) => setName(e.target.value)}
+            style={{
               paddingLeft: `12px`,
               paddingRight: `12px`,
               paddingTop: `6px`,
@@ -131,7 +131,10 @@ const ResultsDone = () => {
               maxWidth: `600px`,
             }}
           />
-          <button className="btn btn-primary btn-ncar-active" onClick={() => handleSave(name)}>
+          <button
+            className="btn btn-primary btn-ncar-active"
+            onClick={() => handleSave(name)}
+          >
             Save
           </button>
         </div>
@@ -141,7 +144,12 @@ const ResultsDone = () => {
           <div className="overlay"></div>
           <div className="custom-modal">
             <p className="fs-3">{modalMessage}</p>
-            <button className="btn btn-primary btn-ncar-active" onClick={() => closeModal()}>OK</button>
+            <button
+              className="btn btn-primary btn-ncar-active"
+              onClick={() => closeModal()}
+            >
+              OK
+            </button>
           </div>
         </>
       )}

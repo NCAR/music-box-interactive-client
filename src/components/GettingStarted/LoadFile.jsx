@@ -29,7 +29,11 @@ export default function LoadFile() {
       <div className="card card-body load-panel m-2">
         <div className="card card-body load-panel m-2 collapse show">
           <div>
-          <h3>{isElectron() ? 'Select configuration JSON file' : 'Select configuration Zip file'}</h3>
+            <h3>
+              {isElectron()
+                ? "Select configuration JSON file"
+                : "Select configuration Zip file"}
+            </h3>
           </div>
           <form encType="multipart/form-data">
             <input
