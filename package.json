@@ -10,7 +10,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "e:start": "electron-vite preview --outDir=app/dist",
     "e:dev": "electron-vite dev --outDir=app/dist",
