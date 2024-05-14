@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/ncarucar-seal-final-gray.png";
+import logo from "../assets/NSF-NCAR_Lockup-UCAR-Light_102523.png";
 import { Navbar, Nav } from "react-bootstrap";
 import * as styles from "../styles/layout.module.css";
 import { Helmet } from "react-helmet-async";
@@ -180,31 +180,34 @@ function Layout(props) {
             <div className={styles.footer}>
               <div className="row justify-content-around">
                 <div className="col-md offset-md-1">
-                  <a className="footer-link" href="/#behind-the-music">
+                  <Link className="footer-link" to="/#behind-the-music">
                     <h5>About</h5>
-                  </a>
+                  </Link>
                   <ul className="list-unstyled text-small">
-                    <a className="footer-link" href="/#collaborators">
+                    <Link className="footer-link" to="/#collaborators">
                       <li>Collaborators</li>
-                    </a>
-                    <a className="footer-link" href="/#sponsors">
+                    </Link>
+                    <Link className="footer-link" to="/#sponsors">
                       <li>Sponsors</li>
-                    </a>
-                    <a className="footer-link" href="/#contact">
+                    </Link>
+                    <Link className="footer-link" to="/#contact">
                       <li>Contact us</li>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       className="footer-link"
-                      href="https://www.ucar.edu/accessibility"
+                      to="https://www.ucar.edu/accessibility"
                     >
                       <li>Accessibility</li>
-                    </a>
+                    </Link>
                   </ul>
                 </div>
                 <div className="col-md">
-                  <a className="footer-link" href="/getting_started#how-to-use">
+                  <Link
+                    className="footer-link"
+                    to="/getting_started#how-to-use"
+                  >
                     <h5>How to use</h5>
-                  </a>
+                  </Link>
                 </div>
                 <div className="col-md">
                   <a

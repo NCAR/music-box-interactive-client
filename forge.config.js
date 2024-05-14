@@ -1,5 +1,7 @@
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
+import fs from "fs";
+import path from "path";
 
 export default {
   packagerConfig: {
@@ -13,6 +15,7 @@ export default {
       "./src/examples/CHAPMAN.json",
       "./src/examples/FLOW_TUBE.json",
       "./src/examples/FULL_GAS_PHASE.json",
+      "./python/",
     ],
   },
   rebuildConfig: {},
@@ -51,4 +54,22 @@ export default {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  hooks: {
+    prePackage: async () => {
+      const pythonBinDir = path.join("python");
+      console.log(`${pythonBinDir}`);
+      if (fs.existsSync(pythonBinDir)) {
+        const files = fs.readdirSync(pythonBinDir);
+        for (const file of files) {
+          const filePath = path.join(pythonBinDir, file);
+          const stats = fs.statSync(filePath);
+          if (!stats.isDirectory() && stats.nlink > 1) {
+            const realPath = fs.realpathSync(filePath);
+            fs.unlinkSync(filePath);
+            fs.copyFileSync(realPath, filePath);
+          }
+        }
+      }
+    },
+  },
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { ThreeCircles } from "react-loader-spinner";
 import { Container, Alert } from "react-bootstrap";
@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import { getRunStatus, getLastError } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import { useNavigate } from "react-router-dom";
+import isElectron from "is-electron";
 
 const ResultsRunning = (props) => {
   const colors = ["#91A6FF", "#FF88DC", "#FF5154"];
@@ -32,10 +33,35 @@ const ResultsRunning = (props) => {
 };
 
 const ResultsDone = () => {
+  const [name, setName] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const handleSave = async (name) => {
+    if (!name.trim()) {
+      setModalMessage("Please enter a simulation name");
+      setModalOpen(true);
+      return;
+    }
+
+    try {
+      await window.electron.saveResults(name);
+      setModalMessage("Results saved successfully!");
+    } catch (error) {
+      setModalMessage("An error occurred while saving the results");
+    }
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const navigate = useNavigate();
   const { FLOW_DIAGRAM = false } = JSON.parse(
     import.meta.env.VITE_FEATURE_FLAGS || "{}",
   );
+
   return (
     <>
       <h1>Your simulation is finished!</h1>
@@ -80,6 +106,53 @@ const ResultsDone = () => {
           Download Results
         </button>
       </div>
+      {isElectron() && (
+        <div
+          style={{
+            display: `flex`,
+            justifyContent: "center",
+            alignItems: "center",
+            gap: `1em`,
+            paddingTop: `2em`,
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Enter simulation name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={{
+              paddingLeft: `12px`,
+              paddingRight: `12px`,
+              paddingTop: `6px`,
+              paddingBottom: `6px`,
+              borderRadius: `0.375rem`,
+              flex: `1`,
+              maxWidth: `600px`,
+            }}
+          />
+          <button
+            className="btn btn-primary btn-ncar-active"
+            onClick={() => handleSave(name)}
+          >
+            Save
+          </button>
+        </div>
+      )}
+      {modalOpen && (
+        <>
+          <div className="overlay"></div>
+          <div className="custom-modal">
+            <p className="fs-3">{modalMessage}</p>
+            <button
+              className="btn btn-primary btn-ncar-active"
+              onClick={() => closeModal()}
+            >
+              OK
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 };

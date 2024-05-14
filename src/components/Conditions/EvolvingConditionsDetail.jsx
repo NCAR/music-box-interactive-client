@@ -151,7 +151,7 @@ const EvolvingConditionsDetail = (props) => {
                       </td>
                     ))}
                     <td>
-                      <RemoveEvolvingTime timeIndex={timeIndex} />
+                      <RemoveEvolvingTime timeIndex={startIndex + timeIndex} />
                     </td>
                   </tr>
                 ))}

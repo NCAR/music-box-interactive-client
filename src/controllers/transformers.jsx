@@ -403,13 +403,25 @@ function extract_conditions_from_example(config, mechanism) {
         let table_name = "";
         if (type === "LOSS" || name.substring(0, 5) === "LOSS_") {
           table_name = `PHOT.LOSS_${name.replace(/LOSS_/, "")}.s-1`;
+          units = units || "s-1";
         } else if (type === "EMIS" || name.substring(0, 5) === "EMIS_") {
           table_name = `PHOT.EMIS_${name.replace(/EMIS_/, "")}.s-1`;
+          units = units || "s-1";
         } else if (type === "PHOT") {
           table_name = `PHOT.${name}.s-1`;
+          units = units || "s-1";
         } else {
           table_name = key;
         }
+        if (type === "ENV" && units === undefined) {
+          if (name === "temperature") {
+            units = "K";
+          }
+          if (name === "pressure") {
+            units = "Pa";
+          }
+        }
+
         evolving.values.push({
           name: `${type}.${name} [${units}]`,
           tableName: table_name,
@@ -435,8 +447,13 @@ function translate_reactions_to_camp_config(config) {
     return reactants === undefined
       ? {}
       : reactants.reduce((acc, reactant) => {
+          const existingReactant = acc[reactant.name];
+          const incomingQty = reactant.qty || 1;
+          const qty = existingReactant
+            ? existingReactant.qty + incomingQty
+            : incomingQty;
           acc[reactant.name] = {
-            qty: reactant.qty === undefined ? 1 : reactant.qty,
+            qty: qty,
           };
           return acc;
         }, {});
@@ -445,8 +462,14 @@ function translate_reactions_to_camp_config(config) {
     return products === undefined
       ? {}
       : products.reduce((acc, product) => {
+          const existingProduct = acc[product.name];
+          const incomingYield =
+            product.yield === undefined ? 1.0 : product.yield;
+          const product_yield = existingProduct
+            ? existingProduct.yield + incomingYield
+            : incomingYield;
           acc[product.name] = {
-            yield: product.yield === undefined ? 1.0 : product.yield,
+            yield: product_yield,
           };
           return acc;
         }, {});
@@ -597,6 +620,7 @@ function translate_reactions_to_camp_config(config) {
     }
     return camp_reaction;
   });
+
   return {
     type: "MECHANISM",
     name: "music box interactive configuration",

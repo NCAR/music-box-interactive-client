@@ -170,3 +170,6 @@ dist
 
 # Configs
 configs
+
+# Python dir
+python/

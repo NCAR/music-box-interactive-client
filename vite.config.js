@@ -11,12 +11,4 @@ export default defineConfig({
       require("./package.json").version,
     ),
   },
-  // build: {
-  //   rollupOptions: {
-  //     input: {
-  //       main: "/index.html",
-  //     },
-  //   },
-  //   outDir: "dist",
-  // },
 });
