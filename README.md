@@ -2,7 +2,7 @@
 
 [![GitHub Releases](https://img.shields.io/github/release/NCAR/music-box-interactive-client.svg)](https://github.com/NCAR/music-box-interactive-client/releases)
 [![License](https://img.shields.io/github/license/NCAR/music-box-interactive-client.svg)](https://github.com/NCAR/music-box-interactive-client/blob/master/LICENSE)
-[![Tests](https://github.com/NCAR/music-box-interactive-client/actions/workflows/mac.yml/badge.svg)](https://github.com/NCAR/music-box-interactive-client/actions/workflows/test.yml)
+[![Tests](https://github.com/NCAR/music-box-interactive-client/actions/workflows/test.yml/badge.svg)](https://github.com/NCAR/music-box-interactive-client/actions/workflows/test.yml)
 
 This repository contains the code for both the offline desktop application and the frontend web application.
 
