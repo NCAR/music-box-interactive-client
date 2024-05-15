@@ -21,7 +21,7 @@ import { useVeiwPort } from "../hooks/useVeiwPort";
 import ScrollToAnchor from "./ScrollToAnchor";
 import isElectron from "is-electron";
 import { Link } from "react-router-dom";
-import GitHubIcon from '@mui/icons-material/GitHub';
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 function Layout(props) {
   const dispatch = useDispatch();
