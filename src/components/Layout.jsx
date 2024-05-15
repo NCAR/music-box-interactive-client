@@ -21,6 +21,7 @@ import { useVeiwPort } from "../hooks/useVeiwPort";
 import ScrollToAnchor from "./ScrollToAnchor";
 import isElectron from "is-electron";
 import { Link } from "react-router-dom";
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -215,11 +216,7 @@ function Layout(props) {
                     className="footer-link"
                     href="https://github.com/NCAR/music-box-interactive-client"
                   >
-                    <img
-                      src="https://assets.dryicons.com/uploads/icon/svg/8312/cc33248a-e56e-4e7f-93f4-0e16350e5768.svg"
-                      alt="GitHub Icon"
-                      style={{ width: "24px", height: "24px" }}
-                    />
+                    <GitHubIcon style={{ width: "24px", height: "24px" }} />
                   </a>
                 </div>
               </div>
