@@ -4,6 +4,7 @@ import {
   fetchConfiguration,
   fetchCompressedConfiguration,
   fetchResults,
+  fetchPartMC
 } from "../../controllers/api";
 import {
   extract_conditions_from_example,
@@ -73,6 +74,20 @@ export const downloadResults = () => async (dispatch) => {
     const link = document.createElement("a");
     link.href = url;
     link.download = "results.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  } catch (error) {
+    console.error(`Error downloading results: ${error.message}`);
+  }
+};
+
+export const downloadPartMC = () => async (dispatch) => {
+  try {
+    const url = await fetchPartMC();
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "PartmcResult.zip";
     document.body.appendChild(link);
     link.click();
     link.parentNode.removeChild(link);

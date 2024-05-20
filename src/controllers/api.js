@@ -34,7 +34,24 @@ async function fetchCompressedConfiguration(config) {
   }
 }
 
-async function fetchResults() {
+async function fetchPartMC() {
+  try {
+    const response = await axios.get(`${apiUrl}/api/download-partmc`, {
+      params: {},
+      responseType: 'arraybuffer'
+    });
+    const blob = new Blob([response.data], {
+      type: response.headers.get("content-type"),
+    });
+    return window.URL.createObjectURL(blob);
+  } catch (error) {
+    console.error(`Error fetching compressed configuration: ${error.message}`);
+    throw error;
+  }
+}
+
+async function 
+fetchResults() {
   try {
     const response = await axios.get(`${apiUrl}/api/download-results`, {
       params: {},
@@ -112,4 +129,5 @@ export {
   fetchFlowDiagram,
   run,
   loadResults,
+  fetchPartMC,
 };

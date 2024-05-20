@@ -8,7 +8,7 @@ import {
   getEvolvingTable,
 } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
-import { downloadConfiguration, downloadResults } from "../redux/actions";
+import { downloadConfiguration, downloadResults, downloadPartMC } from "../redux/actions";
 
 const Download = (props) => {
   const dispatch = useDispatch();
@@ -19,6 +19,11 @@ const Download = (props) => {
 
   const handleDownloadResults = () => {
     dispatch(downloadResults());
+  };
+
+  const handleDownloadPartMC = () => {
+    dispatch(downloadPartMC())
+
   };
 
   return (
@@ -38,6 +43,14 @@ const Download = (props) => {
                 onClick={handleDownloadConfig}
               >
                 Download Configuration File
+              
+              </button>
+              <button
+                className="btn btn-secondary m-2"
+                onClick={handleDownloadPartMC}
+              >
+                Download PartMC Results
+              
               </button>
               {props.runStatus === RunStatus.DONE ? (
                 <button
