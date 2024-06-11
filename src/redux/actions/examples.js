@@ -4,7 +4,6 @@ import {
   fetchConfiguration,
   fetchCompressedConfiguration,
   fetchResults,
-  fetchPartMC
 } from "../../controllers/api";
 import {
   extract_conditions_from_example,
@@ -82,6 +81,7 @@ export const downloadResults = () => async (dispatch) => {
   }
 };
 
+/*
 export const downloadPartMC = () => async (dispatch) => {
   try {
     const url = await fetchPartMC();
@@ -95,3 +95,4 @@ export const downloadPartMC = () => async (dispatch) => {
     console.error(`Error downloading results: ${error.message}`);
   }
 };
+*/

@@ -40,7 +40,6 @@ const PlotsTab = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps.plotType)
   const avilablePlots = getPlotsByType(state, ownProps.plotType);
   const plotData = avilablePlots.map((plot) => getPlotDataByType(state, plot));
   return {
