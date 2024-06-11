@@ -47,3 +47,10 @@ export const getEnvironmentPlots = (store) => {
     { label: "pressure", id: "ENV.pressure" },
   ];
 };
+
+export const getAerosolPlots = (store) => {
+  return [
+    { label: "mass_concentration", id: "PARTMC.mass_conc" },
+    { label: "number_concentration", id: "PARTMC.number_conc" },
+  ];
+}

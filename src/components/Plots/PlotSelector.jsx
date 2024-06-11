@@ -48,7 +48,7 @@ const PlotSelector = (props) => {
           ) : null}
         </div>
         <div className="d-flex justify-content-between">
-          Select species to plot
+          Select options to plot
         </div>
         {props.availablePlots.map((plot, index) => {
           return (

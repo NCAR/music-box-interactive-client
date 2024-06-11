@@ -7,6 +7,7 @@ import {
   getSpeciesPlots,
   getReactionPlots,
   getEnvironmentPlots,
+  getAerosolPlots,
 } from "../redux/selectors";
 import { RunStatus } from "../controllers/models";
 import { plotSpeciesUnits } from "../redux/schemas";
@@ -15,6 +16,7 @@ const Plots = (props) => {
   const SPECIES = 0;
   const REACTIONS = 1;
   const ENVIRONMENT = 2;
+  const AEROSOLS = 3;
   const [tab, setTab] = useState(SPECIES);
 
   const tabSelected = "btn btn-primary btn-ncar-active";
@@ -29,20 +31,30 @@ const Plots = (props) => {
               <button
                 className={tab === SPECIES ? tabSelected : tabNotSelected}
                 onClick={() => setTab(SPECIES)}
+                style={{ marginRight: '15px' }}
               >
                 Chemical species
               </button>
               <button
                 className={tab === REACTIONS ? tabSelected : tabNotSelected}
                 onClick={() => setTab(REACTIONS)}
+                style={{ marginRight: '15px' }}
               >
                 Reaction rates
               </button>
               <button
                 className={tab === ENVIRONMENT ? tabSelected : tabNotSelected}
                 onClick={() => setTab(ENVIRONMENT)}
+                style={{ marginRight: '15px' }}
               >
                 Environmental conditions
+              </button>
+              <button
+                className={tab === AEROSOLS ? tabSelected : tabNotSelected}
+                onClick={() => setTab(AEROSOLS)}
+                style={{ marginRight: '15px' }}
+              >
+                Aerosols
               </button>
             </div>
             {tab === SPECIES ? (
@@ -65,6 +77,13 @@ const Plots = (props) => {
                 availablePlots={props.environmentPlots}
               />
             ) : null}
+            {tab === AEROSOLS ? (
+              <PlotsTab
+                plotType="aerosols"
+                availablePlots={props.aerosolPlots}
+                //units={plotSpeciesUnits}
+              />
+            ) : null}
           </>
         ) : (
           <p> Plots will be available once a model run has been completed </p>
@@ -80,6 +99,7 @@ const mapStateToProps = (state) => {
     speciesPlots: getSpeciesPlots(state),
     reactionPlots: getReactionPlots(state),
     environmentPlots: getEnvironmentPlots(state),
+    aerosolPlots: getAerosolPlots(state),
   };
 };
 
