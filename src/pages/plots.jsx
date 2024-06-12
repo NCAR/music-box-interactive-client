@@ -22,6 +22,8 @@ const Plots = (props) => {
   const tabSelected = "btn btn-primary btn-ncar-active";
   const tabNotSelected = "btn btn-secondary";
 
+  const featureFlags = JSON.parse(import.meta.env.VITE_FEATURE_FLAGS || "{}");
+
   return (
     <Layout title={"Plots"}>
       <div className="container text-center">
@@ -49,13 +51,15 @@ const Plots = (props) => {
               >
                 Environmental conditions
               </button>
-              <button
+              {featureFlags.PART_MC && (
+                <button
                 className={tab === AEROSOLS ? tabSelected : tabNotSelected}
                 onClick={() => setTab(AEROSOLS)}
                 style={{ marginRight: '15px' }}
               >
                 Aerosols
               </button>
+              )}
             </div>
             {tab === SPECIES ? (
               <PlotsTab
