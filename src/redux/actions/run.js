@@ -3,6 +3,7 @@ import { run } from "../../controllers/api";
 import {
   translate_to_camp_config,
   translate_to_musicbox_conditions,
+  translate_aerosol,
 } from "../../controllers/transformers";
 
 export const doRun = (mechanism, conditions) => async (dispatch) => {
@@ -12,7 +13,8 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
       conditions,
       mechanism,
     );
-    await run({ mechanism: camp_mechanism, conditions: musicbox_conditions });
+    const aerosol = translate_aerosol(mechanism)
+    await run({ mechanism: camp_mechanism, conditions: musicbox_conditions, aerosols: aerosol });
     dispatch({ type: utils.action_types.START_POLLING, payload: {} });
   } catch (error) {
     console.error(`Error starting run: ${error.message}`);
