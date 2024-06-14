@@ -81,18 +81,4 @@ export const downloadResults = () => async (dispatch) => {
   }
 };
 
-/*
-export const downloadPartMC = () => async (dispatch) => {
-  try {
-    const url = await fetchPartMC();
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "PartmcResult.zip";
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
-  } catch (error) {
-    console.error(`Error downloading results: ${error.message}`);
-  }
-};
-*/
+
