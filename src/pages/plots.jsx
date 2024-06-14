@@ -81,7 +81,7 @@ const Plots = (props) => {
                 availablePlots={props.environmentPlots}
               />
             ) : null}
-            {tab === AEROSOLS ? (
+            {tab === AEROSOLS && featureFlags.PART_MC ? (
               <PlotsTab
                 plotType="aerosols"
                 availablePlots={props.aerosolPlots}
