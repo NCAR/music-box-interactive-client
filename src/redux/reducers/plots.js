@@ -66,7 +66,7 @@ export const plotsReducer = (state = initialState, action) => {
         case "environment": {
           return state;
         }
-        case "aerosols" : {
+        case "aerosols": {
           return state;
         }
       }
