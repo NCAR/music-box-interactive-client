@@ -46,7 +46,7 @@ async function fetchResults() {
     });
     return window.URL.createObjectURL(blob);
   } catch (error) {
-    console.error(`Error fetching results csv`);
+    console.error(`Error fetching results`);
     throw error;
   }
 }
