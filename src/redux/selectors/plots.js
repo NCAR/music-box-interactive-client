@@ -53,4 +53,4 @@ export const getAerosolPlots = (store) => {
     { label: "mass_concentration", id: "PARTMC.mass_conc" },
     { label: "number_concentration", id: "PARTMC.number_conc" },
   ];
-}
+};

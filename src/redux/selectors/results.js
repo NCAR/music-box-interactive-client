@@ -64,7 +64,10 @@ export const getPlotDataByType = (store, plot) => {
       case "mass_conc":
         return {
           data: store.results.data.partMCTimes.map((elem, idx) => {
-            return { time: elem, value: store.results.data.mass_concentration[idx] };
+            return {
+              time: elem,
+              value: store.results.data.mass_concentration[idx],
+            };
           }),
           label: plot.label,
           units: "K",
@@ -72,7 +75,10 @@ export const getPlotDataByType = (store, plot) => {
       case "number_conc":
         return {
           data: store.results.data.partMCTimes.map((elem, idx) => {
-            return { time: elem, value: store.results.data.number_concentration[idx] };
+            return {
+              time: elem,
+              value: store.results.data.number_concentration[idx],
+            };
           }),
           label: plot.label,
           units: "Pa",

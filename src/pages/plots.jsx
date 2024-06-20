@@ -33,32 +33,32 @@ const Plots = (props) => {
               <button
                 className={tab === SPECIES ? tabSelected : tabNotSelected}
                 onClick={() => setTab(SPECIES)}
-                style={{ marginRight: '15px' }}
+                style={{ marginRight: "15px" }}
               >
                 Chemical species
               </button>
               <button
                 className={tab === REACTIONS ? tabSelected : tabNotSelected}
                 onClick={() => setTab(REACTIONS)}
-                style={{ marginRight: '15px' }}
+                style={{ marginRight: "15px" }}
               >
                 Reaction rates
               </button>
               <button
                 className={tab === ENVIRONMENT ? tabSelected : tabNotSelected}
                 onClick={() => setTab(ENVIRONMENT)}
-                style={{ marginRight: '15px' }}
+                style={{ marginRight: "15px" }}
               >
                 Environmental conditions
               </button>
               {featureFlags.PART_MC && (
                 <button
-                className={tab === AEROSOLS ? tabSelected : tabNotSelected}
-                onClick={() => setTab(AEROSOLS)}
-                style={{ marginRight: '15px' }}
-              >
-                Aerosols
-              </button>
+                  className={tab === AEROSOLS ? tabSelected : tabNotSelected}
+                  onClick={() => setTab(AEROSOLS)}
+                  style={{ marginRight: "15px" }}
+                >
+                  Aerosols
+                </button>
               )}
             </div>
             {tab === SPECIES ? (
