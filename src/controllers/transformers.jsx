@@ -628,7 +628,59 @@ function translate_reactions_to_camp_config(config) {
   };
 }
 
+
+function translate_aerosol(config) {
+  let species = [
+    ...config.aerosolSpecies.map((species) => {
+      let camp_species = { name: species.name, type: "CHEM_SPEC" };
+      species.properties.forEach((property) => {
+        switch (property.name) {
+          case "absolute convergence tolerance [mol mol-1]":
+            camp_species["absolute tolerance"] = property.value;
+            break;
+          case "molecular weight [kg mol-1]":
+            camp_species["molecular weight"] = property.value;
+            break;
+          case "fixed concentration":
+            camp_species["tracer type"] = property.value;
+            break;
+          default:
+            camp_species[property.name] = property.value;
+        }
+      });
+      return camp_species;
+    }),
+  ];
+
+  let phases = [
+    ...config.aerosolPhase.map((phase) => {
+      let camp_species = { name: phase.name, type: "CHEM_SPEC" };
+      phase.properties.forEach((property) => {
+        switch (property.name) {
+          case "absolute convergence tolerance [mol mol-1]":
+            camp_species["absolute tolerance"] = property.value;
+            break;
+          case "molecular weight [kg mol-1]":
+            camp_species["molecular weight"] = property.value;
+            break;
+          case "fixed concentration":
+            camp_species["tracer type"] = property.value;
+            break;
+          default:
+            camp_species[property.name] = property.value;
+        }
+      });
+      return camp_species;
+    }),
+  ];
+
+  return { aerosolSpecies: [...species], aerosolPhase: [...phases], Representation: config.aerosolRepresentationConfig};
+}
+
+
+
 function translate_to_camp_config(config) {
+  console.log(config)
   let species = [
     ...config.gasSpecies.map((species) => {
       let camp_species = { name: species.name, type: "CHEM_SPEC" };
@@ -678,6 +730,7 @@ function translate_to_camp_config(config) {
 }
 
 function translate_to_musicbox_conditions(conditions, mechanism) {
+  console.log(conditions)
   let intial_value_reducer = (acc, curr) => {
     acc[curr.name] = {
       [`initial value [${curr.units}]`]: parseFloat(curr.value),
@@ -739,4 +792,5 @@ export {
   translate_reactions_to_camp_config,
   translate_to_camp_config,
   translate_to_musicbox_conditions,
+  translate_aerosol,
 };
