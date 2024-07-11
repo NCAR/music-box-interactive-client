@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import List from "./List";
-import Detail from "./Detail";
+import AerosolDetail from "./AerosolConfigurations/AerosolDetail";
 import SetRepresentation from "./AerosolConfigurations/SetRepresentation";
 
 const InstructionsComponent = ({ tabIndexMap, setActiveTab }) => {
@@ -72,7 +72,10 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
             <Row className="flex-shrink-0">
               <Col>
                 {subTabMap.get(activeSubTab) === "Representations" ? (
-                  <SetRepresentation />
+                  <SetRepresentation 
+                    details = {details}
+                    setDetails = {setDetails}
+                  />
                 ) : (
                   <List
                     type={type}
@@ -88,8 +91,9 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
             <Row className="flex-shrink-0">
               <Col className="species-detail">
                 {Object.keys(details).map((key) => (
-                  <Detail
+                  <AerosolDetail
                     type={type}
+                    subType={subTabMap.get(activeSubTab)}
                     item={details[key]}
                     key={key}
                     details={details}

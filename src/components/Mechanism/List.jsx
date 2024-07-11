@@ -58,7 +58,7 @@ const mapStateToProps = (state, { type, subType }) => {
           objects = mechanism.aerosolPhase;
           break;
         case "Representations":
-          objects = mechanism.aerosolRepresentation;
+          objects = mechanism.aerosolRepresentationConfig;
           break;
         case "Species":
           objects = mechanism.aerosolSpecies;

@@ -4,10 +4,12 @@ import { compareName, compareId } from "../../compare";
 
 const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],
-  aerosolSpecies: [],
-  aerosolPhase: [],
+  aerosolSpecies: [{ name: "M", properties: [], static: true }],
+  aerosolPhase: [{ name: "M", properties: [], static: true }],
+  // This is the representation when chosen from the dropdown menu
   aerosolRepresentationConfig: "Modal",
-  aerosolRepresentation: [],
+  // This is the details corresponding to the representation chosen above
+  aerosolRepresentation: {name: "Modal", "phase": "", "geometric mean diameter": 0, "geometric standard deviation": 0},
   reactions: [],
 };
 
@@ -65,11 +67,39 @@ export const mechanismReducer = (state = initialState, action) => {
 
     case utils.action_types.SET_AEROSOL_REPRESENTATION: {
       const representationName = action.payload;
+      let representationDetailsReset = {}
+      switch (representationName) {
+        case "Modal":
+           representationDetailsReset = {name: "Modal", "phase": "", "geometric mean diameter": 0, 
+          "geometric standard deviation": 0}
+          break;
+        case "Sectional":
+           representationDetailsReset = {name: "Sectional", "phase": "", "number of sections": 0, 
+          "minimum diameter": 0, "maximum diameter": 0}
+          break;
+        case "Single-Particle":
+           representationDetailsReset = {name: "Single-Particle", "phase": "", "total number of computational particles": 0}
+           break;
+      }
       return {
         ...state,
         aerosolRepresentationConfig: representationName,
+        aerosolRepresentation: representationDetailsReset,
       };
     }
+
+    case utils.action_types.SET_AEROSOL_REPRESENTATION_DETAILS: {
+
+      return {
+        ...state,
+        aerosolRepresentation: {
+          ...state.aerosolRepresentation,
+          ...action.payload,
+        },
+      };
+    
+    }
+
     case utils.action_types.ADD_AEROSOL_REPRESENTATION: {
       const species = action.payload.content;
       const otherSpecies = state.aerosolRepresentation.filter((other) => {
