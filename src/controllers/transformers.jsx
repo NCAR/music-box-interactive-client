@@ -674,7 +674,7 @@ function translate_aerosol(config) {
     }),
   ];
 
-  return { aerosolSpecies: [...species], aerosolPhase: [...phases], Representation: config.aerosolRepresentationConfig};
+  return { aerosolSpecies: [...species], aerosolPhase: [...phases], Representation: config.aerosolRepresentation};
 }
 
 

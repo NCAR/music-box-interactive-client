@@ -22,7 +22,6 @@ function SetRepresentation(prop) {
     }
     prop.setDetails({ [representation]: representation });
     setPreviousRepresentation(representation)
-    console.log(prop.aerosol)
   }
 
   const tabChoices = ["Modal", "Sectional", "Single-Particle"];
@@ -72,7 +71,6 @@ function SetRepresentation(prop) {
 const mapStateToProps = (state) => {
   return {
     aerosolRepresentation: getMechanism(state).aerosolRepresentationConfig,
-    aerosol: getMechanism(state).aerosolRepresentation
   };
 };
 
