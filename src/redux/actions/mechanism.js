@@ -42,12 +42,21 @@ export const removeAerosolRepresentation = (content) => {
   };
 };
 
-export const SetAerosolRepresentation = (content) => {
+// This is to set the AerosolRepresentationConfig through choosing the right tab
+export function setAerosolRepresentation(content) {
   return {
     type: utils.action_types.SET_AEROSOL_REPRESENTATION,
     payload: content,
   };
-};
+}
+
+// This is to set the AerosolRepresentation through the details
+export const setAerosolRepresentationDetails = (content) => {
+  return {
+    type: utils.action_types.SET_AEROSOL_REPRESENTATION_DETAILS,
+    payload: content,
+  };
+}
 
 export const addGasSpecies = (content) => {
   return {
