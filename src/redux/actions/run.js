@@ -15,7 +15,7 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
       conditions,
       mechanism,
     );
-    const aerosol = translate_aerosol(mechanism)
+    const aerosol = translate_aerosol(mechanism);
 
     if (isElectron()) {
       const script = "print_config.py";
@@ -42,7 +42,11 @@ export const doRun = (mechanism, conditions) => async (dispatch) => {
         payload: { content: boxModelOutput },
       });
     } else {
-      await run({ mechanism: camp_mechanism, conditions: musicbox_conditions, aerosols: aerosol });
+      await run({
+        mechanism: camp_mechanism,
+        conditions: musicbox_conditions,
+        aerosols: aerosol,
+      });
       dispatch({ type: utils.action_types.START_POLLING, payload: {} });
     }
   } catch (error) {

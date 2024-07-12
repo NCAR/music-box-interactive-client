@@ -122,5 +122,3 @@ export const downloadResults = () => async (dispatch) => {
     console.error(`Error downloading results: ${error.message}`);
   }
 };
-
-

@@ -56,7 +56,7 @@ export const setAerosolRepresentationDetails = (content) => {
     type: utils.action_types.SET_AEROSOL_REPRESENTATION_DETAILS,
     payload: content,
   };
-}
+};
 
 export const addGasSpecies = (content) => {
   return {

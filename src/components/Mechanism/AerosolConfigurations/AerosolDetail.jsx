@@ -5,12 +5,9 @@ import RepresentationProperty from "./RepresentationProperty";
 
 const ListType = ({ type, item }) => {
   if (type === "Representations") {
-    
     return (
       <div className="form-group properties">
-        <RepresentationProperty
-              choice={item}
-            />
+        <RepresentationProperty choice={item} />
       </div>
     );
   } else {

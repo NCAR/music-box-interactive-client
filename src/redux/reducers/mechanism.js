@@ -9,7 +9,12 @@ const initialState = {
   // This is the representation when chosen from the dropdown menu
   aerosolRepresentationConfig: "Modal",
   // This is the details corresponding to the representation chosen above
-  aerosolRepresentation: {name: "Modal", "phase": "", "geometric mean diameter": 0, "geometric standard deviation": 0},
+  aerosolRepresentation: {
+    name: "Modal",
+    phase: "",
+    "geometric mean diameter": 0,
+    "geometric standard deviation": 0,
+  },
   reactions: [],
 };
 
@@ -67,19 +72,32 @@ export const mechanismReducer = (state = initialState, action) => {
 
     case utils.action_types.SET_AEROSOL_REPRESENTATION: {
       const representationName = action.payload;
-      let representationDetailsReset = {}
+      let representationDetailsReset = {};
       switch (representationName) {
         case "Modal":
-           representationDetailsReset = {name: "Modal", "phase": "", "geometric mean diameter": 0, 
-          "geometric standard deviation": 0}
+          representationDetailsReset = {
+            name: "Modal",
+            phase: "",
+            "geometric mean diameter": 0,
+            "geometric standard deviation": 0,
+          };
           break;
         case "Sectional":
-           representationDetailsReset = {name: "Sectional", "phase": "", "number of sections": 0, 
-          "minimum diameter": 0, "maximum diameter": 0}
+          representationDetailsReset = {
+            name: "Sectional",
+            phase: "",
+            "number of sections": 0,
+            "minimum diameter": 0,
+            "maximum diameter": 0,
+          };
           break;
         case "Single-Particle":
-           representationDetailsReset = {name: "Single-Particle", "phase": "", "total number of computational particles": 0}
-           break;
+          representationDetailsReset = {
+            name: "Single-Particle",
+            phase: "",
+            "total number of computational particles": 0,
+          };
+          break;
       }
       return {
         ...state,
@@ -89,7 +107,6 @@ export const mechanismReducer = (state = initialState, action) => {
     }
 
     case utils.action_types.SET_AEROSOL_REPRESENTATION_DETAILS: {
-
       return {
         ...state,
         aerosolRepresentation: {
@@ -97,7 +114,6 @@ export const mechanismReducer = (state = initialState, action) => {
           ...action.payload,
         },
       };
-    
     }
 
     case utils.action_types.ADD_AEROSOL_REPRESENTATION: {

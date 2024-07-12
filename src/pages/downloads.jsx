@@ -20,7 +20,7 @@ const Download = (props) => {
   const handleDownloadResults = () => {
     dispatch(downloadResults());
   };
-  
+
   return (
     <Layout>
       <main role="main">
@@ -38,7 +38,6 @@ const Download = (props) => {
                 onClick={handleDownloadConfig}
               >
                 Download Configuration File
-              
               </button>
               {props.runStatus === RunStatus.DONE ? (
                 <button

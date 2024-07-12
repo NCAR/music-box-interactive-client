@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setAerosolRepresentationDetails } from "../../../redux/actions"; 
+import { setAerosolRepresentationDetails } from "../../../redux/actions";
 import { getMechanism } from "../../../redux/selectors/mechanism.js";
 
 const StringInput = ({ type, value, onChange }) => {
@@ -62,27 +62,74 @@ const RepresentationProperty = (props) => {
       case "Modal":
         return (
           <>
-            <StringInput type="phase" value={props.aerosolRepresentation["phase"]} onChange={handleUpdateString} />
-            <IntInput type="geometric mean diameter" unit="m" value={props.aerosolRepresentation["geometric mean diameter"]} onChange={handleUpdateInt("geometric mean diameter")} />
-            <IntInput type="geometric standard deviation" value={props.aerosolRepresentation["geometric standard deviation"]} onChange={handleUpdateInt("geometric standard deviation")} />
+            <StringInput
+              type="phase"
+              value={props.aerosolRepresentation["phase"]}
+              onChange={handleUpdateString}
+            />
+            <IntInput
+              type="geometric mean diameter"
+              unit="m"
+              value={props.aerosolRepresentation["geometric mean diameter"]}
+              onChange={handleUpdateInt("geometric mean diameter")}
+            />
+            <IntInput
+              type="geometric standard deviation"
+              value={
+                props.aerosolRepresentation["geometric standard deviation"]
+              }
+              onChange={handleUpdateInt("geometric standard deviation")}
+            />
           </>
         );
 
       case "Sectional":
         return (
           <>
-            <StringInput type="phase" value={props.aerosolRepresentation["phase"]} onChange={handleUpdateString} />
-            <IntInput type="number of sections" value={props.aerosolRepresentation["number of sections"]} onChange={handleUpdateInt("number of sections")} />
-            <IntInput type="minimum diameter" unit="m" value={props.aerosolRepresentation["minimum diameter"]} onChange={handleUpdateInt("minimum diameter")} />
-            <IntInput type="maximum diameter" unit="m" value={props.aerosolRepresentation["maximum diameter"]} onChange={handleUpdateInt("maximum diameter")} />
+            <StringInput
+              type="phase"
+              value={props.aerosolRepresentation["phase"]}
+              onChange={handleUpdateString}
+            />
+            <IntInput
+              type="number of sections"
+              value={props.aerosolRepresentation["number of sections"]}
+              onChange={handleUpdateInt("number of sections")}
+            />
+            <IntInput
+              type="minimum diameter"
+              unit="m"
+              value={props.aerosolRepresentation["minimum diameter"]}
+              onChange={handleUpdateInt("minimum diameter")}
+            />
+            <IntInput
+              type="maximum diameter"
+              unit="m"
+              value={props.aerosolRepresentation["maximum diameter"]}
+              onChange={handleUpdateInt("maximum diameter")}
+            />
           </>
         );
 
       case "Single-Particle":
         return (
           <>
-            <StringInput type="phase" value={props.aerosolRepresentation["phase"]} onChange={handleUpdateString} />
-            <IntInput type="total number of computational particles" value={props.aerosolRepresentation["total number of computational particles"]} onChange={handleUpdateInt("total number of computational particles")} />
+            <StringInput
+              type="phase"
+              value={props.aerosolRepresentation["phase"]}
+              onChange={handleUpdateString}
+            />
+            <IntInput
+              type="total number of computational particles"
+              value={
+                props.aerosolRepresentation[
+                  "total number of computational particles"
+                ]
+              }
+              onChange={handleUpdateInt(
+                "total number of computational particles",
+              )}
+            />
             <div>
               <div
                 dangerouslySetInnerHTML={{
@@ -103,8 +150,10 @@ const RepresentationProperty = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    aerosolRepresentation: getMechanism(state).aerosolRepresentation, 
+    aerosolRepresentation: getMechanism(state).aerosolRepresentation,
   };
 };
 
-export default connect(mapStateToProps, { setAerosolRepresentationDetails })(RepresentationProperty);
+export default connect(mapStateToProps, { setAerosolRepresentationDetails })(
+  RepresentationProperty,
+);
