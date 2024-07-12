@@ -680,7 +680,6 @@ function translate_aerosol(config) {
 
 
 function translate_to_camp_config(config) {
-  console.log(config)
   let species = [
     ...config.gasSpecies.map((species) => {
       let camp_species = { name: species.name, type: "CHEM_SPEC" };
@@ -730,7 +729,6 @@ function translate_to_camp_config(config) {
 }
 
 function translate_to_musicbox_conditions(conditions, mechanism) {
-  console.log(conditions)
   let intial_value_reducer = (acc, curr) => {
     acc[curr.name] = {
       [`initial value [${curr.units}]`]: parseFloat(curr.value),
