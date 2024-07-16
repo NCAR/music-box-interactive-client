@@ -72,9 +72,9 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
             <Row className="flex-shrink-0">
               <Col>
                 {subTabMap.get(activeSubTab) === "Representations" ? (
-                  <SetRepresentation 
-                    details = {details}
-                    setDetails = {setDetails}
+                  <SetRepresentation
+                    details={details}
+                    setDetails={setDetails}
                   />
                 ) : (
                   <List

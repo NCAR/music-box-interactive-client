@@ -15,14 +15,14 @@ function SetRepresentation(prop) {
   const handleDetailClick = (e) => {
     e.preventDefault();
     const representation = subTabMap.get(activeSubTab);
-    
+
     if (prop.details?.hasOwnProperty(previousRepresentation)) {
       const { [previousRepresentation]: _, ...newDetails } = prop.details;
       prop.setDetails({ ...newDetails });
     }
     prop.setDetails({ [representation]: representation });
-    setPreviousRepresentation(representation)
-  }
+    setPreviousRepresentation(representation);
+  };
 
   const tabChoices = ["Modal", "Sectional", "Single-Particle"];
   const [activeSubTab, setActiveSubTab] = useState(0);
@@ -34,37 +34,38 @@ function SetRepresentation(prop) {
   ]);
 
   return (
-  <Container fluid className="bg-ncar-menu-secondary p-2">
-    <Dropdown>
-    <Dropdown.Toggle variant="success" className="btn btn-primary">
-      Choose Representation
-    </Dropdown.Toggle>
-    <Dropdown.Menu>
-      {tabChoices.map((value, index) => {
-        return (
-          <Dropdown.Item
-            onClick={() => {handleSetConfig(value); 
-                            setActiveSubTab(index);
-                            }}
+    <Container fluid className="bg-ncar-menu-secondary p-2">
+      <Dropdown>
+        <Dropdown.Toggle variant="success" className="btn btn-primary">
+          Choose Representation
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {tabChoices.map((value, index) => {
+            return (
+              <Dropdown.Item
+                onClick={() => {
+                  handleSetConfig(value);
+                  setActiveSubTab(index);
+                }}
+              >
+                {value}
+              </Dropdown.Item>
+            );
+          })}
+        </Dropdown.Menu>
+      </Dropdown>
+      <ListGroup className="species-list" style={{ marginTop: "15px" }}>
+        <li className="list-group-item list-group-item-action d-flex">
+          <button
+            type="button"
+            className="btn-clear"
+            onClick={handleDetailClick}
           >
-            {value}
-          </Dropdown.Item>
-        );
-      })}
-    </Dropdown.Menu>
-  </Dropdown>
-      <ListGroup className="species-list" style={{ marginTop: '15px' }}>
-      <li className="list-group-item list-group-item-action d-flex">
-      <button
-        type="button"
-        className="btn-clear"
-        onClick={handleDetailClick}
-      >
-        {subTabMap.get(activeSubTab)}
-      </button>
-  </li>
+            {subTabMap.get(activeSubTab)}
+          </button>
+        </li>
       </ListGroup>
-  </Container>
+    </Container>
   );
 }
 

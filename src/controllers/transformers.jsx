@@ -628,7 +628,6 @@ function translate_reactions_to_camp_config(config) {
   };
 }
 
-
 function translate_aerosol(config) {
   let species = [
     ...config.aerosolSpecies.map((species) => {
@@ -674,10 +673,12 @@ function translate_aerosol(config) {
     }),
   ];
 
-  return { aerosolSpecies: [...species], aerosolPhase: [...phases], Representation: config.aerosolRepresentation};
+  return {
+    aerosolSpecies: [...species],
+    aerosolPhase: [...phases],
+    Representation: config.aerosolRepresentation,
+  };
 }
-
-
 
 function translate_to_camp_config(config) {
   let species = [
