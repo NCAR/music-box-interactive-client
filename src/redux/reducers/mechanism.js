@@ -4,8 +4,8 @@ import { compareName, compareId } from "../../compare";
 
 const initialState = {
   gasSpecies: [{ name: "M", properties: [], static: true }],
-  aerosolSpecies: [{ name: "M", properties: [], static: true }],
-  aerosolPhase: [{ name: "M", properties: [], static: true }],
+  aerosolSpecies: [],
+  aerosolPhase: [],
   // This is the representation when chosen from the dropdown menu
   aerosolRepresentationConfig: "Modal",
   // This is the details corresponding to the representation chosen above
