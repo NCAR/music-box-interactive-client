@@ -14,6 +14,10 @@ const initialState = {
     air_density: [],
     species: [],
     integrated_rates: {},
+    // partmc data
+    partMCTimes: [],
+    mass_concentration: [],
+    number_concentration: [],
   },
 };
 
@@ -62,6 +66,9 @@ export const resultsReducer = (state = initialState, action) => {
           air_density: data["ENV.number_density_air"],
           integrated_rates: irr_data,
           species: concentrations,
+          partMCTimes: data?.partmc?.time,
+          mass_concentration: data?.partmc?.number_conc,
+          number_concentration: data?.partmc?.mass_conc,
         },
       };
     }

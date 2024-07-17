@@ -362,7 +362,7 @@ export const reactionSchema = {
         type: "FLOAT",
         key: "k0_C",
         label: "k0_C",
-        units: "K<sup>-1</sup>",
+        units: "K",
       },
       {
         type: "FLOAT",
@@ -380,7 +380,7 @@ export const reactionSchema = {
         type: "FLOAT",
         key: "kinf_C",
         label: "kinf_C",
-        units: "K<sup>-1</sup>",
+        units: "K",
       },
       {
         type: "FLOAT",

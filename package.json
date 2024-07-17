@@ -1,7 +1,7 @@
 {
   "name": "music-box-interactive-client",
   "private": true,
-  "version": "2.3.12",
+  "version": "2.4.0",
   "main": "app/dist/main/main.js",
   "type": "module",
   "scripts": {
@@ -19,6 +19,8 @@
     "e:build": "electron-vite build --outDir=app/dist"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.17",
     "axios": "^1.6.2",
     "better-react-mathjax": "^2.0.3",
     "bootstrap": "^5.3.2",

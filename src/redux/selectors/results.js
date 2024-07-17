@@ -58,6 +58,32 @@ export const getPlotDataByType = (store, plot) => {
           units: "Pa",
         };
     }
+  } else if (plot.id.startsWith("PARTMC.")) {
+    let which = plot.id.substring(7);
+    switch (which) {
+      case "mass_conc":
+        return {
+          data: store.results.data.partMCTimes.map((elem, idx) => {
+            return {
+              time: elem,
+              value: store.results.data.mass_concentration[idx],
+            };
+          }),
+          label: plot.label,
+          units: "K",
+        };
+      case "number_conc":
+        return {
+          data: store.results.data.partMCTimes.map((elem, idx) => {
+            return {
+              time: elem,
+              value: store.results.data.number_concentration[idx],
+            };
+          }),
+          label: plot.label,
+          units: "Pa",
+        };
+    }
   }
 };
 

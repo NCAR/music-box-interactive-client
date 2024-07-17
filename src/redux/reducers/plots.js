@@ -10,6 +10,9 @@ const initialState = {
   environment: {
     plots: [],
   },
+  aerosols: {
+    plots: [],
+  },
 };
 
 export const plotsReducer = (state = initialState, action) => {
@@ -61,6 +64,9 @@ export const plotsReducer = (state = initialState, action) => {
           };
         }
         case "environment": {
+          return state;
+        }
+        case "aerosols": {
           return state;
         }
       }
