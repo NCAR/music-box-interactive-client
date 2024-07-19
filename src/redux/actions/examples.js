@@ -113,6 +113,7 @@ export const downloadResults = () => async (dispatch) => {
       const link = document.createElement("a");
       link.href = url;
       link.download = `results.${fileExtension}`; 
+
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
