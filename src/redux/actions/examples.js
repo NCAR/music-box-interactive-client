@@ -109,20 +109,13 @@ export const downloadResults = () => async (dispatch) => {
         await window.electron.downloadFile(filePath, csvData);
       }
     } else {
-      if (3 > 1) {
-        const url = await fetchResults();
+      const { url, fileExtension } = await fetchResults(); 
       const link = document.createElement("a");
       link.href = url;
-      link.download = "results.csv";
-
+      link.download = `results.${fileExtension}`; 
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
-
-      } else {
-
-      }
-      
     }
   } catch (error) {
     console.error(`Error downloading results: ${error.message}`);
