@@ -40,23 +40,23 @@ async function fetchResults() {
   try {
     const response = await axios.get(`${apiUrl}/api/download-results`, {
       params: {},
-      responseType: 'arraybuffer'
+      responseType: "arraybuffer",
     });
-    const contentType = response.headers['content-type'];
+    const contentType = response.headers["content-type"];
     let blob;
     let fileExtension;
-    if (contentType.includes('application/zip')) {
-      blob = new Blob([response.data], { type: 'application/zip' });
-      fileExtension = 'zip';
-    } else if (contentType.includes('text/csv')) {
-      blob = new Blob([response.data], { type: 'text/csv' });
-      fileExtension = 'csv';
+    if (contentType.includes("application/zip")) {
+      blob = new Blob([response.data], { type: "application/zip" });
+      fileExtension = "zip";
+    } else if (contentType.includes("text/csv")) {
+      blob = new Blob([response.data], { type: "text/csv" });
+      fileExtension = "csv";
     } else {
       throw new Error(`Unsupported content type: ${contentType}`);
     }
 
     const url = window.URL.createObjectURL(blob);
-    return { url, fileExtension }; 
+    return { url, fileExtension };
   } catch (error) {
     console.error(`Error fetching results:`, error);
     throw error;
