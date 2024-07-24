@@ -39,6 +39,11 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
     [2, "Representations"],
   ]);
 
+  const handleActiveSubTab = (index) => {
+    setDetails({});
+    setActiveSubTab(index);
+  };
+
   return (
     <>
       <InstructionsComponent
@@ -55,7 +60,7 @@ function AerosolMechanismTab({ type, tabIndexMap, setActiveTab }) {
               key={index}
               variant={activeSubTab === index ? "primary" : "secondary"}
               className="mr-2"
-              onClick={() => setActiveSubTab(index)}
+              onClick={() => handleActiveSubTab(index)}
             >
               {subTab}
             </Button>
