@@ -212,10 +212,10 @@ function extract_mechanism_from_example(config) {
           id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.surfaceReaction.data,
-            gas_phase_reactant: campReactantsToRedux(reaction)[0].name,
-            products: campProductsToRedux(reaction),
-            reaction_probability: reaction["reaction_probability"] || 1.0,
-            musica_name: reaction["musica_name"],
+            gas_phase_reactant: reaction["gas-phase reactant"],
+            products: campProductsToRedux({products: reaction["gas-phase products"]}),
+            reaction_probability: reaction["reaction probability"] || 1.0,
+            musica_name: reaction["musica name"],
           },
         };
       }
@@ -632,7 +632,6 @@ function translate_reactions_to_camp_config(config, species) {
         let { type, products, gas_phase_reactant, ...data } = reaction.data;
         // loop through the species to find the species that is the gas_phase_reactant and 
         // check that it has the properties needed for the surface reaction
-        console.log(reaction.data)
 
         camp_reaction = {
           ...camp_reaction,

@@ -1,4 +1,4 @@
-import { translate_to_camp_config } from "../src/controllers/transformers";
+import { translate_to_camp_config, extract_mechanism_from_example } from "../src/controllers/transformers";
 import { expect, test, vi } from "vitest";
 import { store } from "../src/redux/store/createStore";
 import { getMechanism } from "../src/redux/selectors/mechanism";
@@ -84,7 +84,7 @@ test("Test Reaction Stoichiometry Consistency: Products", async () => {
 });
 
 test("Test Surface Reaction is Translated Correctly", async () => {
-  await store.dispatch(addGasSpecies({ name: "A", properties: [{name: "diffusion coeff [m^2 s-1]", value: 2.0}, {name: "molecular weight [kg mol-1]", value: 1.0}]}));
+  await store.dispatch(addGasSpecies({ name: "A", properties: [{ name: "diffusion coeff [m^2 s-1]", value: 2.0 }, { name: "molecular weight [kg mol-1]", value: 1.0 }] }));
   await store.dispatch(addGasSpecies({ name: "B", properties: [] }));
   await store.dispatch(addGasSpecies({ name: "C", properties: [] }));
 
@@ -109,8 +109,8 @@ test("Test Surface Reaction is Translated Correctly", async () => {
   const result = translate_to_camp_config(getMechanism(store.getState()));
   const reactions = result.reactions["camp-data"][0].reactions;
   const reaction = reactions[0];
-  
-  expect(reaction.type).toEqual("SURFACE_REACTION");
+
+  expect(reaction.type).toEqual("SURFACE");
   expect(reaction.reaction_probability).toEqual(0.3);
   expect(reaction.musica_name).toEqual("test_surface_reaction");
   expect(reaction["gas-phase reactant"]).toBeDefined();
@@ -125,4 +125,110 @@ test("Test Surface Reaction is Translated Correctly", async () => {
   expect(reaction["gas-phase products"]["C"]).toBeDefined();
   expect(reaction["gas-phase products"]["C"]["yield"]).toBeDefined();
   expect(reaction["gas-phase products"]["C"]["yield"]).toEqual(1);
+});
+
+test("Test Surface Reaction is Extracted From Configuration Correctly", async () => {
+  const config = {
+    "conditions": {
+      "box model options": {
+        "grid": "box",
+        "chemistry time step [min]": 1,
+        "output time step [sec]": 200,
+        "simulation length [day]": 5
+      },
+      "chemical species": {
+        "A": {
+          "initial value [mol m-3]": 1.0
+        },
+      },
+      "environmental conditions": {
+        "temperature": {
+          "initial value [K]": 206.6374207
+        },
+        "pressure": {
+          "initial value [Pa]": 6152.049805
+        }
+      },
+      "evolving conditions": {
+      },
+      "model components": [
+        {
+          "type": "CAMP",
+          "configuration file": "camp_data/config.json",
+          "override species": {
+            "M": {
+              "mixing ratio mol mol-1": 1
+            }
+          },
+          "suppress output": {
+            "M": {}
+          }
+        }
+      ]
+    },
+    "mechanism": {
+      "species": {
+        "camp-data": [
+          {
+            "name": "M",
+            "type": "CHEM_SPEC",
+            "tracer type": "CONSTANT",
+            "description": "Third-body molecule. This is any molecule present in the system."
+          },
+          {
+            "name": "A",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12,
+            "molecular weight [kg mol-1]": 1.0,
+            "diffusion coeff [m^2 s-1]": 2.0
+          },
+          {
+            "name": "B",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+          },
+          {
+            "name": "C",
+            "type": "CHEM_SPEC",
+            "absolute tolerance": 1e-12
+          }
+        ]
+      },
+      "reactions": {
+        "camp-data": [
+          {
+            "name": "Chapman",
+            "type": "MECHANISM",
+            "reactions": [
+              {
+                "type": "SURFACE",
+                "gas-phase reactant": "A",
+                "reaction probability": 0.3,
+                "musica name": "test_surface_reaction",
+                "gas-phase products": {
+                  "B": {},
+                  "C": {}
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+
+  const result = extract_mechanism_from_example(config);
+  expect(result).toBeDefined();
+  expect(result.reactions).toBeDefined();
+  expect(result.reactions.length).toEqual(1);
+  expect(result.reactions[0].data).toBeDefined();
+  expect(result.reactions[0].data.type).toEqual("SURFACE");
+  expect(result.reactions[0].data.gas_phase_reactant).toBeDefined();
+  expect(result.reactions[0].data.gas_phase_reactant).toEqual("A");
+  expect(result.reactions[0].data.products).toBeDefined();
+  expect(result.reactions[0].data.products.length).toEqual(2);
+  expect(result.reactions[0].data.products[0].name).toEqual("B");
+  expect(result.reactions[0].data.products[1].name).toEqual("C");
+  expect(result.reactions[0].data.reaction_probability).toEqual(0.3);
+  expect(result.reactions[0].data.musica_name).toEqual("test_surface_reaction");
 });
