@@ -48,6 +48,7 @@ const ReactionTypes = Object.freeze({
   TROE: "TROE",
   WENNBERG_NO_RO2: "WENNBERG_NO_RO2",
   WENNBERG_TUNNELING: "WENNBERG_TUNNELING",
+  SURFACE_REACTION: "SURFACE_REACTION",
   shortName(reaction) {
     switch (reaction.data.type) {
       case this.ARRHENIUS:
@@ -84,6 +85,13 @@ const ReactionTypes = Object.freeze({
           reaction.data.reactants,
           reaction.data.primary_products,
         );
+      case this.SURFACE_REACTION:
+        return stringifyReaction(
+          reaction?.data?.gas_phase_reactant !== undefined
+            ? [{ name: reaction.data.gas_phase_reactant }]
+            : [],
+            reaction.data.products
+        )
     }
   },
   reactants(reaction) {
@@ -114,6 +122,15 @@ const ReactionTypes = Object.freeze({
               },
             ]
           : [];
+      case this.SURFACE_REACTION:
+        return reaction?.data?.gas_phase_reactant !== undefined
+          ? [
+              {
+                name: reaction.data.gas_phase_reactant,
+                qty: 1.0,
+              },
+            ]
+          : [];
     }
   },
   products(reaction) {
@@ -123,6 +140,7 @@ const ReactionTypes = Object.freeze({
       case this.TROE:
       case this.WENNBERG_TUNNELING:
       case this.PHOTOLYSIS:
+      case this.SURFACE_REACTION:
         return reaction.data.products;
       case this.EMISSION:
         return reaction.data.species !== undefined
