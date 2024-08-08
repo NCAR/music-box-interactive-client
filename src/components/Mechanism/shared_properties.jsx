@@ -23,6 +23,12 @@ const options = [
     "data-type": "string",
     value: "CONSTANT",
   },
+  {
+    displayName: "diffusion coefficient",
+    name: "diffusion coeff [m^2 s-1]",
+    "data-type": "number",
+    value: 0,
+  },
 ];
 
 const aerosol_options = [

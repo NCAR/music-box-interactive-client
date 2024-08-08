@@ -615,6 +615,18 @@ function translate_reactions_to_camp_config(config) {
         };
         break;
       }
+      case ReactionTypes.SURFACE_REACTION: {
+        let { type, products, gas_phase_reactant, ...data } = reaction.data;
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          "gas-phase reactant": { ...reduxReactantsToCamp(gas_phase_reactant) },
+          "gas-phase products": {
+            ...reduxProductsToCamp([...products, { name: irrSpecies }]),
+          },
+        };
+        break;
+      }
       default:
         break;
     }

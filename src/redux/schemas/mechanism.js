@@ -540,7 +540,7 @@ export const reactionSchema = {
   surfaceReaction: {
     data: {
       type: ReactionTypes.SURFACE_REACTION,
-      gas_phase_reactant: undefined,
+      gas_phase_reactant: null,
       products: [],
       reaction_probability: 1.0,
       musica_name: "",

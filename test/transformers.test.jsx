@@ -82,3 +82,49 @@ test("Test Reaction Stoichiometry Consistency: Products", async () => {
     second_reaction.products.B.yield,
   );
 });
+
+test("Test Surface Reaction is Translated Correctly", async () => {
+  await store.dispatch(addGasSpecies({ name: "A", properties: [{name: "diffusion coeff [m^2 s-1]", value: 2.0}, {name: "molecular weight [kg mol-1]", value: 1.0}]}));
+  await store.dispatch(addGasSpecies({ name: "B", properties: [] }));
+  await store.dispatch(addGasSpecies({ name: "C", properties: [] }));
+
+  // add a reaction with A -> B + B
+  // two species of B but distinctly added
+  let surface_reaction = JSON.parse(JSON.stringify(reactionSchema.surfaceReaction));
+  expect(surface_reaction.data).toBeDefined();
+  expect(surface_reaction.data.gas_phase_reactant).toBeNull();
+  expect(surface_reaction.data.products).toBeDefined();
+  expect(surface_reaction.data.products.length).toEqual(0);
+  expect(surface_reaction.data.reaction_probability).toEqual(1.0);
+  expect(surface_reaction.data.musica_name).toEqual("");
+
+
+  surface_reaction.data.gas_phase_reactant = [{ name: "A", qty: 1 }];
+  surface_reaction.data.products = [
+    { name: "B", yield: 1 },
+    { name: "C", yield: 1 },
+  ];
+  surface_reaction.data.reaction_probability = 0.3;
+  surface_reaction.data.musica_name = "test_surface_reaction";
+  await store.dispatch(addReaction(surface_reaction));
+
+  const result = translate_to_camp_config(getMechanism(store.getState()));
+  const reactions = result.reactions["camp-data"][0].reactions;
+  const reaction = reactions[0];
+  
+  expect(reaction.type).toEqual("SURFACE_REACTION");
+  expect(reaction.reaction_probability).toEqual(0.3);
+  expect(reaction.musica_name).toEqual("test_surface_reaction");
+  expect(reaction["gas-phase reactant"]).toBeDefined();
+  expect(reaction["gas-phase reactant"]["A"]).toBeDefined();
+  expect(reaction["gas-phase reactant"]["A"]["qty"]).toBeDefined();
+  expect(reaction["gas-phase reactant"]["A"]["qty"]).toEqual(1);
+
+  expect(reaction["gas-phase products"]).toBeDefined();
+  expect(reaction["gas-phase products"]["B"]).toBeDefined();
+  expect(reaction["gas-phase products"]["B"]["yield"]).toBeDefined();
+  expect(reaction["gas-phase products"]["B"]["yield"]).toEqual(1);
+  expect(reaction["gas-phase products"]["C"]).toBeDefined();
+  expect(reaction["gas-phase products"]["C"]["yield"]).toBeDefined();
+  expect(reaction["gas-phase products"]["C"]["yield"]).toEqual(1);
+});
