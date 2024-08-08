@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeGasSpecies } from "../../../redux/actions";
-import { removeAerosolSpecies } from "../../../redux/actions";
+import {
+  removeAerosolSpecies,
+  removeAerosolPhase,
+} from "../../../redux/actions";
 
 const Species = ({ details, item: species, setDetails, removeAction }) => {
   const handleDetailClick = (e) => {
@@ -50,13 +53,20 @@ const Species = ({ details, item: species, setDetails, removeAction }) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { type } = ownProps;
+  const { type, subType } = ownProps;
 
   let action = null;
 
   switch (type) {
     case "aerosol":
-      action = (species) => dispatch(removeAerosolSpecies(species));
+      switch (subType) {
+        case "Phases":
+          action = (phases) => dispatch(removeAerosolPhase(phases));
+          break;
+        case "Species":
+          action = (species) => dispatch(removeAerosolSpecies(species));
+          break;
+      }
       break;
     case "gas":
       action = (species) => dispatch(removeGasSpecies(species));
