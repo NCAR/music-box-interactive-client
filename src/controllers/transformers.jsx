@@ -206,6 +206,19 @@ function extract_mechanism_from_example(config) {
           },
         };
       }
+      case ReactionTypes.SURFACE_REACTION: {
+        return {
+          ...reactionSchema.surfaceReaction,
+          id: reaction.id || uuidv4(),
+          data: {
+            ...reactionSchema.surfaceReaction.data,
+            gas_phase_reactant: campReactantsToRedux(reaction)[0].name,
+            products: campProductsToRedux(reaction),
+            reaction_probability: reaction["reaction_probability"] || 1.0,
+            musica_name: reaction["musica_name"],
+          },
+        };
+      }
       default:
         console.error(`Unknown reaction type: ${reaction.type}`);
         return {
@@ -619,10 +632,8 @@ function translate_reactions_to_camp_config(config, species) {
         let { type, products, gas_phase_reactant, ...data } = reaction.data;
         // loop through the species to find the species that is the gas_phase_reactant and 
         // check that it has the properties needed for the surface reaction
+        console.log(reaction.data)
 
-        let the_species = species.find((spec) => {
-          return spec.name === gas_phase_reactant;
-        });
         camp_reaction = {
           ...camp_reaction,
           ...data,

@@ -48,7 +48,7 @@ const ReactionTypes = Object.freeze({
   TROE: "TROE",
   WENNBERG_NO_RO2: "WENNBERG_NO_RO2",
   WENNBERG_TUNNELING: "WENNBERG_TUNNELING",
-  SURFACE_REACTION: "SURFACE_REACTION",
+  SURFACE_REACTION: "SURFACE",
   shortName(reaction) {
     switch (reaction.data.type) {
       case this.ARRHENIUS:
