@@ -1,5 +1,5 @@
 import { translate_to_camp_config } from "../src/controllers/transformers";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { store } from "../src/redux/store/createStore";
 import { getMechanism } from "../src/redux/selectors/mechanism";
 import { reactionSchema } from "../src/redux/schemas/mechanism.js";
@@ -88,8 +88,6 @@ test("Test Surface Reaction is Translated Correctly", async () => {
   await store.dispatch(addGasSpecies({ name: "B", properties: [] }));
   await store.dispatch(addGasSpecies({ name: "C", properties: [] }));
 
-  // add a reaction with A -> B + B
-  // two species of B but distinctly added
   let surface_reaction = JSON.parse(JSON.stringify(reactionSchema.surfaceReaction));
   expect(surface_reaction.data).toBeDefined();
   expect(surface_reaction.data.gas_phase_reactant).toBeNull();
@@ -99,7 +97,7 @@ test("Test Surface Reaction is Translated Correctly", async () => {
   expect(surface_reaction.data.musica_name).toEqual("");
 
 
-  surface_reaction.data.gas_phase_reactant = [{ name: "A", qty: 1 }];
+  surface_reaction.data.gas_phase_reactant = "A";
   surface_reaction.data.products = [
     { name: "B", yield: 1 },
     { name: "C", yield: 1 },
