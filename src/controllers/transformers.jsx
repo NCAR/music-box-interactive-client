@@ -1,7 +1,7 @@
 import { reactionSchema } from "../redux/schemas";
 import { ReactionTypes } from "./models";
 import { v4 as uuidv4 } from "uuid";
-import { compareName, compareId } from "../compare";
+import { compareId } from "../compare";
 
 function extract_mechanism_from_example(config) {
   const campReactantsToRedux = (reaction) =>
@@ -203,6 +203,19 @@ function extract_mechanism_from_example(config) {
             C: reaction["C"] || 0.0,
             reactants: campReactantsToRedux(reaction),
             products: campProductsToRedux(reaction),
+          },
+        };
+      }
+      case ReactionTypes.SURFACE_REACTION: {
+        return {
+          ...reactionSchema.surfaceReaction,
+          id: reaction.id || uuidv4(),
+          data: {
+            ...reactionSchema.surfaceReaction.data,
+            gas_phase_reactant: reaction["gas-phase reactant"],
+            products: campProductsToRedux({products: reaction["gas-phase products"]}),
+            reaction_probability: reaction["reaction probability"] || 1.0,
+            musica_name: reaction["musica name"],
           },
         };
       }
@@ -442,7 +455,7 @@ function extract_conditions_from_example(config, mechanism) {
   return schema;
 }
 
-function translate_reactions_to_camp_config(config) {
+function translate_reactions_to_camp_config(config, species) {
   const reduxReactantsToCamp = (reactants) => {
     return reactants === undefined
       ? {}
@@ -503,12 +516,13 @@ function translate_reactions_to_camp_config(config) {
         break;
       }
       case ReactionTypes.PHOTOLYSIS: {
-        let { type, products, reactant, musica_name, ...data } = reaction.data;
+        let { type, products, reactant, musica_name, scaling_factor, ...data } = reaction.data;
         musica_name =
           reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
+          "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           reactants: { [reactant]: {} },
           products: {
@@ -615,6 +629,18 @@ function translate_reactions_to_camp_config(config) {
         };
         break;
       }
+      case ReactionTypes.SURFACE_REACTION: {
+        let { type, products, gas_phase_reactant, ...data } = reaction.data;
+        camp_reaction = {
+          ...camp_reaction,
+          ...data,
+          "gas-phase reactant": { ...reduxReactantsToCamp([{name: gas_phase_reactant, qty: 1}]) },
+          "gas-phase products": {
+            ...reduxProductsToCamp([...products, { name: irrSpecies }]),
+          },
+        };
+        break;
+      }
       default:
         break;
     }
@@ -690,7 +716,7 @@ function translate_to_camp_config(config) {
             camp_species["absolute tolerance"] = property.value;
             break;
           case "molecular weight [kg mol-1]":
-            camp_species["molecular weight"] = property.value;
+            camp_species["molecular weight [kg mol-1]"] = property.value;
             break;
           case "fixed concentration":
             camp_species["tracer type"] = property.value;
@@ -721,7 +747,7 @@ function translate_to_camp_config(config) {
       return irrList;
     }, []),
   ];
-  let reactions = translate_reactions_to_camp_config(config);
+  let reactions = translate_reactions_to_camp_config(config, species);
 
   let camp_species_config = { "camp-data": [...species] };
   let camp_reactions_config = { "camp-data": [reactions] };
@@ -788,7 +814,6 @@ function translate_to_musicbox_conditions(conditions, mechanism) {
 export {
   extract_conditions_from_example,
   extract_mechanism_from_example,
-  translate_reactions_to_camp_config,
   translate_to_camp_config,
   translate_to_musicbox_conditions,
   translate_aerosol,
