@@ -631,9 +631,6 @@ function translate_reactions_to_camp_config(config, species) {
       }
       case ReactionTypes.SURFACE_REACTION: {
         let { type, products, gas_phase_reactant, ...data } = reaction.data;
-        // loop through the species to find the species that is the gas_phase_reactant and 
-        // check that it has the properties needed for the surface reaction
-
         camp_reaction = {
           ...camp_reaction,
           ...data,
