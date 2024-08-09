@@ -1,9 +1,10 @@
 import { translate_to_camp_config, extract_mechanism_from_example } from "../src/controllers/transformers";
-import { expect, test, vi } from "vitest";
+import { expect, test } from "vitest";
 import { store } from "../src/redux/store/createStore";
 import { getMechanism } from "../src/redux/selectors/mechanism";
 import { reactionSchema } from "../src/redux/schemas/mechanism.js";
 import { afterEach } from "vitest";
+import { ReactionTypes } from "../src/controllers/models.js";
 
 import { addGasSpecies, addReaction } from "../src/redux/actions";
 
@@ -231,4 +232,32 @@ test("Test Surface Reaction is Extracted From Configuration Correctly", async ()
   expect(result.reactions[0].data.products[1].name).toEqual("C");
   expect(result.reactions[0].data.reaction_probability).toEqual(0.3);
   expect(result.reactions[0].data.musica_name).toEqual("test_surface_reaction");
+});
+
+test("Test Surface Reaction is Properly Stringified", async () => {
+  const reaction = {
+    data: {
+      type: "SURFACE",
+      gas_phase_reactant: "A",
+      products: [
+        { name: "B", yield: 1 },
+        { name: "C", yield: 1 },
+      ],
+      reaction_probability: 0.3,
+      musica_name: "test_surface_reaction",
+    },
+  };
+
+  let default_surface = JSON.parse(JSON.stringify(reactionSchema.surfaceReaction));
+
+  expect(ReactionTypes.shortName(reaction)).toEqual("A -> B + C");
+  expect(ReactionTypes.shortName(default_surface)).toEqual("<none> -> <none>");
+  default_surface.data.gas_phase_reactant = "A";
+  expect(ReactionTypes.shortName(default_surface)).toEqual("A -> <none>");
+  default_surface.data.products = [{ name: "B", yield: 1 }];
+  expect(ReactionTypes.shortName(default_surface)).toEqual("A -> B");
+  default_surface.data.products = [{ name: "B", yield: 1 }, { name: "C", yield: 1 }];
+  expect(ReactionTypes.shortName(default_surface)).toEqual("A -> B + C");
+  default_surface.data.gas_phase_reactant = null;
+  expect(ReactionTypes.shortName(default_surface)).toEqual("<none> -> B + C");
 });
