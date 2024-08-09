@@ -516,12 +516,13 @@ function translate_reactions_to_camp_config(config, species) {
         break;
       }
       case ReactionTypes.PHOTOLYSIS: {
-        let { type, products, reactant, musica_name, ...data } = reaction.data;
+        let { type, products, reactant, musica_name, scaling_factor, ...data } = reaction.data;
         musica_name =
           reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
           ...camp_reaction,
           ...data,
+          "scaling factor": scaling_factor,
           "MUSICA name": musica_name,
           reactants: { [reactant]: {} },
           products: {
