@@ -1,3 +1,5 @@
+import { ReactionTypes } from "../../controllers/models";
+
 export const getConditions = (store, schema) => {
   return store.conditions[schema.classKey];
 };
@@ -10,43 +12,100 @@ export const getCondition = (store, schema, conditionId) => {
 
 export const getEvolvingConditions = (store) => store.conditions.evolving;
 
-export const getPossibleConditions = (store) => {
+export const getPossibleEvolvingSpeciesConditions = (store) => {
+  return store.mechanism.gasSpecies.map((species) => {
+    return {
+      name: species.name,
+      tableName: "CONC." + species.name + ".mol m-3",
+    };
+  });
+};
+
+export const getPossibleEvolvingEnvironmentalConditions = (store) => {
   return [
-    ...store.mechanism.gasSpecies.map((species) => {
-      return {
-        name: species.name + " [mol m-3]",
-        tableName: "CONC." + species.name + ".mol m-3",
-      };
-    }),
     {
-      name: "temperature [K]",
+      name: "temperature",
       tableName: "ENV.temperature.K",
     },
     {
-      name: "pressure [Pa]",
+      name: "pressure",
       tableName: "ENV.pressure.Pa",
     },
-    ...store.mechanism.reactions
-      .filter((reaction) => {
+  ];
+};
+
+export const getPossibleEvolvingReactionConditions = (store) => {
+  return store.mechanism.reactions
+    .filter((reaction) => {
         return reaction.isUserDefined && reaction.data.musica_name.length > 0;
-      })
-      .map((reaction) => {
-        return {
-          name:
-            reaction.tablePrefix +
-            "." +
-            reaction.data.musica_name +
-            " [" +
-            reaction.possibleUnits[0] +
-            "]",
-          tableName:
-            (reaction.tablePrefix === "PHOT"
-              ? "PHOT."
-              : `PHOT.${reaction.tablePrefix}_`) +
-            reaction.data.musica_name +
-            ".s-1",
-        };
-      }),
+    })
+    .reduce((acc, reaction) => {
+      let name = `${reaction.tablePrefix}.${reaction.data.musica_name} [${reaction.possibleUnits[0]}]`;
+      let tableName = (reaction.tablePrefix === "PHOT" ? "PHOT." : `PHOT.${reaction.tablePrefix}_`) + `${name}.s-1`;
+
+      if (reaction.data.type === "SURFACE") {
+        acc.push(
+          {
+            reactionId: reaction.id,
+            suffix: ".number",
+            prefix: reaction.tablePrefix,
+            tableName: tableName,
+          },
+          {
+            reactionId: reaction.id,
+            suffix: ".radius",
+            prefix: reaction.tablePrefix,
+            tableName: tableName,
+          }
+        );
+      }
+      else {
+        acc.push({
+          reactionId: reaction.id,
+          suffix: "",
+          prefix: reaction.tablePrefix,
+          tableName: tableName,
+        });
+      }
+      return acc;
+    }, []);
+};
+
+export const getPossibleInitialReactionConditions = (store) => {
+  return store.mechanism.reactions
+    .filter((reaction) => reaction.isUserDefined)
+    .reduce((acc, reaction) => {
+      if (reaction.data.type === "SURFACE") {
+        acc.push(
+          {
+            reactionId: reaction.id,
+            suffix: ".number",
+            possibleUnits: ["m-2"],
+          },
+          {
+            reactionId: reaction.id,
+            suffix: ".radius",
+            possibleUnits: ["m"],
+          }
+        );
+      }
+      else {
+        acc.push({
+          reactionId: reaction.id,
+          suffix: "",
+          possibleUnits: reaction.possibleUnits,
+        });
+      }
+      return acc;
+    }, []);
+
+};
+
+export const getPossibleEvolvingConditions = (store) => {
+  return [
+    ...getPossibleEvolvingSpeciesConditions(store),
+    ...getPossibleEvolvingEnvironmentalConditions(store),
+    ...getPossibleEvolvingReactionConditions(store),
   ];
 };
 

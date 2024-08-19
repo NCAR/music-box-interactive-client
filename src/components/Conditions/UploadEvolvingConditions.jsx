@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { loadEvolvingConditionsTable } from "../../redux/actions";
-import { getPossibleConditions } from "../../redux/selectors";
+import { getPossibleEvolvingConditions } from "../../redux/selectors";
 
 const UploadEvolvingConditions = (props) => {
   const [file, setFile] = useState();
@@ -89,7 +89,7 @@ const UploadEvolvingConditions = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    possibleConditions: getPossibleConditions(state),
+    possibleConditions: getPossibleEvolvingConditions(state),
   };
 };
 

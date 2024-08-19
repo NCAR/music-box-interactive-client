@@ -5,18 +5,15 @@ import { addCondition } from "../../redux/actions";
 import RemoveCondition from "./RemoveCondition";
 import {
   getConditions,
-  getUserDefinedRatesIds,
-  getPossibleUnits,
+  getPossibleInitialReactionConditions,
+  getReactionName
 } from "../../redux/selectors";
 
-const ReactionCondition = (props) => {
-  const condition = props.condition;
-  const schema = props.schema;
-  const name = condition.reactionId
-    ? props.reactionNames.find(
-        (reaction) => reaction.id === condition.reactionId,
-      ).name
-    : null;
+const ReactionCondition = ({ condition, schema, ...props }) => {
+  const name = condition?.name || null;
+  console.log(props.possibleConditions)
+  const matchingCondition = props.possibleConditions.find((elem) => elem.reactionId === condition.reactionId && elem.suffix === condition.suffix);
+  const possibleUnits = matchingCondition?.possibleUnits || null;
 
   const handleUpdate = (newProps) => {
     props.addCondition({
@@ -37,22 +34,24 @@ const ReactionCondition = (props) => {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {schema.allowAddRemove
-              ? props.possibleReactions.map((value, index) => {
-                  return (
-                    <Dropdown.Item
-                      href="#"
-                      key={index}
-                      onClick={() => {
-                        handleUpdate({
-                          reactionId: value.id,
-                          type: value.prefix,
-                        });
-                      }}
-                    >
-                      {value.name}
-                    </Dropdown.Item>
-                  );
-                })
+              ? props?.unsetInitialConditions.map((value, index) => {
+                return (
+                  <Dropdown.Item
+                    href="#"
+                    key={index}
+                    onClick={() => {
+                      console.log(value.reactionId)
+                      handleUpdate({
+                        reactionId: value.reactionId,
+                        suffix: value.suffix,
+                        name: value.name
+                      });
+                    }}
+                  >
+                    {value.name}
+                  </Dropdown.Item>
+                );
+              })
               : name}
           </Dropdown.Menu>
         </Dropdown>
@@ -68,31 +67,31 @@ const ReactionCondition = (props) => {
         ></input>
       </div>
       <div className="col-3" key={"units-" + condition.id}>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" className="btn btn-light">
-            {condition.units || "<select>"}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {props.possibleUnits && props.possibleUnits.length
-              ? props.possibleUnits.map((value) => {
-                  return (
-                    <Dropdown.Item
-                      href="#"
-                      key={value}
-                      onClick={(e) => {
-                        handleUpdate({ units: e.target.innerHTML });
-                      }}
-                    >
-                      {value}
-                    </Dropdown.Item>
-                  );
-                })
-              : null}
-          </Dropdown.Menu>
-        </Dropdown>
+        {possibleUnits &&
+          <Dropdown>
+            <Dropdown.Toggle variant="success" className="btn btn-light">
+              {condition.units || "<select>"}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {possibleUnits?.map((value) => {
+                return (
+                  <Dropdown.Item
+                    href="#"
+                    key={value}
+                    onClick={(e) => {
+                      handleUpdate({ units: e.target.innerHTML });
+                    }}
+                  >
+                    {value}
+                  </Dropdown.Item>
+                );
+              })}
+            </Dropdown.Menu>
+          </Dropdown>
+        }
       </div>
       <div className="col-1" key={"remove-" + condition.id}>
-        {props.schema.allowAddRemove ? (
+        {schema.allowAddRemove ? (
           <RemoveCondition schema={schema} conditionId={condition.id} />
         ) : null}
       </div>
@@ -101,16 +100,22 @@ const ReactionCondition = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const existingConditions = getConditions(state, ownProps.schema).map(
-    (condition) => condition.reactionId,
-  );
-  const possibleReactions = getUserDefinedRatesIds(state).filter(
-    (reaction) => !existingConditions.includes(reaction.id),
-  );
+  const possibleConditions = getPossibleInitialReactionConditions(state).map((value) => {
+    return { name: `${getReactionName(state, value.reactionId)}${value.suffix}`, ...value };
+  });
+  const existingConditions = getConditions(state, ownProps.schema);
+
+  const unsetInitialConditions = possibleConditions.filter((condition) => {
+    return !existingConditions.find(
+      (existingCondition) => existingCondition.name === condition.name && existingCondition.suffix === condition.suffix
+    );
+  }).map((value) => {
+    return { name: `${getReactionName(state, value.reactionId)}${value.suffix}`, ...value };
+  });
+
   return {
-    possibleReactions: possibleReactions,
-    reactionNames: getUserDefinedRatesIds(state),
-    possibleUnits: getPossibleUnits(state, ownProps.condition.reactionId),
+    unsetInitialConditions: unsetInitialConditions,
+    possibleConditions: possibleConditions,
   };
 };
 

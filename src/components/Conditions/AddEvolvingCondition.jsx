@@ -4,7 +4,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { addEvolvingCondition } from "../../redux/actions";
 import {
   getEvolvingConditions,
-  getPossibleConditions,
+  getPossibleEvolvingConditions,
 } from "../../redux/selectors";
 
 const AddEvolvingCondition = (props) => {
@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
     (condition) => condition.name,
   );
   return {
-    possibleConditions: getPossibleConditions(state).filter((condition) => {
+    possibleConditions: getPossibleEvolvingConditions(state).filter((condition) => {
       return !currentConditions.includes(condition.name);
     }),
   };

@@ -80,6 +80,18 @@ export const getProducts = (store, reactionId) => {
   return ReactionTypes.products(reaction[0]);
 };
 
+export const getReactionName = (store, reactionId) => {
+  const reaction = getMechanism(store).reactions.filter((reaction) => {
+    return reaction.id === reactionId;
+  });
+  if (reaction) {
+    return reaction.musica_name || ReactionTypes.shortName(reaction[0]);
+  }
+  else {
+    throw new Error(`Reaction with id ${reactionId} not found`);
+  }
+};
+
 const reactionToLabel = (reaction) => {
   return ReactionTypes.shortName(reaction);
 };
