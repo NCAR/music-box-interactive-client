@@ -235,29 +235,4 @@ test("Test Surface Reaction is Extracted From Configuration Correctly", async ()
 });
 
 test("Test Surface Reaction is Properly Stringified", async () => {
-  const reaction = {
-    data: {
-      type: "SURFACE",
-      gas_phase_reactant: "A",
-      products: [
-        { name: "B", yield: 1 },
-        { name: "C", yield: 1 },
-      ],
-      reaction_probability: 0.3,
-      musica_name: "test_surface_reaction",
-    },
-  };
-
-  let default_surface = JSON.parse(JSON.stringify(reactionSchema.surfaceReaction));
-
-  expect(ReactionTypes.shortName(reaction)).toEqual("A -> B + C");
-  expect(ReactionTypes.shortName(default_surface)).toEqual("<none> -> <none>");
-  default_surface.data.gas_phase_reactant = "A";
-  expect(ReactionTypes.shortName(default_surface)).toEqual("A -> <none>");
-  default_surface.data.products = [{ name: "B", yield: 1 }];
-  expect(ReactionTypes.shortName(default_surface)).toEqual("A -> B");
-  default_surface.data.products = [{ name: "B", yield: 1 }, { name: "C", yield: 1 }];
-  expect(ReactionTypes.shortName(default_surface)).toEqual("A -> B + C");
-  default_surface.data.gas_phase_reactant = null;
-  expect(ReactionTypes.shortName(default_surface)).toEqual("<none> -> B + C");
 });

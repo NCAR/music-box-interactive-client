@@ -51,7 +51,7 @@ const ReactionTypes = Object.freeze({
         return stringifyReaction(
           [],
           reaction.data.species !== undefined
-            ? [{ name: reaction.data.species }]
+            ? [{ name: reaction.data.species, yield: 1.0 }]
             : [],
         );
       case this.FIRST_ORDER_LOSS:
