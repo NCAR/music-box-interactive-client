@@ -14,7 +14,7 @@ export const addCondition = (content) => {
   };
 };
 
-export const removeCondition = (content) => {
+export const removeConditions = (content) => {
   return {
     type: utils.action_types.REMOVE_CONDITION,
     payload: { content },

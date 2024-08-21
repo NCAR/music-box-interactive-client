@@ -70,9 +70,9 @@ export const conditionsReducer = (state = initialState, action) => {
     case utils.action_types.ADD_CONDITION: {
       const schema = action.payload.content.schema;
       const condition = action.payload.content.condition || {
-        reactionId: undefined,
-        value: undefined,
-        units: undefined,
+        reactionId: null,
+        value: 0,
+        units: "",
         name: "",
       };
       const conditionId = condition.id || uuidv4();
@@ -92,10 +92,11 @@ export const conditionsReducer = (state = initialState, action) => {
     }
     case utils.action_types.REMOVE_CONDITION: {
       const schema = action.payload.content.schema;
-      const id = action.payload.content.conditionId;
-      const otherConditions = state[schema.classKey].filter((other) => {
-        return other.id !== id;
+      const ids = action.payload.content.conditionIds;
+      const otherConditions = state[schema.classKey].filter((condition) => {
+        return !ids.includes(condition.id);
       });
+
       return {
         ...state,
         [schema.classKey]: [...otherConditions],

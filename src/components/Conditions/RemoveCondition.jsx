@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { removeCondition } from "../../redux/actions";
+import { removeConditions } from "../../redux/actions";
 
 const RemoveCondition = (props) => {
   const handleRemoveCondition = () => {
@@ -29,4 +29,4 @@ const RemoveCondition = (props) => {
   );
 };
 
-export default connect(null, { removeCondition })(RemoveCondition);
+export default connect(null, { removeCondition: removeConditions })(RemoveCondition);

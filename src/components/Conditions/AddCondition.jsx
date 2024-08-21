@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { addCondition } from "../../redux/actions";
+import { Button } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add';
 
 const AddCondition = (props) => {
   const handleAddCondition = () => {
@@ -8,19 +10,12 @@ const AddCondition = (props) => {
   };
 
   return (
-    <button
-      type="button"
-      className="btn btn-primary add-element"
+    <Button variant="contained" color="primary"
       onClick={handleAddCondition}
-      onKeyDown={handleAddCondition}
+      onKeyDown={handleAddCondition} fullWidth
     >
-      <span
-        className="oi oi-plus"
-        toggle="tooltop"
-        aria-hidden="true"
-        title="Add condition"
-      ></span>
-    </button>
+      <AddIcon />
+    </Button>
   );
 };
 
