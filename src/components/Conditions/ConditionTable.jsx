@@ -9,7 +9,6 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { alpha } from '@mui/material/styles';
 import { removeConditions, addCondition } from "../../redux/actions";
-import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 import AddIcon from '@mui/icons-material/Add';
 
@@ -45,14 +44,19 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
-        </TableCell>
+        {
+          props.schema.allowAddRemove ? (
+            <TableCell padding="checkbox">
+              <Checkbox
+                color="primary"
+                indeterminate={numSelected > 0 && numSelected < rowCount}
+                checked={rowCount > 0 && numSelected === rowCount}
+                onChange={onSelectAllClick}
+              />
+            </TableCell>
+          )
+            : <TableCell padding="checkbox" />
+        }
         <TableCell>
           <TableSortLabel
             active={orderBy === 'name'}
@@ -62,6 +66,13 @@ function EnhancedTableHead(props) {
             Name
           </TableSortLabel>
         </TableCell>
+        {
+          props?.extraColumns?.map((item, index) => (
+            <TableCell key={`${index}${item.key}`}>
+              {item.label}
+            </TableCell>
+          ))
+        }
         <TableCell>
           <TableSortLabel
             active={orderBy === 'value'}
@@ -105,13 +116,13 @@ function EnhancedTableToolbar(props) {
         }),
       }}
     >
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant={variant}
-          component="div"
-        >
-          {title}
-        </Typography>
+      <Typography
+        sx={{ flex: '1 1 100%' }}
+        variant={variant}
+        component="div"
+      >
+        {title}
+      </Typography>
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -143,10 +154,18 @@ const ConditionTable = (props) => {
 
   const applySortFilterPaging = (rows) => {
     return rows
-      .filter((row) =>
-        row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        row.units.toLowerCase().includes(searchText.toLowerCase())
-      )
+      .filter((row) => {
+        let result = (row.name.toLowerCase().includes(searchText.toLowerCase()) ||
+          row.units.toLowerCase().includes(searchText.toLowerCase()));
+
+        if (props.schema.extraColumns) {
+          props.schema.extraColumns.forEach((item) => {
+            result = result || row[item.key].toLowerCase().includes(searchText.toLowerCase());
+          });
+        }
+
+        return result;
+      })
       .sort(getComparator(order, orderBy))
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   }
@@ -191,7 +210,19 @@ const ConditionTable = (props) => {
   const handleNameChange = (event, id) => {
     const newName = event.target.value;
     const newRow = rows.find((row) => row.id === id);
-    newRow.name = newName;
+    if (props.nameIdMap) {
+      // when it's a user defined reaction rate, we only update the reactionId, not the name
+      // the name is constructed for us in the redux store selector so even if we set it here,
+      // it will be overwritten if we get out of the store from the selector
+      // we also need to set the suffix to uniquely identify the name, because of surface reaction
+      newRow.reactionId = props.nameIdMap[newName].reactionId;
+      newRow.suffix = props.nameIdMap[newName].suffix;
+      newRow.type = props.nameIdMap[newName].type;
+    }
+    else {
+      // for non user defined reaction rate conditions, all we need to do is update the name
+      newRow.name = newName;
+    }
     handleUpdate(newRow)
   };
 
@@ -242,23 +273,26 @@ const ConditionTable = (props) => {
   const sortedAndFilteredRows = applySortFilterPaging(rows);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Paper elevation={3} sx={{ width: '100%', overflow: 'hidden', padding: `1%`, backgroundColor: theme.palette.background.white }}>
-        <EnhancedTableToolbar numSelected={selected.length} onDelete={handleRemoveCondition} title={props.title} />
-        <Grid container spacing={8} alignItems="center">
-          <Grid item xs={7}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="Search"
-              value={searchText}
-              onChange={handleSearchChange}
-            />
-          </Grid>
-          <Grid item xs={4}> </Grid>
-          {
-            props.schema.allowAddRemove && props.availableNames.length - unsetNames > 0 ? (
+    <Paper elevation={3} sx={{ width: '100%', overflow: 'hidden', padding: `1%`, backgroundColor: theme.palette.background.white }}>
+      <EnhancedTableToolbar
+        numSelected={selected.length}
+        onDelete={handleRemoveCondition}
+        title={props.title}
+      />
+      <Grid container spacing={8} alignItems="center">
+        <Grid item xs={7}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            label="Search"
+            value={searchText}
+            onChange={handleSearchChange}
+          />
+        </Grid>
+        <Grid item xs={4}> </Grid>
+        {
+          props.schema.allowAddRemove && props.availableNames.length - unsetNames > 0 ? (
             <Grid item xs={1}>
               <Button variant="contained" color="primary"
                 onClick={handleAddCondition}
@@ -267,33 +301,36 @@ const ConditionTable = (props) => {
                 <AddIcon />
               </Button>
             </Grid>
-            ) : null
-          }
-        </Grid>
-        <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-          <Table stickyHeader size='small'>
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={sortedAndFilteredRows.length}
-            />
-            <TableBody>
-              {sortedAndFilteredRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+          ) : null
+        }
+      </Grid>
+      <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
+        <Table stickyHeader size='small'>
+          <EnhancedTableHead
+            extraColumns={props.schema.extraColumns}
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={sortedAndFilteredRows.length}
+            schema={props.schema}
+          />
+          <TableBody>
+            {sortedAndFilteredRows.map((row, index) => {
+              const isItemSelected = isSelected(row.id);
+              const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                  >
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  tabIndex={-1}
+                  key={row.id}
+                  selected={isItemSelected}
+                >
+                  {props.schema.allowAddRemove ? (
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
@@ -304,64 +341,74 @@ const ConditionTable = (props) => {
                         }}
                       />
                     </TableCell>
-                    <TableCell component="th" id={labelId} scope="row" padding="none">
-                      {row.name ?
-                        row.name :
-                        <FormControl fullWidth>
-                          <Select
-                            variant="standard"
-                            value={row.name}
-                            onChange={(event) => handleNameChange(event, row.id)}
-                          >
-                            {props.availableNames.map((name, index) => (
-                              <MenuItem key={`${index}name`} value={name}>
-                                {name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      }
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        variant="standard"
-                        value={row.value}
-                        onChange={(event) => handleInitialValueChange(event, row.id)}
-                        type="number"
-                      />
-                    </TableCell>
-                    <TableCell style={{ width: '250px' }}>
+                  ) :  <TableCell padding="checkbox" />
+                  }
+
+                  <TableCell component="th" id={labelId} scope="row">
+                    {row.name ?
+                        row.name
+                      :
                       <FormControl fullWidth>
                         <Select
                           variant="standard"
-                          value={row.units}
-                          onChange={(event) => handleUnitsChange(event, row.id)}
+                          value={row.name}
+                          onChange={(event) => handleNameChange(event, row.id)}
                         >
-                          {props.getUnits(row).map((units, index) => (
-                            <MenuItem key={`${index}units`} value={units}>
-                              {units}
+                          {props.availableNames.map((name, index) => (
+                            <MenuItem key={`${index}name`} value={name}>
+                              {name}
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </ThemeProvider>
+                    }
+                  </TableCell>
+                  {
+                    props.schema?.extraColumns?.map((item, index) => (
+                      <TableCell key={`${index}${item.key}`}>
+                        {row[item.key]}
+                      </TableCell>
+                    ))
+                  }
+                  <TableCell>
+                    <TextField
+                      variant="standard"
+                      value={row.value}
+                      onChange={(event) => handleInitialValueChange(event, row.id)}
+                      type="number"
+                    />
+                  </TableCell>
+                  <TableCell style={{ width: '250px' }}>
+                    <FormControl fullWidth>
+                      <Select
+                        variant="standard"
+                        value={row.units}
+                        onChange={(event) => handleUnitsChange(event, row.id)}
+                      >
+                        {props.getUnits(row).map((units, index) => (
+                          <MenuItem key={`${index}units`} value={units}>
+                            {units}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }
 

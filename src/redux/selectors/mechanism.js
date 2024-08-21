@@ -85,17 +85,40 @@ const reactionToLabel = (reaction) => {
 };
 
 export const getUserDefinedRatesIds = (store) => {
-  return getMechanism(store)
+  return store.mechanism
     .reactions.filter((reaction) => {
       return reaction.isUserDefined;
     })
-    .map((reaction) => {
-      return {
-        id: reaction.id,
-        name: reaction.data.musica_name || reactionToLabel(reaction),
-        prefix: reaction.tablePrefix,
-      };
-    });
+    .reduce((acc, reaction) => {
+      if (reaction.data.type === "SURFACE") {
+        acc.push(
+          {
+            id: reaction.id,
+            type: reaction.typeLabel,
+            name: reaction.data.musica_name || reactionToLabel(reaction),
+            suffix: ".number",
+            possibleUnits: reaction.possibleUnits
+          },
+          {
+            id: reaction.id,
+            type: reaction.typeLabel,
+            name: reaction.data.musica_name || reactionToLabel(reaction),
+            suffix: ".radius",
+            possibleUnits: reaction.possibleUnits
+          }
+        );
+      }
+      else {
+        acc.push({
+          id: reaction.id,
+          type: reaction.typeLabel,
+          name: reaction.data.musica_name || reactionToLabel(reaction),
+          suffix: "",
+          possibleUnits: reaction.possibleUnits
+        });
+      }
+      return acc;
+    }, []);
 };
 
 export const getPossibleUnits = (store, reactionId) => {
