@@ -72,6 +72,7 @@ const utils = {
     CHAPMAN: "CHAPMAN",
     FLOW_TUBE: "FLOW_TUBE",
     FULL_GAS_PHASE: "FULL_GAS_PHASE",
+    TS1: "TS1",
   },
 };
 

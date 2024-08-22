@@ -398,6 +398,7 @@ function extract_conditions_from_example(config, mechanism) {
         value: initial_conditions[key]["0"],
         type: type,
         units: units || default_units,
+        suffix: "",
         name: reaction.data.musica_name || ReactionTypes.shortName(reaction),
       };
     });
