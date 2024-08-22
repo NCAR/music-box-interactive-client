@@ -20,7 +20,7 @@ const Property = ({ property, addAction, speciesName }) => {
     <div
       className="input-group mb-3"
       property={property.name}
-      data-type={property.data_type}
+      data-type={property.dataType}
     >
       <div className="input-group-prepend">
         <span className="input-group-text">{property.name}</span>

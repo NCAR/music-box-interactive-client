@@ -537,4 +537,58 @@ export const reactionSchema = {
       },
     ],
   },
+  surfaceReaction: {
+    data: {
+      type: ReactionTypes.SURFACE_REACTION,
+      gas_phase_reactant: null,
+      products: [],
+      reaction_probability: 1.0,
+      musica_name: "",
+    },
+    typeLabel: "Surface Reaction",
+    isUserDefined: true,
+    tablePrefix: "SURF",
+    possibleUnits: ["s-1"],
+    elements: [
+      {
+        type: "SPECIES",
+        key: "gas_phase_reactant",
+        label: "Gas phase reactant",
+      },
+      {
+        type: "PRODUCT_LIST",
+        key: "products",
+        label: "Gas-phase products",
+      },
+      {
+        type: "FLOAT",
+        key: "reaction_probability",
+        label: "reaction probability",
+        units: "unitless",
+      },
+      {
+        type: "EQUATION",
+        value: "\\(k_{surface} = \\frac{4N_a \\pi r_e^2}{ \\left(\\frac{r_e}{D_g} + \\frac{4}{v(T)\\gamma}\\right) }\\)",
+        description:
+          "N<sub>a</sub>: number concentration of particles (particles m<sup>3</sup>); r<sub>e</sub>: effective particle radius (m); D<sub>g</sub>: gas-phase diffusion coefficient of the reactant (m<sup>2</sup>s<sup>-1</sup>); v: mean free speed of the gas-phase reactant, see below; gamma: reaction probability (unitless)",
+      },
+      {
+        type: "EQUATION",
+        value: "\\(v = \\sqrt{\\frac{8RT}{\\pi MW}}\\)",
+        description:
+          "R: ideal gas constant (J K<sup>-1</sup> mol<sup>-1</sup>); T: temperature (K); MW: molecular weight of the gas-phase reactant (kg mol<sup>-1</sup>)",
+      },
+      {
+        type: "STRING",
+        key: "musica_name",
+        label: "MUSICA name",
+      },
+      {
+        type: "DESCRIPTION",
+        text:
+          "Set a MUSICA name for this reaction to identify it in other parts " +
+          "of the model (e.g., input conditions). You may choose any name you like.",
+      },
+    ],
+  },
 };
