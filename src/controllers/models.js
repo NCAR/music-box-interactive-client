@@ -1,22 +1,30 @@
 const stringifyReaction = (reactants, products) => {
-  const validReactants = reactants.filter(species => species.name !== undefined);
-  const validProducts = products.filter(species => species.name !== undefined);
+  const validReactants = reactants.filter(
+    (species) => species.name !== undefined,
+  );
+  const validProducts = products.filter(
+    (species) => species.name !== undefined,
+  );
 
-  let reactantStr = validReactants.map(species => {
-    const qtyStr = species.qty > 1 ? `${species.qty}` : '';
-    return `${qtyStr}${species.name}`;
-  }).join(' + ');
+  let reactantStr = validReactants
+    .map((species) => {
+      const qtyStr = species.qty > 1 ? `${species.qty}` : "";
+      return `${qtyStr}${species.name}`;
+    })
+    .join(" + ");
 
-  let productStr = validProducts.map(species => {
-    const yieldStr = species.yield !== 1.0 ? `${species.yield}` : '';
-    return `${yieldStr}${species.name}`;
-  }).join(' + ');
+  let productStr = validProducts
+    .map((species) => {
+      const yieldStr = species.yield !== 1.0 ? `${species.yield}` : "";
+      return `${yieldStr}${species.name}`;
+    })
+    .join(" + ");
 
-  reactantStr = reactantStr.length > 0 ? reactantStr + ' ->' : '<none> ->';
-  productStr = productStr.length > 0 ? productStr : '<none>';
+  reactantStr = reactantStr.length > 0 ? reactantStr + " ->" : "<none> ->";
+  productStr = productStr.length > 0 ? productStr : "<none>";
 
   const str = `${reactantStr} ${productStr}`;
-  return str.length > 40 ? str.slice(0, 37) + '...' : str;
+  return str.length > 40 ? str.slice(0, 37) + "..." : str;
 };
 
 const RunStatus = Object.freeze({
@@ -75,9 +83,11 @@ const ReactionTypes = Object.freeze({
         );
       case this.SURFACE_REACTION:
         return stringifyReaction(
-          reaction?.data?.gas_phase_reactant !== null ? [{ name: reaction.data.gas_phase_reactant }] : [],
-          reaction.data.products
-        )
+          reaction?.data?.gas_phase_reactant !== null
+            ? [{ name: reaction.data.gas_phase_reactant }]
+            : [],
+          reaction.data.products,
+        );
     }
   },
   reactants(reaction) {

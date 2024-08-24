@@ -1,47 +1,52 @@
 import { ReactionTypes } from "../../controllers/models";
 
 export const getConditions = (store, schema) => {
-  if (schema.classKey == 'initial_reactions') {
+  if (schema.classKey == "initial_reactions") {
     let conditions = store.conditions[schema.classKey];
-    let userDefinedReactions = store.mechanism
-      .reactions.filter((reaction) => {
+    let userDefinedReactions = store.mechanism.reactions
+      .filter((reaction) => {
         return reaction.isUserDefined;
       })
       .reduce((acc, reaction) => {
         if (reaction.data.type === "SURFACE") {
           acc.push(
-          {
-            id: reaction.id,
-            type: reaction.typeLabel,
-            name: reaction.data.musica_name || ReactionTypes.shortName(reaction),
-            suffix: ".number",
-            possibleUnits: reaction.possibleUnits
-          },
-          {
-            id: reaction.id,
-            type: reaction.typeLabel,
-            name: reaction.data.musica_name || ReactionTypes.shortName(reaction),
-            suffix: ".radius",
-            possibleUnits: reaction.possibleUnits
-          }
-        );
-        }
-        else {
+            {
+              id: reaction.id,
+              type: reaction.typeLabel,
+              name:
+                reaction.data.musica_name || ReactionTypes.shortName(reaction),
+              suffix: ".number",
+              possibleUnits: reaction.possibleUnits,
+            },
+            {
+              id: reaction.id,
+              type: reaction.typeLabel,
+              name:
+                reaction.data.musica_name || ReactionTypes.shortName(reaction),
+              suffix: ".radius",
+              possibleUnits: reaction.possibleUnits,
+            },
+          );
+        } else {
           acc.push({
             id: reaction.id,
             type: reaction.typeLabel,
-            name: reaction.data.musica_name || ReactionTypes.shortName(reaction),
+            name:
+              reaction.data.musica_name || ReactionTypes.shortName(reaction),
             suffix: "",
-            possibleUnits: reaction.possibleUnits
+            possibleUnits: reaction.possibleUnits,
           });
         }
         return acc;
       }, []);
     // add the name and type onto the conditions
     return conditions.map((condition) => {
-      let found = userDefinedReactions.find((val) => val.id === condition.reactionId && val.suffix === condition.suffix);
-      let name = '';
-      let type = '';
+      let found = userDefinedReactions.find(
+        (val) =>
+          val.id === condition.reactionId && val.suffix === condition.suffix,
+      );
+      let name = "";
+      let type = "";
       let possibleUnits = [];
       if (found) {
         name = `${found.name}${found.suffix}`;
@@ -52,11 +57,10 @@ export const getConditions = (store, schema) => {
         ...condition,
         name: name,
         type: type,
-        possibleUnits: possibleUnits
-      }
-    })
-  }
-  else {
+        possibleUnits: possibleUnits,
+      };
+    });
+  } else {
     return store.conditions[schema.classKey];
   }
 };

@@ -6,7 +6,7 @@ import { basicConfigSchema } from "../../redux/schemas";
 
 import BasicConfigProperty from "./BasicConfigProperty";
 import { Card, Container, Row, Col } from "react-bootstrap";
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 

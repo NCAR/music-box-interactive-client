@@ -24,7 +24,8 @@ const examples = [
   },
   {
     title: "Troposphere-Stratisphere mechanism (TS1)",
-    description: "A comprehensive  model of the chemistry in the troposphere and straisphere.",
+    description:
+      "A comprehensive  model of the chemistry in the troposphere and straisphere.",
     type: utils.examples.TS1,
   },
 ];

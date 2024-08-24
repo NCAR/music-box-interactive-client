@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import EvolvingConditionsDetail from "./EvolvingConditionsDetail";
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 

@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ConditionTable from "./ConditionTable";
-import { getConditions, getUserDefinedRatesIds, getVariableSpeciesNames } from "../../redux/selectors";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Stack from '@mui/material/Stack';
+import {
+  getConditions,
+  getUserDefinedRatesIds,
+  getVariableSpeciesNames,
+} from "../../redux/selectors";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Stack from "@mui/material/Stack";
 import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 
@@ -46,9 +50,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        children
-      )}
+      {value === index && children}
     </div>
   );
 }
@@ -60,8 +62,7 @@ function InitialConditionsTab(props) {
   };
 
   // watch for changes so that the table updates whenever the redux store updates
-  useEffect(() => {
-  }, [props.data]);
+  useEffect(() => {}, [props.data]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -74,19 +75,19 @@ function InitialConditionsTab(props) {
           concentrations) or overwritten by evolving conditions you specify.
         </p>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Species Concentrations" value={0}>
-          </Tab>
-          <Tab label="Environmental Conditions" value={1}>
-          </Tab>
-          <Tab label="Reaction Conditions" value={2}>
-          </Tab>
+          <Tab label="Species Concentrations" value={0}></Tab>
+          <Tab label="Environmental Conditions" value={1}></Tab>
+          <Tab label="Reaction Conditions" value={2}></Tab>
         </Tabs>
         <TabPanel value={value} index={0}>
           <ConditionTable
             title="Species Concentrations"
             data={props.data.speciesConditons.existing}
             availableNames={props.data.speciesConditons.missing}
-            getUnits={() => [null, ...initialConditionsSchema.speciesConcentrations.units]}
+            getUnits={() => [
+              null,
+              ...initialConditionsSchema.speciesConcentrations.units,
+            ]}
             schema={initialConditionsSchema.speciesConcentrations}
           />
         </TabPanel>
@@ -94,7 +95,11 @@ function InitialConditionsTab(props) {
           <ConditionTable
             title="Envionmental Concentrations"
             data={props.data.environmentalConditions}
-            getUnits={(condition) => initialConditionsSchema.environmentalConditions.units[condition.name]}
+            getUnits={(condition) =>
+              initialConditionsSchema.environmentalConditions.units[
+                condition.name
+              ]
+            }
             schema={initialConditionsSchema.environmentalConditions}
           />
         </TabPanel>
@@ -114,30 +119,44 @@ function InitialConditionsTab(props) {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const existingSpeciesConditions = getConditions(state, initialConditionsSchema.speciesConcentrations);
+  const existingSpeciesConditions = getConditions(
+    state,
+    initialConditionsSchema.speciesConcentrations,
+  );
   const possibleNames = getVariableSpeciesNames(state);
   const speciesNames = possibleNames.filter(
-    (name) => !existingSpeciesConditions.find((condition) => condition.name === name),
+    (name) =>
+      !existingSpeciesConditions.find((condition) => condition.name === name),
   );
 
-  const environmentalConditions = getConditions(state, initialConditionsSchema.environmentalConditions);
+  const environmentalConditions = getConditions(
+    state,
+    initialConditionsSchema.environmentalConditions,
+  );
 
-  const reactionConditions = getConditions(state, initialConditionsSchema.reactionConditions);
+  const reactionConditions = getConditions(
+    state,
+    initialConditionsSchema.reactionConditions,
+  );
   const possibleReactions = getUserDefinedRatesIds(state);
   const nameIdMap = possibleReactions.reduce((acc, val) => {
     acc[`${val.name}${val.suffix}`] = {
       reactionId: val.id,
       suffix: val.suffix,
       type: val.type,
-    }
+    };
     return acc;
   }, {});
   const availableReactionConditions = possibleReactions.reduce((acc, val) => {
-    let found = reactionConditions.find((condition) => val.id === condition.reactionId && `${val.name}${val.suffix}` === condition.name)
+    let found = reactionConditions.find(
+      (condition) =>
+        val.id === condition.reactionId &&
+        `${val.name}${val.suffix}` === condition.name,
+    );
     if (!found) {
       acc.push(`${val.name}${val.suffix}`);
     }
-    return acc
+    return acc;
   }, []);
 
   return {
@@ -150,10 +169,10 @@ const mapStateToProps = (state, ownProps) => {
       reactionConditions: {
         existing: reactionConditions,
         missing: availableReactionConditions,
-        nameIdMap
-      }
-    }
-  }
+        nameIdMap,
+      },
+    },
+  };
 };
 
 export default connect(mapStateToProps)(InitialConditionsTab);
