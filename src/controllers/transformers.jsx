@@ -213,7 +213,9 @@ function extract_mechanism_from_example(config) {
           data: {
             ...reactionSchema.surfaceReaction.data,
             gas_phase_reactant: reaction["gas-phase reactant"],
-            products: campProductsToRedux({products: reaction["gas-phase products"]}),
+            products: campProductsToRedux({
+              products: reaction["gas-phase products"],
+            }),
             reaction_probability: reaction["reaction probability"] || 1.0,
             musica_name: reaction["musica name"],
           },
@@ -518,7 +520,8 @@ function translate_reactions_to_camp_config(config, species) {
         break;
       }
       case ReactionTypes.PHOTOLYSIS: {
-        let { type, products, reactant, musica_name, scaling_factor, ...data } = reaction.data;
+        let { type, products, reactant, musica_name, scaling_factor, ...data } =
+          reaction.data;
         musica_name =
           reaction.data.musica_name || ReactionTypes.shortName(reaction);
         camp_reaction = {
@@ -636,7 +639,9 @@ function translate_reactions_to_camp_config(config, species) {
         camp_reaction = {
           ...camp_reaction,
           ...data,
-          "gas-phase reactant": { ...reduxReactantsToCamp([{name: gas_phase_reactant, qty: 1}]) },
+          "gas-phase reactant": {
+            ...reduxReactantsToCamp([{ name: gas_phase_reactant, qty: 1 }]),
+          },
           "gas-phase products": {
             ...reduxProductsToCamp([...products, { name: irrSpecies }]),
           },

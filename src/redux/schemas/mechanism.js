@@ -568,7 +568,8 @@ export const reactionSchema = {
       },
       {
         type: "EQUATION",
-        value: "\\(k_{surface} = \\frac{4N_a \\pi r_e^2}{ \\left(\\frac{r_e}{D_g} + \\frac{4}{v(T)\\gamma}\\right) }\\)",
+        value:
+          "\\(k_{surface} = \\frac{4N_a \\pi r_e^2}{ \\left(\\frac{r_e}{D_g} + \\frac{4}{v(T)\\gamma}\\right) }\\)",
         description:
           "N<sub>a</sub>: number concentration of particles (particles m<sup>3</sup>); r<sub>e</sub>: effective particle radius (m); D<sub>g</sub>: gas-phase diffusion coefficient of the reactant (m<sup>2</sup>s<sup>-1</sup>); v: mean free speed of the gas-phase reactant, see below; gamma: reaction probability (unitless)",
       },

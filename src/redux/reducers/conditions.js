@@ -74,7 +74,7 @@ export const conditionsReducer = (state = initialState, action) => {
         value: 0,
         units: "",
         name: "",
-        suffix: ""
+        suffix: "",
       };
       const conditionId = condition.id || uuidv4();
       const otherConditions = state[schema.classKey].filter((condition) => {

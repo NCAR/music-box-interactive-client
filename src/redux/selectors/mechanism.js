@@ -85,8 +85,8 @@ const reactionToLabel = (reaction) => {
 };
 
 export const getUserDefinedRatesIds = (store) => {
-  return store.mechanism
-    .reactions.filter((reaction) => {
+  return store.mechanism.reactions
+    .filter((reaction) => {
       return reaction.isUserDefined;
     })
     .reduce((acc, reaction) => {
@@ -97,24 +97,23 @@ export const getUserDefinedRatesIds = (store) => {
             type: reaction.typeLabel,
             name: reaction.data.musica_name || reactionToLabel(reaction),
             suffix: ".number",
-            possibleUnits: reaction.possibleUnits
+            possibleUnits: reaction.possibleUnits,
           },
           {
             id: reaction.id,
             type: reaction.typeLabel,
             name: reaction.data.musica_name || reactionToLabel(reaction),
             suffix: ".radius",
-            possibleUnits: reaction.possibleUnits
-          }
+            possibleUnits: reaction.possibleUnits,
+          },
         );
-      }
-      else {
+      } else {
         acc.push({
           id: reaction.id,
           type: reaction.typeLabel,
           name: reaction.data.musica_name || reactionToLabel(reaction),
           suffix: "",
-          possibleUnits: reaction.possibleUnits
+          possibleUnits: reaction.possibleUnits,
         });
       }
       return acc;

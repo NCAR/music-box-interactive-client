@@ -1,4 +1,7 @@
-import { translate_to_camp_config, extract_mechanism_from_example } from "../src/controllers/transformers";
+import {
+  translate_to_camp_config,
+  extract_mechanism_from_example,
+} from "../src/controllers/transformers";
 import { expect, test } from "vitest";
 import { store } from "../src/redux/store/createStore";
 import { getMechanism } from "../src/redux/selectors/mechanism";
@@ -85,18 +88,27 @@ test("Test Reaction Stoichiometry Consistency: Products", async () => {
 });
 
 test("Test Surface Reaction is Translated Correctly", async () => {
-  await store.dispatch(addGasSpecies({ name: "A", properties: [{ name: "diffusion coeff [m^2 s-1]", value: 2.0 }, { name: "molecular weight [kg mol-1]", value: 1.0 }] }));
+  await store.dispatch(
+    addGasSpecies({
+      name: "A",
+      properties: [
+        { name: "diffusion coeff [m^2 s-1]", value: 2.0 },
+        { name: "molecular weight [kg mol-1]", value: 1.0 },
+      ],
+    }),
+  );
   await store.dispatch(addGasSpecies({ name: "B", properties: [] }));
   await store.dispatch(addGasSpecies({ name: "C", properties: [] }));
 
-  let surface_reaction = JSON.parse(JSON.stringify(reactionSchema.surfaceReaction));
+  let surface_reaction = JSON.parse(
+    JSON.stringify(reactionSchema.surfaceReaction),
+  );
   expect(surface_reaction.data).toBeDefined();
   expect(surface_reaction.data.gas_phase_reactant).toBeNull();
   expect(surface_reaction.data.products).toBeDefined();
   expect(surface_reaction.data.products.length).toEqual(0);
   expect(surface_reaction.data.reaction_probability).toEqual(1.0);
   expect(surface_reaction.data.musica_name).toEqual("");
-
 
   surface_reaction.data.gas_phase_reactant = "A";
   surface_reaction.data.products = [
@@ -130,93 +142,93 @@ test("Test Surface Reaction is Translated Correctly", async () => {
 
 test("Test Surface Reaction is Extracted From Configuration Correctly", async () => {
   const config = {
-    "conditions": {
+    conditions: {
       "box model options": {
-        "grid": "box",
+        grid: "box",
         "chemistry time step [min]": 1,
         "output time step [sec]": 200,
-        "simulation length [day]": 5
+        "simulation length [day]": 5,
       },
       "chemical species": {
-        "A": {
-          "initial value [mol m-3]": 1.0
+        A: {
+          "initial value [mol m-3]": 1.0,
         },
       },
       "environmental conditions": {
-        "temperature": {
-          "initial value [K]": 206.6374207
+        temperature: {
+          "initial value [K]": 206.6374207,
         },
-        "pressure": {
-          "initial value [Pa]": 6152.049805
-        }
+        pressure: {
+          "initial value [Pa]": 6152.049805,
+        },
       },
-      "evolving conditions": {
-      },
+      "evolving conditions": {},
       "model components": [
         {
-          "type": "CAMP",
+          type: "CAMP",
           "configuration file": "camp_data/config.json",
           "override species": {
-            "M": {
-              "mixing ratio mol mol-1": 1
-            }
+            M: {
+              "mixing ratio mol mol-1": 1,
+            },
           },
           "suppress output": {
-            "M": {}
-          }
-        }
-      ]
+            M: {},
+          },
+        },
+      ],
     },
-    "mechanism": {
-      "species": {
+    mechanism: {
+      species: {
         "camp-data": [
           {
-            "name": "M",
-            "type": "CHEM_SPEC",
+            name: "M",
+            type: "CHEM_SPEC",
             "tracer type": "CONSTANT",
-            "description": "Third-body molecule. This is any molecule present in the system."
+            description:
+              "Third-body molecule. This is any molecule present in the system.",
           },
           {
-            "name": "A",
-            "type": "CHEM_SPEC",
+            name: "A",
+            type: "CHEM_SPEC",
             "absolute tolerance": 1e-12,
             "molecular weight [kg mol-1]": 1.0,
-            "diffusion coeff [m^2 s-1]": 2.0
+            "diffusion coeff [m^2 s-1]": 2.0,
           },
           {
-            "name": "B",
-            "type": "CHEM_SPEC",
-            "absolute tolerance": 1e-12
+            name: "B",
+            type: "CHEM_SPEC",
+            "absolute tolerance": 1e-12,
           },
           {
-            "name": "C",
-            "type": "CHEM_SPEC",
-            "absolute tolerance": 1e-12
-          }
-        ]
+            name: "C",
+            type: "CHEM_SPEC",
+            "absolute tolerance": 1e-12,
+          },
+        ],
       },
-      "reactions": {
+      reactions: {
         "camp-data": [
           {
-            "name": "Chapman",
-            "type": "MECHANISM",
-            "reactions": [
+            name: "Chapman",
+            type: "MECHANISM",
+            reactions: [
               {
-                "type": "SURFACE",
+                type: "SURFACE",
                 "gas-phase reactant": "A",
                 "reaction probability": 0.3,
                 "musica name": "test_surface_reaction",
                 "gas-phase products": {
-                  "B": {},
-                  "C": {}
-                }
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }
+                  B: {},
+                  C: {},
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  };
 
   const result = extract_mechanism_from_example(config);
   expect(result).toBeDefined();
@@ -234,5 +246,4 @@ test("Test Surface Reaction is Extracted From Configuration Correctly", async ()
   expect(result.reactions[0].data.musica_name).toEqual("test_surface_reaction");
 });
 
-test("Test Surface Reaction is Properly Stringified", async () => {
-});
+test("Test Surface Reaction is Properly Stringified", async () => {});
