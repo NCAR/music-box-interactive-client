@@ -103,6 +103,15 @@ export const conditionsReducer = (state = initialState, action) => {
         [schema.classKey]: [...otherConditions],
       };
     }
+    case utils.action_types.REMOVE_REACTION: {
+      const reactionId = action.payload.content;
+      return {
+        ...state,
+        initial_reactions: state.initial_reactions.filter(
+          (condition) => condition.reactionId !== reactionId,
+        ),
+      };
+    }
     case utils.action_types.UPDATE_EVOLVING_CONDITIONS: {
       return {
         ...state,
