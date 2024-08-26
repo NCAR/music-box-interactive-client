@@ -67,7 +67,9 @@ function extract_mechanism_from_example(config) {
   });
 
   const reactions = camp_reactions.map((reaction) => {
-    switch (reaction.__music_box_type ? reaction.__music_box_type : reaction.type) {
+    switch (
+      reaction.__music_box_type ? reaction.__music_box_type : reaction.type
+    ) {
       case ReactionTypes.ARRHENIUS: {
         if (reaction.C !== undefined) {
           if (reaction.C != 0.0) {
@@ -546,7 +548,8 @@ function translate_reactions_to_camp_config(config, species) {
           ...data,
           type: "PHOTOLYSIS",
           __music_box_type: "EMISSION",
-          __note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
+          __note:
+            "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
           "scaling factor": scaling_factor,
           "MUSICA name": "EMIS_" + musica_name,
           __species: species,
@@ -567,7 +570,8 @@ function translate_reactions_to_camp_config(config, species) {
           ...data,
           type: "PHOTOLYSIS",
           __music_box_type: "FIRST_ORDER_LOSS",
-          __note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
+          __note:
+            "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
           "scaling factor": scaling_factor,
           "MUSICA name": "LOSS_" + musica_name,
           __species: species,
