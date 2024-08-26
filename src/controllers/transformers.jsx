@@ -67,7 +67,7 @@ function extract_mechanism_from_example(config) {
   });
 
   const reactions = camp_reactions.map((reaction) => {
-    switch (reaction.music_box_type ? reaction.music_box_type : reaction.type) {
+    switch (reaction.__music_box_type ? reaction.__music_box_type : reaction.type) {
       case ReactionTypes.ARRHENIUS: {
         if (reaction.C !== undefined) {
           if (reaction.C != 0.0) {
@@ -117,7 +117,7 @@ function extract_mechanism_from_example(config) {
           data: {
             ...reactionSchema.emission.data,
             scaling_factor: reaction["scaling factor"] || 1.0,
-            species: reaction["species"],
+            species: reaction.__species ? reaction.__species : reaction.species,
             musica_name: reaction["MUSICA name"]?.replace(/EMIS_/, "") || "",
           },
         };
@@ -128,7 +128,7 @@ function extract_mechanism_from_example(config) {
           id: reaction.id || uuidv4(),
           data: {
             ...reactionSchema.firstOrderLoss.data,
-            species: reaction["species"],
+            species: reaction.__species ? reaction.__species : reaction.species,
             scaling_factor: reaction["scaling factor"] || 1.0,
             musica_name: reaction["MUSICA name"]?.replace(/LOSS_/, "") || "",
           },
@@ -545,11 +545,11 @@ function translate_reactions_to_camp_config(config, species) {
           ...camp_reaction,
           ...data,
           type: "PHOTOLYSIS",
-          music_box_type: "EMISSION",
-          note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
+          __music_box_type: "EMISSION",
+          __note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
           "scaling factor": scaling_factor,
           "MUSICA name": "EMIS_" + musica_name,
-          species: species,
+          __species: species,
           reactants: { M: {} },
           products: {
             ...reduxProductsToCamp([{ name: species }, { name: irrSpecies }]),
@@ -566,11 +566,11 @@ function translate_reactions_to_camp_config(config, species) {
           ...camp_reaction,
           ...data,
           type: "PHOTOLYSIS",
-          music_box_type: "FIRST_ORDER_LOSS",
-          note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
+          __music_box_type: "FIRST_ORDER_LOSS",
+          __note: "This reaction is being run in CAMP as a photolysis reaction in order to be able to include the irr product",
           "scaling factor": scaling_factor,
           "MUSICA name": "LOSS_" + musica_name,
-          species: species,
+          __species: species,
           reactants: { [species]: {} },
           products: { ...reduxProductsToCamp([{ name: irrSpecies }]) },
         };
