@@ -591,5 +591,5 @@ export const reactionSchema = {
           "of the model (e.g., input conditions). You may choose any name you like.",
       },
     ],
-  },
+  }
 };

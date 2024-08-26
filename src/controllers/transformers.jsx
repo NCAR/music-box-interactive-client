@@ -30,46 +30,48 @@ function extract_mechanism_from_example(config) {
     camp_reactions = camp_reactions[0].reactions;
   }
 
-  const species = camp_species.map((species) => {
+  const species = camp_species.reduce((acc, species) => {
     let properties = [];
-    Object.keys(species).forEach((key) => {
-      switch (key) {
-        case "tracer type": {
-          properties.push({
-            name: "fixed concentration",
-            value: species[key],
-          });
-          break;
+    if (species.type === "CHEM_SPEC") {
+      Object.keys(species).forEach((key) => {
+        switch (key) {
+          case "tracer type": {
+            properties.push({
+              name: "fixed concentration",
+              value: species[key],
+            });
+            break;
+          }
+          case "absolute tolerance": {
+            properties.push({
+              name: "absolute convergence tolerance [mol mol-1]",
+              value: species[key],
+            });
+            break;
+          }
+          case "molecular weight": {
+            properties.push({
+              name: "molecular weight [kg mol-1]",
+              value: species[key],
+            });
+            break;
+          }
+          default:
+            break;
         }
-        case "absolute tolerance": {
-          properties.push({
-            name: "absolute convergence tolerance [mol mol-1]",
-            value: species[key],
-          });
-          break;
-        }
-        case "molecular weight": {
-          properties.push({
-            name: "molecular weight [kg mol-1]",
-            value: species[key],
-          });
-          break;
-        }
-        default:
-          break;
-      }
-    });
-    return {
-      name: species.name,
-      properties: properties,
-      static: species.name == "M",
-    };
-  });
+      });
+      acc.push({
+        name: species.name,
+        properties: properties,
+        static: species.name == "M",
+      });
+    }
+    return acc;
+  }, []);
 
-  const reactions = camp_reactions.map((reaction) => {
-    switch (
-      reaction.__music_box_type ? reaction.__music_box_type : reaction.type
-    ) {
+  const reactions = camp_reactions.reduce((acc, reaction) => {
+    console.log(reaction)
+    switch (reaction.__music_box_type ? reaction.__music_box_type : reaction.type) {
       case ReactionTypes.ARRHENIUS: {
         if (reaction.C !== undefined) {
           if (reaction.C != 0.0) {
@@ -84,7 +86,7 @@ function extract_mechanism_from_example(config) {
             delete reaction.C;
           }
         }
-        return {
+        acc.push({
           ...reactionSchema.arrhenius,
           id: reaction.id || uuidv4(),
           data: {
@@ -97,10 +99,11 @@ function extract_mechanism_from_example(config) {
             products: campProductsToRedux(reaction),
             reactants: campReactantsToRedux(reaction),
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.PHOTOLYSIS: {
-        return {
+        acc.push({
           ...reactionSchema.photolysis,
           id: reaction.id || uuidv4(),
           data: {
@@ -110,10 +113,11 @@ function extract_mechanism_from_example(config) {
             scaling_factor: reaction["scaling factor"] || 1.0,
             musica_name: reaction["MUSICA name"],
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.EMISSION: {
-        return {
+        acc.push({
           ...reactionSchema.emission,
           id: reaction.id || uuidv4(),
           data: {
@@ -122,10 +126,11 @@ function extract_mechanism_from_example(config) {
             species: reaction.__species ? reaction.__species : reaction.species,
             musica_name: reaction["MUSICA name"]?.replace(/EMIS_/, "") || "",
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
-        return {
+        acc.push({
           ...reactionSchema.firstOrderLoss,
           id: reaction.id || uuidv4(),
           data: {
@@ -134,10 +139,11 @@ function extract_mechanism_from_example(config) {
             scaling_factor: reaction["scaling factor"] || 1.0,
             musica_name: reaction["MUSICA name"]?.replace(/LOSS_/, "") || "",
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
-        return {
+        acc.push({
           ...reactionSchema.ternaryChemicalActivation,
           id: reaction.id || uuidv4(),
           data: {
@@ -153,10 +159,11 @@ function extract_mechanism_from_example(config) {
             reactants: campReactantsToRedux(reaction),
             products: campProductsToRedux(reaction),
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.TROE: {
-        return {
+        acc.push({
           ...reactionSchema.troe,
           id: reaction.id || uuidv4(),
           data: {
@@ -172,10 +179,11 @@ function extract_mechanism_from_example(config) {
             products: campProductsToRedux(reaction),
             reactants: campReactantsToRedux(reaction),
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.WENNBERG_NO_RO2: {
-        return {
+        acc.push({
           ...reactionSchema.branched,
           id: reaction.id || uuidv4(),
           data: {
@@ -192,10 +200,11 @@ function extract_mechanism_from_example(config) {
               reaction["nitrate products"],
             ),
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.WENNBERG_TUNNELING: {
-        return {
+        acc.push({
           ...reactionSchema.tunneling,
           id: reaction.id || uuidv4(),
           data: {
@@ -206,10 +215,11 @@ function extract_mechanism_from_example(config) {
             reactants: campReactantsToRedux(reaction),
             products: campProductsToRedux(reaction),
           },
-        };
+        });
+        break;
       }
       case ReactionTypes.SURFACE_REACTION: {
-        return {
+        acc.push({
           ...reactionSchema.surfaceReaction,
           id: reaction.id || uuidv4(),
           data: {
@@ -221,7 +231,12 @@ function extract_mechanism_from_example(config) {
             reaction_probability: reaction["reaction probability"] || 1.0,
             musica_name: reaction["musica name"],
           },
-        };
+        });
+        break;
+      }
+      case ReactionTypes.USER_DEFINED: {
+        console.log(`User defined reactios are not supported yet.`);
+        break;
       }
       default:
         console.error(`Unknown reaction type: ${reaction.type}`);
@@ -230,7 +245,11 @@ function extract_mechanism_from_example(config) {
           data: { type: "UNKNOWN" },
         };
     }
-  });
+    return acc;
+  }, []);
+
+  console.log(reactions)
+
   return {
     gasSpecies: species,
     reactions: reactions.sort(compareId),
