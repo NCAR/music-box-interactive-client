@@ -30,46 +30,48 @@ function extract_mechanism_from_example(config) {
     camp_reactions = camp_reactions[0].reactions;
   }
 
-  const species = camp_species.map((species) => {
+  const species = camp_species.reduce((acc, species) => {
     let properties = [];
-    Object.keys(species).forEach((key) => {
-      switch (key) {
-        case "tracer type": {
-          properties.push({
-            name: "fixed concentration",
-            value: species[key],
-          });
-          break;
+    if (species.type === "CHEM_SPEC") {
+      Object.keys(species).forEach((key) => {
+        switch (key) {
+          case "tracer type": {
+            properties.push({
+              name: "fixed concentration",
+              value: species[key],
+            });
+            break;
+          }
+          case "absolute tolerance": {
+            properties.push({
+              name: "absolute convergence tolerance [mol mol-1]",
+              value: species[key],
+            });
+            break;
+          }
+          case "molecular weight": {
+            properties.push({
+              name: "molecular weight [kg mol-1]",
+              value: species[key],
+            });
+            break;
+          }
+          default:
+            break;
         }
-        case "absolute tolerance": {
-          properties.push({
-            name: "absolute convergence tolerance [mol mol-1]",
-            value: species[key],
-          });
-          break;
-        }
-        case "molecular weight": {
-          properties.push({
-            name: "molecular weight [kg mol-1]",
-            value: species[key],
-          });
-          break;
-        }
-        default:
-          break;
-      }
-    });
-    return {
-      name: species.name,
-      properties: properties,
-      static: species.name == "M",
-    };
-  });
+      });
+      acc.push({
+        name: species.name,
+        properties: properties,
+        static: species.name == "M",
+      });
+    }
+    return acc;
+  }, []);
 
   const reactions = camp_reactions.map((reaction) => {
-    switch (
-      reaction.__music_box_type ? reaction.__music_box_type : reaction.type
-    ) {
+    let key = reaction.__music_box_type || reaction.music_box_type || reaction.type;
+    switch (key) {
       case ReactionTypes.ARRHENIUS: {
         if (reaction.C !== undefined) {
           if (reaction.C != 0.0) {
@@ -231,6 +233,7 @@ function extract_mechanism_from_example(config) {
         };
     }
   });
+
   return {
     gasSpecies: species,
     reactions: reactions.sort(compareId),
@@ -466,32 +469,32 @@ function translate_reactions_to_camp_config(config, species) {
     return reactants === undefined
       ? {}
       : reactants.reduce((acc, reactant) => {
-          const existingReactant = acc[reactant.name];
-          const incomingQty = reactant.qty || 1;
-          const qty = existingReactant
-            ? existingReactant.qty + incomingQty
-            : incomingQty;
-          acc[reactant.name] = {
-            qty: qty,
-          };
-          return acc;
-        }, {});
+        const existingReactant = acc[reactant.name];
+        const incomingQty = reactant.qty || 1;
+        const qty = existingReactant
+          ? existingReactant.qty + incomingQty
+          : incomingQty;
+        acc[reactant.name] = {
+          qty: qty,
+        };
+        return acc;
+      }, {});
   };
   const reduxProductsToCamp = (products) => {
     return products === undefined
       ? {}
       : products.reduce((acc, product) => {
-          const existingProduct = acc[product.name];
-          const incomingYield =
-            product.yield === undefined ? 1.0 : product.yield;
-          const product_yield = existingProduct
-            ? existingProduct.yield + incomingYield
-            : incomingYield;
-          acc[product.name] = {
-            yield: product_yield,
-          };
-          return acc;
-        }, {});
+        const existingProduct = acc[product.name];
+        const incomingYield =
+          product.yield === undefined ? 1.0 : product.yield;
+        const product_yield = existingProduct
+          ? existingProduct.yield + incomingYield
+          : incomingYield;
+        acc[product.name] = {
+          yield: product_yield,
+        };
+        return acc;
+      }, {});
   };
 
   let reactions = config.reactions.map((reaction) => {
