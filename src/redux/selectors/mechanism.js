@@ -94,14 +94,14 @@ export const getUserDefinedRatesIds = (store) => {
         acc.push(
           {
             id: reaction.id,
-            type: reaction.typeLabel,
+            type: reaction.data.type,
             name: reaction.data.musica_name || reactionToLabel(reaction),
             suffix: ".number",
             possibleUnits: reaction.possibleUnits,
           },
           {
             id: reaction.id,
-            type: reaction.typeLabel,
+            type: reaction.data.type,
             name: reaction.data.musica_name || reactionToLabel(reaction),
             suffix: ".radius",
             possibleUnits: reaction.possibleUnits,
@@ -110,7 +110,7 @@ export const getUserDefinedRatesIds = (store) => {
       } else {
         acc.push({
           id: reaction.id,
-          type: reaction.typeLabel,
+          type: reaction.data.type,
           name: reaction.data.musica_name || reactionToLabel(reaction),
           suffix: "",
           possibleUnits: reaction.possibleUnits,

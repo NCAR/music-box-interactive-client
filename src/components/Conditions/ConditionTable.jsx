@@ -238,6 +238,7 @@ const ConditionTable = (props) => {
       newRow.reactionId = props.nameIdMap[newName].reactionId;
       newRow.suffix = props.nameIdMap[newName].suffix;
       newRow.type = props.nameIdMap[newName].type;
+      console.log(newRow)
     } else {
       // for non user defined reaction rate conditions, all we need to do is update the name
       newRow.name = newName;
