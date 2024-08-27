@@ -70,7 +70,6 @@ function extract_mechanism_from_example(config) {
   }, []);
 
   const reactions = camp_reactions.reduce((acc, reaction) => {
-    console.log(reaction)
     switch (reaction.__music_box_type ? reaction.__music_box_type : reaction.type) {
       case ReactionTypes.ARRHENIUS: {
         if (reaction.C !== undefined) {
@@ -248,8 +247,6 @@ function extract_mechanism_from_example(config) {
     return acc;
   }, []);
 
-  console.log(reactions)
-
   return {
     gasSpecies: species,
     reactions: reactions.sort(compareId),
@@ -426,6 +423,7 @@ function extract_conditions_from_example(config, mechanism) {
       };
     });
   }
+  console.log('there')
 
   let evolving_conditions = config.conditions["evolving conditions"];
   let evolving = {
@@ -485,32 +483,32 @@ function translate_reactions_to_camp_config(config, species) {
     return reactants === undefined
       ? {}
       : reactants.reduce((acc, reactant) => {
-          const existingReactant = acc[reactant.name];
-          const incomingQty = reactant.qty || 1;
-          const qty = existingReactant
-            ? existingReactant.qty + incomingQty
-            : incomingQty;
-          acc[reactant.name] = {
-            qty: qty,
-          };
-          return acc;
-        }, {});
+        const existingReactant = acc[reactant.name];
+        const incomingQty = reactant.qty || 1;
+        const qty = existingReactant
+          ? existingReactant.qty + incomingQty
+          : incomingQty;
+        acc[reactant.name] = {
+          qty: qty,
+        };
+        return acc;
+      }, {});
   };
   const reduxProductsToCamp = (products) => {
     return products === undefined
       ? {}
       : products.reduce((acc, product) => {
-          const existingProduct = acc[product.name];
-          const incomingYield =
-            product.yield === undefined ? 1.0 : product.yield;
-          const product_yield = existingProduct
-            ? existingProduct.yield + incomingYield
-            : incomingYield;
-          acc[product.name] = {
-            yield: product_yield,
-          };
-          return acc;
-        }, {});
+        const existingProduct = acc[product.name];
+        const incomingYield =
+          product.yield === undefined ? 1.0 : product.yield;
+        const product_yield = existingProduct
+          ? existingProduct.yield + incomingYield
+          : incomingYield;
+        acc[product.name] = {
+          yield: product_yield,
+        };
+        return acc;
+      }, {});
   };
 
   let reactions = config.reactions.map((reaction) => {
