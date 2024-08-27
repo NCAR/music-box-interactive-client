@@ -69,8 +69,9 @@ function extract_mechanism_from_example(config) {
     return acc;
   }, []);
 
-  const reactions = camp_reactions.reduce((acc, reaction) => {
-    switch (reaction.__music_box_type ? reaction.__music_box_type : reaction.type) {
+  const reactions = camp_reactions.map((reaction) => {
+    let key = reaction.__music_box_type || reaction.music_box_type || reaction.type;
+    switch (key) {
       case ReactionTypes.ARRHENIUS: {
         if (reaction.C !== undefined) {
           if (reaction.C != 0.0) {
@@ -85,7 +86,7 @@ function extract_mechanism_from_example(config) {
             delete reaction.C;
           }
         }
-        acc.push({
+        return {
           ...reactionSchema.arrhenius,
           id: reaction.id || uuidv4(),
           data: {
@@ -98,11 +99,10 @@ function extract_mechanism_from_example(config) {
             products: campProductsToRedux(reaction),
             reactants: campReactantsToRedux(reaction),
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.PHOTOLYSIS: {
-        acc.push({
+        return {
           ...reactionSchema.photolysis,
           id: reaction.id || uuidv4(),
           data: {
@@ -112,11 +112,10 @@ function extract_mechanism_from_example(config) {
             scaling_factor: reaction["scaling factor"] || 1.0,
             musica_name: reaction["MUSICA name"],
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.EMISSION: {
-        acc.push({
+        return {
           ...reactionSchema.emission,
           id: reaction.id || uuidv4(),
           data: {
@@ -125,11 +124,10 @@ function extract_mechanism_from_example(config) {
             species: reaction.__species ? reaction.__species : reaction.species,
             musica_name: reaction["MUSICA name"]?.replace(/EMIS_/, "") || "",
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.FIRST_ORDER_LOSS: {
-        acc.push({
+        return {
           ...reactionSchema.firstOrderLoss,
           id: reaction.id || uuidv4(),
           data: {
@@ -138,11 +136,10 @@ function extract_mechanism_from_example(config) {
             scaling_factor: reaction["scaling factor"] || 1.0,
             musica_name: reaction["MUSICA name"]?.replace(/LOSS_/, "") || "",
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.TERNARY_CHEMICAL_ACTIVATION: {
-        acc.push({
+        return {
           ...reactionSchema.ternaryChemicalActivation,
           id: reaction.id || uuidv4(),
           data: {
@@ -158,11 +155,10 @@ function extract_mechanism_from_example(config) {
             reactants: campReactantsToRedux(reaction),
             products: campProductsToRedux(reaction),
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.TROE: {
-        acc.push({
+        return {
           ...reactionSchema.troe,
           id: reaction.id || uuidv4(),
           data: {
@@ -178,11 +174,10 @@ function extract_mechanism_from_example(config) {
             products: campProductsToRedux(reaction),
             reactants: campReactantsToRedux(reaction),
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.WENNBERG_NO_RO2: {
-        acc.push({
+        return {
           ...reactionSchema.branched,
           id: reaction.id || uuidv4(),
           data: {
@@ -199,11 +194,10 @@ function extract_mechanism_from_example(config) {
               reaction["nitrate products"],
             ),
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.WENNBERG_TUNNELING: {
-        acc.push({
+        return {
           ...reactionSchema.tunneling,
           id: reaction.id || uuidv4(),
           data: {
@@ -214,11 +208,10 @@ function extract_mechanism_from_example(config) {
             reactants: campReactantsToRedux(reaction),
             products: campProductsToRedux(reaction),
           },
-        });
-        break;
+        };
       }
       case ReactionTypes.SURFACE_REACTION: {
-        acc.push({
+        return {
           ...reactionSchema.surfaceReaction,
           id: reaction.id || uuidv4(),
           data: {
@@ -230,12 +223,7 @@ function extract_mechanism_from_example(config) {
             reaction_probability: reaction["reaction probability"] || 1.0,
             musica_name: reaction["musica name"],
           },
-        });
-        break;
-      }
-      case ReactionTypes.USER_DEFINED: {
-        console.log(`User defined reactios are not supported yet.`);
-        break;
+        };
       }
       default:
         console.error(`Unknown reaction type: ${reaction.type}`);
@@ -244,8 +232,7 @@ function extract_mechanism_from_example(config) {
           data: { type: "UNKNOWN" },
         };
     }
-    return acc;
-  }, []);
+  });
 
   return {
     gasSpecies: species,
@@ -423,7 +410,6 @@ function extract_conditions_from_example(config, mechanism) {
       };
     });
   }
-  console.log('there')
 
   let evolving_conditions = config.conditions["evolving conditions"];
   let evolving = {
