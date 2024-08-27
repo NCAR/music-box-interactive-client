@@ -556,7 +556,7 @@ function translate_reactions_to_camp_config(config, species) {
           "scaling factor": scaling_factor,
           "MUSICA name": "EMIS_" + musica_name,
           __species: species,
-          reactants: { M: {} },
+          reactants: { },
           products: {
             ...reduxProductsToCamp([{ name: species }, { name: irrSpecies }]),
           },
