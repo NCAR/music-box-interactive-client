@@ -557,7 +557,7 @@ function translate_reactions_to_camp_config(config, species) {
           "scaling factor": scaling_factor,
           "MUSICA name": "EMIS_" + musica_name,
           __species: species,
-          reactants: { },
+          reactants: {},
           products: {
             ...reduxProductsToCamp([{ name: species }, { name: irrSpecies }]),
           },
@@ -727,7 +727,7 @@ function translate_to_camp_config(config) {
       let camp_species = { name: species.name, type: "CHEM_SPEC" };
       if (species.name === "M") {
         camp_species["tracer type"] = "THIRD_BODY";
-      };
+      }
       species.properties.forEach((property) => {
         switch (property.name) {
           case "absolute convergence tolerance [mol mol-1]":
