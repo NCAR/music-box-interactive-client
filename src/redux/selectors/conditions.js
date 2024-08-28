@@ -12,7 +12,7 @@ export const getConditions = (store, schema) => {
           acc.push(
             {
               id: reaction.id,
-              type: reaction.typeLabel,
+              type: reaction.tablePrefix,
               name:
                 reaction.data.musica_name || ReactionTypes.shortName(reaction),
               suffix: ".number",
@@ -20,7 +20,7 @@ export const getConditions = (store, schema) => {
             },
             {
               id: reaction.id,
-              type: reaction.typeLabel,
+              type: reaction.tablePrefix,
               name:
                 reaction.data.musica_name || ReactionTypes.shortName(reaction),
               suffix: ".radius",
@@ -30,7 +30,7 @@ export const getConditions = (store, schema) => {
         } else {
           acc.push({
             id: reaction.id,
-            type: reaction.typeLabel,
+            type: reaction.tablePrefix,
             name:
               reaction.data.musica_name || ReactionTypes.shortName(reaction),
             suffix: "",
