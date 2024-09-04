@@ -21,12 +21,14 @@ const examples = [
     description:
       "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.",
     link: "https://gmd.copernicus.org/articles/10/609/2017/",
-    linkText: "The description of the modified version of CB-05 used in MONARCH",
+    linkText:
+      "The description of the modified version of CB-05 used in MONARCH",
     type: utils.examples.FULL_GAS_PHASE,
   },
   {
     title: "Troposphere-Stratosphere mechanism (TS1)",
-    description: 'A comprehensive model of the chemistry in the troposphere and straosphere',
+    description:
+      "A comprehensive model of the chemistry in the troposphere and straosphere",
     link: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2019MS001882",
     linkText: "Read about its formulation in this paper",
     type: utils.examples.TS1,
