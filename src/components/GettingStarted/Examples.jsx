@@ -21,7 +21,7 @@ const examples = [
     description:
       "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.",
     link: "https://gmd.copernicus.org/articles/10/609/2017/",
-    linkText: "The description of the modified version",
+    linkText: "The description of the modified version of CB-05 used in MONARCH",
     type: utils.examples.FULL_GAS_PHASE,
   },
   {
