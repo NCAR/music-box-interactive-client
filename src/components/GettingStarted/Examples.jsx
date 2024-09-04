@@ -20,12 +20,15 @@ const examples = [
     title: "Full Gas-Phase Mechanism",
     description:
       "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.",
+    link: "https://www.camx.com/Files/CB05_Final_Report_120805.pdf",
+    linkText: "The EPA's report on the CB05 mechanism",
     type: utils.examples.FULL_GAS_PHASE,
   },
   {
-    title: "Troposphere-Stratisphere mechanism (TS1)",
-    description:
-      "A comprehensive  model of the chemistry in the troposphere and straisphere.",
+    title: "Troposphere-Stratosphere mechanism (TS1)",
+    description: 'A comprehensive model of the chemistry in the troposphere and straosphere',
+    link: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2019MS001882",
+    linkText: "Read about it's formulation in this paper",
     type: utils.examples.TS1,
   },
 ];
@@ -46,7 +49,15 @@ export default function Examples() {
         <div>
           <h3>{example.title}</h3>
         </div>
-        <div>{example.description}</div>
+        <div>
+          {example.description}
+          &nbsp;
+          {example.link && (
+            <a href={example.link} target="_blank" rel="noopener noreferrer">
+              {example.linkText || "Learn more"}
+            </a>
+          )}
+        </div>
         <button
           className="btn btn-secondary"
           onClick={() => {
