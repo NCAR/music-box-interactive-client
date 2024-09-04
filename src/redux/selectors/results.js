@@ -2,6 +2,8 @@ import { convert } from "../../controllers/unit_conversion";
 
 export const getRunStatus = (store) => store.results.runStatus;
 
+export const getCurrentModelTime = (store) => store.results.currentModelTime;
+
 export const getLastError = (store) => store.results.error;
 
 export const getPlotDataByType = (store, plot) => {

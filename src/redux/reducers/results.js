@@ -3,6 +3,7 @@ import { RunStatus } from "../../controllers/models";
 
 const initialState = {
   runStatus: RunStatus.WAITING,
+  currentModelTime: 0,
   error: {
     message:
       "Your ship has sunk. If you try to get help from the dolphin, go to page 34.",
@@ -32,6 +33,7 @@ export const resultsReducer = (state = initialState, action) => {
       return {
         ...state,
         runStatus: action.payload.content.status,
+        currentModelTime: action.payload.content.current_time,
         error: action.payload.content.error,
       };
     }

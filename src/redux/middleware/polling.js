@@ -16,6 +16,7 @@ const pollingMiddleware =
           const content = {
             status: RunStatus[response.data.status],
             error: response.data.error,
+            current_time: response.data.current_time,
           };
           dispatch({
             type: utils.action_types.UPDATE_RUN_STATUS,

@@ -131,3 +131,20 @@ export const getEvolvingTable = (store) => {
 };
 
 export const getAllConditions = (store) => store.conditions;
+
+export const getSimulationTimeInSeconds = (store) =>{
+  const simulationTime = store.conditions.basic.simulation_time;
+  const simulationTimeUnits = store.conditions.basic.simulation_time_units;
+  switch(simulationTimeUnits){
+    case "sec":
+      return simulationTime;
+    case "min":
+      return simulationTime * 60;
+    case "hr":
+      return simulationTime * 3600;
+    case "day":
+      return simulationTime * 86400;
+    default:
+      return simulationTime;
+  }
+}
