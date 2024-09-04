@@ -20,8 +20,8 @@ const examples = [
     title: "Full Gas-Phase Mechanism",
     description:
       "A variant of the Carbon Bond 5 chemical mechanism used in the MONARCH global/regional chemical weather prediction system.",
-    link: "https://www.camx.com/Files/CB05_Final_Report_120805.pdf",
-    linkText: "The EPA's report on the CB05 mechanism",
+    link: "https://gmd.copernicus.org/articles/10/609/2017/",
+    linkText: "The description of the modified version",
     type: utils.examples.FULL_GAS_PHASE,
   },
   {
