@@ -28,7 +28,7 @@ const examples = [
     title: "Troposphere-Stratosphere mechanism (TS1)",
     description: 'A comprehensive model of the chemistry in the troposphere and straosphere',
     link: "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2019MS001882",
-    linkText: "Read about it's formulation in this paper",
+    linkText: "Read about its formulation in this paper",
     type: utils.examples.TS1,
   },
 ];
