@@ -169,8 +169,8 @@ const ResultsError = (props) => {
 const ResultsNotStarted = () => {
   return (
     <>
-      <h1>To run a simulation, click the green Run button to the left</h1>
-      <p>The possibilities are limitless.</p>
+      <h1>Your simulation request has been received</h1>
+      <p>Under high demand, your run may be queued.</p>
     </>
   );
 };
