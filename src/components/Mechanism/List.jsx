@@ -50,7 +50,7 @@ const mapStateToProps = (state, { type, subType }) => {
   let objects = [];
   switch (type) {
     case "gas":
-      objects = mechanism.gasSpecies;
+      objects = mechanism.gasSpecies.sort((a, b) => a.name.localeCompare(b.name));
       break;
     case "aerosol":
       switch (subType) {
