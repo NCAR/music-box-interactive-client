@@ -18,7 +18,17 @@ const initialConditionsSchema = {
     nameLabel: "Species name",
     classKey: "initial_species_concentrations",
     allowAddRemove: true,
-    units: ["mol m-3", "mol cm-3", "molec m-3", "molec cm-3"],
+    units: [
+      "mol mol-1",
+      "ppth",
+      "ppm",
+      "ppb",
+      "ppt",
+      "mol m-3",
+      "mol cm-3",
+      "molec m-3",
+      "molec cm-3",
+    ],
   },
   environmentalConditions: {
     label: "Environmental Conditions",

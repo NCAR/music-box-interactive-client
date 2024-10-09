@@ -37,7 +37,7 @@ function Layout(props) {
   const handleClick = () => {
     if (props.runStatus !== RunStatus.RUNNING) {
       const content = {
-        status: "RUNNING",
+        status: RunStatus.WAITING,
         error: "",
       };
       dispatch(resetPlots());
