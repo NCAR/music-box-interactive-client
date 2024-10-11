@@ -357,7 +357,7 @@ function extract_conditions_from_example(config, mechanism) {
   if (initial_conditions) {
     reaction_conditions = Object.keys(initial_conditions).map((key) => {
       let [type, identifier, units] = key.split(".");
-      if (type === "PHOT") {
+      if (type === "PHOT" || type === "PHOTO") {
         type = ReactionTypes.PHOTOLYSIS;
       }
       if (type === "EMIS" || identifier.substring(0, 5) === "EMIS_") {
@@ -425,13 +425,13 @@ function extract_conditions_from_example(config, mechanism) {
         let [type, name, units] = key.split(".");
         let table_name = "";
         if (type === "LOSS" || name.substring(0, 5) === "LOSS_") {
-          table_name = `PHOT.LOSS_${name.replace(/LOSS_/, "")}.s-1`;
+          table_name = `PHOTO.LOSS_${name.replace(/LOSS_/, "")}.s-1`;
           units = units || "s-1";
         } else if (type === "EMIS" || name.substring(0, 5) === "EMIS_") {
-          table_name = `PHOT.EMIS_${name.replace(/EMIS_/, "")}.s-1`;
+          table_name = `PHOTO.EMIS_${name.replace(/EMIS_/, "")}.s-1`;
           units = units || "s-1";
-        } else if (type === "PHOT") {
-          table_name = `PHOT.${name}.s-1`;
+        } else if (type === "PHOTO" || type === "PHOT") {
+          table_name = `PHOTO.${name}.s-1`;
           units = units || "s-1";
         } else {
           table_name = key;
@@ -810,11 +810,11 @@ function translate_to_musicbox_conditions(conditions, mechanism) {
         let units = curr.units;
         // use the photolysis type to handle these conditions for both loss and emission
         if (curr.type == "LOSS") {
-          type = "PHOT";
+          type = "PHOTO";
           musica_name = "LOSS_" + musica_name;
           units = curr.units;
         } else if (curr.type == "EMIS") {
-          type = "PHOT";
+          type = "PHOTO";
           musica_name = "EMIS_" + musica_name;
           units = "s-1";
         }
