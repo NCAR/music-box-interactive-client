@@ -808,6 +808,7 @@ function translate_to_musicbox_conditions(conditions, mechanism) {
         let musica_name =
           reaction.data.musica_name || ReactionTypes.shortName(reaction);
         let units = curr.units;
+        console.log(curr.type)
         // use the photolysis type to handle these conditions for both loss and emission
         if (curr.type == "LOSS") {
           type = "PHOTO";
@@ -816,6 +817,10 @@ function translate_to_musicbox_conditions(conditions, mechanism) {
         } else if (curr.type == "EMIS") {
           type = "PHOTO";
           musica_name = "EMIS_" + musica_name;
+          units = "s-1";
+        }
+        else if (curr.type == "PHOT") {
+          type = "PHOTO";
           units = "s-1";
         }
         let key = `${type}.${musica_name}.${units}`;
