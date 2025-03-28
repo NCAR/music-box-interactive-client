@@ -18,7 +18,7 @@ jobs:
           days-before-close: 14  # Close issue if no activity after 14 days of being stale
           days-before-pr-close: -1
           stale-label: stale
-          exempt-issue-labels: pinned
+          exempt-issue-labels: Low Priority
           stale-issue-message: >
             This issue has been automatically marked as stale due to inactivity.
             If it remains inactive for another 7 days, it will be closed.
