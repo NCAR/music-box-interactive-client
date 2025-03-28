@@ -14,8 +14,9 @@ jobs:
         uses: actions/stale@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: 30
-          days-before-close: 7
+          days-before-stale: 180 # Mark as stale after 180 days of inactivity
+          days-before-close: 14  # Close issue if no activity after 14 days of being stale
+          days-before-pr-close: -1
           stale-label: stale
           exempt-issue-labels: pinned
           stale-issue-message: >
