@@ -1,3 +1,5 @@
+This repository has been merged with [https://github.com/NCAR/music-box-interactive](https://github.com/NCAR/music-box-interactive-api) and all updates/issues should be placed there.
+
 # MusicBox Interactive Client
 
 [![GitHub Releases](https://img.shields.io/github/release/NCAR/music-box-interactive-client.svg)](https://github.com/NCAR/music-box-interactive-client/releases)
